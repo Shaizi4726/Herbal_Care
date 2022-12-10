@@ -11,12 +11,12 @@
 	<!-- @yield('main-content') -->
 
 	<!-- Footer -->
-	
+	@include('frontend.layouts.footer')
 	<!-- End Footer -->
 
 	<!-- Scripts -->
 	<script src="{{asset('frontend/js/jquery.exzoom.js')}}"></script>
-	<script src="{{asset('frontend/js/header.js')}}"></script>
+	<script src="{{asset('frontend/js/header.min.js')}}"></script>
 	<!-- End Scripts -->
   </body>
 </html>

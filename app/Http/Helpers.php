@@ -26,39 +26,34 @@
       // dd($category);
       $menu=$category->getAllParentWithChild();
       if($menu) {
+      foreach($menu as $cat_info) {
+        if($cat_info->child_cat->count()>0) {
 ?>
-        
-<ul class="collapse" id="cat-menu">
-  <?php
-    foreach($menu as $cat_info) {
-      if($cat_info->child_cat->count()>0) {
-  ?>
 
-  <li class="submenu-dropdown">
-    <a href="<?php echo route('product-cat',$cat_info->slug); ?>" class="dropdown-item"><?php echo $cat_info->title; ?></a>
-    <ul class="collapse cat-submenu">
-      <?php
-        foreach($cat_info->child_cat as $sub_menu){
-      ?>
-      <li><a href="<?php echo route('product-sub-cat',[$cat_info->slug,$sub_menu->slug]); ?>" class="dropdown-item"><?php echo $sub_menu->title; ?></a></li>
-      <?php
-        }
-      ?>
-    </ul>
-  </li>
-
-  <?php
-    }
-    else {
-  ?>
-
-  <li><a href="<?php echo route('product-cat',$cat_info->slug);?>" class="dropdown-item"><?php echo $cat_info->title; ?></a></li>
-  
-  <?php
-    }
+<li class="submenu-dropdown">
+  <a href="<?php echo route('product-cat',$cat_info->slug); ?>" class="dropdown-item"><?php echo $cat_info->title; ?></a>
+  <ul class="collapse cat-submenu">
+    <?php
+      foreach($cat_info->child_cat as $sub_menu){
+    ?>
+    <li><a href="<?php echo route('product-sub-cat',[$cat_info->slug,$sub_menu->slug]); ?>" class="dropdown-item"><?php echo $sub_menu->title; ?></a></li>
+    <?php
       }
-  ?>
-</ul>
+    ?>
+  </ul>
+</li>
+
+<?php
+  }
+  else {
+?>
+
+<li><a href="<?php echo route('product-cat',$cat_info->slug);?>" class="dropdown-item"><?php echo $cat_info->title; ?></a></li>
+
+<?php
+  }
+    }
+?>
     
 <?php
     }

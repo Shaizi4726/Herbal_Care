@@ -1,29 +1,27 @@
-<header class="header shop-header">
+<header class="header shop-header" id="header">
   <!-- Topbar -->
   <div class="topbar" id="mob-header">
     <div class="header-content">
-      <button id="menu-button" class="btn header-icon" onclick="showMenu()"><i class="fa-solid fa-bars icon" id="bars-icon"></i></button>
-
       <div id="header-logo-title">
         @php $settings=DB::table('settings')->get(); @endphp
         <a href="{{route('home')}}">
           <img src="@foreach($settings as $data) {{$data->logo}} @endforeach" alt="logo">
         </a>
-        <h2 id="header-title">HerbalCare</h2>
+        <h2 class="header-title">HerbalCare</h2>
       </div>
-
-      <button id="cart-button" class="btn header-icon">
-        <a href="{{route('cart')}}" class="header-icon">
-        <i class="fa-solid fa-briefcase icon" id="cart-icon"></i>
-        <div class="cart-quantity"><span style="position: relative;top: 0.25em;">{{Helper::cartCount()}}</span></div></a>
-      </button>
     </div>
-    <div class="search-bar" id= "search">                                        
+    <div class="search-bar" id= "search"> 
+      <button id="menu-button" class="btn header-icon" onclick="showMenu()"><i class="fa-solid fa-bars icon" id="bars-icon"></i></button>                                       
       <form method="post" action="{{route('product.search')}}" class="search-form">
         @csrf
         <input type="search" name="search" class="form-controller search-term" placeholder="Search Products...">                                                                
         <button type="submit" class="btn search-button" value="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
       </form>
+      <button id="mob-cart-button" class="btn header-icon cart-button">
+        <a href="{{route('cart')}}">
+        <i class="fa-solid fa-briefcase icon" id="cart-icon"></i>
+        <div class="cart-quantity"><span>{{Helper::cartCount()}}</span></div></a>
+      </button>
     </div>      
   </div>      
   
@@ -36,8 +34,8 @@
         <a href="{{route('home')}}"><img src="@foreach($settings as $data) {{$data->logo}} @endforeach" alt="logo"></a>
       </div>
 
-      <div class="header-title">
-        <h2 id="header-title">HerbalCare</h2>
+      <div class="header-title-div">
+        <h2 class="header-title">HerbalCare</h2>
       </div>
       
       <ul class="list-main">
@@ -62,11 +60,13 @@
         <li><a href="{{route('about-us')}}" class="nav-link desktop-nav">About</a></li>
         <li id = "shop">
           <a href="#" class="nav-link desktop-nav dropdown-toggle">Shop</a>
-          {{Helper::getHeaderCategory()}}
+          <ul class="collapse cat-menu" id="desktop-cat-menu">
+            {{Helper::getHeaderCategory()}}
+          </ul>
         </li>
       </ul>
 
-      <div class="search-bar" id= "search">                                        
+      <div class="search-bar">                                        
         <form method="post" action="{{route('product.search')}}" class="search-form">
           @csrf
           <input type="search" name="search" class="form-controller search-term" placeholder="Search Products...">                                                                
@@ -74,7 +74,7 @@
         </form>
       </div>
 
-      <button id="cart-button" class="btn header-icon">
+      <button class="btn header-icon cart-button">
         <a href="{{route('cart')}}" class="header-icon">
         <i class="fa-solid fa-briefcase icon" id="cart-icon"></i>
         <div class="cart-quantity"><span style="position: relative;top: 0.14em;">{{Helper::cartCount()}}</span></div></a>
@@ -120,13 +120,15 @@
 
 <nav class="nav" id="mob-nav">
   <button type="button" class="btn close" id="close-btn" onclick="closeMenu()"><i class="fa-solid fa-xmark"></i></button>                  
-  <div id="navbar-content">
+  <div class="navbar-content">
     <ul class="menu">
       <li><a href="{{route('home')}}" class="nav-link mob-nav">Home</a></li>
       <li><a href="{{route('about-us')}}" class="nav-link mob-nav">About</a></li>
       <li>
-        <a href="#" onclick="menu()" class="nav-link mob-nav dropdown-toggle">Shop</a>
-        {{Helper::getHeaderCategory()}}
+        <a onclick="menu()" class="nav-link mob-nav dropdown-toggle">Shop</a>
+        <ul class="collapse cat-menu" id="mob-cat-menu">
+          {{Helper::getHeaderCategory()}}
+        </ul>
       </li>
     </ul>
     <hr>
