@@ -1,30 +1,5 @@
 <!-- Start Footer Area -->
 <footer class="footer shop-footer" >
-	<!-- Fixed Footer -->
-	<div id="footer-fixed" class="footer-fixed fixed-bottom collapse"> 
-		<!-- Features -->
-    <div class="features" >
-			<button type="button" class="btn close" id="close-btn" onclick="closeMenu()"><i class="fa-solid fa-xmark"></i></button>
-			<div class="feature1" >
-				<h4><i class="fa-solid fa-rocket"></i>Free shipping<br>Orders over AED. 100</h4>
-			</div>
-												
-			<div class="feature2">
-				<h4><i class="fa-solid fa-clock-rotate-left"></i>Free Return<br>Within 30 days returns</h4>
-			</div>
-										
-			<div class="feature3">
-				<h4><i class="fa-solid fa-lock"></i>Secure Payment<br>100% secure payment</h4>
-			</div>
-												
-			<div class="feature4">
-				<h4><i class="fa-solid fa-tag"></i>Best Price <br>Guaranteed price</h4>
-			</div>
-		</div>
-		<!-- End Features -->
-	</div>
-	<!-- End Fixed Footer -->
-
 	<!-- Footer Top -->
 	<div class="footer-top main-footer">				
 		<div class="footer-about">
@@ -49,7 +24,7 @@
 					<li><a href="{{route('about-us')}}">About Us</a></li>
 					<li><a href="#">Faq</a></li>
 					<li><a href="#">Terms & Conditions</a></li>
-					<li><a href="{{route('contact')}}">Contact Us</a></li>
+					<li><a href="#">Privacy Policy</a></li>
 					<li><a href="#">Help</a></li>
 				</ul>
 			</div>
@@ -62,7 +37,7 @@
 					<li><a href="#">Money-back</a></li>
 					<li><a href="#">Returns</a></li>
 					<li><a href="#">Shipping</a></li>
-					<li><a href="#">Privacy Policy</a></li>
+					<li><a href="{{route('contact')}}">Contact Us</a></li>
 				</ul>
 			</div>
 
@@ -85,4 +60,28 @@
 	<div class="copyright">
 		<p>Copyright &#169 {{date('Y')}} <a href="#" target="_blank">World Forum Trading</a>  -  All Rights Reserved.</p>
 	</div>
+
+	<!-- Fixed Footer -->
+	<div id="footer-fixed" class="footer-fixed fixed-bottom collapse"> 
+		<!-- Features -->
+    <div class="features" >
+			<div class="feature1" >
+				<h4><i class="fa-solid fa-rocket"></i>Free shipping<br>Orders over AED. 100</h4>
+			</div>
+												
+			<div class="feature2">
+				<h4><i class="fa-solid fa-clock-rotate-left"></i>Free Return<br>Within 30 days returns</h4>
+			</div>
+										
+			<div class="feature3">
+				<h4><i class="fa-solid fa-lock"></i>Secure Payment<br>100% secure payment</h4>
+			</div>
+												
+			<div class="feature4">
+				<h4><i class="fa-solid fa-tag"></i>Best Price <br>Guaranteed price</h4>
+			</div>
+		</div>
+		<!-- End Features -->
+	</div>
+	<!-- End Fixed Footer -->
 </footer>

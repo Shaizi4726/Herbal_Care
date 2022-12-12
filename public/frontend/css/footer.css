@@ -33,7 +33,7 @@ footer {
 
 .desc-text {
   text-align: center;
-  padding: 10px;
+  padding: 2rem;
 }
 
 .footer-menu {
@@ -54,14 +54,39 @@ footer {
 }
 
 @media only screen and (min-width: 768px) {
+  footer {
+    margin-bottom: 3.2rem;
+  }
+
+  #footer-fixed.collapse {
+    display: block;
+    width: 100%;
+    background-color: #d7c89d;
+    position: fixed;
+    bottom: 0;
+    height: 3.2rem;
+  }
+
+  .features {
+    color: #443a2e;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
   .footer-top {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     align-items: flex-start;
     background-color: #443a2e;
     margin-bottom: 0.3em;
     padding: 0 20px;
+    position: relative;
+  }
+
+  .logo {
+    margin-top: 2rem;
   }
 
   .footer-top h3 {
@@ -73,13 +98,15 @@ footer {
     width: 30%;
   }
 
-  .footer-top ul li {
+  .footer-menu li {
     margin: 0 20px;
-    padding: 0px;
+    padding: 1rem;
   }
 
   .footer-menu {
     display: flex;
+    flex-direction: row;
+    justify-content: space-around;
   }
 
   .footer-top hr {
@@ -88,7 +115,7 @@ footer {
 
   .footer-loc {
     width: 30%;
-    overflow-wrap:  wrap;
+    overflow-wrap: break-word;
     white-space: normal;
   }
 }
