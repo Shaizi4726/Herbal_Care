@@ -21,8 +21,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
 
   <!-- Eshop StyleSheet -->
+  <link href="{{asset('frontend/css/main.css')}}" rel="stylesheet">
   <link href="{{asset('frontend/css/header.min.css')}}" rel="stylesheet">
-  <link href="{{asset('frontend/css/footer.css')}}" rel="stylesheet">
+  <link href="{{asset('frontend/css/footer.min.css')}}" rel="stylesheet">
 
   <!-- Xzoom-->
   <link href="{{asset('frontend/css/jquery.exzoom.css')}}" rel="stylesheet" type="text/css">

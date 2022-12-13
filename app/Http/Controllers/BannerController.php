@@ -1,39 +1,39 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Banner;
 use Illuminate\Support\Str;
+
 class BannerController extends Controller
 {
-    /**
+    /*
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
-     */
+    */
     public function index()
     {
         $banner=Banner::orderBy('id','DESC')->paginate(10);
         return view('backend.banner.index')->with('banners',$banner);
     }
 
-    /**
+    /*
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
-     */
+    */
     public function create()
     {
         return view('backend.banner.create');
     }
 
-    /**
+    /*
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
-     */
+    */
     public function store(Request $request)
     {
         // return $request->all();

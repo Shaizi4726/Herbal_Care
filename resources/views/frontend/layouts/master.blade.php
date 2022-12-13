@@ -8,7 +8,7 @@
 	@include('frontend.layouts.header')
 	<!-- End Header -->
 
-	<!-- @yield('main-content') -->
+	@yield('main-content')
 
 	<!-- Footer -->
 	@include('frontend.layouts.footer')
@@ -17,6 +17,7 @@
 	<!-- Scripts -->
 	<script src="{{asset('frontend/js/jquery.exzoom.js')}}"></script>
 	<script src="{{asset('frontend/js/header.min.js')}}"></script>
+	<script src="{{asset('frontend/js/main.js')}}"></script>
 	<!-- End Scripts -->
   </body>
 </html>

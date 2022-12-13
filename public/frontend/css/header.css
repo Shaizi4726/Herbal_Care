@@ -1,49 +1,3 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: Poppins, Verdana, Tahoma, sans-serif;
-  background-color: #faf9f6;
-  overflow-x: hidden;
-}
-
-ul li, ol li {
-  list-style-type: none;
-}
-
-a {
-  text-decoration: none;
-}
-
-hr {
-  margin: 2rem 0;
-  width: 75%;
-}
-
-.btn {
-  background-color: transparent;
-  border: none;
-}
-
-.collapse {
-  display: none;
-}
-
-.sticky {
-  position: fixed;
-  top: 0;
-  z-index: 10;
-  width: 100%;
-}
-
-.dropdown-toggle::after {
-  content: '\25BC';
-  font-size: 0.8em;
-}
-
 /* Mobile Header */
 
 #desktop-header {
@@ -135,7 +89,7 @@ hr {
 }
 
 .search-term:focus {
-  outline: hidden;
+  outline: none;
 }
 
 .search-button {
@@ -156,7 +110,7 @@ hr {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1;
+  z-index: 10;
   width: 0;
   height: 100%;
   transition: 0.4s ease-in-out;
