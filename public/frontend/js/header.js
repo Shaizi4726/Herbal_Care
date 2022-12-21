@@ -1,7 +1,10 @@
 // Mobile Menu Overlay
 var catMenu = document.getElementById("mob-cat-menu");
+var body = document.querySelector("body");
 
 function showMenu() {
+  body.style.height='90vh';
+  body.style.overflow='hidden';
   if (! catMenu.classList.contains("collapse"))
     catMenu.classList.toggle("collapse");
   let el = document.getElementById('mob-nav');
@@ -9,9 +12,8 @@ function showMenu() {
 }
 
 function closeMenu(){
-  const body = document.querySelector("body");
-  body.style.height='90vh';
-  body.style.overflow='hidden';
+  body.style.height='auto';
+  body.style.overflow='auto';
   let el = document.getElementById('mob-nav');
   el.style.width = '0';
 }

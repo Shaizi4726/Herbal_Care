@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en-us">
   <head>
+		@php
+			$Products = DB::table('products')->get();
+		@endphp
+
 		@include('frontend.layouts.head')	
   </head>
   <body>
@@ -15,9 +19,10 @@
 	<!-- End Footer -->
 
 	<!-- Scripts -->
+	<script src="https://code.jquery.com/jquery-3.6.2.min.js"></script>
+	<script src="https://unpkg.com/flickity@2.3.0/dist/flickity.pkgd.min.js"></script>
 	<script src="{{asset('frontend/js/jquery.exzoom.js')}}"></script>
 	<script src="{{asset('frontend/js/header.min.js')}}"></script>
 	<script src="{{asset('frontend/js/main.js')}}"></script>
-	<!-- End Scripts -->
   </body>
 </html>

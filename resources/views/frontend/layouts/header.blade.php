@@ -19,7 +19,7 @@
       </form>
       <button id="mob-cart-button" class="btn header-icon cart-button">
         <a href="{{route('cart')}}">
-        <i class="fa-solid fa-briefcase icon" id="cart-icon"></i>
+        <i class="fa-solid fa-cart-shopping" id="cart-icon"></i>
         <div class="cart-quantity"><span>{{Helper::cartCount()}}</span></div></a>
       </button>
     </div>      
@@ -76,7 +76,7 @@
 
       <button class="btn header-icon cart-button">
         <a href="{{route('cart')}}" class="header-icon">
-        <i class="fa-solid fa-briefcase icon" id="cart-icon"></i>
+        <i class="fa-solid fa-cart-shopping" id="cart-icon"></i>
         <div class="cart-quantity"><span style="position: relative;top: 0.14em;">{{Helper::cartCount()}}</span></div></a>
           @auth
             <div class="collapse shopping-item">
