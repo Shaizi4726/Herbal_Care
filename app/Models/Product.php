@@ -34,8 +34,8 @@ class Product extends Model
      public function productForms(){
         return $this->hasMany(ProductForm::class,'product_id','id');
      }
-    public static function getProductBySlug($slug){
-        return Product::with(['attributes','cat_info','sub_cat_info','getReview'])->where('slug',$slug)->first();
+    public static function getProductById($id){
+        return Product::with(['attributes','cat_info','sub_cat_info','getReview'])->where('id',$id)->first();
     }
     public static function countActiveProduct(){
         $data=Product::where('status','active')->count();

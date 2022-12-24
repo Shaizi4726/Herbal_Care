@@ -51,10 +51,10 @@
 										<li>
 											@foreach($menu as $cat_info)
 													@if($cat_info->child_cat->count()>0)
-														<li><a href="{{route('product-cat',$cat_info->slug)}}" style="font-size: 18px; font-weight: bold">{{$cat_info->title}}</a>
+														<li><a href="{{route('product-cat', $cat_info->slug)}}" style="font-size: 18px; font-weight: bold">{{$cat_info->title}}</a>
 															<ul>
 																@foreach($cat_info->child_cat as $sub_menu)
-																	<li><a href="{{route('product-sub-cat',[$cat_info->slug,$sub_menu->slug])}}" style="font-size: 15px;">{{$sub_menu->title}}</a></li>
+																	<li><a href="{{route('product-sub-cat',[$cat_info->slug, $sub_menu->slug])}}" style="font-size: 15px;">{{$sub_menu->title}}</a></li>
 																@endforeach
 															</ul>
 														</li>
@@ -219,8 +219,7 @@
                                                                     <!--    <h3><a title="Wishlist" href="{{route('add-to-wishlist',$product->slug)}}" class="wishlist" data-id="{{$product->id}}"><i class=" ti-heart "></i><span>Add to Wishlist</span></a></h3> -->
                                                                     </div>  
                                                                 </div>
-                                                                <div class="product-action-2 ">
-                                                                        
+                                                                <div class="product-action-2 ">                   
                                                                 <!--<a title="Add to cart" href="{{route('add-to-cart',$product->slug)}}">Add to cart</a>  -->
                                                                 </div>
                                                             </div>

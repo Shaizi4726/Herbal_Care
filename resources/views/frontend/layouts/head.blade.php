@@ -20,8 +20,14 @@
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
 
+  <!-- Flickity -->
+  <link rel="stylesheet" href="https://unpkg.com/flickity@2.3.0/dist/flickity.css">
+
+  <!-- ExZoom -->
+  <link href="{{asset('frontend/css/jquery.exzoom.css')}}" rel="stylesheet">
+
   <!-- Eshop StyleSheet -->
-  <link href="{{asset('frontend/css/main.css')}}" rel="stylesheet">
+  <link href="{{asset('frontend/css/index.min.css')}}" rel="stylesheet">
   <link href="{{asset('frontend/css/header.min.css')}}" rel="stylesheet">
   <link href="{{asset('frontend/css/footer.min.css')}}" rel="stylesheet">
 

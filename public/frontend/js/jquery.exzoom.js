@@ -1,4 +1,4 @@
-;(function ($, window) {
+(function ($, window) {
     let ele = null,
         exzoom_img_box = null,
         boxWidth = null,
@@ -26,18 +26,16 @@
         exzoom_preview_img = null,
         autoPlayInterval = null,
         startX = 0,
-        startY = 0,
         endX = 0,
-        endY = 0,
         g = {},
         defaults = {
             "navWidth": 60,
             "navHeight": 60,
             "navItemNum": 5,
-            "navItemMargin": 7,
+            "navItemMargin": 1,
             "navBorder": 1,
             "autoPlay": true,
-            "autoPlayTimeout": 2000,
+            "autoPlayTimeout": 3000,
         };
 
 
@@ -51,16 +49,11 @@
             exzoom_nav = ele.find(".exzoom_nav");
             exzoom_prev_btn = ele.find(".exzoom_prev_btn");
             exzoom_next_btn = ele.find(".exzoom_next_btn");
+            imgIndex = 0
 
             
-            boxHeight = boxWidth = ele.outerWidth(); 
+            boxHeight = boxWidth = ele.outerWidth();  
 
-            console.log("boxWidth::" + boxWidth);
-            console.log("ele.parent().width()::" + ele.parent().width());
-            console.log("ele.parent().outerWidth()::" + ele.parent().outerWidth());
-            console.log("ele.parent().innerWidth()::" + ele.parent().innerWidth());
-
-            //todo 
             g.navWidth = opts.navWidth;
             g.navHeight = opts.navHeight;
             g.navBorder = opts.navBorder;
@@ -68,40 +61,23 @@
             g.navItemNum = opts.navItemNum;
             g.autoPlay = opts.autoPlay;
             g.autoPlayTimeout = opts.autoPlayTimeout;
-            images = exzoom_img_box.find("img");
+
+            images = exzoom_img_ul.find("img");
             imgNum = images.length;
             checkLoadedAllImages(images)
         },
-        prev: function () {             
+        prev: function () {
             moveLeft()
         },
-        next: function () {           
+        next: function () {
             moveRight();
-        },
-        setImg: function () {           
-            let url = arguments[0];
-
-            getImageSize(url, function (width, height) {
-                exzoom_preview_img.attr("src", url);
-                exzoom_main_img.attr("src", url);
-
-                if (exzoom_img_ul.find("li").length === imgNum + 1) {
-                    exzoom_img_ul.find("li:last").remove();
-                }
-                exzoom_img_ul.append('<li style="width: ' + boxWidth + 'px;">' +
-                    '<img src="' + url + '"></li>');
-
-                let image_prop = copute_image_prop(url, width, height);
-                previewImg(image_prop);
-            });
-        },
+        }
     };
 
     $.fn.extend({
         "exzoom": function (method, options) {
             if (arguments.length === 0 || (typeof method === 'object' && !options)) {
                 if (this.length === 0) {
-          
                     $.error('Selector is empty when call jQuery.exzomm');
                 } else {
                     return methods.init.apply(this, arguments);
@@ -109,24 +85,24 @@
             } else if (methods[method]) {
                 return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
             } else {
-           
-                $.error('Method ' + method + 'does not exist on jQuery.exzomm');
+                
+                $.error('Method ' + method + 'does not exist on jQuery.exzoom');
             }
         }
     });
 
+    
     function init() {
         exzoom_img_box.append("<div class='exzoom_img_ul_outer'></div>");
         exzoom_nav.append("<p class='exzoom_nav_inner'></p>");
         exzoom_img_ul_outer = exzoom_img_box.find(".exzoom_img_ul_outer");
         exzoom_nav_inner = exzoom_nav.find(".exzoom_nav_inner");
 
+       
         exzoom_img_ul_outer.append(exzoom_img_ul);
 
-       
         for (let i = 0; i < imgNum; i++) {
             imgArr[i] = copute_image_prop(images.eq(i));
-            console.log(imgArr[i]);
             let li = exzoom_img_ul.find("li").eq(i);
             li.css("width", boxWidth);
             li.find("img").css({
@@ -135,7 +111,7 @@
             });
         }
 
-   
+        
         exzoom_navSpan = exzoom_nav.find("span");
         navHeightWithBorder = g.navBorder * 2 + g.navHeight;
         g.exzoom_navWidth = (navHeightWithBorder + g.navItemMargin) * g.navItemNum;
@@ -155,18 +131,19 @@
             "height": g.navHeight + "px",
         });
 
+        
         exzoom_img_ul_width = boxWidth * imgNum;
         exzoom_img_ul_max_margin = boxWidth * (imgNum - 1);
         exzoom_img_ul.css("width", exzoom_img_ul_width);
-
+    
         exzoom_img_box.append(`
-        <div class='exzoom_zoom_outer'>
-            <span class='exzoom_zoom'></span>
-        </div>
-        <p class='exzoom_preview'>
-            <img class='exzoom_preview_img' src='' />
-        </p>
-            `);
+            <div class='exzoom_zoom_outer'>
+                <span class='exzoom_zoom'></span>
+            </div>
+            <p class='exzoom_preview'>
+                <img class='exzoom_preview_img' src='' />
+            </p>
+        `);
         exzoom_zoom = exzoom_img_box.find(".exzoom_zoom");
         exzoom_main_img = exzoom_img_box.find(".exzoom_main_img");
         exzoom_zoom_outer = exzoom_img_box.find(".exzoom_zoom_outer");
@@ -184,9 +161,9 @@
         });
 
         exzoom_preview.css({
-            "width": boxHeight + "px",
-            "height": boxHeight + "px",
-            "left": boxHeight + 5 + "px",
+            "width": boxHeight * 1.5 + "px",
+            "height": boxHeight * 1.5 + "px",
+            "left": boxHeight + 10 + "px",
         });
 
         previewImg(imgArr[imgIndex]);
@@ -194,10 +171,7 @@
         bindingEvent();
     }
 
-    /**
-
-     * @param images
-     */
+    
     function checkLoadedAllImages(images) {
         let timer = setInterval(function () {
             let loaded_images_counter = 0;
@@ -214,9 +188,10 @@
         }, 100)
     }
 
+   
     function getCursorCoords(event) {
         let e = event || window.event;
-        let coords_data = e, 
+        let coords_data = e,
             x,
             y;
 
@@ -234,18 +209,16 @@
 
     function checkNewPositionLimit(new_position) {
         if (-new_position > exzoom_img_ul_max_margin) {
-           
             new_position = -exzoom_img_ul_max_margin;
             imgIndex = 0;
         } else if (new_position > 0) {
-            
             new_position = 0;
         }
         return new_position
     }
 
-    function bindingEvent() {
     
+    function bindingEvent() {
         exzoom_img_ul.on("touchstart", function (event) {
             let coords = getCursorCoords(event);
             startX = coords.x;
@@ -263,28 +236,22 @@
             endX = coords.x;
             endY = coords.y;
 
-
             new_position = exzoom_img_ul_position + endX - startX;
             new_position = checkNewPositionLimit(new_position);
             exzoom_img_ul.css("left", new_position);
 
         });
 
-
         exzoom_img_ul.on("touchend", function (event) {
-
             console.log(endX < startX);
             if (endX < startX) {
- 
                 moveRight();
             } else if (endX > startX) {
-
                 moveLeft();
             }
 
             autoPlay();
         });
-
 
         exzoom_zoom_outer.on("mousedown", function (event) {
             let coords = getCursorCoords(event);
@@ -299,30 +266,25 @@
             let offset = ele.offset();
 
             if (startX - offset.left < boxWidth / 2) {
-
                 moveLeft();
             } else if (startX - offset.left > boxWidth / 2) {
-
                 moveRight();
             }
         });
 
-
         ele.on("mouseenter", function () {
             window.clearInterval(autoPlayInterval);
         });
-       
+
         ele.on("mouseleave", function () {
             autoPlay();
         });
 
-  
         exzoom_zoom_outer.on("mouseenter", function () {
             exzoom_zoom.css("display", "block");
             exzoom_preview.css("display", "block");
         });
 
-   
         exzoom_zoom_outer.on("mousemove", function (e) {
             let width_limit = exzoom_zoom.width() / 2,
                 max_X = exzoom_zoom_outer.width() - width_limit,
@@ -352,19 +314,16 @@
             });
         });
 
-     
         exzoom_zoom_outer.on("mouseleave", function () {
             exzoom_zoom.css("display", "none");
             exzoom_preview.css("display", "none");
         });
 
-       
         exzoom_preview.on("mouseenter", function () {
             exzoom_zoom.css("display", "none");
             exzoom_preview.css("display", "none");
         });
 
-       
         exzoom_next_btn.on("click", function () {
             moveRight();
         });
@@ -378,28 +337,17 @@
         });
     }
 
-    /**
-    
-     * @param direction: 
-     */
-    function move(direction) {
-        if (typeof direction === "undefined") {
-            alert("exzoom  move  direction ");
-        }
-    
+    function move() {
         if (imgIndex > imgArr.length - 1) {
             imgIndex = 0;
         }
 
-      
         exzoom_navSpan.eq(imgIndex).addClass(navHightClass).siblings().removeClass(navHightClass);
 
-       
         let exzoom_nav_width = exzoom_nav.width();
-        let nav_item_width = g.navItemMargin + g.navWidth + g.navBorder * 2; 
+        let nav_item_width = g.navItemMargin + g.navWidth + g.navBorder * 2;
         let new_nav_offset = 0;
 
-      
         let temp = nav_item_width * (imgIndex + 1);
         if (temp > exzoom_nav_width) {
             new_nav_offset =  boxWidth - temp;
@@ -409,16 +357,12 @@
             "left": new_nav_offset
         });
 
-   
         let new_position = -boxWidth * imgIndex;
-      
         new_position = checkNewPositionLimit(new_position);
         exzoom_img_ul.stop().animate({"left": new_position}, 500);
-       
         previewImg(imgArr[imgIndex]);
     }
 
-    
     function moveRight() {
         imgIndex++;
         if (imgIndex > imgNum) {
@@ -427,7 +371,6 @@
         move("right");
     }
 
-   
     function moveLeft() {
         imgIndex--;
         if (imgIndex < 0) {
@@ -436,7 +379,6 @@
         move("left");
     }
 
-  
     function autoPlay() {
         if (g.autoPlay) {
             autoPlayInterval = window.setInterval(function () {
@@ -449,7 +391,6 @@
         }
     }
 
-   
     function previewImg(image_prop) {
         if (image_prop === undefined) {
             return
@@ -478,11 +419,6 @@
         });
     }
 
-    /**
-    
-     * @param url
-     * @param callback
-     */
     function getImageSize(url, callback) {
         let img = new Image();
         img.src = url;
@@ -491,7 +427,6 @@
             if (img.complete) {
                 callback(img.width, img.height);
             } else {
-    
                 img.onload = function () {
                     callback(img.width, img.height);
                 }
@@ -504,13 +439,6 @@
         }
     }
 
-    /**
-
-     * @param image : jquery 
-     * @param width : image 
-     * @param height : image 
-     * @returns {Array}
-     */
     function copute_image_prop(image, width, height) {
         let src;
         let res = [];
@@ -530,22 +458,22 @@
         let img_scale = res[1] / res[2];
 
         if (img_scale === 1) {
-            res[3] = boxHeight;//width
-            res[4] = boxHeight;//height
-            res[5] = 0;//top
-            res[6] = 0;//left
+            res[3] = boxHeight;
+            res[4] = boxHeight;
+            res[5] = 0;
+            res[6] = 0;
             res[7] = boxHeight / 2;
-            res[8] = boxHeight * 2;//width
-            res[9] = boxHeight * 2;//height
+            res[8] = boxHeight * 2 * 1.5;
+            res[9] = boxHeight * 2 * 1.5;
             exzoom_nav_inner.append(`<span><img src="${src}" width="${g.navWidth }" height="${g.navHeight }"/></span>`);
         } else if (img_scale > 1) {
-            res[3] = boxHeight;//width
+            res[3] = boxHeight;
             res[4] = boxHeight / img_scale;
             res[5] = (boxHeight - res[4]) / 2;
-            res[6] = 0;//left
+            res[6] = 0;
             res[7] = res[4] / 2;
-            res[8] = boxHeight * 2 * img_scale;//width
-            res[9] = boxHeight * 2;//height
+            res[8] = boxHeight * 2 * img_scale;
+            res[9] = boxHeight * 2;
             let top = (g.navHeight - (g.navWidth / img_scale)) / 2;
             exzoom_nav_inner.append(`<span><img src="${src}" width="${g.navWidth }" style='top:${top}px;' /></span>`);
         } else if (img_scale < 1) {
@@ -562,6 +490,4 @@
 
         return res;
     }
-
-    
 })(jQuery, window);

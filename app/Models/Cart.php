@@ -8,7 +8,7 @@ use Spatie\Permission\Models\Permission;
 
 class Cart extends Model
 {
-    protected $fillable=['user_id','product_id','order_id','form','quantity','amount','t_amount','tax_amount','price','status'];
+    protected $fillable=['user_id','product_id','order_id','product_atrr_id','form','quantity','amount','t_amount','tax_amount','price','status'];
     
     // public function product(){
     //     return $this->hasOne('App\Models\Product','id','product_id');
@@ -20,9 +20,9 @@ class Cart extends Model
     {
         return $this->belongsTo(Product::class, 'product_id');
     }
-    public function ProductsAttribute()
+    public function productsAttribute()
     {
-        return $this->belongsTo(Product::class, 'product_atrr_id');
+        return $this->belongsTo(ProductsAttribute::class, 'product_atrr_id');
     }
     public function order(){
         return $this->belongsTo(Order::class,'order_id');
