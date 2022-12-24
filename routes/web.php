@@ -43,8 +43,13 @@ Route::get('/product-sub-cat/{slug}/{sub_slug}','FrontendController@productSubCa
 Route::get('/product-brand/{slug}','FrontendController@productBrand')->name('product-brand');
 
 // Cart section
+<<<<<<< HEAD
 Route::get('/add-to-cart/{id}','CartController@addToCart')->name('add-to-cart')->middleware('user');
 Route::match(['get','post'],'/add-to-cart','CartController@singleAddToCart')->name('single-add-to-cart')->middleware('user');
+=======
+//Route::get('/add-to-cart/{id}','CartController@addToCart')->name('add-to-cart')->middleware('user');
+Route::match(['get','post'],'/add-to-cart/{id}','CartController@singleAddToCart')->name('single-add-to-cart')->middleware('user');
+>>>>>>> f4fe67e758ea4de0998c63203addc2fc3ed4023c
 Route::get('cart-delete/{id}','CartController@cartDelete')->name('cart-delete');
 Route::post('cart-update','CartController@cartUpdate')->name('cart.update');
 

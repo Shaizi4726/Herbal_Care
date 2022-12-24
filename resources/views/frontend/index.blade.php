@@ -2,11 +2,19 @@
 @section('title','HerbalCare || Home')
 
 @section('main-content')
+<<<<<<< HEAD
   @php
     $Forms = DB::table('product_forms')->pluck('title');
     $TotalForms = count($Forms);
   @endphp
   <!-- <video src="{{asset('images/bannert.mp4')}}" autoplay muted loop></video>  -->
+=======
+@php
+  $Forms = DB::table('product_forms')->pluck('title');
+  $TotalForms = count($Forms);
+@endphp
+<!-- <video src="{{asset('images/bannert.mp4')}}" autoplay muted loop></video>  -->
+>>>>>>> f4fe67e758ea4de0998c63203addc2fc3ed4023c
   @if(count($banners)>0)
     <section id="slider" class="slider">         
       <ul id="carousel-wrap" class="carousel-wrap">
@@ -48,8 +56,13 @@
             <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false, "initialIndex": 2 }'>
               @foreach($CatProducts as $product)
                 @php
+<<<<<<< HEAD
                   $minprice = DB::table('products_attributes')->where('product_id', $product->id)->min('price');
                   $maxprice = DB::table('products_attributes')->where('product_id', $product->id)->max('price');
+=======
+                  $minprice = number_format(DB::table('products_attributes')->where('product_id', $product->id)->min('price'), 2);
+                  $maxprice = number_format(DB::table('products_attributes')->where('product_id', $product->id)->max('price'),2);
+>>>>>>> f4fe67e758ea4de0998c63203addc2fc3ed4023c
                   $Images = DB::table('images')->where('product_id', $product->id)->pluck('image');
                   
                   $Sizes = array();
@@ -61,6 +74,7 @@
                 @endphp
                 <div class="product-card carousel-cell">
                   <img class="product-image" src="{{$product->photo}}" alt="product image">
+<<<<<<< HEAD
                   
                   <div class="overlay">
                     <button id="{{$product->id}}" class="btn btn-quick-view" 
@@ -81,6 +95,21 @@
               @endforeach
               <div class="product-card carousel-cell link-card">
                 <a href="{{route('product-cat', $cat->slug)}}" class="view-link">View All</a>
+=======
+
+                  <div class="overlay"><button id="{{$product->id}}" class="btn btn-quick-view" 
+                  title="Quick View" onclick="showModal(id, `{{$product->photo}}`, {{$Images}}, 
+                  `{{$product->title}}`, {{$Forms}}, {{$Sizes}}, {{$minprice}}, {{$maxprice}})"> 
+                    <i class="fa-regular fa-eye"></i><p>Quick View</p></button>
+                  </div>
+
+                  <h3 class="product-title">{{$product->title}}</h3>
+                  <p class="price">AED <span class="value">{{$minprice}} - {{$maxprice}}</span></p>
+                </div>
+              @endforeach
+              <div class="product-card carousel-cell link-card">
+                <a href="#" class="view-link">View All</a>
+>>>>>>> f4fe67e758ea4de0998c63203addc2fc3ed4023c
               </div>
             </div>
           </div>
