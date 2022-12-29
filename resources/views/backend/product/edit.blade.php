@@ -83,7 +83,7 @@
 
         <div class="form-group">
         <label for="inputTitle" class="col-form-label">benefit</label>
-          <textarea class="form-control" id="benefit" name="benefit" value="{{$product->benafit}}">{{$product->benafit}}</textarea>
+          <textarea class="form-control" id="benefit" name="benefit" value="{{$product->benefit}}">{{$product->benefit}}</textarea>
           @error('benefit')
           <span class="text-danger">{{$message}}</span>
           @enderror
@@ -248,7 +248,7 @@
 
     $(document).ready(function() {
       $('#benefit').summernote({
-        placeholder: "Write benafit.....",
+        placeholder: "Write benefit.....",
           tabsize: 2,
           height: 150
       });

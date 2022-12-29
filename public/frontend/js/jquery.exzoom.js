@@ -44,11 +44,11 @@
             let opts = $.extend({}, defaults, options);
 
             ele = this;
-            exzoom_img_box = ele.find(".exzoom_img_box");
-            exzoom_img_ul = ele.find(".exzoom_img_ul");
-            exzoom_nav = ele.find(".exzoom_nav");
-            exzoom_prev_btn = ele.find(".exzoom_prev_btn");
-            exzoom_next_btn = ele.find(".exzoom_next_btn");
+            exzoom_img_box = ele.find(".img-box");
+            exzoom_img_ul = ele.find(".img-ul");
+            exzoom_nav = ele.find(".zoom-nav");
+            exzoom_prev_btn = ele.find(".zoom-prev-btn");
+            exzoom_next_btn = ele.find(".zoom-next-btn");
             imgIndex = 0
 
             

@@ -32,59 +32,11 @@
           <span class="text-danger">{{$message}}</span>
           @enderror
         </div>
-        <!-- <div class="form-group">
-          <label for="other1" class="col-form-label">Other Name 1</label>
-          <input id="inputTitle" type="text" name="other1" placeholder="Enter Other Name "  value="{{old('other1')}}" class="form-control">
-          @error('benefit')
-          <span class="text-danger">{{$message}}</span>
-          @enderror
-        </div>
-        <div class="form-group">
-          <label for="other2" class="col-form-label">Other Name 2</label>
-          <input id="inputTitle" type="text" name="other2" placeholder="Enter Other Name"  value="{{old('other2')}}" class="form-control">
-          @error('benefit')
-          <span class="text-danger">{{$message}}</span>
-          @enderror
-        </div>
-        <div class="form-group">
-          <label for="other3" class="col-form-label">Other Name 3</label>
-          <input id="inputTitle" type="text" name="other3" placeholder="Enter Other Name"  value="{{old('other3')}}" class="form-control">
-          @error('benefit')
-          <span class="text-danger">{{$message}}</span>
-          @enderror
-        </div>
-        <div class="form-group">
-          <label for="other4" class="col-form-label">Other Name 4</label>
-          <input id="inputTitle" type="text" name="other4" placeholder="Enter Other Name"  value="{{old('other4')}}" class="form-control">
-          @error('benefit')
-          <span class="text-danger">{{$message}}</span>
-          @enderror
-        </div>
-        <div class="form-group">
-          <label for="other5" class="col-form-label">Other Name 5</label>
-          <input id="inputTitle" type="text" name="other5" placeholder="Enter Other Name"  value="{{old('other5')}}" class="form-control">
-          @error('benefit')
-          <span class="text-danger">{{$message}}</span>
-          @enderror
-        </div>
-        <div class="form-group">
-          <label for="other6" class="col-form-label">Other Name 6</label>
-          <input id="inputTitle" type="text" name="other6" placeholder="Enter Other Name"  value="{{old('other6')}}" class="form-control">
-          @error('benefit')
-          <span class="text-danger">{{$message}}</span>
-          @enderror
-        </div>
-        <div class="form-group">
-          <label for="other7" class="col-form-label">Other Name 7</label>
-          <input id="inputTitle" type="text" name="othrt7" placeholder="Enter Other Name"  value="{{old('other7')}}" class="form-control">
-          @error('benefit')
-          <span class="text-danger">{{$message}}</span>
-          @enderror
-        </div> -->
+        
 
         <div class="form-group">
-          <label for="benafit" class="col-form-label">benefit</label>
-          <textarea class="form-control" id="benafit" name="benafit">{{old('benefit')}}</textarea>
+          <label for="benefit" class="col-form-label">benefit</label>
+          <textarea class="form-control" id="benefit" name="benefit">{{old('benefit')}}</textarea>
           @error('benefit')
           <span class="text-danger">{{$message}}</span>
           @enderror
@@ -140,17 +92,7 @@
           <span class="text-danger">{{$message}}</span>
           @enderror
         </div>
-<!--        <div class="form-group">
-          <label for="size">Size</label>
-          <select name="size[]" class="form-control selectpicker"  multiple data-live-search="true">
-              <option value="">--Select any size--</option>
-              <option value="S">gram (g)</option>
-              <option value="M">Kg (K)</option>
-              <option value="L">Large (L)</option>
-              <option value="XL">Extra Large (XL)</option>
-          </select>
-        </div>
--->
+
         <div class="form-group">
           <label for="brand_id">Brand</label>
           {{-- {{$brands}} --}}
@@ -180,30 +122,7 @@
           <span class="text-danger">{{$message}}</span>
           @enderror
         </div>
-        <!-- <div class="input-group control-group increment" >
-        <span class="input-group-btn">
-            <a id="lfm" data-input="thumbnail" data-preview="holder" class="btn btn-primary">
-            <i class="fa fa-picture-o"></i> Choose
-            </a>
-        </span>
-          <input id="thumbnail" class="form-control" type="text" name="photo" value="{{old('photo')}}">
-          <div class="input-group-btn"> 
-            <button class="btn btn-success" type="button"><i class="glyphicon glyphicon-plus"></i>Add</button>
-          </div>
-        </div>
-        <div class="clone hide">
-          <div class="control-group input-group" style="margin-top:10px">
-            <span class="input-group-btn">
-              <a id="lfm" data-input="thumbnail1" data-preview="holder" class="btn btn-primary">
-                <i class="fa fa-picture-o"></i> Choose
-              </a>
-            </span>
-            <input id="thumbnail1" class="form-control" type="text" name="photo" value="{{old('photo')}}">
-            <div class="input-group-btn"> 
-              <button class="btn btn-danger" type="button"><i class="glyphicon glyphicon-remove"></i> Remove</button>
-            </div>                  
-          </div>
-        </div> -->
+       
         <div class="form-group">
           <label for="inputPhoto" class="col-form-label">Photo <span class="text-danger">*</span></label>
           <div class="input-group">
@@ -278,7 +197,7 @@
     });
 
     $(document).ready(function() {
-      $('#benafit').summernote({
+      $('#benefit').summernote({
         placeholder: "Write benafit.....",
           tabsize: 2,
           height: 150

@@ -1,10 +1,16 @@
-/* Mobile Header */
+/*==================== Mobile Header ====================*/
+.sticky {
+  position: fixed;
+  top: 0;
+  z-index: 10;
+  width: 100%;
+}
 
 #desktop-header {
   display: none;
 }
 
-/* Topbar */
+/*========== Topbar ==========*/
 .topbar {
   color: #d7c89d;
   background-color: #443a2e;
@@ -59,7 +65,7 @@
   top: 0.25em;
 }
 
-/* Search Bar */
+/*========== Search Bar ==========*/
 .search-bar {
   width: 100%;
   display: flex;
@@ -103,7 +109,7 @@
   font-size: 20px;
 }
 
-/* Mobile Menu Overlay */
+/*========== Mobile Menu Overlay ==========*/
 #mob-nav {
   background-color: #faf9f6;
   overflow: auto;
@@ -138,12 +144,6 @@
   width: 75%;
 }
 
-.list-main a {
-  color: #443a2e;
-  padding: 20px;
-  width: 80%;
-}
-
 .menu li {
   margin: 30px;
   text-align: center;
@@ -158,6 +158,12 @@
   font-weight: bold;
 }
 
+.list-main a {
+  color: #443a2e;
+  padding: 20px;
+  width: 80%;
+}
+
 .list-main li {
   text-align: left;
   padding: 10px;
@@ -168,7 +174,7 @@
   font-weight: bold;
 }
 
-/* Category Dropdown */
+/*========== Category Dropdown ==========*/
 .cat-menu {
   padding: 0;
   width: 100%;
@@ -180,11 +186,13 @@
   color: #443a2e;
 }
 
+
 .mob-sticky {
   font-size: 20px;
   bottom: -0.5em;
 }
 
+/*========== Sticky Mobile Menu ==========*/
 .mob-sticky .cart-quantity {
   height: 12px;
   width: 12px;
@@ -200,6 +208,7 @@
 }
 
 @media only screen and (min-width: 768px) {
+  /*==================== Desktop Header ====================*/
   #mob-header {
     display: none;
   }
@@ -213,6 +222,7 @@
     font-size: 0.6em;
   }
 
+  /*========== Topbar ==========*/
   .topbar {
     background-color: #d7c89d;
   }
@@ -234,17 +244,17 @@
     height: 70px;
   }
 
-  .header-title {
-    font-size: 40px;
-    letter-spacing: 0.1em;
-  }
-
   .header-title-div {
     position: relative;
     right: 2em;
   }
 
-  /* User Navbar */
+  .header-title {
+    font-size: 40px;
+    letter-spacing: 0.1em;
+  }
+
+  /*========== User Navbar ==========*/
   .list-main {
     display: flex;
     position: absolute;
@@ -270,6 +280,7 @@
     border-right: 2px solid #ffd700;
   }
 
+  /*========== Menubar ==========*/
   .menu-bar {
     background-color: #443a2e;
     display: flex;
@@ -277,6 +288,13 @@
     justify-content: space-around;
     align-items: center;
     height: 40px;
+  }
+
+  .header-icon {
+    font-size: 25px;
+    height: auto;
+    position: relative;
+    top: 0.1em;
   }
 
   .menu {
@@ -290,17 +308,18 @@
     padding: 10px;
   }
 
+  .menu li {
+    margin: 10px 0;
+    text-align: center;
+  }
+
   .desktop-nav {
     font-family: Vollkorn, 'Times New Roman', Times, serif;
     font-size: 16px;
     font-weight: normal;
   }
 
-  .menu li {
-    margin: 10px 0;
-    text-align: center;
-  }
-
+  /*===== Category Menu =====*/
   .cat-menu, .shopping-item {
     background-color: #d7c89d;
     width: 240px;
@@ -346,6 +365,7 @@
     display: block;
   }
 
+  /*===== Searchbar =====*/
   .search-bar {
     position: relative;
     display: block;
@@ -363,6 +383,12 @@
     height: 28px;
   }
 
+  .search-button {
+    height: 28px;
+    font-size: 15px;
+  }
+
+  /*===== Cart Menu =====*/
   .cart-button {
     display: flex;
     justify-content: flex-end;
@@ -371,18 +397,6 @@
 
   .cart-button:hover .shopping-item {
     display: block;
-  }
-
-  .search-button {
-    height: 28px;
-    font-size: 15px;
-  }
-
-  .header-icon {
-    font-size: 25px;
-    height: auto;
-    position: relative;
-    top: 0.1em;
   }
 
   .cart-quantity {
@@ -464,6 +478,7 @@
     text-align: center;
   }
 
+  /* Animated Checkout Button */
   div.anim-checkout-btn {
     position: relative;
     color: #443a2e;

@@ -26,10 +26,8 @@
   <!-- ExZoom -->
   <link href="{{asset('frontend/css/jquery.exzoom.css')}}" rel="stylesheet">
 
-  <!-- Eshop StyleSheet -->
-  <link href="{{asset('frontend/css/index.min.css')}}" rel="stylesheet">
-  <link href="{{asset('frontend/css/header.min.css')}}" rel="stylesheet">
-  <link href="{{asset('frontend/css/footer.min.css')}}" rel="stylesheet">
-
-  <!-- Xzoom-->
-  <link href="{{asset('frontend/css/jquery.exzoom.css')}}" rel="stylesheet" type="text/css">
+  <!-- HerbalCare StyleSheet -->
+  <link href="{{asset('frontend/css/main.css')}}" rel="stylesheet">
+  @stack('styles')
+  <link href="{{asset('frontend/css/header.css')}}" rel="stylesheet">
+  <link href="{{asset('frontend/css/footer.css')}}" rel="stylesheet">

@@ -52,8 +52,8 @@ class FrontendController extends Controller
         return view('frontend.pages.contact');
     }
 
-    public function productDetail($id){
-        $product_detail= Product::getProductById($id);
+    public function productDetail($slug){
+        $product_detail= Product::getProductBySlug($slug);
         
         return view('frontend.pages.product_detail')->with('product_detail',$product_detail);
     }

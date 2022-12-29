@@ -1,0 +1,68 @@
+@media screen and (min-width: 768px) {
+  .modal-container {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    visibility: collapse;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 20;
+    overflow: hidden;
+    transform-origin: center;
+    transition: all 800ms ease-in-out;
+  }
+
+  .modal {
+    position: relative;
+    top: 2rem;
+    margin: auto;
+    background-color: #faf9f6;
+    width: 95vw;
+    height: 92vh;
+    overflow-x: hidden;
+    box-shadow: 0 5px 10px 2px rgba(0, 0, 0, 0.5);
+  }
+
+  .modal .close {
+      position: absolute;
+      right: 1rem;
+      top: 0;
+      width: 30px;
+  }
+
+  a.modal-view-link::before, a.modal-view-link::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    transition: all 0.3s ease-in-out;
+  }
+
+  a.modal-view-link::before{
+    top: -2.5%;
+    left: -1%;
+    border-top: 2px solid #443a2e;
+    border-left: 2px solid #443a2e;	
+  }
+
+  a.modal-view-link::after{
+    bottom: -2.5%;
+    right: -1%;
+    border-bottom: 2px solid #443a2e;
+    border-right: 2px solid #443a2e;
+  }
+
+  a.modal-view-link:hover::before, a.modal-view-link:hover::after{
+    width: 100%;
+    height: 100%;
+    transition: all 0.3s ease;
+  }
+
+  #product-details-icon {
+    font-size: 24px;
+    color: #443a2e;
+    padding-right: 0.5em;
+    text-align: center;
+  }
+}

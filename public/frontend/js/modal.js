@@ -1,0 +1,189 @@
+/*==================== Product Modal Window ====================*/
+var el = document.getElementById('modal-container');
+var modal;
+var form;
+
+function showModal(...args) {
+  form = args[4][0];
+  document.getElementById(args[0]).disabled = true;
+  args[6] = args[6].toFixed(2);
+  args[7] = args[7].toFixed(2);
+
+  /*========== Modal Creation ==========*/
+  var createModal = () => {
+    modal = document.createElement('div');
+    modal.setAttribute('class', 'modal');
+    modal.setAttribute('id', 'modal' + args[0]);
+    modal.innerHTML = `
+      <button type="button" class="btn close" id="close-btn" onclick="closeModal(${args[0]})"><i class="fa-solid fa-xmark"></i></button>
+      <div class="modal-content">
+        <div class="shazoom" id="shazoom">
+          <div class="img-box">
+            <ul class="img-ul">
+              <li><img src="${args[1]}" alt="product-photo"></li>
+              ${
+                args[2].map(item =>
+                `<li><img src="images${item}" alt=""></li>`
+              ).join('')}
+            </ul>
+          </div>
+          <div class="zoom-nav"></div>
+          <!-- Nav Buttons -->
+          <p class="zoom-btn">
+            <a href="javascript:void(0);" class="zoom-prev-btn"> < </a>
+            <a href="javascript:void(0);" class="zoom-next-btn"> > </a>
+          </p>
+        </div>
+        <div class="modal-details-container">
+          <div class="product-modal-detail">
+            <h1 class="title">${args[3]}</h1>
+
+            <form id="modal-form">
+              <input type="hidden" name="id" value="${args[0]}">
+              <div class="forms modal-radio" id="forms">
+              </div>
+              <div class="prices" id="price">
+                <h3>AED ${args[6]} - AED ${args[7]}</h3>
+              </div>
+              <div class="sizes modal-radio" id="sizes"></div>
+              <input type="hidden" name="price-input" id="price-input" value="">
+              <div class="qty-manage" id="qty-manage">
+                <input type="button" value="-" class="qty-minus minus qty-control" field="quantity" disabled>
+                <input type="number" name="quantity" value="1" min="1" class="qty">
+                <input type="button" value="+" class="qty-plus plus qty-control" field="quantity">
+              </div>
+              <input type="button" id="modal-add-list" class="btn btn-submit" value="Add to List" onclick="shopList()">
+            </form>
+
+            <form "  action="/add-to-cart" data="${args[0]}" id="modal-cart-form">
+              <button id="modal-cart-button" class="modal-cart-button">
+                <span class="add-to-cart">Add to cart</span>
+                <span class="added">Added</span>
+                <i class="fas fa-shopping-cart"></i>
+                <i class="fas fa-box"></i>
+              </button>
+            </form>
+            
+            <a href="/product-detail/${args[8]}" class="modal-view-link btn" id="modal-view-link"><i class="fa-solid fa-circle-info" id="product-details-icon"></i>VIEW PRODUCT DETAILS</a>
+          </div>
+
+          <div class="modal-shopping-list" id="modal-shopping-list">
+              <table id="shopping-list-table">
+                <caption>Shopping List</caption>
+                <thead>
+                    <tr>
+                      <th id="list-frm">Form</th>
+                      <th id="list-sze">Size</th>
+                      <th id="list-qty">Qty</th>
+                      <th id="list-prc">Price</th>
+                      <th id="list-amt">Amount</th>
+                    </tr>
+                </thead>
+                <tbody id="list-body">
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <th colspan="3">Total Amount</th>
+                    <th colspan="2" id="list-total"></th>
+                  </tr>
+                </tfoot>
+              </table>
+          </div>
+        </div>
+      </div>
+    `;
+    el.appendChild(modal);
+  };
+  createModal();
+
+  body.style.height = "90vh";
+  body.style.overflow = "hidden";
+  el.style.visibility = "visible";
+  el.style.opacity = "1";
+  el.style.transform = "scale(1)";
+  $('#list-form').html(form);
+
+  shazoom();
+
+  /* Hide exzoom navbar and nav buttons when only 1 image */
+  if (args[3].length == 0) {
+    $(".exzoom_btn").hide();
+    $(".exzoom_nav").hide();
+  }
+
+  createForms(args[4]);
+  createSizes(form, args[5]);
+
+  /* Actions when size is not checked */
+  if($("[name|='product-size']:checked").val() == undefined) {
+    $(".plus").prop('disabled', true);
+    $('#modal-add-list').hide();
+    $("input.qty").prop('disabled', true);
+  }
+
+  Price(args[0]);
+
+  $(function() {
+    /* Actions when form is changed */
+    $("[name|='product-form']").change(() => {
+      var form = $("[name|='product-form']:checked").val();
+      createSizes(form, args[5]);
+      if($("[name|='product-size']:checked").val() == undefined) {
+        $("#price").html(`<h3>AED ${args[6]} - AED ${args[7]}</h3>`);
+        $(".plus").prop('disabled', true);
+        $('#modal-add-list').hide();
+        $("input.qty").val('1');
+        $("input.qty").prop('disabled', true)
+        $('.minus').prop('disabled', true);
+      }
+      Price(args[0]);
+    })
+
+    $("#modal-cart-button:eq(0)").hide();
+
+    /* Enable minus button when value of input quantity is greater than 1 and vice versa */
+    $('input.qty').change(() => {
+      if ($('input.qty').val() > 1)
+        $('.minus').prop('disabled', false);
+      else
+        $('.minus').prop('disabled', true);
+    })
+  })
+
+  /* Plus button function */
+  $('.plus').click(function(e) {
+    let $input = $('.plus').prev('input.qty');
+    let val = parseInt($input.val());
+    $input.val( val+1 ).change();
+  });
+  
+  /* Minus button function */
+  $('.minus').click(function(e) {
+    let $input = $('.minus').next('input.qty');
+    var val = parseInt($input.val());
+    if (val > 1) {
+      $input.val( val-1 ).change();
+    }
+  });
+
+  /* Function when modal shopping list table is submitted */
+  $("#modal-cart-form").submit(function(e) {
+    e.preventDefault();
+  
+    var modalForm = $("#modal-cart-form");
+    var actionUrl = modalForm.attr('action');
+    let id = modalForm.attr('data');
+    
+    cartAdd(actionUrl, id); 
+  });
+}
+
+/*==================== Remove modal from DOM ====================*/
+function closeModal(a) {
+  document.getElementById(a).disabled = false;
+  body.style.height = "auto";
+  body.style.overflow = "auto";
+  el.style.transform = "scale(0)";
+  el.style.opacity = "0";
+  modal.remove();
+}

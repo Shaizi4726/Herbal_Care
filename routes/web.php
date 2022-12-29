@@ -35,7 +35,7 @@ Route::get('/home', 'FrontendController@index');
 Route::get('/about-us','FrontendController@aboutUs')->name('about-us');
 Route::get('/contact','FrontendController@contact')->name('contact');
 Route::post('/contact/message','MessageController@store')->name('contact.store');
-Route::get('product-detail/{id}','FrontendController@productDetail')->name('product-detail');
+Route::get('product-detail/{slug}','FrontendController@productDetail')->name('product-detail');
 Route::match(['get','post'],'/product/search','FrontendController@productSearch')->name('product.search');
 Route::match(['get','post'],'product-sort/','FrontendController@productSort')->name('product-sort');
 Route::get('/product-cat/{slug}','FrontendController@productCat')->name('product-cat');
@@ -43,13 +43,8 @@ Route::get('/product-sub-cat/{slug}/{sub_slug}','FrontendController@productSubCa
 Route::get('/product-brand/{slug}','FrontendController@productBrand')->name('product-brand');
 
 // Cart section
-<<<<<<< HEAD
 Route::get('/add-to-cart/{id}','CartController@addToCart')->name('add-to-cart')->middleware('user');
 Route::match(['get','post'],'/add-to-cart','CartController@singleAddToCart')->name('single-add-to-cart')->middleware('user');
-=======
-//Route::get('/add-to-cart/{id}','CartController@addToCart')->name('add-to-cart')->middleware('user');
-Route::match(['get','post'],'/add-to-cart/{id}','CartController@singleAddToCart')->name('single-add-to-cart')->middleware('user');
->>>>>>> f4fe67e758ea4de0998c63203addc2fc3ed4023c
 Route::get('cart-delete/{id}','CartController@cartDelete')->name('cart-delete');
 Route::post('cart-update','CartController@cartUpdate')->name('cart.update');
 

@@ -19,7 +19,6 @@ class CartController extends Controller
         
     }
 
-<<<<<<< HEAD
     public function addToCart(Request $request){
         if (empty($request->id)) {
             request()->session()->flash('error','Invalid Products');
@@ -32,30 +31,11 @@ class CartController extends Controller
             'price'     =>  'required',
             'size'      =>  'required',
         ]);
-=======
-//     public function addToCart(Request $request){
-
-//         if (empty($request->id)) {
-//             request()->session()->flash('error','Invalid Products');
-//             return back();
-//         }        
-//         $product = Product::with('attributes')->where('id', $request->id)->first();
-//         $request->validate([
-//             'id'      =>  'required',
-//             'quant'     =>  'required',
-//             'price'     =>  'required',
-//             'size'      =>  'required',
-//         ]);
->>>>>>> f4fe67e758ea4de0998c63203addc2fc3ed4023c
        
 //         // dd($request->quant[1]);
 
 
-<<<<<<< HEAD
         $product = Product::with('attributes')->where('id', $request->id)->first();
-=======
-//         $product = Product::with('attributes')->where('slug', $request->slug)->first();
->>>>>>> f4fe67e758ea4de0998c63203addc2fc3ed4023c
        
 //         $data = $request->all();
 //         $proArr = explode("-",$data['price']);
@@ -67,7 +47,6 @@ class CartController extends Controller
 //             return back();
 //         }
        
-<<<<<<< HEAD
         $already_cart = Cart::where('user_id', auth()->user()->id)->where('order_id',null)->where('product_id', $product->id)
         ->where('product_atrr_id', $proAttr->id)->first();
         // return $already_cart;
@@ -81,25 +60,9 @@ class CartController extends Controller
             // return $already_cart->quantity;
             if ($already_cart->product->stock < $already_cart->quantity || $already_cart->product->stock <= 0) return back()->with('error','Stock not sufficient!.');
             $already_cart->save();
-=======
-//         $already_cart = Cart::where('user_id', auth()->user()->id)->where('order_id',null)->where('product_id', $product->id)
-//         ->where('product_atrr_id', $proAttr->id)->first();
-//         // return $already_cart;
-//         if($already_cart && $proAttr->sku == $proAttr->sku) {
-//             // dd($already_cart);
-//             $already_cart->quantity = $already_cart->quantity + 1;
-//             $already_cart->amount1->$proAttr->price;
-//             $already_cart->amount = $already_cart->amount1 + $already_cart->amount1;
-//             $already_cart->tax_amount = ($already_cart->amount)/1.05;
-//             $already_cart->t_amount = $already_cart->amount-$already_cart->tax_amount;
-//             // return $already_cart->quantity;
-//             if ($already_cart->product->stock < $already_cart->quantity || $already_cart->product->stock <= 0) return back()->with('error','Stock not sufficient!.');
-//             $already_cart->save();
->>>>>>> f4fe67e758ea4de0998c63203addc2fc3ed4023c
             
 //         }else{
             
-<<<<<<< HEAD
             $cart = new Cart;
             $cart->user_id = auth()->user()->id;
             $cart->product_id = $product->id;
@@ -123,54 +86,12 @@ class CartController extends Controller
         $request->validate([
             'id' => 'required',
             'cart' => 'required',
-=======
-//             $cart = new Cart;
-//             $cart->user_id = auth()->user()->id;
-//             $cart->product_id = $product->id;
-//             $cart->product_atrr_id = $proAttr->id;
-//             $cart->form = $proAttr->form;
-//             $cart->price = ($proAttr->price-($proAttr->price*$proAttr->discount)/100);
-//             $cart->size =$proAttr->size;
-//             $cart->quantity = 1;           
-//             $cart->amount=$cart->price*$cart->quantity;
-//             $cart->tax_amount=($cart->amount)/1.05;
-//             $cart->t_amount=$cart->amount-$cart->tax_amount;
-//             if ($cart->product->stock < $cart->quantity || $cart->product->stock <= 0) return back()->with('error','Stock not sufficient!.');
-//             $cart->save();
-//             $wishlist=Wishlist::where('user_id',auth()->user()->id)->where('cart_id',null)->update(['cart_id'=>$cart->id]);
-//         }
-//         request()->session()->flash('success','Product successfully added to cart');
-//         return back();       
-//     }  
-
-    public function singleAddToCart(Request $request){
-        dd($request->all());
-
-        $request->validate([
-            'id'      =>  'required',
-            'quant'      =>  'required',
-            'price'      =>  'required',
-            'size'      =>  'required',
-          
->>>>>>> f4fe67e758ea4de0998c63203addc2fc3ed4023c
         ]);
            
         $product= Product::with('attributes')->where('id', $request->id)->first();
         
-<<<<<<< HEAD
         $data = $request->cart;     
         $items = count($data['size']);
-=======
-        $product = Product::with('attributes')->where('id', $request->id)->first();
-     
-//        $productsAttribute = ProductsAttribute::where('sku', $request->sku)->first();
-    //   dd($product);
-        $data = $request->all();     
-        $proArr = explode("-",$data['price']);
-        $proAttr = ProductsAttribute::where(['price' => $proArr[0]])->first();        
-      // dd($data);
-    //    echo "<pre>"; print_r($proAttr);die;
->>>>>>> f4fe67e758ea4de0998c63203addc2fc3ed4023c
 
         for ($i=0; $i<$items; $i++) {
             $proAttr = ProductsAttribute::where(['price' => $data['price'][$i], 'product_id' => $product->id])->first();        
@@ -207,51 +128,7 @@ class CartController extends Controller
                 $cart->save();
             }
         }
-<<<<<<< HEAD
         return ('Added to cart successfully'); 
-=======
-        if ( ($request->quant[1] < 1) || empty($product) ) {
-            request()->session()->flash('error','Invalid Products');
-            return back();
-        }    
-     
-        $already_cart = Cart::where('user_id', auth()->user()->id)->where('order_id',null)->where('product_id', $product->id)
-        ->where('product_atrr_id', $proAttr->id)->first();
-        //dd($already_cart);
-        
-        if($already_cart && $proAttr->sku == $proAttr->sku) {
-            $already_cart->quantity = $already_cart->quantity + $request->quant[1];
-            // $already_cart->price = ($product->price * $request->quant[1]) + $already_cart->price ;
-            $already_cart->amount = ($proAttr->price * $request->quant[1])+ $proAttr->price;
-            $already_cart->tax_amount = ($already_cart->amount)/1.05;
-            $already_cart->t_amount = $already_cart->amount-$already_cart->tax_amount;            
-            if ($already_cart->product->stock < $already_cart->quantity || $already_cart->product->stock <= 0) return back()->with('error','Stock not sufficient!.');
-           // dd($proAttr);
-            $already_cart->save();
-            
-        }else{
-            
-            $cart = new Cart;
-            $cart->user_id = auth()->user()->id;
-            $cart->product_id = $product->id;
-            $cart->product_atrr_id = $proAttr->id;
-            $cart->form = $proAttr->form;
-            $cart->price = ($proAttr->price-($proAttr->price*$proAttr->discount)/100);
-            $cart->size = $proAttr->size;
-            $cart->quantity = $request->quant[1];
-            $cart->amount=($proAttr->price * $request->quant[1]);
-            $cart->tax_amount=($cart->amount)/1.05;
-            $cart->t_amount=$cart->amount-$cart->tax_amount;
-            if ($cart->product->stock < $cart->quantity || $cart->product->stock <= 0) return back()->with('error','Stock not sufficient!.');
-            // return $cart;
-            //dd($proAttr);
-            $cart->save();
-        
-        }
-        
-        request()->session()->flash('success','Product successfully added to cart.');
-        return back();       
->>>>>>> f4fe67e758ea4de0998c63203addc2fc3ed4023c
     } 
     
     public function cartDelete(Request $request){

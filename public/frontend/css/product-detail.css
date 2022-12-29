@@ -1,0 +1,27 @@
+.modal-content {
+  position: relative;
+  top: 0;
+}
+
+.details-review-div {
+  text-align: center;
+  margin-top: 2em;
+}
+
+.details-review-btn {
+  font-size: 1em;
+  background-color: #443a2e;
+  color: #faf9f6;
+  width: 8rem;
+  height: 2rem;
+  border-radius: 0.5em;
+  margin: 1em;
+  transition: all 300ms;
+}
+
+.details-review-btn:hover {
+  background-color: #d7c89d;
+  color: #443a2e;
+  transform: translate(0, 0.3em);
+  transform: scale(0.95);
+}
