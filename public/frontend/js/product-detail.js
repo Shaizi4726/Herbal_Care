@@ -29,21 +29,15 @@ $("#modal-cart-form").submit(function(e) {
 
 function showDetail(btn) {
   let data = btn.getAttribute('data-toggle');
+  let active = btn.classList.contains('active-details-review');
+  $('.details-review-btn').removeClass('active-details-review');
+  if (!active)
+  btn.classList.add('active-details-review');
   if (data == 'description') {
-    if (btn.classList.contains('active-detail-btn')) {
-      btn.classList.toggle('active-detail-btn');
-    }
-    btn.classList.add('active-detail-btn');
-    document.getElementById('reviews-btn').classList.remove('active');
     document.getElementById('reviews').classList.add('collapse');
     document.getElementById(data).classList.toggle('collapse');
   }
   else {
-    if (btn.classList.contains('active-detail-btn')) {
-      btn.classList.toggle('active-detail-btn');
-    }
-    btn.classList.add('active-detail-btn');
-    document.getElementById('details-btn').classList.remove('active');
     document.getElementById('description').classList.add('collapse');
     document.getElementById(data).classList.toggle('collapse');
   }

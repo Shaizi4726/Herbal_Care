@@ -11,10 +11,8 @@ body {
     overflow-x: hidden;
 }
 
-.title, h1 {
+.title, h1, h2, h3 {
     font-family: Vollkorn, 'Times New Roman', Times, serif;
-    font-size: 32px;
-    font-weight: bold;
 }
 
 ul li, ol li {

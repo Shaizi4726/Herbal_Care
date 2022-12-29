@@ -25,3 +25,123 @@
   transform: translate(0, 0.3em);
   transform: scale(0.95);
 }
+
+.active-details-review {
+  background-color: #d7c89d;
+  color: #443a2e;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.tab-content {
+  width: 80vw;
+  margin: auto;
+}
+
+.benefits li {
+  list-style-image: url('/images/star-bullet.png');
+  position: relative;
+  left: 1em;
+}
+
+.precautions {
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-weight: normal;
+  font-size: 1em;
+  font-style: oblique;
+}
+
+.precautions li {
+  list-style-type: disc;
+  list-style-position: outside;
+  position: relative;
+  left: 1em;
+}
+
+.rate {
+  float: left;
+  height: 46px;
+  padding: 0 10px;
+}
+
+.rate:not(:checked) > input {
+  position:absolute;
+  display: none;
+}
+
+.rate:not(:checked) > label {
+  float:right;
+  width:1em;
+  overflow:hidden;
+  white-space:nowrap;
+  cursor:pointer;
+  font-size:30px;
+  color:#ccc;
+}
+.rate:not(:checked) > label:before {
+  content: '★ ';
+}
+.rate > input:checked ~ label {
+  color: #ffc700;    
+}
+.rate:not(:checked) > label:hover,
+.rate:not(:checked) > label:hover ~ label {
+  color: #deb217;  
+}
+.rate > input:checked + label:hover,
+.rate > input:checked + label:hover ~ label,
+.rate > input:checked ~ label:hover,
+.rate > input:checked ~ label:hover ~ label,
+.rate > label:hover ~ input:checked ~ label {
+  color: #c59b08;
+}
+
+.form-group {
+  clear: both;
+  margin-left: 1em;
+}
+
+.form-group textarea{
+  padding: 1em;
+}
+
+.form-review-btn {
+  text-align: center;
+  border-radius: 10px;
+  width: 6em;
+  height: 2em;
+  color: #443a2e;
+  background: linear-gradient(to right, #BF953F, #FCF6BA, #e2ae3c, #FBF5B7, #AA771C);
+  box-shadow: 0 5px 10px 2px rgba(0, 0, 0, 0.5);
+  transition: all 300ms ease-in-out;
+}
+
+.form-review-btn:hover {
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
+}
+
+.form-review-btn .btn {
+  margin-top: 0.25em;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #443a2e;
+}
+
+.single-rating li {
+  float: left;
+}
+
+.single-rating {
+  margin: 1em 0;
+}
+
+.rating-author {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.rating-author h4{
+  margin-left: 1em;
+}
