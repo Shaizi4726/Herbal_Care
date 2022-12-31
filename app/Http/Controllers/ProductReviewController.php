@@ -44,27 +44,37 @@ class ProductReviewController extends Controller
             'rate'=>'required|numeric|min:1'
         ]);
         $product_info=Product::getProductBySlug($request->slug);
+        // $productReview = ProductReview::where('product_id')->where('user_id')->get();
         //  return $product_info;
         // return $request->all();
         $data=$request->all();
+        
         $data['product_id']=$product_info->id;
         $data['user_id']=$request->user()->id;
         $data['status']='active';
-        // dd($data);
-        $status=ProductReview::create($data);
-
-        $user=User::where('role','admin')->get();
-        $details=[
-            'title'=>'New Product Rating!',
-            'actionURL'=>route('product-detail',$product_info->slug),
-            'fas'=>'fa-star'
-        ];
-        Notification::send($user,new StatusNotification($details));
-        if($status){
-            request()->session()->flash('success','Thank you for your feedback');
+        $productReview = ProductReview::getPreviousReview($product_info->id);
+        //dd($data);
+        
+        if(!$productReview){
+            $status=ProductReview::create($data);
+            $user=User::where('role','admin')->get();
+            $details=[
+                'title'=>'New Product Rating!',
+                'actionURL'=>route('product-detail',$product_info->slug),
+                'fas'=>'fa-star'
+            ];
+            Notification::send($user,new StatusNotification($details));
+            if($status){
+                request()->session()->flash('success','Thank you for your feedback');
+            }
+            else{
+                request()->session()->flash('error','Something went wrong! Please try again!!');
+            }
         }
         else{
-            request()->session()->flash('error','Something went wrong! Please try again!!');
+        //    dd($productReview);
+        $status=$productReview->fill($data)->update();
+            
         }
         return redirect()->back();
     }

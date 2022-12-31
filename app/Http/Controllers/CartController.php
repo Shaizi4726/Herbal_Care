@@ -26,17 +26,15 @@ class CartController extends Controller
         }        
         $product = Product::with('attributes')->where('id', $request->id)->first();
         $request->validate([
-            'id'      =>  'required',
-            'quant'     =>  'required',
-            'price'     =>  'required',
-            'size'      =>  'required',
+            'id' => 'required',
+            'cart' => 'required',
         ]);
        
 //         // dd($request->quant[1]);
 
 
         $product = Product::with('attributes')->where('id', $request->id)->first();
-       
+      
 //         $data = $request->all();
 //         $proArr = explode("-",$data['price']);
 //         $proAttr = ProductsAttribute::where(['price' => $proArr[0]])->first();
@@ -87,7 +85,7 @@ class CartController extends Controller
             'id' => 'required',
             'cart' => 'required',
         ]);
-           
+         
         $product= Product::with('attributes')->where('id', $request->id)->first();
         
         $data = $request->cart;     
@@ -127,6 +125,7 @@ class CartController extends Controller
                 $cart->tax_amount=$cart->t_amount-$cart->amount;
                 $cart->save();
             }
+            
         }
         return ('Added to cart successfully'); 
     } 

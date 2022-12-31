@@ -151,7 +151,7 @@
 			<div class="tab-panel collapse" id="reviews">
 				<div class="add-review">
 					<h3>Add Review</h3>
-					<p>Your email address will not be published. Required fields are marked</p>
+					<p>Your email address will not be published.</p>
 				</div>
 
 				<div class="review-inner">
@@ -183,12 +183,15 @@
 						</form> 
 					@else 
 						<p class="review-auth-action"> 
-							You need to <a href="{{route('login.form')}}" class="review-auth-link">Login</a> OR <a href="{{route('register.form')}}" class="review-auth-link">Register</a>
+							You need to <a href="{{route('login.form')}}" class="review-auth-link form-review-btn btn">Login</a> OR <a href="{{route('register.form')}}" class="review-auth-link form-review-btn btn">Register</a>
 						</p>
 					@endauth
 				</div>
 
 				<div class="user-reviews">
+					<div class="prev-reviews">
+						<h3>Reviews</h3>
+					</div>
 					@foreach($product_detail['getReview'] as $data)
 						<div class="single-rating">
 							<div class="rating-author"> 
@@ -222,6 +225,39 @@
 			<!--/ End Review -->
 		</div>
 	</section>
+
+	<!-- Start Most Popular -->
+	<section class="products-area related-products">
+		<div class="section-title">
+			<h2>Related Products</h2>
+		</div>
+
+		<div class="products">
+			<div class="product-slider carousel hero-slider"  data-flickity='{ "autoPlay": 1000, "contain": true, "pageDots": false, "initialIndex": 2 }'>
+				@foreach($product_detail->rel_prods as $product)
+					@if($product->id !== $product_detail->id)
+						@php
+								$minprice = DB::table('products_attributes')->where('product_id', $product->id)->min('price');
+								$maxprice = DB::table('products_attributes')->where('product_id', $product->id)->max('price');
+						@endphp
+						<div class="product-card carousel-cell">
+							<img class="product-image" src="{{$product->photo}}" alt="product image">
+
+							<div class="meta-detail">
+								<h3 class="product-title">{{$product->title}}</h3>
+								<p class="price">AED <span class="value">{{number_format($minprice,2)}}</span> - AED <span class="value">{{number_format($maxprice,2)}}</span></p>
+							</div>
+							<div class="prod-detail-link">
+								<a href="{{route('product-detail', $product->slug)}}" class="btn btn-submit detail-link"> Product Details </a>
+								<button class="btn favbtn" onclick="fav(this)"><i class="fa-regular fa-heart fav"></i></button>
+							</div>
+						</div>
+					@endif
+				@endforeach
+			</div>
+		</div>
+	</section>
+	<!-- End Most Popular Area -->
 @endsection
 
 @push('scripts')

@@ -47,15 +47,13 @@ class ProductsImport implements
                 'benafit' => $row['benafit'],
                 'description' => $row['description'],
                 'photo' => $row['photo'],
-                'stock' => $row['stock'],
                 'cat_id' => $row['cat_id'],
                 'child_cat_id' => $row['child_cat_id'],
                 'brand_id' => $row['brand_id'],
                 'is_featured' => $row['is_featured'],
                 'status' => $row['status'],
-                'price' => $row['price'],
-                'condition' => $row['condition'],
-                'discount' => $row['discount']
+                'condition' => $row['condition']
+               
                 
             ]);
 

@@ -17,7 +17,7 @@
 
         <div class="form-group">
             <label for="inputEmail" class="col-form-label">Email</label>
-          <input id="inputEmail" type="email" name="email" placeholder="Enter email"  value="{{old('email')}}" class="form-control">
+          <input id="inputEmail" type="email" name="email" placeholder="Enter email" class="form-control">
           @error('email')
           <span class="text-danger">{{$message}}</span>
           @enderror
@@ -25,7 +25,7 @@
 
         <div class="form-group">
             <label for="inputPassword" class="col-form-label">Password</label>
-          <input id="inputPassword" type="password" name="password" placeholder="Enter password"  value="{{old('password')}}" class="form-control">
+          <input id="inputPassword" type="password" name="password" placeholder="Enter password" class="form-control">
           @error('password')
           <span class="text-danger">{{$message}}</span>
           @enderror
@@ -47,7 +47,7 @@
           @enderror
         </div>
         @php 
-        $roles=DB::table('users')->select('role')->get();
+        $roles=DB::table('users')->select('role')->distinct()->get();
         @endphp
         <div class="form-group">
             <label for="role" class="col-form-label">Role</label>

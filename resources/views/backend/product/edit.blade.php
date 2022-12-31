@@ -31,59 +31,9 @@
           <span class="text-danger">{{$message}}</span>
           @enderror
         </div>
-        <!-- <div class="form-group">
-          <label for="inputTitle" class="col-form-label">Other Name 1</label>
-          <input id="inputTitle" type="text" name="other1" placeholder="Enter Other Name "  value="{{old('other1')}}" class="form-control">
-          @error('other1')
-          <span class="text-danger">{{$message}}</span>
-          @enderror
-        </div>
-        <div class="form-group">
-          <label for="inputTitle" class="col-form-label">Other Name 2</label>
-          <input id="inputTitle" type="text" name="other2" placeholder="Enter Other Name"  value="{{old('other2')}}" class="form-control">
-          @error('other2')
-          <span class="text-danger">{{$message}}</span>
-          @enderror
-        </div>
-        <div class="form-group">
-          <label for="inputTitle" class="col-form-label">Other Name 3</label>
-          <input id="inputTitle" type="text" name="other3" placeholder="Enter Other Name"  value="{{old('other3')}}" class="form-control">
-          @error('other3')
-          <span class="text-danger">{{$message}}</span>
-          @enderror
-        </div>
-        <div class="form-group">
-          <label for="inputTitle" class="col-form-label">Other Name 4</label>
-          <input id="inputTitle" type="text" name="other4" placeholder="Enter Other Name"  value="{{old('other4')}}" class="form-control">
-          @error('other4')
-          <span class="text-danger">{{$message}}</span>
-          @enderror
-        </div>
-        <div class="form-group">
-          <label for="inputTitle" class="col-form-label">Other Name 5</label>
-          <input id="inputTitle" type="text" name="other5" placeholder="Enter Other Name"  value="{{old('other5')}}" class="form-control">
-          @error('other5')
-          <span class="text-danger">{{$message}}</span>
-          @enderror
-        </div>
-        <div class="form-group">
-          <label for="inputTitle" class="col-form-label">Other Name 6</label>
-          <input id="inputTitle" type="text" name="other6" placeholder="Enter Other Name"  value="{{old('other6')}}" class="form-control">
-          @error('other6')
-          <span class="text-danger">{{$message}}</span>
-          @enderror
-        </div>
-        <div class="form-group">
-          <label for="inputTitle" class="col-form-label">Other Name 7</label>
-          <input id="inputTitle" type="text" name="othrt7" placeholder="Enter Other Name"  value="{{old('other7')}}" class="form-control">
-          @error('other7')
-          <span class="text-danger">{{$message}}</span>
-          @enderror
-        </div> -->
-
         <div class="form-group">
         <label for="inputTitle" class="col-form-label">benefit</label>
-          <textarea class="form-control" id="benefit" name="benefit" value="{{$product->benefit}}">{{$product->benefit}}</textarea>
+          <textarea class="form-control" id="benefit" name="benefit" value="{{$product->benafit}}">{{$product->benafit}}</textarea>
           @error('benefit')
           <span class="text-danger">{{$message}}</span>
           @enderror
@@ -96,8 +46,6 @@
           <span class="text-danger">{{$message}}</span>
           @enderror
         </div>
-
-
         <div class="form-group">
           <label for="is_featured">Is Featured</label><br>
           <input type="checkbox" name='is_featured' id='is_featured' value='{{$product->is_featured}}' {{(($product->is_featured) ? 'checked' : '')}}> Yes                        
@@ -123,39 +71,7 @@
           <select name="child_cat_id" id="child_cat_id" class="form-control">
               <option value="">--Select any sub category--</option>
           </select>
-        </div>
-
-        <div class="form-group">
-          <label for="price" class="col-form-label">Price(NRS) <span class="text-danger">*</span></label>
-          <input id="price" type="number" name="price" placeholder="Enter price"  value="{{$product->price}}" class="form-control">
-          @error('price')
-          <span class="text-danger">{{$message}}</span>
-          @enderror
-        </div>
-
-        <div class="form-group">
-          <label for="discount" class="col-form-label">Discount(%)</label>
-          <input id="discount" type="number" name="discount" min="0" max="100" placeholder="Enter discount"  value="{{$product->discount}}" class="form-control">
-          @error('discount')
-          <span class="text-danger">{{$message}}</span>
-          @enderror
-        </div>
-<!--        <div class="form-group">
-          <label for="size">Size</label>
-          <select name="size[]" class="form-control selectpicker"  multiple data-live-search="true">
-              <option value="">--Select any size--</option>
-              @foreach($items as $item)              
-                @php 
-                $data=explode(',',$item->size);
-                // dd($data);
-                @endphp
-              <option value="S"  @if( in_array( "S",$data ) ) selected @endif>Gram(gm)</option>
-              <option value="M"  @if( in_array( "M",$data ) ) selected @endif>KiloGram(kg)</option>
-              <option value="L"  @if( in_array( "L",$data ) ) selected @endif>Large(L)</option>
-              <option value="XL"  @if( in_array( "XL",$data ) ) selected @endif>Extra Large(XL)</option>
-              @endforeach
-          </select>
-        </div>-->
+        </div>      
         <div class="form-group">
           <label for="brand_id">Brand</label>
           <select name="brand_id" class="form-control">
@@ -177,13 +93,6 @@
         </div>
 
         <div class="form-group">
-          <label for="stock">Quantity <span class="text-danger">*</span></label>
-          <input id="quantity" type="number" name="stock" min="0" placeholder="Enter quantity"  value="{{$product->stock}}" class="form-control">
-          @error('stock')
-          <span class="text-danger">{{$message}}</span>
-          @enderror
-        </div>
-        <div class="form-group">
           <label for="inputPhoto" class="col-form-label">Photo <span class="text-danger">*</span></label>
           <div class="input-group">
               <span class="input-group-btn">
@@ -200,11 +109,7 @@
         </div>
         <div class="form-group">
           <label for="inputPhoto" class="col-form-label">Photo <span class="text-danger"></span></label>
-          <div class="input-group">
-              <span class="input-group-btn">
-                <input type="file" id="input-file-now-custom-3" class="form-control m-2" name="images[]" multiple>                                   
-              </span>
-          </div>          
+          
         </div>
         <div class="form-group">
           <label for="status" class="col-form-label">Status <span class="text-danger">*</span></label>
@@ -248,7 +153,7 @@
 
     $(document).ready(function() {
       $('#benefit').summernote({
-        placeholder: "Write benefit.....",
+        placeholder: "Write benafit.....",
           tabsize: 2,
           height: 150
       });

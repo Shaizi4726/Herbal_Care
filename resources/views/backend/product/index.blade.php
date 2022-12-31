@@ -212,12 +212,7 @@
               <th>Name</th>
               <th>Category</th>
               <th>Is Featured</th>
-              <th>Price</th>
-              <th>Discount</th>
-              
               <th>Condition</th>
-              
-              <th>Stock</th>
               <th>Photo</th>
               <th>Status</th>
               <th>Action</th>
@@ -229,12 +224,7 @@
               <th>Name</th>
               <th>Category</th>
               <th>Is Featured</th>
-              <th>Price</th>
-              <th>Discount</th>
-             
               <th>Condition</th>
-              
-              <th>Stock</th>
               <th>Photo</th>
               <th>Status</th>
               <th>Action</th>
@@ -257,18 +247,8 @@
                       </sub>
                     </td>
                     <td>{{(($product->is_featured==1)? 'Yes': 'No')}}</td>
-                    <td>AED. {{$product->price}} /-</td>
-                    <td>  {{$product->discount}}% OFF</td>
-                    
                     <td>{{$product->condition}}</td>
                     
-                    <td>
-                      @if($product->stock>0)
-                      <span class="badge badge-primary">{{$product->stock}}</span>
-                      @else
-                      <span class="badge badge-danger">{{$product->stock}}</span>
-                      @endif
-                    </td>
                     <td>
                         @if($product->photo)
                             @php
@@ -295,10 +275,15 @@
                             @method('post')
                                 <button class="btn btn-primary btn-sm float-left mr-1" data-id="{{$product->id}}" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="ADD"><i class="fas fa-plus"></i></button>  
                         </form> 
-                    <form method="POST" action="{{route('product.destroy',[$product->id])}}">
-                      @csrf
-                      @method('delete')
-                          <button class="btn btn-danger btn-sm dltBtn" data-id="{{$product->id}}" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
+                        <form method="get" action="{{url('/admin/product/add-images',$product->id)}}">
+                            @csrf
+                            @method('post')
+                            <button class="btn btn-primary btn-sm float-left mr-1" data-id="{{$product->id}}" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="ADD"><i class="fas fa-image"></i></button>  
+                        </form>
+                        <form method="POST" action="{{route('product.destroy',[$product->id])}}">
+                            @csrf
+                            @method('delete')
+                            <button class="btn btn-danger btn-sm dltBtn" data-id="{{$product->id}}" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
                         </form>
                     </td>
                 </tr>

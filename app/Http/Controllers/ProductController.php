@@ -60,16 +60,12 @@ class ProductController extends Controller
             'photo'=>'required',
             'photo.*'=>'image|mimes:jpg,jpeg,png,gif|max:1024|required',
             // 'photo'=>'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'size'=>'nullable',
-            'stock'=>"required|numeric",
             'cat_id'=>'required|exists:categories,id',
             'child_cat_id'=>'nullable|exists:categories,id',
             'brand_id'=>'nullable|exists:brands,id',            
             'is_featured'=>'sometimes|in:1',
             'status'=>'required|in:active,inactive',
             'condition'=>'required|in:default,new,hot',
-            'price'=>'required|numeric',
-            'discount'=>'nullable|numeric'
         ]);
         
         $data=$request->all();
@@ -174,16 +170,12 @@ class ProductController extends Controller
             'benafit'=>'string|nullable',
             'description'=>'string|nullable',
             'photo'=>'string|required',
-            'size'=>'nullable',
-            'stock'=>"required|numeric",
             'cat_id'=>'required|exists:categories,id',
             'child_cat_id'=>'nullable|exists:categories,id',
             'is_featured'=>'sometimes|in:1',
             'brand_id'=>'nullable|exists:brands,id',
             'status'=>'required|in:active,inactive',
             'condition'=>'required|in:default,new,hot',
-            'price'=>'required|numeric',
-            'discount'=>'nullable|numeric'
         ]);
 
         $data=$request->all();
@@ -195,17 +187,7 @@ class ProductController extends Controller
         else{
             $data['size']='';
         }
-        if($request->hasFile("images")){
-            $files=$request->file("images");
-            foreach($files as $file){
-                $imageName=time().'_'.$file->getClientOriginalName();
-                $request["product_id"]=$id;
-                $request["image"]=$imageName;
-                $file->move(\public_path("images"),$imageName);
-                Image::create($request->all());
-
-            }
-        }                
+                
         // return $data;
         $status=$product->fill($data)->save();
         
@@ -237,6 +219,42 @@ class ProductController extends Controller
         }
         return redirect()->route('product.index');
     }
+    public function addImage(Request $request, $id=null){
+        $productDetails = Product::find($id);
+        $path='images/';
+           
+            if($request->hasFile("images")){
+               
+                $files=$request->file("images");
+                //dd($files);
+                foreach($files as $file){
+                    $imageName=time().'_'.$file->getClientOriginalName();
+                    $request['product_id']=$productDetails->id;
+                    $request['image']=$imageName;
+                    $file->move(\public_path("/images"),$imageName);
+                    Image::create($request->all());
+    
+                }
+        
+
+            return redirect('/admin/product/add-images/'.$id)->with('success','Product Attributes has been added successfully!');        
+    }
+            return view('backend.product.image')->with(compact('productDetails'));
+    }
+        public function deleteImage($id){
+            $product=Image::findOrFail($id);
+            $status=$product->delete();
+    //        dd($product);
+            
+            if($status){
+                request()->session()->flash('success','Product successfully deleted');
+            }
+            else{
+                request()->session()->flash('error','Error while deleting product');
+            }
+        //    return view('backend.product.add_attributes')->with(compact('productDetails'));
+            return redirect()->back();
+        }
 
         public function addAttributes(Request $request, $id=null){
         

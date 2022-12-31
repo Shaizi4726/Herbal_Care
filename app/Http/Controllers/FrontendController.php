@@ -69,7 +69,6 @@ class FrontendController extends Controller
             $cat_ids=Category::select('id')->whereIn('slug',$slug)->pluck('id')->toArray();
      
             $products->whereIn('cat_id',$cat_ids);
-            // return $products;
         }
         if(!empty($_GET['brand'])){
             $slugs=explode(',',$_GET['brand']);
@@ -111,56 +110,55 @@ class FrontendController extends Controller
     }
     
     public function productFilter(Request $request){
-        
-            $data= $request->all();
-
-            $showURL='';
-            if(!empty($data['show'])){
-                $showURL .='&show='.$data['show'];
-            }
-            
-            $sortByURL='';
-            if(!empty($data['sortBy'])){
-                $sortByURL .='&sortBy='.$data['sortBy'];
+      $data = $request['query'];
+      $products = Product::getProductByChildCatId($data);
+      if(count($products)>0) {
+        $content = '';
+                foreach ($products as $product) {
+                        $minprice = DB::table('products_attributes')->where('product_id', $product->id)->min('price');
+                        $maxprice = DB::table('products_attributes')->where('product_id', $product->id)->max('price');
+                        $Images = DB::table('images')->where('product_id', $product->id)->pluck('image');
+                        $Forms = DB::table('products_attributes')->where('product_id', $product->id)->distinct()->pluck('form');
                 
-            }
+                        $Sizes = array();
+                        foreach ($Forms as $form) {
+                            ${$form . "sizes"} = DB::table('products_attributes')->where('product_id', $product->id)->where('form', $form)->pluck('size');
+                            $Sizes[$form] =  ${$form . "sizes"};
+                        }
+                        $Sizes = json_encode($Sizes);
+                        $minPrice = number_format($minprice,2);
+                        $maxPrice = number_format($maxprice,2);
+              
 
-            $catURL="";
-            if(!empty($data['category'])){
-                foreach($data['category'] as $category){
-                    if(empty($catURL)){
-                        $catURL .='&category='.$category;
-                    }
-                    else{
-                        $catURL .=','.$category;
-                    }
-                }
-            }
+                    $content .= <<<EOD
+                    <div class="product-card carousel-cell">
+                    <img class="product-image" src="{$product->photo}" alt="product image">
+                    
+                    <div class="overlay">
+                        <button id="{$product->id}" class="btn btn-quick-view" 
+                        title="Quick View" onclick='showModal(id, `{$product->photo}`, {$Images}, 
+                        `{$product->title}`, {$Forms}, {$Sizes}, {$minprice}, {$maxprice}, `{$product->slug}`)'> 
+                            <i class="fa-regular fa-eye"></i><p>Quick View</p></button>
+                    </div>
 
-            $brandURL="";
-            if(!empty($data['brand'])){
-                foreach($data['brand'] as $brand){
-                    if(empty($brandURL)){
-                        $brandURL .='&brand='.$brand;
-                    }
-                    else{
-                        $brandURL .=','.$brand;
-                    }
-                }
+                    <div class="meta-detail">
+                        <h3 class="product-title">{$product->title}</h3>
+                        <p class="price">AED <span class="value">{$minPrice}</span> - AED <span class="value">{$maxPrice}</span></p>
+                    </div>
+                    <div class="prod-detail-link">
+                        <a href="/product-detail/{$product->slug}" class="btn btn-submit detail-link"> Product Details </a>
+                        <button class="btn favbtn" onclick="fav(this)"><i class="fa-regular fa-heart fav"></i></button>
+                    </div>
+                    </div>
+                  EOD; }}
+            else {
+                $content .= <<<EOD
+                <p class="no-product">There is no product in this criteria.</p>
+              EOD;
             }
-            // return $brandURL;
-
-            $priceRangeURL="";
-            if(!empty($data['price_range'])){
-                $priceRangeURL .='&price='.$data['price_range'];
-            }
-            if(request()->is('herb.loc/product-grids')){
-                return redirect()->route('product-lists',$catURL.$brandURL.$priceRangeURL.$showURL.$sortByURL);
-            }
-            else{
-                return redirect()->route('product-grids',$catURL.$brandURL.$priceRangeURL.$showURL.$sortByURL);
-            }
+      return $content;
     }
+
     public function productSearch(Request $request){
         $recent_products=Product::where('status','active')->orderBy('id','DESC')->limit(3)->get();
         $products=Product::orwhere('title','like','%'.$request->search.'%')
@@ -187,26 +185,15 @@ class FrontendController extends Controller
     }
     public function productCat(Request $request){
         $products=Category::getProductByCat($request->slug);
+        $sub_cat = Category::getChildByParentSlug($request->slug);
         $recent_products=Product::where('status','active')->orderBy('id','DESC')->limit(3)->get();
-        
 
-    //    dd($products);
-    //    echo "<pre>"; print_r($products);die;
-        if(request()->is('herb.loc/product-grids')){
-            
-            return view('frontend.pages.product-lists')->with('products',$products->products)->with('recent_products',$recent_products);
-        }
-        else{
-          
-            return view('frontend.pages.product-grids')->with('products',$products->products)->with('recent_products',$recent_products);
-        }
-
+        return view('frontend.pages.product-grids')->with('products',$products->products)->with('recent_products',$recent_products)->with('sub_cat', $sub_cat);
     }
+
     public function productSubCat(Request $request){
         $products=Category::getProductBySubCat($request->sub_slug);
-        // return $products;
         $recent_products=Product::where('status','active')->orderBy('id','DESC')->limit(3)->get();
-       // dd($products);
 
         if(request()->is('e-shop.loc/product-grids')){
             return view('frontend.pages.product-lists')->with('products',$products->sub_products)->with('recent_products',$recent_products);
@@ -392,13 +379,13 @@ class FrontendController extends Controller
     }
 
 
-public function getProductPrice(Request $request){
-    $data = $request->all();
-    $id = $data['id'];
-    $size = $data['size'];
-    $form = $data['form'];
-    $proAttr = DB::table('products_attributes')->where('product_id', $id)->where('size', $size)->where('form', $form)->first();      
-    return $proAttr->price;
-}
+    public function getProductPrice(Request $request){
+        $data = $request->all();
+        $id = $data['id'];
+        $size = $data['size'];
+        $form = $data['form'];
+        $proAttr = DB::table('products_attributes')->where('product_id', $id)->where('size', $size)->where('form', $form)->first();      
+        return $proAttr->price;
+    }
 
 }

@@ -82,18 +82,18 @@
   content: '★ ';
 }
 .rate > input:checked ~ label {
-  color: #ffc700;    
+  color: #ffd700;    
 }
 .rate:not(:checked) > label:hover,
 .rate:not(:checked) > label:hover ~ label {
-  color: #deb217;  
+  color: #ffd700;  
 }
 .rate > input:checked + label:hover,
 .rate > input:checked + label:hover ~ label,
 .rate > input:checked ~ label:hover,
 .rate > input:checked ~ label:hover ~ label,
 .rate > label:hover ~ input:checked ~ label {
-  color: #c59b08;
+  color: #ffc700;
 }
 
 .form-group {
@@ -110,7 +110,6 @@
   border-radius: 10px;
   width: 6em;
   height: 2em;
-  color: #443a2e;
   background: linear-gradient(to right, #BF953F, #FCF6BA, #e2ae3c, #FBF5B7, #AA771C);
   box-shadow: 0 5px 10px 2px rgba(0, 0, 0, 0.5);
   transition: all 300ms ease-in-out;
@@ -127,12 +126,19 @@
   color: #443a2e;
 }
 
-.single-rating li {
-  float: left;
+a.review-auth-link {
+  padding: 0 0.5em;
 }
 
 .single-rating {
   margin: 1em 0;
+  background-color: #d7c89d;
+  border: 2px solid grey;
+  padding: 1em 2em;
+}
+
+.single-rating li {
+  float: left;
 }
 
 .rating-author {
@@ -144,4 +150,8 @@
 
 .rating-author h4{
   margin-left: 1em;
+}
+
+.prev-reviews {
+  margin: 1.5em 0;
 }
