@@ -40,6 +40,7 @@ class ProductsImport implements
     {
         foreach ($rows as $row) {
             $product = Product::create([
+                'plu' => $row['plu'],
                 'title' => $row['title'],
                 'scientific' => $row['scientific'],
                 'slug'=>$row['title'],
@@ -52,7 +53,7 @@ class ProductsImport implements
                 'brand_id' => $row['brand_id'],
                 'is_featured' => $row['is_featured'],
                 'status' => $row['status'],
-                'condition' => $row['condition']
+                'promotion' => $row['condition']
                
                 
             ]);

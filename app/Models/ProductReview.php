@@ -8,7 +8,7 @@ use Spatie\Permission\Models\Permission;
 
 class ProductReview extends Model
 {
-    protected $fillable=['user_id','product_id','rate','review','status'];
+    protected $fillable=['user_id','product_id','plu','rate','review','status'];
 
     public function user_info(){
         return $this->hasOne('App\User','id','user_id');
@@ -19,6 +19,9 @@ class ProductReview extends Model
     }
     public static function getAllUserReview(){
         return ProductReview::where('user_id',auth()->user()->id)->with('user_info')->paginate(10);
+    }
+    public static function getPreviousReview($product_id){
+        return ProductReview::where(['user_id'=> auth()->user()->id , 'product_id'=>$product_id])->first();
     }
 
     public function product(){

@@ -8,7 +8,13 @@
     <div class="card-body">
       <form method="post" action="{{route('product.store')}}" enctype="multipart/form-data">
         {{csrf_field()}}
-
+        <div class="form-group">
+          <label for="inputTitle" class="col-form-label">Plu Code</label>
+          <input id="inputTitle" type="text" name="plu" placeholder="Enter Plu"  value="{{old('plu')}}" class="form-control">
+          @error('title')
+          <span class="text-danger">{{$message}}</span>
+          @enderror
+        </div>
         <div class="form-group">
           <label for="inputTitle" class="col-form-label">Name <span class="text-danger">*</span></label>
           <input id="inputTitle" type="text" name="title" placeholder="Enter Name"  value="{{old('title')}}" class="form-control">
@@ -83,7 +89,7 @@
               <option value="">--Select Condition--</option>
               <option value="default">Default</option>
               <option value="new">New</option>
-              <option value="hot">Hot</option>
+              <option value="trending">Trending</option>
           </select>
         </div>
        <div class="form-group">
@@ -138,7 +144,6 @@
 <script src="/vendor/laravel-filemanager/js/stand-alone-button.js"></script>
 <script src="{{asset('backend/summernote/summernote.min.js')}}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
-
 
 <script>
     $('#lfm').filemanager('image');

@@ -64,6 +64,7 @@ class CartController extends Controller
             $cart = new Cart;
             $cart->user_id = auth()->user()->id;
             $cart->product_id = $product->id;
+            $cart->plu = $product->plu;
             $cart->product_atrr_id = $proAttr->id;
             $cart->form = $proAttr->form;
             $cart->price = ($proAttr->price-($proAttr->price*$proAttr->discount)/100);
@@ -115,6 +116,7 @@ class CartController extends Controller
                 $cart = new Cart;
                 $cart->user_id = auth()->user()->id;
                 $cart->product_id = $product->id;
+                $cart->plu = $product->plu;
                 $cart->product_atrr_id = $proAttr->id;
                 $cart->form = $proAttr->form;
                 $cart->price = ($proAttr->price-($proAttr->price*$proAttr->discount)/100);

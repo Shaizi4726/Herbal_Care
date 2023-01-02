@@ -15,6 +15,7 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
+            $table->string('plu');
             $table->string('title');
             $table->string('scientific');
             $table->string('slug')->unique();
@@ -23,7 +24,7 @@ class CreateProductsTable extends Migration
             $table->longText('description')->nullable();
             $table->string('photo');
             $table->integer('stock')->default(1);
-            $table->enum('condition',['default','new','hot'])->default('default');
+            $table->enum('condition',['default','new','trending'])->default('default');
             $table->enum('status',['active','inactive'])->default('inactive');
             $table->float('price');
             $table->float('discount')->nullabale();
