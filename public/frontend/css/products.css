@@ -13,10 +13,7 @@
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
-}
-
-.product-menu {
-  flex: 80%;
+  flex: 78%;
 }
 
 .product-filters {
