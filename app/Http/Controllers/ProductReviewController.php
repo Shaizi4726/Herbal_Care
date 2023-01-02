@@ -50,6 +50,7 @@ class ProductReviewController extends Controller
         $data=$request->all();
         
         $data['product_id']=$product_info->id;
+        $data['plu']=$product_info->plu;
         $data['user_id']=$request->user()->id;
         $data['status']='active';
         $productReview = ProductReview::getPreviousReview($product_info->id);

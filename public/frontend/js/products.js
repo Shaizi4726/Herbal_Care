@@ -11,7 +11,6 @@ window.onload =
           query: subCat,
         },
         success: function(response) {
-          console.log(response);
           $('#products-catalog').html(response);
         },
         error: function() {

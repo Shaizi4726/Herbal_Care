@@ -9,7 +9,7 @@ use Spatie\Permission\Models\Permission;
 
 class ProductsAttribute extends Model
 {
-    protected $fillable=['product_id','sku','form','size','price','discount','stock','is_featured','status'];
+    protected $fillable=['product_id','plu','sku','form','size','price','discount','stock','is_featured','status'];
     public function product(){
         return $this->belongsTo(Product::class,'id','product_id');
      }

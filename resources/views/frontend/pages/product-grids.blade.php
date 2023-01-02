@@ -31,7 +31,6 @@
 
         <div class="filters product-filters">
             @if(count($sub_cat) !== 0)
-            <script>console.log(<?= $sub_cat ?>)</script>
             <select name="sub-category" id="sub-category-filter">
               <option selected disabled>Sub Category</option>
               @foreach($sub_cat as $id=>$cat)

@@ -42,9 +42,9 @@
         <li><i class="fa-solid fa-location-dot d-user-icon"></i><a class="user-nav rb" href="{{route('order.track')}}">Track Order</a></li>
         @auth 
           @if(Auth::user()->role=='admin')
-            <li><i class="fa-solid fa-user-tie d-user-icon"></i><a class="user-nav rb" href="{{route('admin')}}"  target="_blank">Dashboard</a></li>
+            <li><i class="fa-solid fa-user-tie d-user-icon"></i><a class="user-nav rb" href="{{route('admin')}}"  target="_blank">{{Auth::user()->name}}</a></li>
           @else 
-            <li><i class="fa-solid fa-user d-user-icon"></i><a class="user-nav rb" href="{{route('user')}}"  target="_blank">Dashboard</a></li>
+            <li><i class="fa-solid fa-user d-user-icon"></i><a class="user-nav rb" href="{{route('user')}}"  target="_blank">{{Auth::user()->name}}</a></li>
           @endif
             <li><i class="fa-solid fa-right-from-bracket d-user-icon"></i><a class="user-nav" href="{{route('user.logout')}}">Logout</a></li>
         @else

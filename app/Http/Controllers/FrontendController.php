@@ -152,7 +152,7 @@ class FrontendController extends Controller
                     </div>
                   EOD; }}
             else {
-                $content .= <<<EOD
+                $content = <<<EOD
                 <p class="no-product">There is no product in this criteria.</p>
               EOD;
             }

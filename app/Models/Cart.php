@@ -8,7 +8,7 @@ use Spatie\Permission\Models\Permission;
 
 class Cart extends Model
 {
-    protected $fillable=['user_id','product_id','order_id','product_atrr_id','form','quantity','amount','t_amount','tax_amount','price','status'];
+    protected $fillable=['user_id','plu','product_id','order_id','product_atrr_id','form','quantity','amount','t_amount','tax_amount','price','status'];
     
     // public function product(){
     //     return $this->hasOne('App\Models\Product','id','product_id');

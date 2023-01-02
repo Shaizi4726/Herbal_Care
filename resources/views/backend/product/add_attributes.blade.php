@@ -12,6 +12,7 @@
                     <form enctypes="multipart/form-data" class="form-horizontal" method="post" action="
                     {{url('/admin/product/add-attributes/'.$productDetails->id)}}" name="add_attribute" id="add_attribute" >{{csrf_field()}}
                         <input type="hidden" name="id" value="{{$productDetails->id}}">
+                        <input type="hidden" name="plu" value="{{$productDetails->plu}}">
                         
                         <div class="control-group">
                             <label class="control-label">Product Name: </label>
@@ -22,8 +23,8 @@
                             <label class="control-label"><strong>{{$productDetails->id}}</strong></label>   
                         </div>
                         <div class="controls">
-                            <label class="control-label">Product Price: </label>
-                            <label class="control-label"><strong>{{$productDetails->price}}</strong></label>   
+                            <label class="control-label">Product Code: </label>
+                            <label class="control-label"><strong>{{$productDetails->plu}}</strong></label>   
                         </div>
                         <div class="controls">
                             <label class="control-label">Form Name: </label>
@@ -31,7 +32,7 @@
                             <select name="Form" class="form-control selForm" style="width:150px;">
                                 <option value="">--Select Form--</option>
                                 @foreach($forms as $form)                                
-                                <option value="{{$form->id}}-{{$form->title}}">{{$form->title}}</option>                                
+                                <option value="{{$form->id}}-{{$form->title}}">{{$form->title}}</option>                               
                                 @endforeach
                             </select>  
                         </div>

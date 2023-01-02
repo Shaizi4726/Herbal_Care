@@ -9,6 +9,13 @@
         @csrf 
         @method('PATCH')
         <div class="form-group">
+          <label for="inputTitle" class="col-form-label">Plu Code </label>
+          <input id="inputTitle" type="text" name="plu" placeholder="Enter Plu"  value="{{$product->plu}}" class="form-control">
+          @error('plu')
+          <span class="text-danger">{{$message}}</span>
+          @enderror
+        </div>
+        <div class="form-group">
           <label for="inputTitle" class="col-form-label">Name <span class="text-danger">*</span></label>
           <input id="inputTitle" type="text" name="title" placeholder="Enter Name"  value="{{$product->title}}" class="form-control">
           @error('title')
@@ -88,7 +95,7 @@
               <option value="">--Select Condition--</option>
               <option value="default" {{(($product->condition=='default')? 'selected':'')}}>Default</option>
               <option value="new" {{(($product->condition=='new')? 'selected':'')}}>New</option>
-              <option value="hot" {{(($product->condition=='hot')? 'selected':'')}}>Hot</option>
+              <option value="trending" {{(($product->condition=='trending')? 'selected':'')}}>Trending</option>
           </select>
         </div>
 

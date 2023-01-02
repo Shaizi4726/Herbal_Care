@@ -57,6 +57,7 @@ class ProductController extends Controller
             'summary'=>'string|required',
             'benafit'=>'string|nullable',
             'description'=>'string|nullable',
+            'plu'=>'nullable|numeric',
             'photo'=>'required',
             'photo.*'=>'image|mimes:jpg,jpeg,png,gif|max:1024|required',
             // 'photo'=>'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -65,10 +66,11 @@ class ProductController extends Controller
             'brand_id'=>'nullable|exists:brands,id',            
             'is_featured'=>'sometimes|in:1',
             'status'=>'required|in:active,inactive',
-            'condition'=>'required|in:default,new,hot',
+            'condition'=>'required|in:default,new,trending'
+            
         ]);
-        
         $data=$request->all();
+        //dd($data);
         $slug=Str::slug($request->title);
         $count=Product::where('slug',$slug)->count();
         // if($count>0){
@@ -103,6 +105,7 @@ class ProductController extends Controller
             foreach($files as $file){
                 $imageName=time().'_'.$file->getClientOriginalName();
                 $request['product_id']=$status->id;
+                $request['plu']=$status->plu;
                 $request['image']=$imageName;
                 $file->move(\public_path("/images"),$imageName);
                 Image::create($request->all());
@@ -175,23 +178,27 @@ class ProductController extends Controller
             'is_featured'=>'sometimes|in:1',
             'brand_id'=>'nullable|exists:brands,id',
             'status'=>'required|in:active,inactive',
-            'condition'=>'required|in:default,new,hot',
+            'condition'=>'required|in:default,new,trending',
+            'plu'=>'nullable|numeric'
         ]);
-
+        
         $data=$request->all();
+       
         $data['is_featured']=$request->input('is_featured',0);
         $size=$request->input('size');
-        if($size){
-            $data['size']=implode(',',$size);
-        }
-        else{
-            $data['size']='';
-        }
+        // if($size){
+        //     $data['size']=implode(',',$size);
+        // }
+        // else{
+        //     $data['size']='';
+        // }
                 
         // return $data;
+        
         $status=$product->fill($data)->save();
         
         if($status){
+            
             request()->session()->flash('success','Product Successfully updated');
         }
         else{
@@ -230,6 +237,7 @@ class ProductController extends Controller
                 foreach($files as $file){
                     $imageName=time().'_'.$file->getClientOriginalName();
                     $request['product_id']=$productDetails->id;
+                    $request['plu']=$productDetails->plu;
                     $request['image']=$imageName;
                     $file->move(\public_path("/images"),$imageName);
                     Image::create($request->all());
@@ -268,8 +276,8 @@ class ProductController extends Controller
     
             if($request->isMethod('post')){
                 $data =$request->all();
+                $plu=$data['plu'];
                 
-                 
                 foreach($data['sku'] as $key=>$val){
                     
                     if(!empty($val)){
@@ -280,24 +288,17 @@ class ProductController extends Controller
                             return redirect('/admin/product/add-attributes/'.$id)->with('Error',
                             'SKU already exists! Please add another SKU');
                         }
-                        //size duplicat check
-                        // $attrCountSize = ProductsAttribute::where(['product_id'=>$id, 'size'=>$data[
-                        //     'size'][$key]])->count();
-                            
-                        // if($attrCountSize>0){
-                        //     return redirect('/admin/product/add-attributes/'.$id)->with('error',
-                        //     'SIZE already exists! Please add another SIZE');
-                        // }
                         
                         $attribute = new ProductsAttribute;                        
                         $attribute->product_id=$id;
+                        $attribute->plu=$plu;
                         $attribute->sku= $val;
                         $attribute->form=$data['form'][$key];
                         $attribute->size=$data['size'][$key];
                         $attribute->price=$data['price'][$key];
                         $attribute->discount=$data['discount'][$key];
                         $attribute->stock=$data['stock'][$key];
-                        $attribute->is_featured=true;                                  
+                        $attribute->is_featured=true;    
                         $attribute->save();
                     }
                 }
@@ -318,7 +319,7 @@ class ProductController extends Controller
             else{
                 request()->session()->flash('error','Error while deleting product');
             }
-        //    return view('backend.product.add_attributes')->with(compact('productDetails'));
+        
             return redirect()->back();
         }
     
