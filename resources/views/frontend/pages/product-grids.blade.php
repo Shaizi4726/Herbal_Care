@@ -8,6 +8,7 @@
 
 @section('main-content')
   <div class="filters product-filters" id="product-filters">
+
       @if(count($sub_cat) !== 0)
       <select name="sub-category" id="sub-category-filter">
         <option selected disabled>Sub Category</option>
@@ -19,7 +20,7 @@
 
       <select name="promotion" id="promotion-filter">
         <option selected disabled>Promotion</option>
-        <option value="hot">Trending</option>
+        <option value="trending">Trending</option>
         <option value="default">Popular</option>
         <option value="new">New</option>
       </select>
@@ -100,9 +101,8 @@
       let subCat = $('#sub-category-filter').val(),
       promotion = $('#promotion-filter').val();
 
-      filterQuery(<?=$products?>, subCat, promotion);
+      filterQuery('<?=$slug?>', subCat, promotion);
     });
-    
   });
   </script>
 @endpush

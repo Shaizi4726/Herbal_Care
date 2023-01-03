@@ -1,5 +1,5 @@
 function filterQuery (...args) {
-  let products = args[0],
+  let slug = args[0],
   subCat = args[1],
   promotion = args[2];
 
@@ -8,15 +8,15 @@ function filterQuery (...args) {
     type: 'get',
     url: '/filter',
     data: {
-      products: products,       
+      slug: slug,
       sub_cat: subCat,
       promotion: promotion
     },
     success: function(response) {
       $('#products-catalog').html(response);
     },
-    error: function() {
-      alert("An error occured while applying filter")
+    error: function(error) {
+      alert("An error occured while applying filter");
     }                
   }); 
 }

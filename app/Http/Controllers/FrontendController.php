@@ -132,35 +132,27 @@ class FrontendController extends Controller
 
     public function productFilter(Request $request)
     {
-        $products = $request->products;
+       $products=Category::getProductByCat($request->slug);
+       $products = $products->products;
 
-        $filterBy = $request->sub_cat;
-        if ($filterBy !== null)
-        $products = array_filter($products, function($product) use($filterBy) {
-          return($product['child_cat_id'] == $filterBy);
-        });
+        if ($request->sub_cat) {
+        $products = $products->where('child_cat_id', $request->sub_cat);
+        }
 
-        $filterBy = $request->promotion;
-        if ($filterBy !== null) 
-        $products = array_filter($products, function($product) use($filterBy) {
-          return($product['promotion'] == $filterBy);
-        });
+        
+        if ($request->promotion) {
+        $products = $products->where('promotion', $request->promotion);
+        }
 
-        if (count($products) > 0)
+        if ($products)
         {
           $content = '';
             foreach ($products as $product)
             {
-              $product = (object) $product;
-                $minprice = DB::table('products_attributes')->where('product_id', $product->id)
-                    ->min('price');
-                $maxprice = DB::table('products_attributes')->where('product_id', $product->id)
-                    ->max('price');
-                $Images = DB::table('images')->where('product_id', $product->id)
-                    ->pluck('image');
-                $Forms = DB::table('products_attributes')->where('product_id', $product->id)
-                    ->distinct()
-                    ->pluck('form');
+                $minprice = DB::table('products_attributes')->where('product_id', $product->id)->min('price');
+                $maxprice = DB::table('products_attributes')->where('product_id', $product->id)->max('price');
+                $Images = DB::table('images')->where('product_id', $product->id)->pluck('image');
+                $Forms = DB::table('products_attributes')->where('product_id', $product->id)->distinct()->pluck('form');
 
                 $Sizes = array();
                 foreach ($Forms as $form)
@@ -238,7 +230,7 @@ class FrontendController extends Controller
         $sub_cat = Category::getChildByParentSlug($request->slug);
         $recent_products=Product::where('status','active')->orderBy('id','DESC')->limit(3)->get();
 
-        return view('frontend.pages.product-grids')->with('products',$products->products)->with('recent_products',$recent_products)->with('sub_cat', $sub_cat);
+        return view('frontend.pages.product-grids')->with('products',$products->products)->with('recent_products',$recent_products)->with('sub_cat', $sub_cat)->with('slug', $request->slug);
     }
 
     public function productSubCat(Request $request){

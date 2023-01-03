@@ -170,7 +170,6 @@ function showModal(...args) {
   $("#modal-cart-form").submit(function(e) {
     e.preventDefault();
   
-    var modalForm = $("#modal-cart-form");
     var actionUrl = modalForm.attr('action');
     let id = modalForm.attr('data');
     
