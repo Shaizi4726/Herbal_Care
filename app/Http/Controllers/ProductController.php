@@ -53,12 +53,13 @@ class ProductController extends Controller
        
         $this->validate($request,[
             'title'=>'string|required',
-            'scientific'=>'string|required',
-            'summary'=>'string|required',
-            'benafit'=>'string|nullable',
+            'scientific'=>'string|nullable',
+            'other_name'=>'string|nullable',
+            'benefit'=>'string|nullable',
             'description'=>'string|nullable',
             'plu'=>'nullable|numeric',
             'photo'=>'required',
+            'minprice'=>'numeric|required',
             'photo.*'=>'image|mimes:jpg,jpeg,png,gif|max:1024|required',
             // 'photo'=>'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'cat_id'=>'required|exists:categories,id',
@@ -168,11 +169,12 @@ class ProductController extends Controller
         $product=Product::findOrFail($id);
         $this->validate($request,[
             'title'=>'string|required',
-            'scientific'=>'string|required',
-            'summary'=>'string|required',
+            'scientific'=>'string|nullable',
+            'other_name'=>'string|nullable',
             'benafit'=>'string|nullable',
             'description'=>'string|nullable',
             'photo'=>'string|required',
+            'minprice'=>'numeric|required',
             'cat_id'=>'required|exists:categories,id',
             'child_cat_id'=>'nullable|exists:categories,id',
             'is_featured'=>'sometimes|in:1',

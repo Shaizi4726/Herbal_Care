@@ -30,15 +30,15 @@
           @enderror
         </div>
         <div class="form-group">
-          <label for="summary" class="col-form-label">Other Name <span class="text-danger">*</span></label>
-          <textarea class="form-control" id="summary" name="summary">{{old('summary')}}</textarea>
-          @error('summary')
+          <label for="other_name" class="col-form-label">Other Name <span class="text-danger">*</span></label>
+          <textarea class="form-control" id="other_name" name="other_name">{{old('summary')}}</textarea>
+          @error('other_name')
           <span class="text-danger">{{$message}}</span>
           @enderror
         </div>
         <div class="form-group">
-          <label for="benafit" class="col-form-label">benefit</label>
-          <textarea class="form-control" id="benafit" name="benafit">{{old('benefit')}}</textarea>
+          <label for="benefit" class="col-form-label">benefit</label>
+          <textarea class="form-control" id="benefit" name="benefit">{{old('benefit')}}</textarea>
           @error('benefit')
           <span class="text-danger">{{$message}}</span>
           @enderror
@@ -117,6 +117,13 @@
           </div>
         </div>
         <div class="form-group">
+          <label for="inputPrice" class="col-form-label">Min Price <span class="text-danger">*</span></label>
+          <input id="inputPrice" type="number" name="inputPrice" value="{{old('minprice')}}" class="form-control">
+          @error('minprice')
+          <span class="text-danger">{{$message}}</span>
+          @enderror
+        </div>
+        <div class="form-group">
           <label for="status" class="col-form-label">Status <span class="text-danger">*</span></label>
           <select name="status" class="form-control">
               <option value="active">Active</option>
@@ -149,8 +156,8 @@
     $('#lfm').filemanager('image');
 
     $(document).ready(function() {
-      $('#summary').summernote({
-        placeholder: "Write summary description.....",
+      $('#other_name').summernote({
+        placeholder: "Write other_name.....",
           tabsize: 2,
           height: 150
       });
@@ -165,8 +172,8 @@
     });
 
     $(document).ready(function() {
-      $('#benafit').summernote({
-        placeholder: "Write benafit.....",
+      $('#benefit').summernote({
+        placeholder: "Write benefit.....",
           tabsize: 2,
           height: 150
       });

@@ -114,9 +114,13 @@
           <span class="text-danger">{{$message}}</span>
           @enderror
         </div>
+        
         <div class="form-group">
-          <label for="inputPhoto" class="col-form-label">Photo <span class="text-danger"></span></label>
-          
+          <label for="inputPrice" class="col-form-label">Min Price <span class="text-danger">*</span></label>
+          <input id="inputPrice" type="number" name="inputPrice" value="{{$product->minprice}}" class="form-control">
+          @error('minprice')
+          <span class="text-danger">{{$message}}</span>
+          @enderror
         </div>
         <div class="form-group">
           <label for="status" class="col-form-label">Status <span class="text-danger">*</span></label>
