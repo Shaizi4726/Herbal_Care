@@ -18,8 +18,30 @@
 
 .product-filters {
   display: flex;
-  justify-content: center;
-  margin: 2em;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  margin: 1em 0 0.5em;
+}
+
+.filter {
+  border-radius: 5px;
+  width: 10em;
+  height: 2em;
+  color: #443a2e;
+  font-size: 1em;
+  font-weight: bold;
+  margin: 0.5em;
+}
+
+.filter span {
+  text-align: center;
+  margin: 5em;
+}
+
+.filter option:disabled{
+  background-color: #443a2e;
+  color: #faf9f6;
+  font-weight: bold;
 }
 
 @media screen and (min-width: 768px) {

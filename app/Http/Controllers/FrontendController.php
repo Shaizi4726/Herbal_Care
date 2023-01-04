@@ -132,8 +132,19 @@ class FrontendController extends Controller
 
     public function productFilter(Request $request)
     {
-       $products=Category::getProductByCat($request->slug);
-       $products = $products->products;
+       if($request->search) {
+        $products=Product::orwhere('title','like','%'.$request->que.'%')
+        ->orwhere('slug','like','%'.$request->que.'%')
+        ->orwhere('description','like','%'.$request->que.'%')
+        ->orwhere('summary','like','%'.$request->que.'%')
+        ->orderBy('id','DESC')
+        ->paginate('9');
+       }
+       else {
+        $products = Category::getProductByCat($request->que);
+        $products = $products->products;
+       }
+       $sort_by = $request->sorting;
 
         if ($request->sub_cat) {
         $products = $products->where('child_cat_id', $request->sub_cat);
@@ -144,15 +155,25 @@ class FrontendController extends Controller
         $products = $products->where('promotion', $request->promotion);
         }
 
-        if ($products)
+        if ($sort_by) {
+          if($sort_by == 'a-z')
+          $products = $products->sortBy('title');
+          else if($sort_by == 'z-a')
+          $products = $products->sortByDesc('title');
+          else if($sort_by == 'low-prc')
+          $products = $products->sortBy('price');
+          else if($sort_by == 'hgh-prc')
+          $products = $products->sortByDesc('price');
+        }
+
+        if (count($products) !== 0)
         {
           $content = '';
             foreach ($products as $product)
             {
-                $minprice = DB::table('products_attributes')->where('product_id', $product->id)->min('price');
                 $maxprice = DB::table('products_attributes')->where('product_id', $product->id)->max('price');
-                $Images = DB::table('images')->where('product_id', $product->id)->pluck('image');
                 $Forms = DB::table('products_attributes')->where('product_id', $product->id)->distinct()->pluck('form');
+                $Images = DB::table('images')->where('product_id', $product->id)->pluck('image');
 
                 $Sizes = array();
                 foreach ($Forms as $form)
@@ -168,7 +189,7 @@ class FrontendController extends Controller
                     };
                 }
                 $Sizes = json_encode($Sizes);
-                $minPrice = number_format($minprice, 2);
+                $minPrice = number_format($product->price, 2);
                 $maxPrice = number_format($maxprice, 2);
 
                 $content .= <<<EOD
@@ -178,7 +199,7 @@ class FrontendController extends Controller
                     <div class="overlay">
                         <button id="{$product->id}" class="btn btn-quick-view" 
                         title="Quick View" onclick='showModal(id, `{$product->photo}`, {$Images}, 
-                        `{$product->title}`, {$Forms}, {$Sizes}, {$minprice}, {$maxprice}, `{$product->slug}`)'> 
+                        `{$product->title}`, {$Forms}, {$Sizes}, {$product->price}, {$maxprice}, `{$product->slug}`)'> 
                             <i class="fa-regular fa-eye"></i><p>Quick View</p></button>
                     </div>
 
@@ -209,7 +230,7 @@ class FrontendController extends Controller
                     ->orwhere('summary','like','%'.$request->search.'%')
                     ->orderBy('id','DESC')
                     ->paginate('9');
-        return view('frontend.pages.product-grids')->with('products',$products)->with('recent_products',$recent_products);
+        return view('frontend.pages.product-grids')->with('products',$products)->with('recent_products',$recent_products)->with('sub_cat', [])->with('query', $request->search)->with('search', 1);
     }
     
 
@@ -230,7 +251,7 @@ class FrontendController extends Controller
         $sub_cat = Category::getChildByParentSlug($request->slug);
         $recent_products=Product::where('status','active')->orderBy('id','DESC')->limit(3)->get();
 
-        return view('frontend.pages.product-grids')->with('products',$products->products)->with('recent_products',$recent_products)->with('sub_cat', $sub_cat)->with('slug', $request->slug);
+        return view('frontend.pages.product-grids')->with('products',$products->products)->with('recent_products',$recent_products)->with('sub_cat', $sub_cat)->with('query', $request->slug)->with('search', 0);
     }
 
     public function productSubCat(Request $request){

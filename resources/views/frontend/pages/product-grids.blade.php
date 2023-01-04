@@ -8,9 +8,8 @@
 
 @section('main-content')
   <div class="filters product-filters" id="product-filters">
-
-      @if(count($sub_cat) !== 0)
-      <select name="sub-category" id="sub-category-filter">
+    @if(count($sub_cat) !== 0)
+      <select name="sub-category" id="sub-category-filter" class="filter">
         <option selected disabled>Sub Category</option>
         @foreach($sub_cat as $id=>$cat)
           <option value="{{$id}}">{{$cat}}</option>
@@ -18,14 +17,20 @@
       </select>
       @endif
 
-      <select name="promotion" id="promotion-filter">
-        <option selected disabled>Promotion</option>
-        <option value="trending">Trending</option>
-        <option value="default">Popular</option>
-        <option value="new">New</option>
+      <select name="promotion" id="promotion-filter" class="filter">
+        <option selected disabled><span>Promotion</span></option>
+        <option value="popular"><li>Popular</li></option>
+        <option value="trending"><li>Trending</li></option>
+        <option value="new"><li>New</li></option>
       </select>
 
-      <button>A</button>
+      <select name="sort" id="sorting-filter" class="filter">
+        <option selected disabled>Sort By</option>
+        <option value="a-z">A to Z</option>
+        <option value="z-a">Z to A</option>
+        <option value="low-prc">Low Price</option>
+        <option value="hgh-prc">High Price</option>
+      </select>
   </div>
 
   <section class="products-catalog">
@@ -100,8 +105,9 @@
     $('#product-filters').change(() => {
       let subCat = $('#sub-category-filter').val(),
       promotion = $('#promotion-filter').val();
+      sortBy = $('#sorting-filter').val();
 
-      filterQuery('<?=$slug?>', subCat, promotion);
+      filterQuery('<?=$query?>', subCat, promotion, sortBy, <?=$search?>);
     });
   });
   </script>

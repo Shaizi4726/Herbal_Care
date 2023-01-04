@@ -159,6 +159,15 @@ function cartAdd(url, id) {
 }
 
 /*==================== Add product to favorites ====================*/
-function fav(e) {
-  e.innerHTML = `<i class="fa-solid fa-heart fav"></i>`;
+function fav(ico) {
+  let el = $(ico).children()[0];
+  if ($(el).hasClass('fa-regular')) {
+    el.classList.remove('fa-regular');
+    el.classList.add('fa-solid');
+  }
+
+  else if ($(el).hasClass('fa-solid')) {
+    el.classList.remove('fa-solid');
+    el.classList.add('fa-regular');
+  }
 }

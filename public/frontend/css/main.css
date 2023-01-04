@@ -58,12 +58,15 @@ table, th, td {
 
 /*==================== Product Cards ====================*/
 .product-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
   margin: 0.5em 0 0.5em 0.5em;
-  padding-bottom: 1em;
+  padding-bottom: 0.5em;
   width: 10em;
-  height: auto;
+  height: 16em;
   text-align: center;
-  display: inline-block;
   box-shadow: 0 3px 5px 1px rgba(0, 0, 0, 0.5);
 }
 
@@ -75,7 +78,8 @@ table, th, td {
 
 .meta-detail {
     padding: 0 0.5em;
-    height: 5em;
+    height: 4em;
+    font-size: 0.8em;
 }
 
 .price .value {
@@ -379,6 +383,10 @@ table, th, td {
 
   .overlay:hover .btn-quick-view {
     height: 200px;
+  }
+
+  .meta-detail {
+    font-size: 1.2em;
   }
 
   .btn-submit {

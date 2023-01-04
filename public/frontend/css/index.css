@@ -55,8 +55,8 @@
 }
 
 /*==================== Categories Content ====================*/
-.cat-content {
-    margin: 2em;
+.title-content {
+    margin: 2em 0.5em 0;
 }
 
 @media screen and (min-width: 768px) {

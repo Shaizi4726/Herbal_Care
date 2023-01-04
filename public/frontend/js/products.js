@@ -1,16 +1,20 @@
 function filterQuery (...args) {
-  let slug = args[0],
+  let que = args[0],
   subCat = args[1],
-  promotion = args[2];
+  promotion = args[2],
+  sortBy = args[3],
+  search = args[4];
 
   /* AJAX request for adding shopping list items to cart */
   $.ajax({
     type: 'get',
     url: '/filter',
     data: {
-      slug: slug,
+      query: que,
       sub_cat: subCat,
-      promotion: promotion
+      promotion: promotion,
+      sorting: sortBy,
+      search: search
     },
     success: function(response) {
       $('#products-catalog').html(response);

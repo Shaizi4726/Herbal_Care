@@ -17,6 +17,11 @@
         <input type="search" name="search" class="form-controller search-term" placeholder="Search Products...">                                                                
         <button type="submit" class="btn search-button" value="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
       </form>
+      <button id="mob-fav-button" class="btn fav-button header-icon">
+        <a href="{{route('wishlist')}}">
+        <i class="fa-solid fa-heart" id="fav-icon"></i>
+        <div class="cart-quantity"><span>{{Helper::cartCount()}}</span></div></a>
+      </button>
       <button id="mob-cart-button" class="btn header-icon cart-button">
         <a href="{{route('cart')}}">
         <i class="fa-solid fa-cart-shopping" id="cart-icon"></i>

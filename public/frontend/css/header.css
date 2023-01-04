@@ -207,6 +207,27 @@
   top: 0.1em;
 }
 
+.fav-button .cart-quantity {
+  height: 12px;
+  width: 12px;
+  position: relative;
+  bottom: 1.6em;
+  right: 1.5em;
+  color: #443a2e;
+  font-size: 10px;
+}
+
+.fav-button span {
+  top: 0.1em;
+}
+
+.fav-button {
+  font-size: 25px;
+  position: relative;
+  left: 2em;
+  top: 0.3em;
+}
+
 @media only screen and (min-width: 768px) {
   /*==================== Desktop Header ====================*/
   #mob-header {
