@@ -33,8 +33,8 @@
 
         <div class="form-group">
           <label for="inputTitle" class="col-form-label">Other name <span class="text-danger">*</span></label>
-          <input id="inputTitle" type="text" name="summary" placeholder="Enter Other Name"  value="{{$product->summary}}" class="form-control">
-          @error('summary')
+          <input id="inputTitle" type="text" name="other_name" placeholder="Enter Other Name"  value="{{$product->other_name}}" class="form-control">
+          @error('other name')
           <span class="text-danger">{{$message}}</span>
           @enderror
         </div>
@@ -57,28 +57,57 @@
           <label for="is_featured">Is Featured</label><br>
           <input type="checkbox" name='is_featured' id='is_featured' value='{{$product->is_featured}}' {{(($product->is_featured) ? 'checked' : '')}}> Yes                        
         </div>
-              {{-- {{$categories}} --}}
-
-        <div class="form-group">
-          <label for="cat_id">Category <span class="text-danger">*</span></label>
-          <select name="cat_id" id="cat_id" class="form-control">
+        <div class="EditCategory">
+          {{-- {{$categories}} --}}
+          @php
+            $categories = DB::table('categories')->get();
+            $product_categories = DB::table('product_categories')->where('product_id', $product->id)->get();
+          @endphp
+          <div class="modal-shopping-list" id="modal-shopping-list">
+					  <table id="shopping-list-table">
+              <h6>Category List</h6>
+              <thead>
+                  <tr>
+                    <!-- <th id="s-no">S.No</th> -->
+                    <th id="cat-id">Id</th>
+                    <th id="cat-name">Category</th>	
+                    <th>Action</th>								
+                  </tr>
+              </thead>
+              @foreach($product_categories as $prod_cat)
+                @php
+                $cat_title = DB::table('categories')->where('id', $prod_cat->category_id)->first();
+      
+                @endphp      
+              <tr id="{{$prod_cat->category_id}}-tr">
+                  <td>{{$prod_cat->category_id}}</td>
+                  <td class="td-cat-title" value="{{$cat_title->title}}">{{$cat_title->title}}</td>
+                  <td>
+                    <button type="button" onclick="proCatDlt(<?=$product->id?>,<?=$prod_cat->category_id?>)"><i class="fas fa-trash-alt"></i></button>
+                  </td>
+              </tr>
+              @endforeach
+              <tbody id="list-body">
+						</tbody>
+            </table>
+          </div>
+          
+          <div class="form-group">
+            <label for="cat-id">Category <span class="text-danger">*</span></label>
+            <select name="cat_id" id="cat-id" class="form-control">
               <option value="">--Select any category--</option>
               @foreach($categories as $key=>$cat_data)
-                  <option value='{{$cat_data->id}}' {{(($product->cat_id==$cat_data->id)? 'selected' : '')}}>{{$cat_data->title}}</option>
+                <option value='{{$cat_data->id}}' id="{{$cat_data->title}}">{{$cat_data->title}}</option>
               @endforeach
-          </select>
+            </select>
+          </div>
+          <a href="javascript:void(0);" class="add_button" id="add-cat-select" title="Add field">Add</a><br>
+          <input type="hidden" id="cat-count" name="cat_count" value="">
+          @error('title')
+          <span class="text-danger">{{$message}}</span>
+          @enderror
         </div>
-        @php 
-          $sub_cat_info=DB::table('categories')->select('title')->where('id',$product->child_cat_id)->get();
-        // dd($sub_cat_info);
-        @endphp
-        {{-- {{$product->child_cat_id}} --}}
-        <div class="form-group {{(($product->child_cat_id)? '' : 'd-none')}}" id="child_cat_div">
-          <label for="child_cat_id">Sub Category</label>
-          <select name="child_cat_id" id="child_cat_id" class="form-control">
-              <option value="">--Select any sub category--</option>
-          </select>
-        </div>      
+
         <div class="form-group">
           <label for="brand_id">Brand</label>
           <select name="brand_id" class="form-control">
@@ -90,12 +119,12 @@
         </div>
 
         <div class="form-group">
-          <label for="condition">Condition</label>
-          <select name="condition" class="form-control">
-              <option value="">--Select Condition--</option>
-              <option value="default" {{(($product->condition=='default')? 'selected':'')}}>Default</option>
-              <option value="new" {{(($product->condition=='new')? 'selected':'')}}>New</option>
-              <option value="trending" {{(($product->condition=='trending')? 'selected':'')}}>Trending</option>
+          <label for="promotion">promotion</label>
+          <select name="promotion" class="form-control">
+              <option value="">--Select promotion--</option>
+              <option value="default" {{(($product->promotion=='default')? 'selected':'')}}>Default</option>
+              <option value="new" {{(($product->promotion=='new')? 'selected':'')}}>New</option>
+              <option value="trending" {{(($product->promotion=='trending')? 'selected':'')}}>Trending</option>
           </select>
         </div>
 
@@ -117,7 +146,7 @@
         
         <div class="form-group">
           <label for="inputPrice" class="col-form-label">Min Price <span class="text-danger">*</span></label>
-          <input id="inputPrice" type="number" name="inputPrice" value="{{$product->minprice}}" class="form-control">
+          <input id="inputPrice" type="number" name="minprice" value="{{$product->minprice}}" class="form-control">
           @error('minprice')
           <span class="text-danger">{{$message}}</span>
           @enderror
@@ -219,5 +248,52 @@
         if(child_cat_id!=null){
             $('#cat_id').change();
         }
+
+    $(document).ready(function() {
+    var max_fields = 10;
+    var wrapper = $(".EditCategory");
+    
+
+    var x = 1;
+    $("#add-cat-select").click(function(e) {
+        e.preventDefault();
+        if (x < max_fields) {
+          $(wrapper).append(`<div><div class="form-group"><label for="cat_id${x}">Category <span class="text-danger">*</span></label><select name="cat_id${x}" id="cat_id${x}" class="form-control"><option value="">--Select any category--</option>@foreach($categories as $key=>$cat_data)<option value="{{$cat_data->id}}">{{$cat_data->title}}</option>@endforeach</select></div><a href="#" class="delete">Delete</a></div>`); //add input box
+          $("#cat-count").val(x);
+          x++;
+          } 
+          else {
+            alert('You Reached the limits')
+        }
+    });
+
+    $(wrapper).on("click", ".delete", function(e) {
+        e.preventDefault();
+        $(this).parent('div').remove();
+        x--;
+    })
+});
+
+function proCatDlt(productId, catId){
+  $("#" + catId + "-tr").remove();
+ 
+  $.ajax({
+      url:'/admin/product/delete-category/' + catId,
+      type:"get",
+      data:{
+          productId:productId
+      },
+      success:function(response){
+         
+          }});
+        }
+
+          $.each($('.td-cat-title'), (key, value) => {
+            let el = document.getElementById(value.innerText);
+            if(el !== undefined) {
+              // el.setAttribute('disabled', 'disabled');
+              el.style.display = 'none';
+            }
+          });
 </script>
 @endpush

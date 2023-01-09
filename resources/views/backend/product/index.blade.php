@@ -209,10 +209,10 @@
           <thead>
             <tr>
               <th>S.N.</th>
+              <th> PLU </th>
               <th>Name</th>
-              <th>Category</th>
               <th>Is Featured</th>
-              <th>Condition</th>
+              <th>Promotion</th>
               <th>Photo</th>
               <th>Status</th>
               <th>Action</th>
@@ -221,10 +221,10 @@
           <tfoot>
             <tr>
               <th>S.N.</th>
+              <th> PLU </th>
               <th>Name</th>
-              <th>Category</th>
               <th>Is Featured</th>
-              <th>Condition</th>
+              <th>Promotion</th>
               <th>Photo</th>
               <th>Status</th>
               <th>Action</th>
@@ -240,15 +240,10 @@
               @endphp
                 <tr>
                     <td>{{$product->id}}</td>
-                    <td>{{$product->title}}</td>
-                    <td>{{$product->cat_info['title']}}
-                      <sub>
-                          {{$product->sub_cat_info->title ?? ''}}
-                      </sub>
-                    </td>
+                    <td>{{$product->plu}}</td>
+                    <td>{{$product->title}}</td>                    
                     <td>{{(($product->is_featured==1)? 'Yes': 'No')}}</td>
-                    <td>{{$product->condition}}</td>
-                    
+                    <td>{{$product->promotion}}</td>                    
                     <td>
                         @if($product->photo)
                             @php

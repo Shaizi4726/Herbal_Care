@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\Product;
+use App\Models\ProductCategory;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
@@ -39,6 +40,7 @@ class ProductsImport implements
     public function collection(Collection $rows)
     {
         foreach ($rows as $row) {
+            $product_cat_list = explode(',', $row['cat_id']);
             $product = Product::create([
                 'plu' => $row['plu'],
                 'title' => $row['title'],
@@ -49,19 +51,17 @@ class ProductsImport implements
                 'description' => $row['description'],
                 'photo' => $row['photo'],
                 'minprice' => $row['minprice'],
-                'cat_id' => $row['cat_id'],
-                'child_cat_id' => $row['child_cat_id'],
+                'cat_id' => $product_cat_list[0],
+                // 'child_cat_id' => $row['child_cat_id'],
                 'brand_id' => $row['brand_id'],
                 'is_featured' => $row['is_featured'],
                 'status' => $row['status'],
-                'promotion' => $row['condition']
-               
-                
+                'promotion' => $row['promotion']                               
             ]);
-
-            /* $product->slug()->create([
-                 'slug' => $row['title']
-             ]);*/
+            foreach ($product_cat_list as $product_cat)
+            $product->productcategory()->create([
+                'category_id' => $product_cat
+            ]);
         }
     }
 

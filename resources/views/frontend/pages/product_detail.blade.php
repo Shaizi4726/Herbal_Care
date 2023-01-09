@@ -71,7 +71,7 @@
 					<input type="button" id="modal-add-list" class="btn btn-submit" value="Add to List" onclick="shopList()">
 				</form>
 
-				<form "  action="/add-to-cart" data="{{$product_detail->id}}" id="modal-cart-form">
+				<form action="/add-to-cart" data="{{$product_detail->id}}" id="modal-cart-form">
 					<button id="modal-cart-button" class="modal-cart-button">
 						<span class="add-to-cart">Add to cart</span>
 						<span class="added">Added</span>

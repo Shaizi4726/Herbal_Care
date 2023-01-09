@@ -8,14 +8,8 @@
 
 @section('main-content')
   <div class="filters product-filters" id="product-filters">
-<<<<<<< HEAD
     @if(count($sub_cat) !== 0)
       <select name="sub-category" id="sub-category-filter" class="filter">
-=======
-
-    @if(count($sub_cat) !== 0)
-      <select name="sub-category" id="sub-category-filter">
->>>>>>> 740b1563fda71438632651a9439d11e54597e013
         <option selected disabled>Sub Category</option>
         @foreach($sub_cat as $id=>$cat)
           <option value="{{$id}}">{{$cat}}</option>

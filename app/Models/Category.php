@@ -61,4 +61,7 @@ class Category extends Model
         }
         return 0;
     }
+    public function productcategory(){
+        return $this->hasMany(ProductCategory::class,'product_id','id');
+     }
 }

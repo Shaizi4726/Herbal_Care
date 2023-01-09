@@ -12,6 +12,10 @@
         <label class="control-label">Product Code: </label>
         <label class="control-label"><strong>{{$productDetails->id}}</strong></label>   
     </div>
+    <div class="controls">
+        <label class="control-label">Product plu: </label>
+        <label class="control-label"><strong>{{$productDetails->plu}}</strong></label>   
+    </div>
     <div class="card-body">
       <form method="post" action="{{url('/admin/product/add-images/'.$productDetails->id)}}" enctype="multipart/form-data">
         {{csrf_field()}}

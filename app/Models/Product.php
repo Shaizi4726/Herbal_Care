@@ -7,11 +7,12 @@ use App\Models\Cart;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use App\Models\ProductsAttribute;
+use App\Models\ProductCategory;
 use Nicolaslopezj\Searchable\SearchableTrait;
 class Product extends Model
 {
     
-    protected $fillable=['title','scientific','slug','other_name','benefit','description','minprice','cat_id','child_cat_id','brand_id','status','photo', 'is_featured','condition','plu'];
+    protected $fillable=['title','scientific','slug','other_name','benefit','description','minprice','brand_id','status','photo', 'is_featured','promotion','plu'];
 
     public function cat_info(){
         return $this->hasOne('App\Models\Category','id','cat_id')->orderBy('id','asc');
@@ -69,6 +70,8 @@ class Product extends Model
     // public function groups(){
     //     return $this->has(Product::class);
     // }
-    
+    public function productcategory(){
+        return $this->hasMany(ProductCategory::class,'product_id','id');
+     }
 
 }

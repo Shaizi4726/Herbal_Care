@@ -54,17 +54,24 @@
           <label for="is_featured">Is Featured</label><br>
           <input type="checkbox" name='is_featured' id='is_featured' value='1' checked> Yes                        
         </div>
+        <div class="AddCategory">
             {{-- {{$categories}} --}}
-        <div class="form-group">
-          <label for="cat_id">Category <span class="text-danger">*</span></label>
-          <select name="cat_id" id="cat_id" class="form-control">
+          @php
+            $categories = DB::table('categories')->get();
+          @endphp
+          <div class="form-group">
+            <label for="cat_id">Category <span class="text-danger">*</span></label>
+            <select name="cat_id" id="cat_id" class="form-control">
               <option value="">--Select any category--</option>
               @foreach($categories as $key=>$cat_data)
                   <option value='{{$cat_data->id}}'>{{$cat_data->title}}</option>
               @endforeach
-          </select>
+            </select>
+          </div>
+          <a href="javascript:void(0);" class="add_button" title="Add field">Add</a><br>
+          <input type="hidden" id="cat_count" name="cat_count" value="">
         </div>
-        <div class="form-group d-none" id="child_cat_div">
+        <!-- <div class="form-group d-none" id="child_cat_div">
           <label for="child_cat_id">Sub Category</label>
           <select name="child_cat_id" id="child_cat_id" class="form-control">
               <option value="">--Select any category--</option>
@@ -72,7 +79,7 @@
                   <option value='{{$parent_cat->id}}'>{{$parent_cat->title}}</option>
               @endforeach --}}
           </select>
-        </div>       
+        </div>        -->
         <div class="form-group">
           <label for="brand_id">Brand</label>
           {{-- {{$brands}} --}}
@@ -84,13 +91,20 @@
           </select>
         </div>
         <div class="form-group">
-          <label for="condition">Condition</label>
-          <select name="condition" class="form-control">
-              <option value="">--Select Condition--</option>
+          <label for="promotion">Promotion</label>
+          <select name="promotion" class="form-control">
+              <option value="">--Select Promotion--</option>
               <option value="default">Default</option>
               <option value="new">New</option>
               <option value="trending">Trending</option>
           </select>
+        </div>
+        <div class="form-group">
+          <label for="minprice" class="col-form-label">Min Price <span class="text-danger">*</span></label>
+          <input id="minprice" type="number" name="minprice" value="{{old('minprice')}}" class="form-control">
+          @error('minprice')
+          <span class="text-danger">{{$message}}</span>
+          @enderror
         </div>
        <div class="form-group">
           <label for="inputPhoto" class="col-form-label">Photo <span class="text-danger">*</span></label>
@@ -116,13 +130,7 @@
               </span>          
           </div>
         </div>
-        <div class="form-group">
-          <label for="inputPrice" class="col-form-label">Min Price <span class="text-danger">*</span></label>
-          <input id="inputPrice" type="number" name="inputPrice" value="{{old('minprice')}}" class="form-control">
-          @error('minprice')
-          <span class="text-danger">{{$message}}</span>
-          @enderror
-        </div>
+        
         <div class="form-group">
           <label for="status" class="col-form-label">Status <span class="text-danger">*</span></label>
           <select name="status" class="form-control">
@@ -182,7 +190,7 @@
 
 </script>
 
-<script>
+<!-- <script>
   $('#cat_id').change(function(){
     var cat_id=$(this).val();
     // alert(cat_id);
@@ -223,7 +231,7 @@
     else{
     }
   })
-</script>
+</script> -->
 
 <script type="text/javascript">
     $(document).ready(function() {
@@ -235,5 +243,31 @@
           $(this).parents(".control-group").remove();
       });
     });
+
+
+    $(document).ready(function() {
+    var max_fields = 10;
+    var wrapper = $(".AddCategory");
+    var add_button = $(".add_button");
+
+    var x = 1;
+    $(add_button).click(function(e) {
+        e.preventDefault();
+        if (x < max_fields) {
+            x++;
+            $(wrapper).append(`<div><div class="form-group"><label for="cat_id${x}">Category <span class="text-danger">*</span></label><select name="cat_id${x}" id="cat_id${x}" class="form-control"><option value="">--Select any category--</option>@foreach($categories as $key=>$cat_data)<option value="{{$cat_data->id}}">{{$cat_data->title}}</option>@endforeach</select></div><a href="#" class="delete">Delete</a></div>`); //add input box
+            $("#cat_count").val(x);
+          } 
+          else {
+            alert('You Reached the limits')
+        }
+    });
+
+    $(wrapper).on("click", ".delete", function(e) {
+        e.preventDefault();
+        $(this).parent('div').remove();
+        x--;
+    })
+});
 </script>
 @endpush

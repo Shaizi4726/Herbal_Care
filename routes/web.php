@@ -106,7 +106,9 @@ Route::match(['get','post'],'admin/product/delete-attributes/{id}','ProductContr
 Route::match(['get','post'], 'admin/product/add-images/{id}','ProductController@addImage');
 Route::match(['get','post'],'admin/product/delete-images/{id}','ProductController@deleteImage')->name('delete-image');
 
+//Delete category
 
+Route::match(['get','post'],'admin/product/delete-category/{id}','ProductController@DeleteCategory')->name('delete-category');
 
 Route::match(['get','post'],'/get-product-price','FrontendController@getProductPrice');
 Route::match(['get','post'],'/get-product-form','ProductController@getProductForm');
