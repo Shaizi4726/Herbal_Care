@@ -1,0 +1,93 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Poppins, Verdana, Tahoma, sans-serif;
+  background-color: #f7f7ff;
+}
+
+ul li {
+  list-style-type: none;
+  text-align: center;
+}
+
+a {
+  text-decoration: none;
+  color: #d7c89d;
+}
+
+#header-title {
+  font-family: Vollkorn, 'Times New Roman', Times, serif;
+  font-weight: 900;
+}
+
+#primary-header {
+  background-color: #443a2e;
+  position: sticky;
+  top: 0;
+}
+
+.header-content {
+  margin: 0;
+  padding: 0;
+}
+
+.header-item {
+  color: #d7c89d;
+  text-align: center;
+}
+
+.header-icon {
+  color: #d7c89d;
+  font-size: 40px;
+  margin-top: 25%;
+}
+
+#navbar-content {
+  width: 100%;
+  height: 100vh;
+  overflow: auto;
+}
+
+.nav {
+  background-color: #f7f7ff;
+  position: absolute;
+  top: 0;
+  z-index: 2;
+}
+
+.menu a {
+  color: #443a2e;
+  padding: 20px;
+}
+
+.menu a:hover{
+  background-color: #d7c89d;
+}
+
+button.close {
+  display: none;
+  color: #443a2e;
+  margin: 2vh 1vw;
+  font-size: 40px;
+  width: 25vw;
+  height: 10vh;
+}
+
+#mob-nav {
+  width: 0vw;
+  height: 0vh;
+  transition: 0.5s ease-in-out;
+}
+
+.mob-nav {
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.mob-drop {
+  font-size: small;
+}
