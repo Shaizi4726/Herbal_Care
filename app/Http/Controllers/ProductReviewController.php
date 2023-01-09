@@ -44,6 +44,7 @@ class ProductReviewController extends Controller
             'rate'=>'required|numeric|min:1'
         ]);
         $product_info=Product::getProductBySlug($request->slug);
+<<<<<<< HEAD
         //  return $product_info;
         // return $request->all();
         $data=$request->all();
@@ -65,6 +66,40 @@ class ProductReviewController extends Controller
         }
         else{
             request()->session()->flash('error','Something went wrong! Please try again!!');
+=======
+        // $productReview = ProductReview::where('product_id')->where('user_id')->get();
+        //  return $product_info;
+        // return $request->all();
+        $data=$request->all();
+        
+        $data['product_id']=$product_info->id;
+        $data['plu']=$product_info->plu;
+        $data['user_id']=$request->user()->id;
+        $data['status']='active';
+        $productReview = ProductReview::getPreviousReview($product_info->id);
+        //dd($data);
+        
+        if(!$productReview){
+            $status=ProductReview::create($data);
+            $user=User::where('role','admin')->get();
+            $details=[
+                'title'=>'New Product Rating!',
+                'actionURL'=>route('product-detail',$product_info->slug),
+                'fas'=>'fa-star'
+            ];
+            Notification::send($user,new StatusNotification($details));
+            if($status){
+                request()->session()->flash('success','Thank you for your feedback');
+            }
+            else{
+                request()->session()->flash('error','Something went wrong! Please try again!!');
+            }
+        }
+        else{
+        //    dd($productReview);
+        $status=$productReview->fill($data)->update();
+            
+>>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
         }
         return redirect()->back();
     }

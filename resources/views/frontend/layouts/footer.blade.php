@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 	<!-- Start Footer Area -->
 <footer class="footer shop" >
@@ -203,3 +204,92 @@
 			});
 		});
 	  </script>
+=======
+<!-- Start Footer Area -->
+<footer class="footer shop-footer" >
+	<!-- Footer Top -->
+	<div class="footer-top main-footer">				
+		<div class="footer-about">
+			<div class="logo">
+				<a href="{{route('home')}}"><img src="{{asset('backend/img/logo2.png')}}" alt="#"></a>
+			</div>
+			<hr>
+			@php
+				$settings=DB::table('settings')->get();
+			@endphp
+
+			<div class="footer-desc">
+				<p class="desc-text">@foreach($settings as $data) {{$data->short_des}} @endforeach</p>
+			</div>
+		</div>
+
+		<div class="footer-menu">
+			<div class="footer-info">
+				<h3>Information</h3>
+				<hr>
+				<ul>
+					<li><a href="{{route('about-us')}}">About Us</a></li>
+					<li><a href="#">Faq</a></li>
+					<li><a href="#">Terms & Conditions</a></li>
+					<li><a href="#">Privacy Policy</a></li>
+					<li><a href="#">Help</a></li>
+				</ul>
+			</div>
+
+			<div class="footer-cust-serv">
+				<h3>Customer Service</h3>
+				<hr>
+				<ul>
+					<li><a href="#">Payment Methods</a></li>
+					<li><a href="#">Money-back</a></li>
+					<li><a href="#">Returns</a></li>
+					<li><a href="#">Shipping</a></li>
+					<li><a href="{{route('contact')}}">Contact Us</a></li>
+				</ul>
+			</div>
+
+			<div class="footer-loc">
+				<div>
+				<h3>Get In Touch</h3></div>
+				<hr>
+				<div>
+				<ul>
+					<li>@foreach($settings as $data) {{$data->address}} @endforeach</li>
+					<li>@foreach($settings as $data) {{$data->email}} @endforeach</li>
+					<li>@foreach($settings as $data) {{$data->phone}} @endforeach</li>
+				</ul>
+</div>
+			</div>
+		</div>
+	</div>
+	<!-- End Footer Top -->
+
+	<div class="copyright">
+		<p>Copyright &#169 {{date('Y')}} <a href="#" target="_blank">World Forum Trading</a>  -  All Rights Reserved.</p>
+	</div>
+
+	<!-- Fixed Footer -->
+	<div id="footer-fixed" class="footer-fixed fixed-bottom collapse"> 
+		<!-- Features -->
+    <div class="features" >
+			<div class="feature1" >
+				<h4><i class="fa-solid fa-rocket"></i> Free shipping<br>Orders over AED. 100</h4>
+			</div>
+												
+			<div class="feature2">
+				<h4><i class="fa-solid fa-clock-rotate-left"></i> Free Return<br>Within 30 days returns</h4>
+			</div>
+										
+			<div class="feature3">
+				<h4><i class="fa-solid fa-lock"></i> Secure Payment<br>100% secure payment</h4>
+			</div>
+												
+			<div class="feature4">
+				<h4><i class="fa-solid fa-tag"></i> Best Price <br>Guaranteed price</h4>
+			</div>
+		</div>
+		<!-- End Features -->
+	</div>
+	<!-- End Fixed Footer -->
+</footer>
+>>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800

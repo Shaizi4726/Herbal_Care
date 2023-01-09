@@ -57,8 +57,12 @@
 <script type="text/javascript">
   $(document).ready(function() {
 
+<<<<<<< HEAD
     Echo.channel('message')
       .listen('MessageSent', (e) => {
+=======
+    window.addEventListener('message', (e) => {
+>>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
 
       const message_container = $('#message-items');
       const message_counter_area = $('#messages .count');

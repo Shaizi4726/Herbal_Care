@@ -33,7 +33,11 @@ class WishlistController extends Controller
         $data = $request->all();
         $proArr = explode("-",$data['price']);
         $proAttr = ProductsAttribute::where(['price' => $proArr[0]])->first();
+<<<<<<< HEAD
         dd($proAttr);
+=======
+        //dd($proAttr);
+>>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
         // return $product;
         if (empty($product)) {
             request()->session()->flash('error','Invalid Products');
@@ -52,6 +56,10 @@ class WishlistController extends Controller
             $wishlist = new Wishlist;
             $wishlist->user_id = auth()->user()->id;
             $wishlist->product_id = $product->id;
+<<<<<<< HEAD
+=======
+            $wishlist->plu = $product->plu;
+>>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
             $wishlist->price = ($proAttr->price-($proAttr->price*$proAttr->discount)/100);
             $wishlist->quantity = 1;
             $wishlist->amount=$wishlist->price*$wishlist->quantity;

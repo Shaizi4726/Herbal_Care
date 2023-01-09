@@ -10,7 +10,11 @@
  * Copyright 2011-2020 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
+<<<<<<< HEAD
 :root {
+=======
+ :root {
+>>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
   --blue: #4e73df;
   --indigo: #6610f2;
   --purple: #6f42c1;
@@ -613,7 +617,11 @@ pre code {
   display: flex;
   flex-wrap: wrap;
   margin-right: -0.75rem;
+<<<<<<< HEAD
   margin-left: -0.75rem;
+=======
+  margin-left: 0.75rem;
+>>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
 }
 
 .no-gutters {
@@ -10803,6 +10811,7 @@ a:focus {
 }
 
 .bg-login-image {
+<<<<<<< HEAD
   background: url("https://source.unsplash.com/K4mSJ7kc0As/600x800");
   background-position: center;
   background-size: cover;
@@ -10818,6 +10827,28 @@ a:focus {
   background: url("https://source.unsplash.com/oWTW-jNGl9I/600x800");
   background-position: center;
   background-size: cover;
+=======
+  background: url("/images/logo1.png");
+  background-position: center;
+  background-size: cover;
+  height: 336px;
+ 
+}
+
+.bg-register-image {
+  background: url("/images/logo1.png");
+  background-position: center;
+  background-size: cover;
+  height: 336px;
+}
+
+.bg-password-image {
+  background: url("/images/logo1.png");
+  background-position: center;
+  background-size: cover;
+  height: 336px;
+
+>>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
 }
 
 form.user .custom-checkbox.small label {

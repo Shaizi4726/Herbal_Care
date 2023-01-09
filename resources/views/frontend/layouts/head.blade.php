@@ -1,7 +1,14 @@
 <!-- Meta Tag -->
 @yield('meta')
+<<<<<<< HEAD
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+=======
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+>>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
 
 <!-- Title Tag  -->
 <title>@yield('title')</title>
@@ -15,6 +22,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Vollkorn:wght@700;900&display=swap" rel="stylesheet">
 
 <!-- StyleSheet -->
+<<<<<<< HEAD
   <!-- Bootstrap -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css">
 
@@ -26,3 +34,19 @@
 
   <!-- Xzoom-->
   <link href="{{asset('frontend/css/jquery.exzoom.css')}}" rel="stylesheet" type="text/css">
+=======
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+
+  <!-- Flickity -->
+  <link rel="stylesheet" href="https://unpkg.com/flickity@2.3.0/dist/flickity.css">
+
+  <!-- ExZoom -->
+  <link href="{{asset('frontend/css/jquery.exzoom.css')}}" rel="stylesheet">
+
+  <!-- HerbalCare StyleSheet -->
+  <link href="{{asset('frontend/css/main.css')}}" rel="stylesheet">
+  @stack('styles')
+  <link href="{{asset('frontend/css/header.css')}}" rel="stylesheet">
+  <link href="{{asset('frontend/css/footer.css')}}" rel="stylesheet">
+>>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800

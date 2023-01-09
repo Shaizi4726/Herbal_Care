@@ -22,12 +22,22 @@ class Category extends Model
         return Category::whereIn('id',$cat_id)->update(['is_parent'=>1]);
     }
     public static function getChildByParentID($id){
+<<<<<<< HEAD
         return Category::where('parent_id',$id)->orderBy('id','ASC')->pluck('title','id');
+=======
+        return Category::where('parent_id',$id)->orderBy('id','ASC')->pluck('title', 'id');
+    }
+
+    public static function getChildByParentSlug($slug){
+      $cat = Category::where(['slug'=>$slug])->pluck('id');
+      return Category::getChildByParentID($cat);
+>>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
     }
 
     public function child_cat(){
         return $this->hasMany('App\Models\Category','parent_id','id')->where('status','active');
     }
+<<<<<<< HEAD
     public static function getAllParentWithChild(){
         return Category::with('child_cat')->where('is_parent',1)->where('status','active')->orderBy('id','ASC')->get();
     }
@@ -51,6 +61,29 @@ class Category extends Model
       
         //return Product::where('cat_id')->where('child_cat_id')->paginate(10);
     }
+=======
+
+    public static function getAllParentWithChild(){
+        return Category::with('child_cat')->where('is_parent',1)->where('status','active')->orderBy('id','ASC')->get();
+    }
+
+    public function products(){
+        return $this->hasMany('App\Models\Product','cat_id','id')->where('status','active');
+    }
+
+    public function sub_products(){
+        return $this->hasMany('App\Models\Product','child_cat_id','id')->where('status','active');
+    }
+    
+    public static function getProductByCat($slug){
+        return Category::with('products')->where('slug',$slug)->first();
+    }
+
+    public static function getProductBySubCat($slug){
+      return Category::with('sub_products')->where('slug',$slug)->first();
+    }
+
+>>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
     public static function countActiveCategory(){
         $data=Category::where('status','active')->count();
         if($data){
@@ -58,4 +91,10 @@ class Category extends Model
         }
         return 0;
     }
+<<<<<<< HEAD
+=======
+    public function productcategory(){
+        return $this->hasMany(ProductCategory::class,'product_id','id');
+     }
+>>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
 }

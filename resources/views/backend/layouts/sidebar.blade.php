@@ -47,6 +47,7 @@
         </div>
       </div>
     </li>
+<<<<<<< HEAD
 <!-- Gift -->
     <li class="nav-item">
       <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
@@ -61,6 +62,9 @@
         </div>
       </div>
     </li>
+=======
+
+>>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
     <!-- Divider -->
     <hr class="sidebar-divider">
         <!-- Heading -->

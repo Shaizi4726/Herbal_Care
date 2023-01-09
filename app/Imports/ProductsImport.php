@@ -3,6 +3,10 @@
 namespace App\Imports;
 
 use App\Models\Product;
+<<<<<<< HEAD
+=======
+use App\Models\ProductCategory;
+>>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
@@ -39,6 +43,7 @@ class ProductsImport implements
     public function collection(Collection $rows)
     {
         foreach ($rows as $row) {
+<<<<<<< HEAD
             $product = Product::create([
                 'title' => $row['title'],
                 'scientific' => $row['scientific'],
@@ -62,6 +67,30 @@ class ProductsImport implements
             /* $product->slug()->create([
                  'slug' => $row['title']
              ]);*/
+=======
+            $product_cat_list = explode(',', $row['cat_id']);
+            $product = Product::create([
+                'plu' => $row['plu'],
+                'title' => $row['title'],
+                'scientific' => $row['scientific'],
+                'slug'=>$row['title'],
+                'other_name' => $row['summary'],
+                'benefit' => $row['benefit'],
+                'description' => $row['description'],
+                'photo' => $row['photo'],
+                'minprice' => $row['minprice'],
+                'cat_id' => $product_cat_list[0],
+                // 'child_cat_id' => $row['child_cat_id'],
+                'brand_id' => $row['brand_id'],
+                'is_featured' => $row['is_featured'],
+                'status' => $row['status'],
+                'promotion' => $row['promotion']                               
+            ]);
+            foreach ($product_cat_list as $product_cat)
+            $product->productcategory()->create([
+                'category_id' => $product_cat
+            ]);
+>>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
         }
     }
 
