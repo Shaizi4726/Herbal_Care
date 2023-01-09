@@ -16,10 +16,7 @@ class CreateProductsAttributesTable extends Migration
         Schema::create('products_attributes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('product_id');
-<<<<<<< HEAD
-=======
             $table->unsignedBigInteger('plu');
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
             $table->unsignedBigInteger('form_id');
             $table->string('sku')->unique();
             $table->string('size');

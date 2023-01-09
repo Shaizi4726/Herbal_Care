@@ -17,10 +17,7 @@ class CreateProductReviewsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('product_id')->nullable();
-<<<<<<< HEAD
-=======
             $table->unsignedBigInteger('plu')->nullable();
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
             $table->tinyInteger('rate')->default(0);
             $table->text('review')->nullable();
             $table->enum('status',['active','inactive'])->default('active');

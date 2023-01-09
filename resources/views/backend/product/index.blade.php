@@ -209,22 +209,10 @@
           <thead>
             <tr>
               <th>S.N.</th>
-<<<<<<< HEAD
-              <th>Name</th>
-              <th>Category</th>
-              <th>Is Featured</th>
-              <th>Price</th>
-              <th>Discount</th>
-              
-              <th>Condition</th>
-              
-              <th>Stock</th>
-=======
               <th> PLU </th>
               <th>Name</th>
               <th>Is Featured</th>
               <th>Promotion</th>
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
               <th>Photo</th>
               <th>Status</th>
               <th>Action</th>
@@ -233,22 +221,10 @@
           <tfoot>
             <tr>
               <th>S.N.</th>
-<<<<<<< HEAD
-              <th>Name</th>
-              <th>Category</th>
-              <th>Is Featured</th>
-              <th>Price</th>
-              <th>Discount</th>
-             
-              <th>Condition</th>
-              
-              <th>Stock</th>
-=======
               <th> PLU </th>
               <th>Name</th>
               <th>Is Featured</th>
               <th>Promotion</th>
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
               <th>Photo</th>
               <th>Status</th>
               <th>Action</th>
@@ -264,32 +240,10 @@
               @endphp
                 <tr>
                     <td>{{$product->id}}</td>
-<<<<<<< HEAD
-                    <td>{{$product->title}}</td>
-                    <td>{{$product->cat_info['title']}}
-                      <sub>
-                          {{$product->sub_cat_info->title ?? ''}}
-                      </sub>
-                    </td>
-                    <td>{{(($product->is_featured==1)? 'Yes': 'No')}}</td>
-                    <td>AED. {{$product->price}} /-</td>
-                    <td>  {{$product->discount}}% OFF</td>
-                    
-                    <td>{{$product->condition}}</td>
-                    
-                    <td>
-                      @if($product->stock>0)
-                      <span class="badge badge-primary">{{$product->stock}}</span>
-                      @else
-                      <span class="badge badge-danger">{{$product->stock}}</span>
-                      @endif
-                    </td>
-=======
                     <td>{{$product->plu}}</td>
                     <td>{{$product->title}}</td>                    
                     <td>{{(($product->is_featured==1)? 'Yes': 'No')}}</td>
                     <td>{{$product->promotion}}</td>                    
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
                     <td>
                         @if($product->photo)
                             @php
@@ -316,12 +270,6 @@
                             @method('post')
                                 <button class="btn btn-primary btn-sm float-left mr-1" data-id="{{$product->id}}" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="ADD"><i class="fas fa-plus"></i></button>  
                         </form> 
-<<<<<<< HEAD
-                    <form method="POST" action="{{route('product.destroy',[$product->id])}}">
-                      @csrf
-                      @method('delete')
-                          <button class="btn btn-danger btn-sm dltBtn" data-id="{{$product->id}}" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
-=======
                         <form method="get" action="{{url('/admin/product/add-images',$product->id)}}">
                             @csrf
                             @method('post')
@@ -331,7 +279,6 @@
                             @csrf
                             @method('delete')
                             <button class="btn btn-danger btn-sm dltBtn" data-id="{{$product->id}}" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
                         </form>
                     </td>
                 </tr>

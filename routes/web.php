@@ -43,11 +43,7 @@ Route::get('/product-sub-cat/{slug}/{sub_slug}','FrontendController@productSubCa
 Route::get('/product-brand/{slug}','FrontendController@productBrand')->name('product-brand');
 
 // Cart section
-<<<<<<< HEAD
-Route::get('/add-to-cart/{slug}','CartController@addToCart')->name('add-to-cart')->middleware('user');
-=======
 Route::get('/add-to-cart/{id}','CartController@addToCart')->name('add-to-cart')->middleware('user');
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
 Route::match(['get','post'],'/add-to-cart','CartController@singleAddToCart')->name('single-add-to-cart')->middleware('user');
 Route::get('cart-delete/{id}','CartController@cartDelete')->name('cart-delete');
 Route::post('cart-update','CartController@cartUpdate')->name('cart.update');
@@ -96,11 +92,7 @@ Route::post('/coupon-store','CouponController@couponStore')->name('coupon-store'
 // Route::get('payment', 'PayPalController@payment')->name('payment');
 // Route::get('cancel', 'PayPalController@cancel')->name('payment.cancel');
 // Route::get('payment/success', 'PayPalController@success')->name('payment.success');
-<<<<<<< HEAD
-Route::match(['get','post'],'/stripe', 'StripeController@stripePyament')->name('stripe.post');
-=======
 Route::match(['get','post'],'/stripe', 'StripeController@payment')->name('stripe.post');
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
 Route::get('cancel', 'PayPalController@cancel')->name('payment.cancel');
 Route::get('payment/success', 'PayPalController@success')->name('payment.success');
 
@@ -110,8 +102,6 @@ Route::match(['get','post'], 'admin/product/add-attributes/{id}','ProductControl
 Route::match(['get','post'],'admin/product/edit-attributes/{id}','ProductController@editAttributes');
 Route::match(['get','post'],'admin/product/delete-attributes/{id}','ProductController@DeleteAttribute')->name('delete-attribute');
 
-<<<<<<< HEAD
-=======
 //Add Product Image
 Route::match(['get','post'], 'admin/product/add-images/{id}','ProductController@addImage');
 Route::match(['get','post'],'admin/product/delete-images/{id}','ProductController@deleteImage')->name('delete-image');
@@ -119,7 +109,6 @@ Route::match(['get','post'],'admin/product/delete-images/{id}','ProductControlle
 //Delete category
 
 Route::match(['get','post'],'admin/product/delete-category/{id}','ProductController@DeleteCategory')->name('delete-category');
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
 
 Route::match(['get','post'],'/get-product-price','FrontendController@getProductPrice');
 Route::match(['get','post'],'/get-product-form','ProductController@getProductForm');

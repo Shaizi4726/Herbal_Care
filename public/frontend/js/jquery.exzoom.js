@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-;(function ($, window) {
-=======
 (function ($, window) {
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
     let ele = null,
         exzoom_img_box = null,
         boxWidth = null,
@@ -30,29 +26,16 @@
         exzoom_preview_img = null,
         autoPlayInterval = null,
         startX = 0,
-<<<<<<< HEAD
-        startY = 0,
         endX = 0,
-        endY = 0,
-=======
-        endX = 0,
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
         g = {},
         defaults = {
             "navWidth": 60,
             "navHeight": 60,
             "navItemNum": 5,
-<<<<<<< HEAD
-            "navItemMargin": 7,
-            "navBorder": 1,
-            "autoPlay": true,
-            "autoPlayTimeout": 2000,
-=======
             "navItemMargin": 1,
             "navBorder": 1,
             "autoPlay": true,
             "autoPlayTimeout": 3000,
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
         };
 
 
@@ -61,23 +44,6 @@
             let opts = $.extend({}, defaults, options);
 
             ele = this;
-<<<<<<< HEAD
-            exzoom_img_box = ele.find(".exzoom_img_box");
-            exzoom_img_ul = ele.find(".exzoom_img_ul");
-            exzoom_nav = ele.find(".exzoom_nav");
-            exzoom_prev_btn = ele.find(".exzoom_prev_btn");
-            exzoom_next_btn = ele.find(".exzoom_next_btn");
-
-            
-            boxHeight = boxWidth = ele.outerWidth(); 
-
-            console.log("boxWidth::" + boxWidth);
-            console.log("ele.parent().width()::" + ele.parent().width());
-            console.log("ele.parent().outerWidth()::" + ele.parent().outerWidth());
-            console.log("ele.parent().innerWidth()::" + ele.parent().innerWidth());
-
-            //todo 
-=======
             exzoom_img_box = ele.find(".img-box");
             exzoom_img_ul = ele.find(".img-ul");
             exzoom_nav = ele.find(".zoom-nav");
@@ -88,7 +54,6 @@
             
             boxHeight = boxWidth = ele.outerWidth();  
 
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
             g.navWidth = opts.navWidth;
             g.navHeight = opts.navHeight;
             g.navBorder = opts.navBorder;
@@ -96,35 +61,6 @@
             g.navItemNum = opts.navItemNum;
             g.autoPlay = opts.autoPlay;
             g.autoPlayTimeout = opts.autoPlayTimeout;
-<<<<<<< HEAD
-            images = exzoom_img_box.find("img");
-            imgNum = images.length;
-            checkLoadedAllImages(images)
-        },
-        prev: function () {             
-            moveLeft()
-        },
-        next: function () {           
-            moveRight();
-        },
-        setImg: function () {           
-            let url = arguments[0];
-
-            getImageSize(url, function (width, height) {
-                exzoom_preview_img.attr("src", url);
-                exzoom_main_img.attr("src", url);
-
-                if (exzoom_img_ul.find("li").length === imgNum + 1) {
-                    exzoom_img_ul.find("li:last").remove();
-                }
-                exzoom_img_ul.append('<li style="width: ' + boxWidth + 'px;">' +
-                    '<img src="' + url + '"></li>');
-
-                let image_prop = copute_image_prop(url, width, height);
-                previewImg(image_prop);
-            });
-        },
-=======
 
             images = exzoom_img_ul.find("img");
             imgNum = images.length;
@@ -136,17 +72,12 @@
         next: function () {
             moveRight();
         }
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
     };
 
     $.fn.extend({
         "exzoom": function (method, options) {
             if (arguments.length === 0 || (typeof method === 'object' && !options)) {
                 if (this.length === 0) {
-<<<<<<< HEAD
-          
-=======
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
                     $.error('Selector is empty when call jQuery.exzomm');
                 } else {
                     return methods.init.apply(this, arguments);
@@ -154,41 +85,24 @@
             } else if (methods[method]) {
                 return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
             } else {
-<<<<<<< HEAD
-           
-                $.error('Method ' + method + 'does not exist on jQuery.exzomm');
-=======
                 
                 $.error('Method ' + method + 'does not exist on jQuery.exzoom');
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
             }
         }
     });
 
-<<<<<<< HEAD
-=======
     
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
     function init() {
         exzoom_img_box.append("<div class='exzoom_img_ul_outer'></div>");
         exzoom_nav.append("<p class='exzoom_nav_inner'></p>");
         exzoom_img_ul_outer = exzoom_img_box.find(".exzoom_img_ul_outer");
         exzoom_nav_inner = exzoom_nav.find(".exzoom_nav_inner");
 
-<<<<<<< HEAD
-        exzoom_img_ul_outer.append(exzoom_img_ul);
-
-       
-        for (let i = 0; i < imgNum; i++) {
-            imgArr[i] = copute_image_prop(images.eq(i));
-            console.log(imgArr[i]);
-=======
        
         exzoom_img_ul_outer.append(exzoom_img_ul);
 
         for (let i = 0; i < imgNum; i++) {
             imgArr[i] = copute_image_prop(images.eq(i));
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
             let li = exzoom_img_ul.find("li").eq(i);
             li.css("width", boxWidth);
             li.find("img").css({
@@ -197,11 +111,7 @@
             });
         }
 
-<<<<<<< HEAD
-   
-=======
         
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
         exzoom_navSpan = exzoom_nav.find("span");
         navHeightWithBorder = g.navBorder * 2 + g.navHeight;
         g.exzoom_navWidth = (navHeightWithBorder + g.navItemMargin) * g.navItemNum;
@@ -221,20 +131,6 @@
             "height": g.navHeight + "px",
         });
 
-<<<<<<< HEAD
-        exzoom_img_ul_width = boxWidth * imgNum;
-        exzoom_img_ul_max_margin = boxWidth * (imgNum - 1);
-        exzoom_img_ul.css("width", exzoom_img_ul_width);
-
-        exzoom_img_box.append(`
-        <div class='exzoom_zoom_outer'>
-            <span class='exzoom_zoom'></span>
-        </div>
-        <p class='exzoom_preview'>
-            <img class='exzoom_preview_img' src='' />
-        </p>
-            `);
-=======
         
         exzoom_img_ul_width = boxWidth * imgNum;
         exzoom_img_ul_max_margin = boxWidth * (imgNum - 1);
@@ -248,7 +144,6 @@
                 <img class='exzoom_preview_img' src='' />
             </p>
         `);
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
         exzoom_zoom = exzoom_img_box.find(".exzoom_zoom");
         exzoom_main_img = exzoom_img_box.find(".exzoom_main_img");
         exzoom_zoom_outer = exzoom_img_box.find(".exzoom_zoom_outer");
@@ -266,15 +161,9 @@
         });
 
         exzoom_preview.css({
-<<<<<<< HEAD
-            "width": boxHeight + "px",
-            "height": boxHeight + "px",
-            "left": boxHeight + 5 + "px",
-=======
             "width": boxHeight * 1.5 + "px",
             "height": boxHeight * 1.5 + "px",
             "left": boxHeight + 10 + "px",
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
         });
 
         previewImg(imgArr[imgIndex]);
@@ -282,14 +171,7 @@
         bindingEvent();
     }
 
-<<<<<<< HEAD
-    /**
-
-     * @param images
-     */
-=======
     
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
     function checkLoadedAllImages(images) {
         let timer = setInterval(function () {
             let loaded_images_counter = 0;
@@ -306,16 +188,10 @@
         }, 100)
     }
 
-<<<<<<< HEAD
-    function getCursorCoords(event) {
-        let e = event || window.event;
-        let coords_data = e, 
-=======
    
     function getCursorCoords(event) {
         let e = event || window.event;
         let coords_data = e,
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
             x,
             y;
 
@@ -333,29 +209,16 @@
 
     function checkNewPositionLimit(new_position) {
         if (-new_position > exzoom_img_ul_max_margin) {
-<<<<<<< HEAD
-           
             new_position = -exzoom_img_ul_max_margin;
             imgIndex = 0;
         } else if (new_position > 0) {
-            
-=======
-            new_position = -exzoom_img_ul_max_margin;
-            imgIndex = 0;
-        } else if (new_position > 0) {
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
             new_position = 0;
         }
         return new_position
     }
 
-<<<<<<< HEAD
-    function bindingEvent() {
-    
-=======
     
     function bindingEvent() {
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
         exzoom_img_ul.on("touchstart", function (event) {
             let coords = getCursorCoords(event);
             startX = coords.x;
@@ -373,43 +236,23 @@
             endX = coords.x;
             endY = coords.y;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
             new_position = exzoom_img_ul_position + endX - startX;
             new_position = checkNewPositionLimit(new_position);
             exzoom_img_ul.css("left", new_position);
 
         });
 
-<<<<<<< HEAD
-
-        exzoom_img_ul.on("touchend", function (event) {
-
-            console.log(endX < startX);
-            if (endX < startX) {
- 
-                moveRight();
-            } else if (endX > startX) {
-
-=======
         exzoom_img_ul.on("touchend", function (event) {
             console.log(endX < startX);
             if (endX < startX) {
                 moveRight();
             } else if (endX > startX) {
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
                 moveLeft();
             }
 
             autoPlay();
         });
 
-<<<<<<< HEAD
-
-=======
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
         exzoom_zoom_outer.on("mousedown", function (event) {
             let coords = getCursorCoords(event);
             startX = coords.x;
@@ -423,48 +266,25 @@
             let offset = ele.offset();
 
             if (startX - offset.left < boxWidth / 2) {
-<<<<<<< HEAD
-
                 moveLeft();
             } else if (startX - offset.left > boxWidth / 2) {
-
-=======
-                moveLeft();
-            } else if (startX - offset.left > boxWidth / 2) {
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
                 moveRight();
             }
         });
 
-<<<<<<< HEAD
-
-        ele.on("mouseenter", function () {
-            window.clearInterval(autoPlayInterval);
-        });
-       
-=======
         ele.on("mouseenter", function () {
             window.clearInterval(autoPlayInterval);
         });
 
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
         ele.on("mouseleave", function () {
             autoPlay();
         });
 
-<<<<<<< HEAD
-  
-=======
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
         exzoom_zoom_outer.on("mouseenter", function () {
             exzoom_zoom.css("display", "block");
             exzoom_preview.css("display", "block");
         });
 
-<<<<<<< HEAD
-   
-=======
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
         exzoom_zoom_outer.on("mousemove", function (e) {
             let width_limit = exzoom_zoom.width() / 2,
                 max_X = exzoom_zoom_outer.width() - width_limit,
@@ -494,28 +314,16 @@
             });
         });
 
-<<<<<<< HEAD
-     
-=======
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
         exzoom_zoom_outer.on("mouseleave", function () {
             exzoom_zoom.css("display", "none");
             exzoom_preview.css("display", "none");
         });
 
-<<<<<<< HEAD
-       
-=======
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
         exzoom_preview.on("mouseenter", function () {
             exzoom_zoom.css("display", "none");
             exzoom_preview.css("display", "none");
         });
 
-<<<<<<< HEAD
-       
-=======
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
         exzoom_next_btn.on("click", function () {
             moveRight();
         });
@@ -529,41 +337,17 @@
         });
     }
 
-<<<<<<< HEAD
-    /**
-    
-     * @param direction: 
-     */
-    function move(direction) {
-        if (typeof direction === "undefined") {
-            alert("exzoom  move  direction ");
-        }
-    
-=======
     function move() {
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
         if (imgIndex > imgArr.length - 1) {
             imgIndex = 0;
         }
 
-<<<<<<< HEAD
-      
-        exzoom_navSpan.eq(imgIndex).addClass(navHightClass).siblings().removeClass(navHightClass);
-
-       
-        let exzoom_nav_width = exzoom_nav.width();
-        let nav_item_width = g.navItemMargin + g.navWidth + g.navBorder * 2; 
-        let new_nav_offset = 0;
-
-      
-=======
         exzoom_navSpan.eq(imgIndex).addClass(navHightClass).siblings().removeClass(navHightClass);
 
         let exzoom_nav_width = exzoom_nav.width();
         let nav_item_width = g.navItemMargin + g.navWidth + g.navBorder * 2;
         let new_nav_offset = 0;
 
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
         let temp = nav_item_width * (imgIndex + 1);
         if (temp > exzoom_nav_width) {
             new_nav_offset =  boxWidth - temp;
@@ -573,25 +357,12 @@
             "left": new_nav_offset
         });
 
-<<<<<<< HEAD
-   
-        let new_position = -boxWidth * imgIndex;
-      
-        new_position = checkNewPositionLimit(new_position);
-        exzoom_img_ul.stop().animate({"left": new_position}, 500);
-       
-        previewImg(imgArr[imgIndex]);
-    }
-
-    
-=======
         let new_position = -boxWidth * imgIndex;
         new_position = checkNewPositionLimit(new_position);
         exzoom_img_ul.stop().animate({"left": new_position}, 500);
         previewImg(imgArr[imgIndex]);
     }
 
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
     function moveRight() {
         imgIndex++;
         if (imgIndex > imgNum) {
@@ -600,10 +371,6 @@
         move("right");
     }
 
-<<<<<<< HEAD
-   
-=======
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
     function moveLeft() {
         imgIndex--;
         if (imgIndex < 0) {
@@ -612,10 +379,6 @@
         move("left");
     }
 
-<<<<<<< HEAD
-  
-=======
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
     function autoPlay() {
         if (g.autoPlay) {
             autoPlayInterval = window.setInterval(function () {
@@ -628,10 +391,6 @@
         }
     }
 
-<<<<<<< HEAD
-   
-=======
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
     function previewImg(image_prop) {
         if (image_prop === undefined) {
             return
@@ -660,14 +419,6 @@
         });
     }
 
-<<<<<<< HEAD
-    /**
-    
-     * @param url
-     * @param callback
-     */
-=======
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
     function getImageSize(url, callback) {
         let img = new Image();
         img.src = url;
@@ -676,10 +427,6 @@
             if (img.complete) {
                 callback(img.width, img.height);
             } else {
-<<<<<<< HEAD
-    
-=======
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
                 img.onload = function () {
                     callback(img.width, img.height);
                 }
@@ -692,16 +439,6 @@
         }
     }
 
-<<<<<<< HEAD
-    /**
-
-     * @param image : jquery 
-     * @param width : image 
-     * @param height : image 
-     * @returns {Array}
-     */
-=======
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
     function copute_image_prop(image, width, height) {
         let src;
         let res = [];
@@ -721,24 +458,6 @@
         let img_scale = res[1] / res[2];
 
         if (img_scale === 1) {
-<<<<<<< HEAD
-            res[3] = boxHeight;//width
-            res[4] = boxHeight;//height
-            res[5] = 0;//top
-            res[6] = 0;//left
-            res[7] = boxHeight / 2;
-            res[8] = boxHeight * 2;//width
-            res[9] = boxHeight * 2;//height
-            exzoom_nav_inner.append(`<span><img src="${src}" width="${g.navWidth }" height="${g.navHeight }"/></span>`);
-        } else if (img_scale > 1) {
-            res[3] = boxHeight;//width
-            res[4] = boxHeight / img_scale;
-            res[5] = (boxHeight - res[4]) / 2;
-            res[6] = 0;//left
-            res[7] = res[4] / 2;
-            res[8] = boxHeight * 2 * img_scale;//width
-            res[9] = boxHeight * 2;//height
-=======
             res[3] = boxHeight;
             res[4] = boxHeight;
             res[5] = 0;
@@ -755,7 +474,6 @@
             res[7] = res[4] / 2;
             res[8] = boxHeight * 2 * img_scale;
             res[9] = boxHeight * 2;
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
             let top = (g.navHeight - (g.navWidth / img_scale)) / 2;
             exzoom_nav_inner.append(`<span><img src="${src}" width="${g.navWidth }" style='top:${top}px;' /></span>`);
         } else if (img_scale < 1) {
@@ -772,9 +490,4 @@
 
         return res;
     }
-<<<<<<< HEAD
-
-    
-=======
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
 })(jQuery, window);

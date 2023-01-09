@@ -14,31 +14,6 @@ use Illuminate\Http\Request;
 class StripeController extends Controller
 {
 	
-<<<<<<< HEAD
-    public function stripePyament(Request $req)
-    {
-		$cart = Cart::where('user_id',auth()->user()->id)->where('order_id',null)->get()->toArray();
-        $data = [];
-	//	$name=Product::where('id',$item['product_id'])->pluck('title');
-    //    dd($name);
-    //	print_r($req->all()); die();
-		Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
-		$amount=0;
-	
-    	$data['items'] = Stripe\Charge::create([
-    			"amount"=>$amount*100,
-    			"currency"=>"AED",
-    			"source"=>$req->stripeToken,
-    			"description"=>"Test payment check"
-    	]) ;
-	//	dd($token = $req->stripeToken);
-        echo "<pre>"; print_r($data); die();
-	
-    	Session::flash("success","Payment successfully!");
-
-    	return back();
-    }
-=======
     public function payment(Request $req)
     {
 		$cart = Cart::where('user_id',auth()->user()->id)->where('order_id',null)->get()->toArray();
@@ -85,5 +60,4 @@ class StripeController extends Controller
     	
     	
     
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
 }

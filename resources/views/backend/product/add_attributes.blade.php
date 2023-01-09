@@ -12,10 +12,7 @@
                     <form enctypes="multipart/form-data" class="form-horizontal" method="post" action="
                     {{url('/admin/product/add-attributes/'.$productDetails->id)}}" name="add_attribute" id="add_attribute" >{{csrf_field()}}
                         <input type="hidden" name="id" value="{{$productDetails->id}}">
-<<<<<<< HEAD
-=======
                         <input type="hidden" name="plu" value="{{$productDetails->plu}}">
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
                         
                         <div class="control-group">
                             <label class="control-label">Product Name: </label>
@@ -26,13 +23,8 @@
                             <label class="control-label"><strong>{{$productDetails->id}}</strong></label>   
                         </div>
                         <div class="controls">
-<<<<<<< HEAD
-                            <label class="control-label">Product Price: </label>
-                            <label class="control-label"><strong>{{$productDetails->price}}</strong></label>   
-=======
                             <label class="control-label">Product plu: </label>
                             <label class="control-label"><strong>{{$productDetails->plu}}</strong></label>   
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
                         </div>
                         <div class="controls">
                             <label class="control-label">Form Name: </label>
@@ -40,11 +32,7 @@
                             <select name="Form" class="form-control selForm" style="width:150px;">
                                 <option value="">--Select Form--</option>
                                 @foreach($forms as $form)                                
-<<<<<<< HEAD
-                                <option value="{{$form->id}}-{{$form->title}}">{{$form->title}}</option>                                
-=======
                                 <option value="{{$form->id}}-{{$form->title}}">{{$form->title}}</option>                               
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
                                 @endforeach
                             </select>  
                         </div>

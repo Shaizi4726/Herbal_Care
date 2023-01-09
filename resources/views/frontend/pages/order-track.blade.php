@@ -1,39 +1,33 @@
 @extends('frontend.layouts.master')
-
 @section('title','HERB || Order Track Page')
 
+@push('styles')
+<link rel="stylesheet" href="{{asset('frontend/css/order-track.css')}}">
+@endpush
+
 @section('main-content')
-    <!-- Breadcrumbs -->
-    <!-- <div class="breadcrumbs">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="bread-inner">
-                        <ul class="bread-list">
-                            <li><a href="{{route('home')}}">Home<i class="ti-arrow-right"></i></a></li>
-                            <li class="active"><a href="javascript:void(0);">Order Track</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
-    <!-- End Breadcrumbs -->
-<section class="tracking_box_area section_gap py-5">
-    <div class="container">
-        <div class="tracking_box_inner">
-            <p>To track your order please enter your Order ID in the box below and press the "Track" button. This was given
-                to you on your receipt and in the confirmation email you should have received.</p>
-            <form class="row tracking_form my-4" action="{{route('product.track.order')}}" method="post" novalidate="novalidate">
-              @csrf
-                <div class="col-md-8 form-group">
-                    <input type="text" class="form-control p-2"  name="order_number" placeholder="Enter your order number">
-                </div>
-                <div class="col-md-8 form-group">
-                    <button type="submit" value="submit" class="btn submit_btn">Track Order</button>
-                </div>
-            </form>
-        </div>
+<section>
+  <div class="tracking-order-section">
+  <div class="img-container">
+    <img src="{{asset('images/trackorder.png')}}" class="tracking-order-main-img" id="tracking-order-main-img">
+  </div>
+  <div class="track-order-container">
+    <h2>Track Order</h2>
+    <p>Enter your order id in the input box below and track your order. Order id would be given at the invoice slip.</p>
+    <form class="tracking-form" action="{{route('product.track.order')}}" method="post">
+    @csrf
+    <div class="form-group">
+      <label for="order-id-input">Order Id:</label>
+      <input type="text" class="order-id-input" id="order-id-input"  name="order_number" placeholder="Enter your order id">
     </div>
+    <div class="form-group submit-track">
+      <button type="submit" value="submit" class="btn btn-submit">Track Order</button>
+    </div>
+  </form>
+</div>
+</div>
+<div class="img-container">
+  <img src="{{asset('images/deliveryprocess.png')}}" class="tracking-order-main-img" id="tracking-order-main-img">
+</div>
 </section>
 @endsection

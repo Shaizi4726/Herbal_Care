@@ -350,14 +350,20 @@
     z-index: 2;
     
   }
+  
+  .cat-sticky {
+    top: 2.2rem;
+  }
 
   .cat-menu {
     top: 6.5rem;
     left: 10.5rem;
+    padding: 0.5em 0;
   }
 
-  .cat-sticky {
-    top: 2.2rem;
+  .cat-menu li {
+    margin: 0;
+    line-height: 2;
   }
 
   .cat-menu li:hover {
@@ -378,6 +384,7 @@
     width: 200px;
     left: 15em;
     margin-top: -25px;
+    padding: 0.5em 0;
     border-radius: 7px;
     box-shadow: 0 5px 10px 2px rgba(0, 0, 0, 0.5);
   }
