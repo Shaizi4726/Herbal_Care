@@ -105,7 +105,6 @@ class CartController extends Controller
                 $already_cart->amount = ($proAttr->price * $data['quantity'][$i])+ $proAttr->price;
                 $already_cart->tax_amount = ($already_cart->amount)/1.05;
                 $already_cart->t_amount = $already_cart->amount-$already_cart->tax_amount;    
-                
                 $already_cart->save();
                 
             } else {

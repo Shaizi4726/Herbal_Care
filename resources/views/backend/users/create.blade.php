@@ -17,11 +17,7 @@
 
         <div class="form-group">
             <label for="inputEmail" class="col-form-label">Email</label>
-<<<<<<< HEAD
-          <input id="inputEmail" type="email" name="email" placeholder="Enter email"  value="{{old('email')}}" class="form-control">
-=======
           <input id="inputEmail" type="email" name="email" placeholder="Enter email" class="form-control">
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
           @error('email')
           <span class="text-danger">{{$message}}</span>
           @enderror
@@ -29,11 +25,7 @@
 
         <div class="form-group">
             <label for="inputPassword" class="col-form-label">Password</label>
-<<<<<<< HEAD
-          <input id="inputPassword" type="password" name="password" placeholder="Enter password"  value="{{old('password')}}" class="form-control">
-=======
           <input id="inputPassword" type="password" name="password" placeholder="Enter password" class="form-control">
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
           @error('password')
           <span class="text-danger">{{$message}}</span>
           @enderror
@@ -55,11 +47,7 @@
           @enderror
         </div>
         @php 
-<<<<<<< HEAD
-        $roles=DB::table('users')->select('role')->get();
-=======
         $roles=DB::table('users')->select('role')->distinct()->get();
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800
         @endphp
         <div class="form-group">
             <label for="role" class="col-form-label">Role</label>
