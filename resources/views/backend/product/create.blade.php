@@ -9,7 +9,7 @@
       <form method="post" action="{{route('product.store')}}" enctype="multipart/form-data">
         {{csrf_field()}}
         <div class="form-group">
-          <label for="inputTitle" class="col-form-label">Plu Code</label>
+          <label for="inputTitle" class="col-form-label">Plu Code <span class="text-danger">*</span></label>
           <input id="inputTitle" type="text" name="plu" placeholder="Enter Plu"  value="{{old('plu')}}" class="form-control">
           @error('title')
           <span class="text-danger">{{$message}}</span>
@@ -23,14 +23,14 @@
           @enderror
         </div>
         <div class="form-group">
-          <label for="inputTitle" class="col-form-label">Scientific Name/ Boltical Name <span class="text-danger">*</span></label>
+          <label for="inputTitle" class="col-form-label">Scientific Name/ Boltical Name</label>
           <input id="inputTitle" type="text" name="scientific" placeholder="Enter Scientific Name"  value="{{old('scientific')}}" class="form-control">
           @error('scientific')
           <span class="text-danger">{{$message}}</span>
           @enderror
         </div>
         <div class="form-group">
-          <label for="other_name" class="col-form-label">Other Name <span class="text-danger">*</span></label>
+          <label for="other_name" class="col-form-label">Other Name </label>
           <textarea class="form-control" id="other_name" name="other_name">{{old('summary')}}</textarea>
           @error('other_name')
           <span class="text-danger">{{$message}}</span>

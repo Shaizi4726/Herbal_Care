@@ -34,50 +34,47 @@ class CartController extends Controller
 
 
         $product = Product::with('attributes')->where('id', $request->id)->first();
-      
-//         $data = $request->all();
-//         $proArr = explode("-",$data['price']);
-//         $proAttr = ProductsAttribute::where(['price' => $proArr[0]])->first();
-// //        dd($proAttr);
-//         // return $product;
-//         if (empty($product)) {
-//             request()->session()->flash('error','Invalid Products');
-//             return back();
-//         }
        
-        $already_cart = Cart::where('user_id', auth()->user()->id)->where('order_id',null)->where('product_id', $product->id)
-        ->where('product_atrr_id', $proAttr->id)->first();
-        // return $already_cart;
-        if($already_cart && $proAttr->sku == $proAttr->sku) {
-            // dd($already_cart);
-            $already_cart->quantity = $already_cart->quantity + 1;
-            $already_cart->amount1->$proAttr->price;
-            $already_cart->amount = $already_cart->amount1 + $already_cart->amount1;
-            $already_cart->tax_amount = ($already_cart->amount)/1.05;
-            $already_cart->t_amount = $already_cart->amount-$already_cart->tax_amount;
-            // return $already_cart->quantity;
-            if ($already_cart->product->stock < $already_cart->quantity || $already_cart->product->stock <= 0) return back()->with('error','Stock not sufficient!.');
-            $already_cart->save();
+        $data = $request->cart;     
+        $items = count($data['size']);
+
+        for ($i=0; $i<$items; $i++) {
+            $proAttr = ProductsAttribute::where(['price' => $data['price'][$i], 'product_id' => $product->id])->first();        
             
-//         }else{
-            
-            $cart = new Cart;
-            $cart->user_id = auth()->user()->id;
-            $cart->product_id = $product->id;
-            $cart->plu = $product->plu;
-            $cart->product_atrr_id = $proAttr->id;
-            $cart->form = $proAttr->form;
-            $cart->price = ($proAttr->price-($proAttr->price*$proAttr->discount)/100);
-            $cart->size =$proAttr->size;
-            $cart->quantity = 1;           
-            $cart->amount=$cart->price*$cart->quantity;
-            $cart->tax_amount=($cart->amount)/1.05;
-            $cart->t_amount=$cart->amount-$cart->tax_amount;
-            if ($cart->product->stock < $cart->quantity || $cart->product->stock <= 0) return back()->with('error','Stock not sufficient!.');
-            $cart->save();
-            $wishlist=Wishlist::where('user_id',auth()->user()->id)->where('cart_id',null)->update(['cart_id'=>$cart->id]);
+            if ( ($data['quantity'][$i] < 1) || empty($product) ) {
+                request()->session()->flash('error','Invalid Products');
+                return back();
+            }    
+        
+            $already_cart = Cart::where('user_id', auth()->user()->id)->where('order_id',null)->where('product_id', $product->id)
+            ->where('product_atrr_id', $proAttr->id)->first();
+
+            if ($already_cart) {
+                $already_cart->quantity = $already_cart->quantity + $data['quantity'][$i];
+                $already_cart->amount = ($proAttr->price * $data['quantity'][$i])+ $proAttr->price;
+                $already_cart->tax_amount = ($already_cart->amount)/1.05;
+                $already_cart->t_amount = $already_cart->amount-$already_cart->tax_amount;    
+                
+                $already_cart->save();
+                
+            } else {
+                
+                $cart = new Cart;
+                $cart->user_id = auth()->user()->id;
+                $cart->product_id = $product->id;
+                $cart->plu = $product->plu;
+                $cart->product_atrr_id = $proAttr->id;
+                $cart->form = $proAttr->form;
+                $cart->price = ($proAttr->price-($proAttr->price*$proAttr->discount)/100);
+                $cart->size = $proAttr->size;
+                $cart->quantity = $data['quantity'][$i];
+                $cart->t_amount=($proAttr->price * $data['quantity'][$i]);
+                $cart->amount=($cart->t_amount)/1.05;
+                $cart->tax_amount=$cart->t_amount-$cart->amount;
+                $cart->save();
+            }
+            request()->session()->flash('success','Product successfully added to cart');
         }
-        request()->session()->flash('success','Product successfully added to cart');
         return back();       
     }  
 

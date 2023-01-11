@@ -8,6 +8,9 @@
   </h5>
   <div class="card-body">
     @if($order)
+    @php
+            $shipping_charge=DB::table('shippings')->where('id',$order->shipping_id)->pluck('price');
+        @endphp 
     <table class="table table-striped table-hover">
       <thead>
         <tr>
@@ -29,8 +32,8 @@
             <td>{{$order->first_name}} {{$order->last_name}}</td>
             <td>{{$order->email}}</td>
             <td>{{$order->quantity}}</td>
-            <td>${{$order->shipping->price}}</td>
-            <td>${{number_format($order->total_amount,2)}}</td>
+            <td>@foreach ($shipping_charge as $data) AED {{number_format($data,2)}} @endforeach</td>
+            <td>AED {{number_format($order->total_amount,2)}}</td>
             <td>
                 @if($order->status=='new')
                   <span class="badge badge-primary">{{$order->status}}</span>
@@ -78,15 +81,14 @@
                         <td> : {{$order->status}}</td>
                     </tr>
                     <tr>
-                      @php
-                          $shipping_charge=DB::table('shippings')->where('id',$order->shipping_id)->pluck('price');
-                      @endphp
-                        <td>Shipping Charge</td>
-                        <td> :${{$order->shipping->price}}</td>
+                      <td>Shipping Charge</td>
+                      @if(!empty($shipping))
+                        <td> : AED {{$order->shipping->price}}</td>
+                      @endif
                     </tr>
                     <tr>
                         <td>Total Amount</td>
-                        <td> : $ {{number_format($order->total_amount,2)}}</td>
+                        <td> : AED {{number_format($order->total_amount,2)}}</td>
                     </tr>
                     <tr>
                       <td>Payment Method</td>
