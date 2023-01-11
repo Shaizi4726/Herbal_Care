@@ -96,9 +96,9 @@ class OrderController extends Controller
         $order_data['shipping_id']=$request->shipping;
         $shipping=Shipping::where('id',$order_data['shipping_id'])->pluck('price');
         // return session('coupon')['value'];
-        $order_data['sub_total']=Helper::totalCartPrice();
-        $order_data['tax_total']=Helper::totalCarttax_amount();
-        $order_data['t_total']=Helper::totalCartt_amount();
+        $order_data['sub_total']=Helper::totalCartAmount();
+        $order_data['tax_total']=Helper::totalCartTax();
+        $order_data['t_total']=Helper::CartAmount();
         $order_data['quantity']=Helper::cartCount();
         // $order_data['form']=Helper::form();
         if(session('coupon')){
@@ -106,18 +106,18 @@ class OrderController extends Controller
         }
         if($request->shipping){
             if(session('coupon')){
-                $order_data['total_amount']=Helper::totalCartPrice()+$shipping[0]-session('coupon')['value'];
+                $order_data['total_amount']=Helper::totalCartAmount()+$shipping[0]-session('coupon')['value'];
             }
             else{
-                $order_data['total_amount']=Helper::totalCartPrice()+$shipping[0];
+                $order_data['total_amount']=Helper::totalCartAmount()+$shipping[0];
             }
         }
         else{
             if(session('coupon')){
-                $order_data['total_amount']=Helper::totalCartPrice()-session('coupon')['value'];
+                $order_data['total_amount']=Helper::totalCartAmount()-session('coupon')['value'];
             }
             else{
-                $order_data['total_amount']=Helper::totalCartPrice();
+                $order_data['total_amount']=Helper::totalCartAmount();
             }
         }
         // return $order_data['total_amount'];
@@ -265,13 +265,11 @@ class OrderController extends Controller
     }
 
     public function productTrackOrder(Request $request){
-        // return $request->all();
         $order=Order::where('user_id',auth()->user()->id)->where('order_number',$request->order_number)->first();
         if($order){
             if($order->status=="new"){
             request()->session()->flash('success','Your order has been placed. please wait.');
             return redirect()->route('home');
-
             }
             elseif($order->status=="process"){
                 request()->session()->flash('success','Your order is under processing please wait.');
@@ -286,7 +284,6 @@ class OrderController extends Controller
             else{
                 request()->session()->flash('error','Your order canceled. please try again');
                 return redirect()->route('home');
-    
             }
         }
         else{

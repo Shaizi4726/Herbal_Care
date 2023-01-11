@@ -399,12 +399,12 @@
                                     </div>
                                     <div class="content">
                                         <ul>
-										    <li class="order_subtotal" data-price="{{Helper::totalCartPrice()}}"><label>Cart Subtotal</label><span>AED. {{number_format(Helper::totalCartPrice(),2)}}</span></li>                                                 
+										    <li class="order_subtotal" data-price="{{Helper::totalCartAmount()}}"><label>Cart Subtotal</label><span>AED. {{number_format(Helper::totalCartAmount(),2)}}</span></li>                                                 
                                             @if(session('coupon'))
                                             <li class="coupon_price" data-price="{{session('coupon')['value']}}"><label>You Save</label><span>AED. {{number_format(session('coupon')['value'],2)}}</span></li>
                                             @endif
                                             @php
-                                                $total_amount=Helper::totalCartPrice();
+                                                $total_amount=Helper::totalCartAmount();
                                                 if(session('coupon')){
                                                     $total_amount=$total_amount-session('coupon')['value'];
                                                 }

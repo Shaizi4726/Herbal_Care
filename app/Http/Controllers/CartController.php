@@ -19,7 +19,7 @@ class CartController extends Controller
         
     }
 
-    public function addToCart(Request $request){
+    /* public function addToCart(Request $request){
         if (empty($request->id)) {
             request()->session()->flash('error','Invalid Products');
             return back();
@@ -79,7 +79,7 @@ class CartController extends Controller
         }
         request()->session()->flash('success','Product successfully added to cart');
         return back();       
-    }  
+    }  */ 
 
     public function singleAddToCart(Request $request){
         $request->validate([

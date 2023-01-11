@@ -14,6 +14,7 @@ function showModal(...args) {
     modal = document.createElement('div');
     modal.setAttribute('class', 'modal');
     modal.setAttribute('id', 'modal' + args[0]);
+
     modal.innerHTML = `
       <button type="button" class="btn close" id="close-btn" onclick="closeModal(${args[0]})"><i class="fa-solid fa-xmark"></i></button>
       <div class="modal-content">
@@ -93,6 +94,11 @@ function showModal(...args) {
       </div>
     `;
     el.appendChild(modal);
+
+    $(body).keydown(function(event) {
+      if(event.key == "Escape")
+        closeModal(args[0]);
+    });
   };
   createModal();
 
@@ -106,9 +112,9 @@ function showModal(...args) {
   shazoom();
 
   /* Hide exzoom navbar and nav buttons when only 1 image */
-  if (args[3].length == 0) {
-    $(".exzoom_btn").hide();
-    $(".exzoom_nav").hide();
+  if (args[2].length == 0) {
+    $(".zoom-btn").hide();
+    $(".zoom-nav").hide();
   }
 
   createForms(args[4]);
@@ -169,8 +175,8 @@ function showModal(...args) {
   /* Function when modal shopping list table is submitted */
   $("#modal-cart-form").submit(function(e) {
     e.preventDefault();
-  
-    var actionUrl = modalForm.attr('action');
+    let modalForm = $("#modal-cart-form");
+    let actionUrl = modalForm.attr('action');
     let id = modalForm.attr('data');
     
     cartAdd(actionUrl, id); 
@@ -184,5 +190,7 @@ function closeModal(a) {
   body.style.overflow = "auto";
   el.style.transform = "scale(0)";
   el.style.opacity = "0";
-  modal.remove();
+  setTimeout(function() {
+    modal.remove();
+}, 1000);
 }

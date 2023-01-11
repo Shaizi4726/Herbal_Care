@@ -48,7 +48,7 @@ Route::match(['get','post'],'/add-to-cart','CartController@singleAddToCart')->na
 Route::get('cart-delete/{id}','CartController@cartDelete')->name('cart-delete');
 Route::post('cart-update','CartController@cartUpdate')->name('cart.update');
 
-Route::get('/cart',function(){
+Route::get('/cart', function(){
     return view('frontend.pages.cart');
 })->name('cart');
 Route::get('/checkout','CartController@checkout')->name('checkout')->middleware('user');

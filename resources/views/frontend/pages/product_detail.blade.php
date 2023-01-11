@@ -270,6 +270,8 @@
 
 		window.onload = function() {
   		$(function() {
+        shazoom();
+
 				$('#modal-add-list').hide();
 				/* Actions when form is changed */
 				$("[name|='product-form']").change(() => {

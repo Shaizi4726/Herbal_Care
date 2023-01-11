@@ -1,5 +1,3 @@
-shazoom();
-
 /* Plus button function */
 $('.plus').click(function(e) {
   let $input = $('.plus').prev('input.qty');

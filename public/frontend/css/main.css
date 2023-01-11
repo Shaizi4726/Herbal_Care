@@ -49,6 +49,7 @@ table, th, td {
     border: 1px solid #443a2e;
     border-collapse: collapse;
     padding: 0.5em;
+    overflow-x: auto;
 }
 
 .dropdown-toggle::after {
@@ -366,6 +367,7 @@ table, th, td {
     height: 0px;
     overflow: hidden;
     transition: all 500ms ease-in-out;
+    cursor: pointer;
   }
 
   .btn-quick-view p {

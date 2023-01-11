@@ -23,7 +23,6 @@
     
     public static function getHeaderCategory() {
       $category = new Category();
-      // dd($category);
       $menu=$category->getAllParentWithChild();
       if($menu) {
       foreach($menu as $cat_info) {
@@ -81,10 +80,9 @@
   }
 
   // Cart Count
-  public static function cartCount($user_id='') {
+  public static function cartCount() {
     if(Auth::check()) {
-      if($user_id=="") 
-        $user_id=auth()->user()->id;
+      $user_id=auth()->user()->id;
       return Cart::where('user_id',$user_id)->where('order_id',null)->sum('quantity');
     }
     else {
@@ -97,41 +95,44 @@
         return $this->hasOne('App\Models\Product','id','product_id');
     }
 
-    public static function getAllProductFromCart($user_id=''){
+    public static function getAllProductFromCart(){
         if(Auth::check()){
-            if($user_id=="") $user_id=auth()->user()->id;
-            return Cart::with('product')->where('user_id',$user_id)->where('order_id',null)->get();
+          $user_id = auth()->user()->id;
+          return Cart::with('product')->where('user_id', $user_id)->get();
         }
         else{
+          return 0;
+        }  
+    }
+    
+    // Total cart amount with tax
+    public static function totalCartAmount(){
+      if(Auth::check()){
+          $user_id = auth()->user()->id;
+          return Cart::where('user_id',$user_id)->sum('t_amount');
+      }
+      else {
+          return 0;
+      }
+    }
+
+    //Total cart amount without tax
+    public static function CartAmount(){
+        if(Auth::check()){
+            $user_id=auth()->user()->id;
+            return Cart::where('user_id',$user_id)->where('order_id',null)->sum('amount');
+        }
+
+        else {
             return 0;
         }
-        
     }
-    // Total amount cart
-    public static function totalCartPrice($user_id=''){
+
+    // Total cart tax
+    public static function totalCartTax(){
         if(Auth::check()){
-            if($user_id=="") $user_id=auth()->user()->id;
-            return Cart::where('user_id',$user_id)->where('order_id',null)->sum('t_amount');
-        }
-        else{
-            return 0;
-        }
-    }
-    //total without tax
-    public static function totalCartt_amount($user_id=''){
-        if(Auth::check()){
-            if($user_id=="") $user_id=auth()->user()->id;
-            return Cart::where('user_id',$user_id)->where('order_id',null)->sum('t_amount');
-        }
-        else{
-            return 0;
-        }
-    }
-    //tax total cart
-    public static function totalCarttax_amount($user_id=''){
-        if(Auth::check()){
-            if($user_id=="") $user_id=auth()->user()->id;
-            return Cart::where('user_id',$user_id)->where('order_id',null)->sum('tax_amount');
+            $user_id=auth()->user()->id;
+            return Cart::where('user_id',$user_id)->sum('tax_amount');
         }
         else{
             return 0;
@@ -178,7 +179,7 @@
     }
 
     // Total price with shipping and coupon
-    public static function grandPrice($id,$user_id){
+    public static function grandPrice($id, $user_id) {
         $order=Order::find($id);
 //        dd($id);
         if($order){
@@ -188,18 +189,6 @@
         }else{
             return 0;
         }
-    }
-
-
-    // Admin home
-    public static function earningPerMonth(){
-        $month_data=Order::where('status','delivered')->get();
-        // return $month_data;
-        $price=0;
-        foreach($month_data as $data){
-            $price = $data->cart_info->sum('price');
-        }
-        return number_format((float)($price),2,'.','');
     }
 
     public static function shipping(){

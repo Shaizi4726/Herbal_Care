@@ -15,7 +15,6 @@ class AttributeImportController extends Controller
         if ($import->failures()->isNotEmpty()) {
             return back()->withFailures($import->failures());
         }
-        return back()->withStatus('Import in queue, we will send notification after import finished.');
-        return $request->all();   
+        return back()->withStatus('Import in queue, we will send notification after import finished.'); 
     }
 }

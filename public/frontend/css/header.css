@@ -351,33 +351,33 @@
     
   }
   
-  .cat-sticky {
-    top: 2.2rem;
-  }
-
   .cat-menu {
     top: 6.5rem;
     left: 10.5rem;
     padding: 0.5em 0;
   }
-
+  
   .cat-menu li {
     margin: 0;
     line-height: 2;
   }
-
+  
   .cat-menu li:hover {
     background-color: #443a2e; 
   }
-
+  
   .cat-menu li:hover > a {
     color: #d7c89d;
   }
-
+  
   #shop:hover .cat-menu {
     display: block;
   }
 
+  .cat-sticky {
+    top: 2.2rem;
+  }
+  
   .cat-submenu {
     background-color: #d7c89d;
     position: absolute;

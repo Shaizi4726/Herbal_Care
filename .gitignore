@@ -1,15 +1,3 @@
 /node_modules
-<<<<<<< HEAD
-/public/hot
 /vendor
 .env
-.env.backup
-.phpunit.result.cache
-Homestead.json
-Homestead.yaml
-npm-debug.log
-yarn-error.log
-=======
-/vendor
-.env
->>>>>>> d8559f744df9370ca6a4187387e209ef3e2c8800

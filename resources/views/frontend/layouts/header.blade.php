@@ -109,7 +109,7 @@
               <div class="bottom">
                 <div class="total">
                     <span>Total = </span>
-                    <span class="total-amount">AED {{number_format(Helper::totalCartPrice(),2)}}</span>
+                    <span class="total-amount">AED {{number_format(Helper::totalCartAmount(),2)}}</span>
                 </div>
                 <div class="btn anim-checkout-btn">
                 <a href="{{route('checkout')}}">Checkout</a>
