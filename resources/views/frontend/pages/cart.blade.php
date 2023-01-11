@@ -6,6 +6,7 @@
 @endpush
 
 @section('main-content')
+	
 	<!-- Shopping Cart -->
   <h1 class="title page-title" id="cart-title">Shopping Cart</h1>
 

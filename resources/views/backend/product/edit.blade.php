@@ -9,7 +9,7 @@
         @csrf 
         @method('PATCH')
         <div class="form-group">
-          <label for="inputTitle" class="col-form-label">Plu Code </label>
+          <label for="inputTitle" class="col-form-label">Plu Code <span class="text-danger">*</span></label>
           <input id="inputTitle" type="text" name="plu" placeholder="Enter Plu"  value="{{$product->plu}}" class="form-control">
           @error('plu')
           <span class="text-danger">{{$message}}</span>
@@ -24,7 +24,7 @@
         </div>
         
         <div class="form-group">
-          <label for="inputTitle" class="col-form-label">Scientific Name/ Boltical Name <span class="text-danger">*</span></label>
+          <label for="inputTitle" class="col-form-label">Scientific Name/ Boltical Name </label>
           <input id="inputTitle" type="text" name="scientific" placeholder="Enter Scientific Name"  value="{{$product->scientific}}" class="form-control">
           @error('scientific')
           <span class="text-danger">{{$message}}</span>
@@ -32,7 +32,7 @@
         </div>
 
         <div class="form-group">
-          <label for="inputTitle" class="col-form-label">Other name <span class="text-danger">*</span></label>
+          <label for="inputTitle" class="col-form-label">Other name </label>
           <input id="inputTitle" type="text" name="other_name" placeholder="Enter Other Name"  value="{{$product->other_name}}" class="form-control">
           @error('other name')
           <span class="text-danger">{{$message}}</span>

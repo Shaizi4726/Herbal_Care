@@ -66,5 +66,4 @@ class Product extends Model
     public function productcategory(){
         return $this->hasMany(ProductCategory::class,'product_id','id');
      }
-
 }

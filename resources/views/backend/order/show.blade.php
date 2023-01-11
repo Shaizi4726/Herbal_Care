@@ -34,9 +34,9 @@
             <td>{{$order->first_name}} {{$order->last_name}}</td>
             <td>{{$order->email}}</td>
             <td>{{$order->quantity}}</td>
-            <td>${{$order->sub_total}}</td>
-            <td>@foreach ($shipping_charge as $data) $ {{number_format($data,2)}} @endforeach</td>
-            <td>${{number_format($order->total_amount,2)}}</td>
+            <td>AED {{$order->sub_total}}</td>
+            <td>@foreach ($shipping_charge as $data) AED {{number_format($data,2)}} @endforeach</td>
+            <td>AED {{number_format($order->total_amount,2)}}</td>
             <td>{{$order->payment_status}}</td>
             <td>
                 @if($order->status=='new')
@@ -87,21 +87,21 @@
                     </tr>
                     <tr>
                         <td>Total</td>
-                        <td> : $ {{$order->sub_total}}</td>
+                        <td> : AED {{$order->sub_total}}</td>
                     </tr>
                     <tr>
                         <td>Shipping Charge</td>
                         @if(!empty($shipping))
-                        <td> : $ {{$order->shipping->price}}</td>
+                        <td> : AED {{$order->shipping->price}}</td>
                         @endif
                     </tr>
                     <tr>
                       <td>Coupon</td>
-                      <td> : $ {{number_format($order->coupon,2)}}</td>
+                      <td> : AED {{number_format($order->coupon,2)}}</td>
                     </tr>
                     <tr>
                         <td>Total Amount</td>
-                        <td> : $ {{number_format($order->total_amount,2)}}</td>
+                        <td> : AED {{number_format($order->total_amount,2)}}</td>
                     </tr>
                     <tr>
                         <td>Payment Method</td>
