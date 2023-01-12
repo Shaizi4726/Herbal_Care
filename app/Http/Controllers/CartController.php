@@ -101,10 +101,14 @@ class CartController extends Controller
             ->where('product_atrr_id', $proAttr->id)->first();
 
             if ($already_cart) {
-                $already_cart->quantity = $already_cart->quantity + $data['quantity'][$i];
-                $already_cart->amount = ($proAttr->price * $data['quantity'][$i])+ $proAttr->price;
-                $already_cart->tax_amount = ($already_cart->amount)/1.05;
-                $already_cart->t_amount = $already_cart->amount-$already_cart->tax_amount;    
+                $quantity = $data['quantity'][$i];
+                $t_amount = ($proAttr->price * $data['quantity'][$i]);
+                $amount = ($already_cart->t_amount)/1.05;
+                $tax_amount = ($already_cart->t_amount-$already_cart->amount);   
+                $already_cart->quantity += $quantity;
+                $already_cart->t_amount += $t_amount;
+                $already_cart->amount += $amount;
+                $already_cart->tax_amount += $tax_amount;   
                 $already_cart->save();
                 
             } else {
