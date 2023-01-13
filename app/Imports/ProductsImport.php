@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\Product;
+use App\Models\Image;
 use App\Models\ProductCategory;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Collection;
@@ -41,6 +42,15 @@ class ProductsImport implements
     {
         foreach ($rows as $row) {
             $product_cat_list = explode(',', $row['cat_id']);
+            $images = explode(',', $row['image']);
+            $forms = explode(',', $row['form']);
+            $sizes = explode(',', $row['size']);
+            $prices = explode(',', $row['price']);
+            $discounts = explode(',', $row['discount']);
+            $stocks = explode(',', $row['stock']);
+            $forms_len = count($forms);
+            $sizes_len =   count($sizes);
+
             $product = Product::create([
                 'plu' => $row['plu'],
                 'title' => $row['title'],
@@ -62,6 +72,28 @@ class ProductsImport implements
             $product->productcategory()->create([
                 'category_id' => $product_cat
             ]);
+           
+            foreach ($images as $image)
+            $product->images()->create([
+                'plu' => $row['plu'],
+                'image' => $image               
+            ]);
+
+            for ($i=0; $i<$forms_len; $i++) {
+                for ($j=0; $j<$sizes_len; $j++) {
+                    $product->attributes()->create([
+                        'plu' => $row['plu'],
+                        'form' => $forms[$i],
+                        'size' => $sizes[$j],
+                        'price' => $prices[$j + ($sizes_len * $i)],
+                        'sku' => $row['plu']."_".$forms[$i]."_".$sizes[$j],
+                        'discount' => $discounts[$j + ($sizes_len * $i)],
+                        'stock' => $stocks[$j + ($sizes_len * $i)],
+                        'is_featured' => $row['is_featured'],
+                        'status' => $row['status']         
+                    ]);
+                }
+            }        
         }
     }
 
