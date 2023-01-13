@@ -19,65 +19,6 @@ class CartController extends Controller
         
     }
 
-    /* public function addToCart(Request $request){
-        if (empty($request->id)) {
-            request()->session()->flash('error','Invalid Products');
-            return back();
-        }        
-        $product = Product::with('attributes')->where('id', $request->id)->first();
-        $request->validate([
-            'id' => 'required',
-            'cart' => 'required',
-        ]);
-       
-//         // dd($request->quant[1]);
-
-
-        $product = Product::with('attributes')->where('id', $request->id)->first();
-       
-        $data = $request->cart;     
-        $items = count($data['size']);
-
-        for ($i=0; $i<$items; $i++) {
-            $proAttr = ProductsAttribute::where(['price' => $data['price'][$i], 'product_id' => $product->id])->first();        
-            
-            if ( ($data['quantity'][$i] < 1) || empty($product) ) {
-                request()->session()->flash('error','Invalid Products');
-                return back();
-            }    
-        
-            $already_cart = Cart::where('user_id', auth()->user()->id)->where('order_id',null)->where('product_id', $product->id)
-            ->where('product_atrr_id', $proAttr->id)->first();
-
-            if ($already_cart) {
-                $already_cart->quantity = $already_cart->quantity + $data['quantity'][$i];
-                $already_cart->amount = ($proAttr->price * $data['quantity'][$i])+ $proAttr->price;
-                $already_cart->tax_amount = ($already_cart->amount)/1.05;
-                $already_cart->t_amount = $already_cart->amount-$already_cart->tax_amount;    
-                
-                $already_cart->save();
-                
-            } else {
-                
-                $cart = new Cart;
-                $cart->user_id = auth()->user()->id;
-                $cart->product_id = $product->id;
-                $cart->plu = $product->plu;
-                $cart->product_atrr_id = $proAttr->id;
-                $cart->form = $proAttr->form;
-                $cart->price = ($proAttr->price-($proAttr->price*$proAttr->discount)/100);
-                $cart->size = $proAttr->size;
-                $cart->quantity = $data['quantity'][$i];
-                $cart->t_amount=($proAttr->price * $data['quantity'][$i]);
-                $cart->amount=($cart->t_amount)/1.05;
-                $cart->tax_amount=$cart->t_amount-$cart->amount;
-                $cart->save();
-            }
-            request()->session()->flash('success','Product successfully added to cart');
-        }
-        return back();       
-    }  */ 
-
     public function singleAddToCart(Request $request){
         $request->validate([
             'id' => 'required',
@@ -102,9 +43,9 @@ class CartController extends Controller
 
             if ($already_cart) {
                 $quantity = $data['quantity'][$i];
-                $t_amount = ($proAttr->price * $data['quantity'][$i]);
-                $amount = ($already_cart->t_amount)/1.05;
-                $tax_amount = ($already_cart->t_amount-$already_cart->amount);   
+                $t_amount = $proAttr->price * $data['quantity'][$i];
+                $amount = $t_amount / 1.05;
+                $tax_amount = $t_amount - $amount;   
                 $already_cart->quantity += $quantity;
                 $already_cart->t_amount += $t_amount;
                 $already_cart->amount += $amount;

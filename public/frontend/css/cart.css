@@ -8,7 +8,6 @@
   position: relative;
   display: flex;
   justify-content: space-between;
-  align-items: stretch;
   width: 90%;
   margin: 1em auto;
   box-shadow: 0 5px 10px 2px rgba(0, 0, 0, 0.5);
@@ -32,7 +31,6 @@ h4, p {
 }
 
 .cart-page-item input {
-  margin: 2vw;
   width: 6vw;
   font-size: 2vw;
 }
@@ -69,7 +67,7 @@ h4, p {
 
 .summary-title-container {
   text-align: center;
-  font-size: 2.5vw;
+  font-size: 2vw;
   margin: 0.5em 0;
 }
 
@@ -93,6 +91,7 @@ h4, p {
   font-size: 2vw;
   width: 60vw;
   height: 2em;
+  padding-left: 0.5em;
   outline: none;
   border: 1px solid #443a2e;
 }
@@ -129,10 +128,90 @@ h4, p {
   font-size: 4vw;
   display: block;
   text-align: center;
-  line-height: 10vw;
   font-weight: bold;
+  line-height: 10vw;
+  height: 10vw;
   background-color: #443a2e;
   color: #faf9f6;
   width: 100%;
-  height: 10vw;
+}
+
+@media screen and (min-width: 768px) {
+  .page-title {
+    font-size: 2.5vw;
+  }
+
+  .cart-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-start;
+  }
+
+  .cart-page-item {
+    width: 65vw;
+    margin: 0 1em 1em;
+  }
+
+  img.cart-product-img {
+    width: 20vw;
+    height: 14.5vw;
+  }
+
+  .cart-page-item-meta {
+    font-size: 1.1vw;
+  }
+
+  .cart-page-item-name {
+  font-size: 2vw;
+  }
+
+  .cart-page-item input {
+    width: 4vw;
+    height: 2em;
+    font-size: 1.1vw;
+  }
+
+  .cart-page-item-data {
+    font-size: 1.5vw;
+  }
+
+  .remove-btn {
+    font-size: 1.1vw;
+  }
+
+  .cart-summary {
+    width: 30vw;
+    font-size: 1.5vw;
+    margin: 0 1em 0 0;
+    box-shadow: 0 5px 10px 2px rgba(0, 0, 0, 0.5);
+  }
+
+  .summary-title-container {
+    font-size: 1.5vw;
+  }
+
+  .coupon input {
+    font-size: 1.5vw;
+    width: 16vw;
+  }
+
+  .coupon-btn {
+    font-size: 1.5vw;
+    width: 5vw;
+  }
+
+  .grand-total {
+    font-size: 1.8vw;
+  }
+
+  .btn-checkout {
+    font-size: 2vw;
+    line-height: 3.5vw;
+    height: 5vw;
+  }
+
+  a.btn-checkout {
+    color: #faf9f6;
+  }
 }

@@ -11,7 +11,7 @@
 			<div class="img-box">
 				<ul class="img-ul">
 					<li><img src="{{$product_detail->photo}}" alt="product-photo"></li>
-					@foreach($product_detail->images as $image)	
+					@foreach($product_detail->images as $image)
 						<li><img src="{{('/images/'.$image->image)}}"/></li>	
 					@endforeach										
 				</ul>
@@ -26,7 +26,9 @@
 		<div class="modal-details-container">
 			<div class="product-modal-detail">
 				<h1 class="title">{{$product_detail->title}}</h1>
-				<h4 class="subtitle">Scientific Name: {{$product_detail->scientific}}</h4>
+        @if($product_detail->scientific)
+          <h4 class="subtitle">Scientific Name: {{$product_detail->scientific}}</h4>
+        @endif
 
 				@php
 					$rate=ceil($product_detail->getReview->avg('rate'))

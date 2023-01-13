@@ -1,19 +1,3 @@
-/* Plus button function */
-$('.plus').click(function(e) {
-  let $input = $('.plus').prev('input.qty');
-  let val = parseInt($input.val());
-  $input.val( val+1 ).change();
-});
-
-/* Minus button function */
-$('.minus').click(function(e) {
-  let $input = $('.minus').next('input.qty');
-  var val = parseInt($input.val());
-  if (val > 1) {
-    $input.val( val-1 ).change();
-  }
-});
-
 /* Function when modal shopping list table is submitted */
 $("#modal-cart-form").submit(function(e) {
   e.preventDefault();

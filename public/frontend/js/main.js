@@ -1,9 +1,35 @@
+$('body'). bind('copy paste',function(e) {e. preventDefault(); return false; });
+
 /*==================== Exzoom function ====================*/
 var shazoom = function(){
   $("#shazoom").exzoom({
     "autoPlay": false
   });
 };
+
+/* Plus button function */
+$('.plus').click(function(e) {
+  let $input = $(this).prev('input.qty');
+  let val = parseInt($input.val());
+  $input.val( val+1 ).change();
+});
+
+/* Minus button function */
+$('.minus').click(function(e) {
+  let $input = $(this).next('input.qty');
+  var val = parseInt($input.val());
+  if (val > 1) {
+    $input.val( val-1 ).change();
+  }
+});
+
+
+$(document).ready(function() {
+  document.oncontextmenu = new Function("return false");
+  $('body').bind('cut copy paste', function(event) {
+  event.preventDefault();
+});
+});
 
 /*==================== Request product price from database ====================*/
 function Price(id) {
