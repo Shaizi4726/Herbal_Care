@@ -14,8 +14,8 @@
         @foreach($banners as $key=>$banner)                                    
           <li>
             <picture>
-              <source media="(min-width: 600px)" srcset="{{asset('images/Ashwagandha 2.jpg')}}">
-              <source media="(min-width: 768px)" srcset="{{asset('images/Ashwagandha 2.jpg')}}">
+              <source media="(min-width: 420px)" srcset="">
+              <source media="(min-width: 768px)" srcset="">
               <img class="slide-img" src="{{$banner->photo}}" alt="Slider Image">
             </picture>
           </li>

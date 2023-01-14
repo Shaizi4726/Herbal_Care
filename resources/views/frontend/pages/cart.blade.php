@@ -18,11 +18,11 @@
             <div class="cart-page-item-meta">
               <h2 class="cart-page-item-name">{{$cart->product['title']}}</h2>
               <div class="cart-page-item-price">
-                <h4>Price: </h4> 
+                <h4>Price: </h4>
                 <p>AED {{number_format($cart->price, 2)}}</p>
               </div>
               <div class="cart-page-item-form">
-                <h4>Form: </h4> 
+                <h4>Form: </h4>
                 <p>{{$cart->form}}</p>
               </div>
               <div class="cart-page-item-size">
@@ -30,23 +30,23 @@
                 <p>{{$cart->size}}</p>
               </div>
               <div class="cart-page-item-quantity">
-                <h4>Quantity: </h4> 
+                <h4>Quantity: </h4>
                 <input type="button" value="-" class="qty-minus minus qty-control" field="quantity">
-						    <input type="number" name="item_quantity" value="{{$cart->quantity}}" min="1" class="qty item-quantity">
+						    <input type="number" name="item_quantity" value="{{$cart->quantity}}" min="1" oninput="this.value = Math.abs(this.value)" onchange="updateCartData(<?= $cart->id ?>, this.value)" class="qty item-quantity">
 						    <input type="button" value="+" class="qty-plus plus qty-control" field="quantity">
               </div>
             </div>
             <div class="cart-page-item-data">
               <h4>Total: </h4> 
-              <p>AED {{number_format($cart->t_amount, 2)}}</p>
+              <p id="{{$cart->id}}-total">AED {{number_format($cart->t_amount, 2)}}</p>
 
-              <button class="remove-btn btn"> Remove </button>
+              <button class="remove-btn btn"><a href="{{route('cart-delete', $cart->id)}}"> Remove </a></button>
             </div>
           </div>
         @endforeach
 
       @else
-        <p>Sorry! Your cart is empty. Add products to cart</p>
+        <p>Sorry! Your cart is empty. Choose products <a href="{{route('home')}}"> here </a>!</p>
       @endif
     </div>
 
@@ -72,18 +72,22 @@
       <div class="cart-totals">
         <div class="cart-total-value">
           <h4 class="subtotal"> Subtotal: </h4>
-          <p>AED {{number_format($subtotal, 2)}}</p>
+          <p id="subtotal-value">AED {{number_format($subtotal, 2)}}</p>
         </div>
         <div class="cart-total-value">
           <h4 class="tax"> VAT(5%): </h4>
-          <p>AED {{number_format($tax, 2)}}</p>
+          <p id="tax-value">AED {{number_format($tax, 2)}}</p>
           </div>
         </div>
         <div class="cart-total-value grand-total">
           <h4 class="total"> Grand Total: </h4>
-          <p>AED {{number_format($total_amount, 2)}}</p>
+          <p id="grand-total-value">AED {{number_format($total_amount, 2)}}</p>
         </div>
       <a href="{{route('checkout')}}" class="btn btn-checkout">Checkout</a>
     </div>
   </section>
 @endsection
+
+@push('scripts') 
+  <script src="{{asset('frontend/js/cart.js')}}"></script>
+@endpush

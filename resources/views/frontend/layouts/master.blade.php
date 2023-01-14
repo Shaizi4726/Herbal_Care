@@ -11,8 +11,10 @@
 		<!-- Header -->
 		@include('frontend.layouts.header')
 		<!-- End Header -->
-
-		@yield('main-content')
+    
+    <section id="main-content">
+		  @yield('main-content')
+    </section>
 
 		<!-- Footer -->
 		@include('frontend.layouts.footer')

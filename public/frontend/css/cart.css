@@ -7,7 +7,7 @@
 .cart-page-item {
   position: relative;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   width: 90%;
   margin: 1em auto;
   box-shadow: 0 5px 10px 2px rgba(0, 0, 0, 0.5);
@@ -18,7 +18,7 @@
 }
 
 .cart-page-item-meta {
-  margin: 1em;
+  margin: 1em 0 1em 4em;
   font-size: 2vw;
 }
 
@@ -30,6 +30,11 @@ h4, p {
   display: inline-block;
 }
 
+.cart-page-item-quantity {
+  position: absolute;
+  bottom: 1em;
+}
+
 .cart-page-item input {
   width: 6vw;
   font-size: 2vw;
@@ -38,6 +43,8 @@ h4, p {
 .cart-page-item-data {
   font-size: 2.5vw;
   margin: 1em;
+  position: absolute;
+  right: 1vw;
 }
 
 .cart-page-item-data h4, .cart-page-item-data p {
@@ -46,13 +53,16 @@ h4, p {
 
 .remove-btn {
   font-size: 2vw;
-  color: #faf9f6;
   background-color: #ee4b2b;
   padding: 0.5em;
-  position: absolute;
-  bottom: 1em;
-  right: 1.5em;
+  position: relative;
+  top: 4.5em;
+  left: 3em;
   border-radius: 5px;
+}
+
+.remove-btn a {
+  color: #faf9f6;
 }
 
 .cart-summary {
@@ -181,34 +191,34 @@ h4, p {
   }
 
   .cart-summary {
-    width: 30vw;
-    font-size: 1.5vw;
+    width: 25vw;
+    font-size: 1.1vw;
     margin: 0 1em 0 0;
     box-shadow: 0 5px 10px 2px rgba(0, 0, 0, 0.5);
   }
 
   .summary-title-container {
-    font-size: 1.5vw;
+    font-size: 1.1vw;
   }
 
   .coupon input {
-    font-size: 1.5vw;
-    width: 16vw;
+    font-size: 1.1vw;
+    width: 15vw;
   }
 
   .coupon-btn {
-    font-size: 1.5vw;
-    width: 5vw;
+    font-size: 1.1vw;
+    width: 4vw;
   }
 
   .grand-total {
-    font-size: 1.8vw;
+    font-size: 1.4vw;
   }
 
   .btn-checkout {
-    font-size: 2vw;
-    line-height: 3.5vw;
-    height: 5vw;
+    font-size: 1.6vw;
+    line-height: 2.5vw;
+    height: 4vw;
   }
 
   a.btn-checkout {

@@ -1,0 +1,16 @@
+Details Paragraph Text Sytle
+Guest Add to Cart
+Checkout Page
+Track Order Backend
+Forgot Password Page
+Products by product category table
+Import Price Change
+Search Backend
+aboutUs Check Email Validation backend
+Mobile Popup Offers
+Coupan Validation Backend
+FAQ Page
+Terms & Conditions Page
+Privacy Policy Page
+Shippings Terms & Conditions Page
+Payment Methods Page

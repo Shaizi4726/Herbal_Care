@@ -25,7 +25,7 @@
       <button id="mob-cart-button" class="btn header-icon cart-button">
         <a href="{{route('cart')}}">
         <i class="fa-solid fa-cart-shopping" id="cart-icon"></i>
-        <div class="cart-quantity"><span>{{Helper::cartCount()}}</span></div></a>
+        <div class="cart-quantity"><span>{{count(Helper::getAllProductFromCart())}}</span></div></a>
       </button>
     </div>      
   </div>      
@@ -82,7 +82,7 @@
       <button class="btn header-icon cart-button">
         <a href="{{route('cart')}}" class="header-icon">
         <i class="fa-solid fa-cart-shopping" id="cart-icon"></i>
-        <div class="cart-quantity"><span style="position: relative;top: 0.14em;">{{Helper::cartCount()}}</span></div></a>
+        <div class="cart-quantity"><span style="position: relative;top: 0.14em;">{{count(Helper::getAllProductFromCart())}}</span></div></a>
           @auth
             <div class="collapse shopping-item">
               <div class="dropdown-cart-header">
@@ -92,16 +92,13 @@
 
               <ul class="shopping-list">
                 @foreach(Helper::getAllProductFromCart() as $data)
-                  @php
-                      $photo=explode(',',$data->product['photo']);
-                  @endphp
                   <li>
                     <div class="product-det">
                       <h4><a class="prod-name" href="{{route('product-detail',$data->product['slug'])}}" target="_blank">{{$data->product['title']}}</a></h4>
                       <p class="total-cal font">{{$data->quantity}} x <span class="amount">{{number_format($data->price,2)}} AED</span></p>
-                      <a href="{{route('cart-delete',$data->id)}}" class="remove font" title="Remove"><i class="fa-regular fa-trash-can"></i> Remove Item</a>
+                      <a href="{{route('cart-delete', $data->id)}}" class="remove font" title="Remove"><i class="fa-regular fa-trash-can"></i> Remove Item</a>
                     </div>
-                    <a class="cart-img" href="#"><img src="{{$photo[0]}}" alt="{{$photo[0]}}"></a>
+                    <a class="cart-img" href="#"><img src="{{$data->product['photo']}}" alt="product photo"></a>
                   </li>
                 @endforeach
               </ul>

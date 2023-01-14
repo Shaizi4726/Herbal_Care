@@ -67,7 +67,7 @@
 					<input type="hidden" name="price-input" id="price-input" value="">
 					<div class="qty-manage" id="qty-manage">
 						<input type="button" value="-" class="qty-minus minus qty-control" field="quantity" disabled>
-						<input type="number" name="quantity" value="1" min="1" class="qty">
+						<input type="number" name="quantity" value="1" min="1" oninput="this.value = Math.abs(this.value)" class="qty">
 						<input type="button" value="+" class="qty-plus plus qty-control" field="quantity">
 					</div>
 					<input type="button" id="modal-add-list" class="btn btn-submit" value="Add to List" onclick="shopList()">

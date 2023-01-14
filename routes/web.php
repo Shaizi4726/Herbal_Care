@@ -46,7 +46,7 @@ Route::get('/product-brand/{slug}','FrontendController@productBrand')->name('pro
 Route::get('/add-to-cart/{id}','CartController@addToCart')->name('add-to-cart')->middleware('user');
 Route::match(['get','post'],'/add-to-cart','CartController@singleAddToCart')->name('single-add-to-cart')->middleware('user');
 Route::get('cart-delete/{id}','CartController@cartDelete')->name('cart-delete');
-Route::post('cart-update','CartController@cartUpdate')->name('cart.update');
+Route::get('cart-update','CartController@cartUpdate')->name('cart.update');
 
 Route::get('/cart', function(){
     return view('frontend.pages.cart');
