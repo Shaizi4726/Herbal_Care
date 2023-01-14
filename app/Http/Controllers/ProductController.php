@@ -53,12 +53,12 @@ class ProductController extends Controller
     {               
        
         $this->validate($request,[
+            'plu'=>'required|numeric',
             'title'=>'string|required',
             'scientific'=>'string|nullable',
             'other_name'=>'string|nullable',
             'benefit'=>'string|nullable',
-            'description'=>'string|nullable',
-            'plu'=>'required|numeric',
+            'description'=>'string|nullable',            
             'photo'=>'required',
             'minprice'=>'numeric|nullable',
             'photo.*'=>'image|mimes:jpg,jpeg,png,gif|max:1024|required',

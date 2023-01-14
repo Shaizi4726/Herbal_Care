@@ -11,7 +11,7 @@ use Nicolaslopezj\Searchable\SearchableTrait;
 class Product extends Model
 {
     
-    protected $fillable=['title','scientific','slug','summary','benafit','description','cat_id','child_cat_id','price','brand_id','discount','status','photo','stock','is_featured','condition'];
+    protected $fillable=['plu','title','scientific','slug','summary','benafit','description','cat_id','child_cat_id','price','brand_id','discount','status','photo','stock','is_featured','condition'];
 
     public function cat_info(){
         return $this->hasOne('App\Models\Category','id','cat_id')->orderBy('id','asc');

@@ -72,7 +72,6 @@ class ProductsImport implements
             $product->productcategory()->create([
                 'category_id' => $product_cat
             ]);
-           
             foreach ($images as $image)
             $product->images()->create([
                 'plu' => $row['plu'],
@@ -93,7 +92,8 @@ class ProductsImport implements
                         'status' => $row['status']         
                     ]);
                 }
-            }        
+            } 
+            
         }
     }
 
