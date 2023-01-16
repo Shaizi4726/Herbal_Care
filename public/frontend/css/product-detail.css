@@ -34,8 +34,21 @@
 }
 
 .tab-content {
+  text-align: justify;
   width: 80vw;
-  margin: auto;
+  margin: 0 auto 3em;
+}
+
+.tab-panel h3 {
+  margin-top: 2em;
+}
+
+.tab-panel h4 {
+  margin-top: 2em;
+}
+
+.tab-panel p {
+  text-indent: 8vw;
 }
 
 .benefits li {
@@ -49,6 +62,7 @@
   font-weight: normal;
   font-size: 1em;
   font-style: oblique;
+  text-align: justify;
 }
 
 .precautions li {
@@ -154,4 +168,8 @@ a.review-auth-link {
 
 .prev-reviews {
   margin: 1.5em 0;
+}
+
+.related-products .section-title {
+  margin: 1em;
 }

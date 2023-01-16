@@ -61,10 +61,10 @@
 
 @media screen and (min-width: 768px) {
     .slider {
-        height: auto;
+        height: 300px;
     }
 
     .carousel-wrap li img {
-        height: auto;
+        height: 300px;
     }
 }

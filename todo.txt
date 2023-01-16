@@ -1,10 +1,8 @@
-Details Paragraph Text Sytle
 Guest Add to Cart
 Checkout Page
 Track Order Backend
 Forgot Password Page
-Products by product category table
-Import Price Change
+Products by product-category table
 Search Backend
 aboutUs Check Email Validation backend
 Mobile Popup Offers

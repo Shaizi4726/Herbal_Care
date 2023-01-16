@@ -8,6 +8,12 @@
 
 @section('main-content')
   <!-- <video src="{{asset('images/bannert.mp4')}}" autoplay muted loop></video> -->
+  @php
+    $name = Cookie::queue(Cookie::make('name', 'shahzad', 2));
+    $session = Cookie::get('name');
+  @endphp
+
+  <script>console.log('<?= $session ?>');</script>
   @if(count($banners)>0)
     <section id="slider" class="slider">         
       <ul id="carousel-wrap" class="carousel-wrap">
