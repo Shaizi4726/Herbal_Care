@@ -64,7 +64,7 @@ class FrontendController extends Controller
     public function productDetail($slug)
     {
         $product_detail = Product::getProductBySlug($slug);
-
+       
         return view('frontend.pages.product_detail')->with('product_detail', $product_detail);
     }
 
@@ -447,7 +447,7 @@ class FrontendController extends Controller
         $id = $data['id'];
         $size = $data['size'];
         $form = $data['form'];
-        $proAttr = DB::table('products_attributes')->where('product_id', $id)->where('size', $size)->where('form', $form)->first();      
+        $proAttr = DB::table('products_attributes')->where('product_id', $id)->where('size', $size)->where('form', $form)->first();   
         return $proAttr->price;
     }
 
