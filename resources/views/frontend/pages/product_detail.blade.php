@@ -6,6 +6,7 @@
 @endpush
 
 @section('main-content')
+
 	<section id="product-detail" class="modal-content">	
 		<div class="shazoom" id="shazoom">
 			<div class="img-box">

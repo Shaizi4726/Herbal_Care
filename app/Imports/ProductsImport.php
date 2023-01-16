@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Imports;
-
 use App\Models\Product;
 use App\Models\Image;
 use App\Models\ProductCategory;
@@ -56,7 +55,7 @@ class ProductsImport implements
                 'title' => $row['title'],
                 'scientific' => $row['scientific'],
                 'slug'=>$row['title'],
-                'other_name' => $row['summary'],
+                'other_name' => $row['other_name'],
                 'benefit' => $row['benefit'],
                 'description' => $row['description'],
                 'photo' => $row['photo'],
@@ -68,6 +67,7 @@ class ProductsImport implements
                 'status' => $row['status'],
                 'promotion' => $row['promotion']                               
             ]);
+           
             foreach ($product_cat_list as $product_cat)
             $product->productcategory()->create([
                 'category_id' => $product_cat
