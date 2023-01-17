@@ -11,8 +11,18 @@
 
   <section class="cart-section">
     <div class="cart-page-items">
-      @if(count(Helper::getAllProductFromCart()) != 0)
-        @foreach(Helper::getAllProductFromCart() as $key=>$cart)
+      @php
+        if(Auth::check()) {
+          $cart_products = Helper::getAllProductFromCart();
+        }
+        else {
+          $cart_products = Session::get('cart_items');
+        }
+      @endphp
+      
+      @if($cart_products)
+
+        @foreach($cart_products as $key=>$cart)
           <div class="cart-page-item">
             <img src="{{$cart->product['photo']}}" alt="product photo" class="cart-product-img zoom-img">
             <div class="cart-page-item-meta">

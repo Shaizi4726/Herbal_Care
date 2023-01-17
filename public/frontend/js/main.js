@@ -6,33 +6,34 @@ var shazoom = function(){
 };
 
 /* Plus button function */
-$('.plus').click(function(e) {
+$('.plus').on('click', function(e) {
   let qtyinput = $(this).prev('input.qty');
   let val = parseInt(qtyinput.val());
-  qtyinput.val( val+1 ).change();
+  qtyinput.val( val+1 ).trigger('change');
 });
 
 /* Minus button function */
-$('.minus').click(function(e) {
+$('.minus').on('click', function(e) {
   let qtyinput = $(this).next('input.qty');
   var val = parseInt(qtyinput.val());
   if (val > 1) {
-    qtyinput.val(val-1).change();
+    qtyinput.val(val-1).trigger('change');
   }
 });
 
-$(document).ready(function() {
+$(function() {
   document.oncontextmenu = () => false;;
   document.onselectstart = () => false;
-  $('#main-content').bind('cut copy paste', function(event) {
+  $('#main-content').on('cut copy paste', function(event) {
   event.preventDefault();
 });
 });
 
+
 /*==================== Request product price from database ====================*/
 function Price(id) {
   $(function () {
-    $("[name|='product-size']").change(() => {
+    $("[name|='product-size']").on('change', () => {
       var form = $("[name='product-form']:checked").val();
       var size = $("input[name|='product-size']:checked").val();
       $('.plus').prop('disabled', false);
@@ -139,10 +140,10 @@ function cartAdd(url, id) {
   /* Store shopping list data in arrays */
   $("#shopping-list-table tr:gt(0)").each(function () {
     let this_row = $(this);
-    let form = $.trim(this_row.find('td:eq(0)').html());
-    let size = $.trim(this_row.find('td:eq(1)').html());
-    let quantity = $.trim(this_row.find('td:eq(2)').html());
-    let price = $.trim(this_row.find('td:eq(3)').html());
+    let form = this_row.find('td:eq(0)').html();
+    let size = this_row.find('td:eq(1)').html();
+    let quantity = this_row.find('td:eq(2)').html();
+    let price = this_row.find('td:eq(3)').html();
     
     formArr.push(form);
     priceArr.push(price);

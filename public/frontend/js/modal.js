@@ -95,7 +95,7 @@ function showModal(...args) {
     `;
     el.appendChild(modal);
 
-    $(body).keydown(function(event) {
+    $(body).on('keydown', function(event) {
       if(event.key == "Escape")
         closeModal(args[0]);
     });
@@ -131,7 +131,7 @@ function showModal(...args) {
 
   $(function() {
     /* Actions when form is changed */
-    $("[name|='product-form']").change(() => {
+    $("[name|='product-form']").on('change', () => {
       var form = $("[name|='product-form']:checked").val();
       createSizes(form, args[5]);
       if($("[name|='product-size']:checked").val() == undefined) {
@@ -148,7 +148,7 @@ function showModal(...args) {
     $("#modal-cart-button:eq(0)").hide();
 
     /* Enable minus button when value of input quantity is greater than 1 and vice versa */
-    $('input.qty').change(() => {
+    $('input.qty').on('change', () => {
       if ($('input.qty').val() > 1)
         $('.minus').prop('disabled', false);
       else
@@ -157,23 +157,23 @@ function showModal(...args) {
   })
 
   /* Plus button function */
-  $('.plus').click(function(e) {
+  $('.plus').on('click', function(e) {
     let qtyinput = $(this).prev('input.qty');
     let val = parseInt(qtyinput.val());
-    qtyinput.val( val+1 ).change();
+    qtyinput.val( val+1 ).trigger('change');
   });
   
   /* Minus button function */
-  $('.minus').click(function(e) {
+  $('.minus').on('click', function(e) {
     let qtyinput = $(this).next('input.qty');
     var val = parseInt(qtyinput.val());
     if (val > 1) {
-      qtyinput.val( val-1 ).change();
+      qtyinput.val( val-1 ).trigger('change');
     }
   });
 
   /* Function when modal shopping list table is submitted */
-  $("#modal-cart-form").submit(function(e) {
+  $("#modal-cart-form").on('submit', function(e) {
     e.preventDefault();
     let modalForm = $("#modal-cart-form");
     let actionUrl = modalForm.attr('action');

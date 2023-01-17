@@ -25,7 +25,13 @@
       <button id="mob-cart-button" class="btn header-icon cart-button">
         <a href="{{route('cart')}}">
         <i class="fa-solid fa-cart-shopping" id="cart-icon"></i>
-        <div class="cart-quantity"><span>{{count(Helper::getAllProductFromCart())}}</span></div></a>
+
+        @auth
+          <div class="cart-quantity"><span>{{count(Helper::getAllProductFromCart())}}</span></div></a>
+        @else
+          <div class="cart-quantity"><span>{{Session::get('cart_items')}}</span></div></a>
+        @endauth
+
       </button>
     </div>      
   </div>      
@@ -82,8 +88,8 @@
       <button class="btn header-icon cart-button">
         <a href="{{route('cart')}}" class="header-icon">
         <i class="fa-solid fa-cart-shopping" id="cart-icon"></i>
-        <div class="cart-quantity"><span style="position: relative;top: 0.14em;">{{count(Helper::getAllProductFromCart())}}</span></div></a>
-          @auth
+        @auth
+          <div class="cart-quantity"><span style="position: relative;top: 0.14em;">{{count(Helper::getAllProductFromCart())}}</span></div></a>
             <div class="collapse shopping-item">
               <div class="dropdown-cart-header">
                 <span>{{count(Helper::getAllProductFromCart())}} Items</span>
@@ -113,7 +119,9 @@
                 <div class="hover"></div>
                 </div>
               </div>              
-            </div>                                        
+            </div>
+          @else
+            <div class="cart-quantity"><span style="position: relative;top: 0.14em;">{{Session::get('cart_items')}}</span></div></a>
           @endauth
       </button> 
     </nav>
