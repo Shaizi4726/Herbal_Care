@@ -8,11 +8,8 @@
 
 @section('main-content')
   <!-- <video src="{{asset('images/bannert.mp4')}}" autoplay muted loop></video> -->
-  $payload = Session::ge('payload');
-  
-
-
-  @if(count($bnners)>0)
+ 
+  @if(count($banners)>0)
     <section id="slider" class="slider">         
       <ul id="carousel-wrap" class="carousel-wrap">
         @foreach($banners as $key=>$banner)                                    
