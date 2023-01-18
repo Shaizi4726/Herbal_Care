@@ -27,8 +27,8 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
 
-        Session::put('cart_items', 0);
         Session::put('cart', []);
+        Session::put('id', 0);
     }
     
 }

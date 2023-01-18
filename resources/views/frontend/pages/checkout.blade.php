@@ -12,8 +12,8 @@
                 <div class="col-12">
                     <div class="bread-inner">
                         <ul class="bread-list">
-                            <li><a href="{{route('home')}}" style="color: #443a2e;font-family:Myriad Pro;">Home<i class="ti-arrow-right"></i></a></li>
-                            <li class="active"><a href="javascript:void(0)" style="color: #443a2e;font-family:Myriad Pro;">Checkout</a></li>
+                            <li><a href="{{route('home')}}" style="color: #2c542f;font-family:Myriad Pro;">Home<i class="ti-arrow-right"></i></a></li>
+                            <li class="active"><a href="javascript:void(0)" style="color: #2c542f;font-family:Myriad Pro;">Checkout</a></li>
                         </ul>
                     </div>
                 </div>
@@ -43,7 +43,7 @@
                     <div class="row"> 
                         <div class="col-lg-8 col-12">
                             <div class="checkout-form">
-                                <h2 style="color:#443a2e;">Make Your Checkout Here</h2>
+                                <h2 style="color:#2c542f;">Make Your Checkout Here</h2>
                                 <p style="font-weight:bold;">Please register in order to checkout more quickly</p>
                                 <!-- Form -->
                                 <div class="row">
@@ -392,7 +392,7 @@
                             <div class="order-details">
                                 <!-- Order Widget -->
                                 <div class="single-widget">
-                                <div class="card-header" style="background-color:#443a2e;color:#D7C89D;">
+                                <div class="card-header" style="background-color:#2c542f;color:#f2f4e6;">
                                         <label for="card-element">
                                             CART TOTALS
                                         </label>
@@ -433,7 +433,7 @@
                                     </div>  
                                 </div> -->
                                     <div class="single-widget">
-                                        <div class="card-header" style="background-color:#443a2e;color:#D7C89D;">
+                                        <div class="card-header" style="background-color:#2c542f;color:#f2f4e6;">
                                             <label for="card-element">
                                                 PAYMENT
                                             </label>
@@ -455,7 +455,7 @@
                                     $stripe_key = 'pk_test_51LjzKRJe1uNOXrEYDOhtp1rq5eEmmhAx00Dixh0ERB151Q0QSxT0nVFFylABlBZTWCwzJF6eXMB7LHg6GSFqUudV007w06Aamx';
                                 @endphp                                                                
                                 <div class="single-widget">
-                                    <div class="card-header" style="background-color:#443a2e;color:#D7C89D;">
+                                    <div class="card-header" style="background-color:#2c542f;color:#f2f4e6;">
                                         <label for="card-element" style="font-size:20px;">
                                             Enter your credit card information
                                         </label>
@@ -505,7 +505,7 @@
                             id="card-button"
                             class="btn"
                             type="submit" 
-                            style="background-color:#443a2e; color:#D7C89D;font-family:Myriad Pro;"                                                              
+                            style="background-color:#2c542f; color:#f2f4e6;font-family:Myriad Pro;"                                                              
                             > proceed to checkout </button>
                     </div>
                             <!--/ End Order Widget -->
@@ -636,7 +636,7 @@
 			margin-bottom:0 !important;
 		}
 		.list li:hover{
-			background:#443a2e !important;
+			background:#2c542f !important;
 			color:white !important;
 		}
 		.form-select .nice-select::after {

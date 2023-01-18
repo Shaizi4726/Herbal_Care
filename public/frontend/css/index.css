@@ -2,7 +2,7 @@
 .slider {
     position: relative;
     width: 100%;
-    height: auto;
+    height: 80vh;
     overflow: hidden;
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
 }
@@ -37,7 +37,7 @@
 
 .carousel-wrap li img {
     width: 100vw;
-    height: auto;
+    height: 600px;
 }
 
 .slider #slide-prev, .slider #slide-next {
@@ -61,10 +61,10 @@
 
 @media screen and (min-width: 768px) {
     .slider {
-        height: 300px;
+        height: 73vh;
     }
 
     .carousel-wrap li img {
-        height: 300px;
+        height: 73vh;
     }
 }

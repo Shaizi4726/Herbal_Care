@@ -80,7 +80,7 @@
 									<i class="fa fa-phone"></i>
 									<h4 class="title">Call us Now:</h4>
 									<ul>
-										<li style="color:#443a2e;">@foreach($settings as $data) {{$data->phone}} @endforeach</li>
+										<li style="color:#2c542f;">@foreach($settings as $data) {{$data->phone}} @endforeach</li>
 									</ul>
 								</div>
 								<div class="single-info">
@@ -94,7 +94,7 @@
 									<i class="fa fa-location-arrow"></i>
 									<h4 class="title">Our Address:</h4>
 									<ul>
-										<li style="color:#443a2e;">@foreach($settings as $data) {{$data->address}} @endforeach</li>
+										<li style="color:#2c542f;">@foreach($settings as $data) {{$data->address}} @endforeach</li>
 									</ul>
 								</div>
 							</div>

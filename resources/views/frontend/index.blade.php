@@ -8,11 +8,13 @@
 
 @section('main-content')
   <!-- <video src="{{asset('images/bannert.mp4')}}" autoplay muted loop></video> -->
-  $payload = Session::ge('payload');
-  
+  @php
+    $cart = json_encode(Session::get('cart'));
+  @endphp
 
+  <script>console.log(`<?= $cart ?>`);</script>
 
-  @if(count($bnners)>0)
+  @if(count($banners)>0)
     <section id="slider" class="slider">         
       <ul id="carousel-wrap" class="carousel-wrap">
         @foreach($banners as $key=>$banner)                                    
@@ -45,7 +47,7 @@
           <h2> Popular Items </h2>
         </div>
       
-        <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false, "initialIndex": 2 }'>
+        <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false }'>
           @foreach($PopProducts as $product)
             @php
               $minprice = DB::table('products_attributes')->where('product_id', $product->id)->min('price');
@@ -93,7 +95,7 @@
           <h2> Trending Items </h2>
         </div>
       
-        <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false, "initialIndex": 2 }'>
+        <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false }'>
           @foreach($TrnProducts as $product)
             @php
               $minprice = DB::table('products_attributes')->where('product_id', $product->id)->min('price');
@@ -141,7 +143,7 @@
           <h2> New Items </h2>
         </div>
       
-        <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false, "initialIndex": 2 }'>
+        <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false }'>
           @foreach($NewProducts as $product)
             @php
               $minprice = DB::table('products_attributes')->where('product_id', $product->id)->min('price');
@@ -195,7 +197,7 @@
               <h2> {{$cat->title}} </h2>
             </div>
           
-            <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false, "initialIndex": 2 }'>
+            <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false }'>
               @foreach($CatProducts as $product)
                 @php
                   $minprice = DB::table('products_attributes')->where('product_id', $product->id)->min('price');

@@ -12,7 +12,7 @@
                         <form action="{{route('subscribe')}}" method="post" class="newsletter-inner">
                             @csrf
                             <input name="email" placeholder="Your email address" required="" type="email" style="font-family:Myriad Pro;">
-                            <button class="btn" type="submit" style="color:#FFD700; font-family:Myriad Pro;" >Subscribe</button>
+                            <button class="btn" type="submit" style="color:#f2f4e6; font-family:Myriad Pro;" >Subscribe</button>
                         </form>
                     </div>
                     <!-- End Newsletter Inner -->

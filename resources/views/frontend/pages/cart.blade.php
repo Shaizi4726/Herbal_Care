@@ -12,12 +12,7 @@
   <section class="cart-section">
     <div class="cart-page-items">
       @php
-        if(Auth::check()) {
           $cart_products = Helper::getAllProductFromCart();
-        }
-        else {
-          $cart_products = Session::get('cart_items');
-        }
       @endphp
       
       @if($cart_products)

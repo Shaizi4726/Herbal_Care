@@ -1,4 +1,6 @@
 Guest Add to Cart
+addtocart button to right of addtolist button
+popups
 Checkout Page
 Track Order Backend
 Forgot Password Page

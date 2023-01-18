@@ -138,7 +138,7 @@
                         <div class="single-widget newsletter">
                             <h3 class="title">Newslatter</h3>
                             <div class="letter-inner">
-                                <h4 style="color:#443a2e">Subscribe & get news <br> latest updates.</h4>
+                                <h4 style="color:#2c542f">Subscribe & get news <br> latest updates.</h4>
                                 <form method="POST" action="{{route('subscribe')}}" class="form-inner">
                                     @csrf
                                     <input type="email" name="email" placeholder="Enter your email">

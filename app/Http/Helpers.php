@@ -6,6 +6,7 @@
   use App\Models\Order;
   use App\Models\Wishlist;
   use App\Models\Shipping;
+  use App\Models\Product;
   use App\Models\Cart;
   // use Auth;
 
@@ -100,8 +101,9 @@
           $user_id = auth()->user()->id;
           return Cart::with('product')->where('user_id', $user_id)->get();
         }
-        else{
-          return 0;
+        else {
+          $cart = Session::get('cart');
+          return $cart;
         }  
     }
     

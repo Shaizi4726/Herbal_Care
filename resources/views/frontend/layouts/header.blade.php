@@ -4,7 +4,7 @@
     <div class="header-content">
       <div id="header-logo-title">
         @php $settings=DB::table('settings')->get(); @endphp
-        <a href="{{route('home')}}">
+        <a href="{{route('home')}}" class="header-logo">
           <img src="@foreach($settings as $data) {{$data->logo}} @endforeach" alt="logo">
         </a>
         <h2 class="header-title">HerbalCare</h2>
@@ -38,11 +38,11 @@
   
   <div class="topbar" id="desktop-header">
     <div class="header-content">
-      <div id="header-logo">
+      <div id="header-logo" class="header-logo">
         @php
           $settings=DB::table('settings')->get();
         @endphp                    
-        <a href="{{route('home')}}"><img src="@foreach($settings as $data) {{$data->logo}} @endforeach" alt="logo"></a>
+        <a href="{{route('home')}}"><img src="@foreach($settings as $data) {{$data->logo}} @endforeach" alt="logo" width="50" height="50"></a>
       </div>
 
       <div class="header-title-div">
@@ -88,7 +88,6 @@
       <button class="btn header-icon cart-button">
         <a href="{{route('cart')}}" class="header-icon">
         <i class="fa-solid fa-cart-shopping" id="cart-icon"></i>
-        @auth
           <div class="cart-quantity"><span style="position: relative;top: 0.14em;">{{count(Helper::getAllProductFromCart())}}</span></div></a>
             <div class="collapse shopping-item">
               <div class="dropdown-cart-header">
@@ -120,9 +119,6 @@
                 </div>
               </div>              
             </div>
-          @else
-            <div class="cart-quantity"><span style="position: relative;top: 0.14em;">{{Session::get('cart_items')}}</span></div></a>
-          @endauth
       </button> 
     </nav>
   </div> 
