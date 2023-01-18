@@ -9,5 +9,5 @@ use Spatie\Permission\Models\Permission;
 
 class Banner extends Model
 {
-    protected $fillable=['title','slug','description','photo','status'];
+    protected $fillable=['title','slug','description','photo','photo_tablet','photo_mobile','status'];
 }
