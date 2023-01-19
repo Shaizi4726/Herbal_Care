@@ -4,12 +4,10 @@
 	<div class="footer-top main-footer">				
 		<div class="footer-about">
 			<div class="logo">
-				<a href="{{route('home')}}"><img src="{{asset('backend/img/logo2.png')}}" alt="#"></a>
+        @php $settings=DB::table('settings')->get(); @endphp
+				<a href="{{route('home')}}"><img src="@foreach($settings as $data) {{$data->logo}} @endforeach" alt="#"></a>
 			</div>
 			<hr>
-			@php
-				$settings=DB::table('settings')->get();
-			@endphp
 
 			<div class="footer-desc">
 				<p class="desc-text">@foreach($settings as $data) {{$data->short_des}} @endforeach</p>

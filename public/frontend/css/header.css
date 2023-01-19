@@ -421,13 +421,13 @@
   }
 
   /*===== Cart Menu =====*/
-  .cart-button {
+  .cart-btn {
     display: flex;
     justify-content: flex-end;
     width: 10%;
   }
 
-  .cart-button:hover .shopping-item {
+  .cart-btn:hover .shopping-item {
     display: block;
   }
 

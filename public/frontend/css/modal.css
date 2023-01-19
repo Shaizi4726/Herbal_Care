@@ -15,7 +15,7 @@
 
   .modal {
     position: relative;
-    top: 2rem;
+    top: 2.5rem;
     margin: auto;
     background-color: #faf9f6;
     width: 95vw;
@@ -29,6 +29,12 @@
       right: 1rem;
       top: 0;
       width: 30px;
+      z-index: 10;
+  }
+
+  .modal-view-link {
+    display: inline-block;
+    margin-top: 1em;
   }
 
   a.modal-view-link::before, a.modal-view-link::after {

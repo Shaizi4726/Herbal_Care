@@ -37,7 +37,7 @@ function Price(id) {
       var form = $("[name='product-form']:checked").val();
       var size = $("input[name|='product-size']:checked").val();
       $('.plus').prop('disabled', false);
-      $('#modal-add-list').show();
+      $('.add-list').show();
       $('input.qty').val(1);
       $('input.qty').prop('disabled', false);
       $.ajax({
@@ -125,8 +125,9 @@ function shopList() {
   }
 
   $("#list-total").html(`AED ${totalAmount.toFixed(2)}`);
-  let cartButton = $("#modal-cart-button");
-  cartButton.show();
+  let cartButton = $(".cart-button-div")[0];
+  $("#cart-button-arrow").css('display', 'inline');
+  cartButton.style.width = "12.5em";
 }
 
 /*========== Add shopping list items to cart ==========*/
@@ -170,7 +171,7 @@ function cartAdd(url, id) {
       cart: cartList
     },
     success: function() {
-      let button = $("#modal-cart-button")[0];
+      let button = $(".cart-button")[0];
       button.classList.add('clicked');
       $("#list-body").empty();
       setTimeout(() => {

@@ -37,7 +37,7 @@
 
 .carousel-wrap li img {
     width: 100vw;
-    height: 600px;
+    height: 80vh;
 }
 
 .slider #slide-prev, .slider #slide-next {

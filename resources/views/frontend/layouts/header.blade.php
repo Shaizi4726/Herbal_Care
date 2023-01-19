@@ -22,7 +22,7 @@
         <i class="fa-solid fa-heart" id="fav-icon"></i>
         <div class="cart-quantity"><span>{{Helper::cartCount()}}</span></div></a>
       </button>
-      <button id="mob-cart-button" class="btn header-icon cart-button">
+      <button id="mob-cart-btn" class="btn header-icon cart-btn">
         <a href="{{route('cart')}}">
         <i class="fa-solid fa-cart-shopping" id="cart-icon"></i>
 
@@ -85,7 +85,7 @@
         </form>
       </div>
 
-      <button class="btn header-icon cart-button">
+      <button class="btn header-icon cart-btn">
         <a href="{{route('cart')}}" class="header-icon">
         <i class="fa-solid fa-cart-shopping" id="cart-icon"></i>
           <div class="cart-quantity"><span style="position: relative;top: 0.14em;">{{count(Helper::getAllProductFromCart())}}</span></div></a>

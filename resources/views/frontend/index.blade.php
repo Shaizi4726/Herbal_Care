@@ -8,11 +8,6 @@
 
 @section('main-content')
   <!-- <video src="{{asset('images/bannert.mp4')}}" autoplay muted loop></video> -->
-  @php
-    $cart = json_encode(Session::get('cart'));
-  @endphp
-
-  <script>console.log(`<?= $cart ?>`);</script>
 
   @if(count($banners)>0)
     <section id="slider" class="slider">         
@@ -20,9 +15,9 @@
         @foreach($banners as $key=>$banner)                                    
           <li>
             <picture>
-              <source media="(min-width: 420px)" srcset="">
-              <source media="(min-width: 768px)" srcset="">
-              <img class="slide-img" src="{{$banner->photo}}" alt="Slider Image">
+              <source media="(min-width: 768px)" srcset="{{$banner->photo}}">
+              <source media="(min-width: 420px)" srcset="{{$banner->photo_tablet}}">
+              <img class="slide-img" src="{{$banner->photo_mobile}}" alt="Slider Image">
             </picture>
           </li>
         @endforeach

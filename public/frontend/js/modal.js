@@ -53,17 +53,19 @@ function showModal(...args) {
                 <input type="number" name="quantity" value="1" min="1" class="qty" oninput="this.value = Math.abs(this.value)">
                 <input type="button" value="+" class="qty-plus plus qty-control" field="quantity">
               </div>
-              <input type="button" id="modal-add-list" class="btn btn-submit" value="Add to List" onclick="shopList()">
+              <input type="button" id="modal-add-list" class="btn btn-submit add-list" value="Add to List" onclick="shopList()">
+              <i id="cart-button-arrow" class="fa-solid fa-right-long"></i>
+              <div class="cart-button-div">
+                <button form="modal-cart-form" id="modal-cart-button" class="cart-button">
+                  <span class="add-to-cart">Add to cart</span>
+                  <span class="added">Added</span>
+                  <i class="fas fa-shopping-cart"></i>
+                  <i class="fas fa-box"></i>
+                </button>
+              </div>
             </form>
 
-            <form "  action="/add-to-cart" data="${args[0]}" id="modal-cart-form">
-              <button id="modal-cart-button" class="modal-cart-button">
-                <span class="add-to-cart">Add to cart</span>
-                <span class="added">Added</span>
-                <i class="fas fa-shopping-cart"></i>
-                <i class="fas fa-box"></i>
-              </button>
-            </form>
+            <form "  action="/add-to-cart" data="${args[0]}" id="modal-cart-form"></form>
             
             <a href="/product-detail/${args[8]}" class="modal-view-link btn" id="modal-view-link"><i class="fa-solid fa-circle-info" id="product-details-icon"></i>VIEW PRODUCT DETAILS</a>
           </div>
@@ -123,7 +125,7 @@ function showModal(...args) {
   /* Actions when size is not checked */
   if($("[name|='product-size']:checked").val() == undefined) {
     $(".plus").prop('disabled', true);
-    $('#modal-add-list').hide();
+    $('.add-list').hide();
     $("input.qty").prop('disabled', true);
   }
 
@@ -137,15 +139,13 @@ function showModal(...args) {
       if($("[name|='product-size']:checked").val() == undefined) {
         $("#price").html(`<h3>AED ${args[6]} - AED ${args[7]}</h3>`);
         $(".plus").prop('disabled', true);
-        $('#modal-add-list').hide();
+        $('.add-list').hide();
         $("input.qty").val('1');
         $("input.qty").prop('disabled', true)
         $('.minus').prop('disabled', true);
       }
       Price(args[0]);
     })
-
-    $("#modal-cart-button:eq(0)").hide();
 
     /* Enable minus button when value of input quantity is greater than 1 and vice versa */
     $('input.qty').on('change', () => {

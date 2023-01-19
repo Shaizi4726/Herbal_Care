@@ -71,17 +71,19 @@
 						<input type="number" name="quantity" value="1" min="1" oninput="this.value = Math.abs(this.value)" class="qty">
 						<input type="button" value="+" class="qty-plus plus qty-control" field="quantity">
 					</div>
-					<input type="button" id="modal-add-list" class="btn btn-submit" value="Add to List" onclick="shopList()">
+					<input type="button" id="detail-add-list" class="btn btn-submit add-list" value="Add to List" onclick="shopList()">
+          <i id="cart-button-arrow" class="fa-solid fa-right-long"></i>
+          <div class="cart-button-div">
+            <button form="modal-cart-form" id="detail-cart-button" class="cart-button">
+              <span class="add-to-cart">Add to cart</span>
+              <span class="added">Added</span>
+              <i class="fas fa-shopping-cart"></i>
+              <i class="fas fa-box"></i>
+            </button>
+          </div>
 				</form>
 
-				<form action="/add-to-cart" data="{{$product_detail->id}}" id="modal-cart-form">
-					<button id="modal-cart-button" class="modal-cart-button">
-						<span class="add-to-cart">Add to cart</span>
-						<span class="added">Added</span>
-						<i class="fas fa-shopping-cart"></i>
-						<i class="fas fa-box"></i>
-					</button>
-				</form>
+				<form action="/add-to-cart" data="{{$product_detail->id}}" id="modal-cart-form"></form>
 			</div>
 
 			<div class="modal-shopping-list" id="modal-shopping-list">
@@ -275,7 +277,7 @@
   		$(function() {
         shazoom();
 
-				$('#modal-add-list').hide();
+				$('.add-list').hide();
 				/* Actions when form is changed */
 				$("[name|='product-form']").change(() => {
 					var form = $("[name|='product-form']:checked").val();
@@ -283,15 +285,13 @@
 					if($("[name|='product-size']:checked").val() == undefined) {
 						$("#price").html('<p class="price">AED <span class="value">' + @php echo number_format($minprice,2) @endphp + '</span> - AED <span class="value">' + @php echo number_format($maxprice,2) @endphp + '</span></p>');
 						$(".plus").prop('disabled', true);
-						$('#modal-add-list').hide();
+						$('.add-list').hide();
 						$("input.qty").val('1');
 						$("input.qty").prop('disabled', true)
 						$('.minus').prop('disabled', true);
 					}
 					Price(<?= $product_detail->id ?>);
 				})
-
-				$("#modal-cart-button:eq(0)").hide();
 
 				/* Enable minus button when value of input quantity is greater than 1 and vice versa */
 				$('input.qty').change(() => {

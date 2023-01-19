@@ -370,6 +370,42 @@ class FrontendController extends Controller
     public function loginSubmit(Request $request){
         $data= $request->all();
         if(Auth::attempt(['email' => $data['email'], 'password' => $data['password'],'status'=>'active'])){
+          $cart_items = Session::get('cart');
+
+          foreach($cart_items as $item) {
+            $already_cart = Cart::where('user_id', auth()->user()->id)->where('product_id', $item->product_id)->where('product_atrr_id', $item->product_atrr_id)->first();
+
+            if ($already_cart) {
+              $quantity = $item->quantity;
+              $t_amount = $item->t_amount;
+              $amount = $item->amount;
+              $tax_amount = $item->tax_amount;
+              $already_cart->quantity += $quantity;
+              $already_cart->t_amount += $t_amount;
+              $already_cart->amount += $amount;
+              $already_cart->tax_amount += $tax_amount;
+              $already_cart->save();
+    
+            } else {
+    
+              $cart = new Cart;
+              $cart->user_id = auth()->user()->id;
+              $cart->product_id = $item->product_id;
+              $cart->plu = $item->plu;
+              $cart->product_atrr_id = $item->product_atrr_id;
+              $cart->form = $item->form;
+              $cart->price = $item->price;
+              $cart->size = $item->size;
+              $cart->quantity = $item->quantity;
+              $cart->t_amount = $item->t_amount;
+              $cart->amount = $item->amount;
+              $cart->tax_amount = $item->tax_amount;
+              $cart->save();
+            }
+          }
+
+          Session::pull('cart');
+          Session::pull('id');
             Session::put('user',$data['email']);
             request()->session()->flash('success','Successfully login');
             return redirect()->route('home');

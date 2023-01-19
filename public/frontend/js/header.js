@@ -27,7 +27,7 @@ window.onscroll = function() {myFunction()};
 var header = document.getElementById("desktop-menu");
 var mobHeader = document.getElementById("search");
 var desCatMenu = document.getElementById("desktop-cat-menu");
-var mobCartButton = document.getElementById("mob-cart-button");
+var mobCartButton = document.getElementById("mob-cart-btn");
 var menuButton = document.getElementById("menu-button");
 var sticky = header.offsetTop;
 
