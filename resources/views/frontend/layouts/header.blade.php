@@ -100,6 +100,7 @@
                   <li>
                     <div class="product-det">
                       <h4><a class="prod-name" href="{{route('product-detail',$data->product['slug'])}}" target="_blank">{{$data->product['title']}}</a></h4>
+                      <p class="total-cal font">{{$data->form}} - <span class="total-cal font">{{($data->size)}}</span></p>
                       <p class="total-cal font">{{$data->quantity}} x <span class="amount">{{number_format($data->price,2)}} AED</span></p>
                       <a href="{{route('cart-delete', $data->id)}}" class="remove font" title="Remove"><i class="fa-regular fa-trash-can"></i> Remove Item</a>
                     </div>
