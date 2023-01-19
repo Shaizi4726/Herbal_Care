@@ -41,7 +41,7 @@
           @enderror
         </div>
         <div class="form-group">
-          <label for="inputPhoto" class="col-form-label">Photo tablet <span class="text-danger">*</span></label>
+          <label for="inputPhoto" class="col-form-label">Photo Tablet <span class="text-danger">*</span></label>
           <div class="input-group">
             <span class="input-group-btn">
                 <a id="lfm" data-input="thumbnail1" data-preview="holder_tablet" class="btn btn-primary lfm">
