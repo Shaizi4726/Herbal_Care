@@ -364,9 +364,10 @@ class FrontendController extends Controller
     }
 
     // Login
-    public function login(){
-        return view('frontend.pages.login');
+    public function login(Request $request){
+        return view('frontend.pages.login')->with('checkout', $request->checkout);
     }
+    
     public function loginSubmit(Request $request){
         $data= $request->all();
         if(Auth::attempt(['email' => $data['email'], 'password' => $data['password'],'status'=>'active'])){
@@ -407,7 +408,8 @@ class FrontendController extends Controller
           Session::pull('cart');
           Session::pull('id');
             Session::put('user',$data['email']);
-            request()->session()->flash('success','Successfully login');
+            if($request->checkout == 1)
+              return redirect()->route('checkout');
             return redirect()->route('home');
         }
         else{

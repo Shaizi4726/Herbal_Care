@@ -29,7 +29,11 @@
                         <h2>Login</h2>
                         <p>Please register in order to checkout more quickly</p>
                         <!-- Form -->
-                        <form class="form" method="post" action="{{route('login.submit')}}">
+                        @if($checkout==1)
+                          <form class="form" method="post" action="{{route('login.submit')}}?checkout=1">
+                        @else
+                          <form class="form" method="post" action="{{route('login.submit')}}">
+                        @endif
                             @csrf
                             <div class="row">
                                 <div class="col-12">

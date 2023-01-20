@@ -64,19 +64,15 @@
 		<!-- Features -->
     <div class="features" >
 			<div class="feature1" >
-				<h4><i class="fa-solid fa-rocket"></i> Free shipping<br>Orders over AED. 100</h4>
+				<h4><i class="fa-solid fa-rocket"></i> Free shipping<br>Orders over AED 100</h4>
 			</div>
 												
 			<div class="feature2">
-				<h4><i class="fa-solid fa-clock-rotate-left"></i> Free Return<br>Within 30 days returns</h4>
+				<h4><i class="fa-solid fa-clock-rotate-left"></i> Free Return<br>Within 30 days</h4>
 			</div>
 										
 			<div class="feature3">
 				<h4><i class="fa-solid fa-lock"></i> Secure Payment<br>100% secure payment</h4>
-			</div>
-												
-			<div class="feature4">
-				<h4><i class="fa-solid fa-tag"></i> Best Price <br>Guaranteed price</h4>
 			</div>
 		</div>
 		<!-- End Features -->

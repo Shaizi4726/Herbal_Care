@@ -57,7 +57,7 @@ function showModal(...args) {
               <i id="cart-button-arrow" class="fa-solid fa-right-long"></i>
               <div class="cart-button-div">
                 <button form="modal-cart-form" id="modal-cart-button" class="cart-button">
-                  <span class="add-to-cart">Add to cart</span>
+                  <span class="add-to-cart">Add to Cart</span>
                   <span class="added">Added</span>
                   <i class="fas fa-shopping-cart"></i>
                   <i class="fas fa-box"></i>
@@ -69,6 +69,25 @@ function showModal(...args) {
             
             <a href="/product-detail/${args[8]}" class="modal-view-link btn" id="modal-view-link"><i class="fa-solid fa-circle-info" id="product-details-icon"></i>VIEW PRODUCT DETAILS</a>
           </div>
+
+          <section class="popup-section" id="ch-popup-sec">
+            <div id="location-popup" class="ch-popup">
+              <button id="page-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="remInnerModal()">Stay on Page</button>
+              <button id="shop-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="location.href = '/home'">Continue Shopping</button>
+              ${(() => {
+                if (auth == 1) {
+                  return `
+                  <button id="chkt-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="location.href = '/checkout'">Checkout</button>
+                  `
+                } else {
+                  return `<button id="chkt-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="chOptions()">Checkout</button>`
+                }
+              })()}
+                   
+              <button id="guest-chkt-btn" class="btn btn-submit popup-btn chkt-btn collapse" onclick="location.href = '/checkout'">Checkout as Guest</button>
+              <button id="login-chkt-btn" class="btn btn-submit popup-btn chkt-btn collapse" onclick="location.href = '/user/login?checkout=1'">Login to Checkout</button>
+            </div>
+          </section>
 
           <div class="modal-shopping-list" id="modal-shopping-list">
               <table id="shopping-list-table">
@@ -193,4 +212,11 @@ function closeModal(a) {
   setTimeout(function() {
     modal.remove();
 }, 1000);
+}
+
+function remInnerModal() {
+  let button = $(".cart-button")[0];
+  let chModal = $("#ch-popup-sec")[0];
+  button.classList.remove('clicked');
+  chModal.style.transform = "scale(0)";
 }

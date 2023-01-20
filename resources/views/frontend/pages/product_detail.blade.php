@@ -2,17 +2,16 @@
 @section('title','HerbalCare || PRODUCT DETAIL')
 
 @push('styles')
-  <link href="{{asset('frontend/css/product-detail.css')}}" rel="stylesheet">
+<link href="{{asset('frontend/css/product-detail.css')}}" rel="stylesheet">
 @endpush
 
 @section('main-content')
-
-	<section id="product-detail" class="modal-content">	
-		<div class="shazoom" id="shazoom">
-			<div class="img-box">
-				<ul class="img-ul">
-					<li><img src="{{$product_detail->photo}}" alt="product-photo"></li>
-					@foreach($product_detail->images as $image)
+<section id="product-detail" class="modal-content">	
+  <div class="shazoom" id="shazoom">
+    <div class="img-box">
+      <ul class="img-ul">
+        <li><img src="{{$product_detail->photo}}" alt="product-photo"></li>
+        @foreach($product_detail->images as $image)
 						<li><img src="{{('/images/'.$image->image)}}"/></li>	
 					@endforeach										
 				</ul>
@@ -20,77 +19,91 @@
 			<div class="zoom-nav"></div>
 			<!-- Nav Buttons -->
 			<p class="zoom-btn">
-				<a href="javascript:void(0);" class="zoom-prev-btn"> < </a>
+        <a href="javascript:void(0);" class="zoom-prev-btn"> < </a>
 				<a href="javascript:void(0);" class="zoom-next-btn"> > </a>
 			</p>
 		</div>
 		<div class="modal-details-container">
-			<div class="product-modal-detail">
-				<h1 class="title">{{$product_detail->title}}</h1>
+      <div class="product-modal-detail">
+        <h1 class="title">{{$product_detail->title}}</h1>
         @if($product_detail->scientific)
-          <h4 class="subtitle">Scientific Name: {{$product_detail->scientific}}</h4>
+        <h4 class="subtitle">Scientific Name: {{$product_detail->scientific}}</h4>
         @endif
-
+        
 				@php
-					$rate=ceil($product_detail->getReview->avg('rate'))
+        $rate=ceil($product_detail->getReview->avg('rate'))
 				@endphp
-
+        
 				@for($i=1; $i<=5; $i++)
-					@if($rate>=$i)
-						<i class="fa-solid fa-star"></i>
+        @if($rate>=$i)
+        <i class="fa-solid fa-star"></i>
 					@else 
-						<i class="fa-regular fa-star"></i>
+          <i class="fa-regular fa-star"></i>
 					@endif
-				@endfor
-
-				<a href="#" class="total-review">({{$product_detail['getReview']->count()}}) Review</a>
-
-				<form id="modal-form">
-						@php
-							$forms = DB::table('products_attributes')->where('product_id', $product_detail->id)->distinct()->pluck('form');
-
-							$Sizes = array();
-							foreach ($forms as $form) {
-								${$form . "sizes"} = DB::table('products_attributes')->where('product_id', $product_detail->id)->where('form', $form)->pluck('size');
-								$Sizes[$form] =  ${$form . "sizes"};
-							}
-							$Sizes = json_encode($Sizes);
-
-							$minprice = DB::table('products_attributes')->where('product_id', $product_detail->id)->min('price');
-              $maxprice = DB::table('products_attributes')->where('product_id', $product_detail->id)->max('price');
+          @endfor
+          
+          <a href="#" class="total-review">({{$product_detail['getReview']->count()}}) Review</a>
+          
+          <form id="modal-form">
+            @php
+            $forms = DB::table('products_attributes')->where('product_id', $product_detail->id)->distinct()->pluck('form');
+            
+            $Sizes = array();
+            foreach ($forms as $form) {
+              ${$form . "sizes"} = DB::table('products_attributes')->where('product_id', $product_detail->id)->where('form', $form)->pluck('size');
+              $Sizes[$form] =  ${$form . "sizes"};
+            }
+            $Sizes = json_encode($Sizes);
+            
+            $minprice = DB::table('products_attributes')->where('product_id', $product_detail->id)->min('price');
+            $maxprice = DB::table('products_attributes')->where('product_id', $product_detail->id)->max('price');
 						@endphp
-					<input type="hidden" name="product-id" value="{{$product_detail->id}}">
-					<div class="forms modal-radio" id="forms"></div>
-					<div class="prices" id="price">
-						<p class="price">AED <span class="value">{{number_format($minprice,2)}}</span> - AED <span class="value">{{number_format($maxprice,2)}}</span></p>
-					</div>
-					<div class="sizes modal-radio" id="sizes"></div>
-					<input type="hidden" name="price-input" id="price-input" value="">
-					<div class="qty-manage" id="qty-manage">
-						<input type="button" value="-" class="qty-minus minus qty-control" field="quantity" disabled>
-						<input type="number" name="quantity" value="1" min="1" oninput="this.value = Math.abs(this.value)" class="qty">
-						<input type="button" value="+" class="qty-plus plus qty-control" field="quantity">
-					</div>
-					<input type="button" id="detail-add-list" class="btn btn-submit add-list" value="Add to List" onclick="shopList()">
-          <i id="cart-button-arrow" class="fa-solid fa-right-long"></i>
-          <div class="cart-button-div">
-            <button form="modal-cart-form" id="detail-cart-button" class="cart-button">
-              <span class="add-to-cart">Add to cart</span>
-              <span class="added">Added</span>
-              <i class="fas fa-shopping-cart"></i>
-              <i class="fas fa-box"></i>
-            </button>
+            <input type="hidden" name="product-id" value="{{$product_detail->id}}">
+            <div class="forms modal-radio" id="forms"></div>
+            <div class="prices" id="price">
+              <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span> - AED <span class="value">{{number_format($maxprice,2)}}</span></p>
+            </div>
+            <div class="sizes modal-radio" id="sizes"></div>
+            <input type="hidden" name="price-input" id="price-input" value="">
+            <div class="qty-manage" id="qty-manage">
+              <input type="button" value="-" class="qty-minus minus qty-control" field="quantity" disabled>
+              <input type="number" name="quantity" value="1" min="1" oninput="this.value = Math.abs(this.value)" class="qty">
+              <input type="button" value="+" class="qty-plus plus qty-control" field="quantity">
+            </div>
+            <input type="button" id="detail-add-list" class="btn btn-submit add-list" value="Add to List" onclick="shopList()">
+            <i id="cart-button-arrow" class="fa-solid fa-right-long"></i>
+            <div class="cart-button-div">
+              <button form="modal-cart-form" id="detail-cart-button" class="cart-button">
+                <span class="add-to-cart">Add to Cart</span>
+                <span class="added">Added</span>
+                <i class="fas fa-shopping-cart"></i>
+                <i class="fas fa-box"></i>
+              </button>
+            </div>
+          </form>
+          
+          <form action="/add-to-cart" data="{{$product_detail->id}}" id="modal-cart-form"></form>
+        </div>
+        
+        <section class="popup-section" id="ch-popup-sec">
+          <div id="location-popup" class="ch-popup">
+            <button id="page-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="location.reload()">Stay on Page</button>
+            <button id="shop-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="location.href = `<?= route('home')?>`">Continue Shopping</button>
+            @auth
+            <button id="chkt-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="location.href = `<?= route('checkout')?>`">Checkout</button>
+            @else
+            <button id="chkt-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="chOptions()">Checkout</button>
+            @endauth
+            <button id="guest-chkt-btn" class="btn btn-submit popup-btn chkt-btn collapse" onclick="location.href = `<?= route('checkout')?>`">Checkout as Guest</button>
+            <button id="login-chkt-btn" class="btn btn-submit popup-btn chkt-btn collapse" onclick="location.href = `<?= route('login.form')?>?checkout=1`">Login to Checkout</button>
           </div>
-				</form>
-
-				<form action="/add-to-cart" data="{{$product_detail->id}}" id="modal-cart-form"></form>
-			</div>
-
-			<div class="modal-shopping-list" id="modal-shopping-list">
-					<table id="shopping-list-table">
-						<caption>Shopping List</caption>
+        </section>
+      
+        <div class="modal-shopping-list" id="modal-shopping-list">
+          <table id="shopping-list-table">
+            <caption>Shopping List</caption>
 						<thead>
-								<tr>
+              <tr>
 									<th id="list-frm">Form</th>
 									<th id="list-sze">Size</th>
 									<th id="list-qty">Qty</th>
@@ -110,7 +123,7 @@
 			</div>
 		</div>
 	</section>
-
+  
 	<section class="details reviews">
 		@php
 			$benefits = explode('@', $product_detail->benefit);
@@ -158,7 +171,7 @@
 					<h3>Add Review</h3>
 					<p>Your email address will not be published.</p>
 				</div>
-
+        
 				<div class="review-inner">
 					<h4>Your Rating</h4>
 
@@ -230,6 +243,7 @@
 			<!--/ End Review -->
 		</div>
 	</section>
+  
 
 	<!-- Start Most Popular -->
 	<section class="products-area related-products">

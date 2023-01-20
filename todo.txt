@@ -1,4 +1,3 @@
-popups
 range of prices for single size and form
 Checkout Page
 cart submenu design

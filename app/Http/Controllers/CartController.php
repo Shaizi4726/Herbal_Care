@@ -30,6 +30,7 @@ class CartController extends Controller
       'cart' => 'required',
     ]);
 
+    $auth = 0;
     $data = $request->cart;
     $items = count($data['size']);
     $product = Product::with('attributes')->where('id', $request->id)->first();
@@ -41,6 +42,8 @@ class CartController extends Controller
         request()->session()->flash('error', 'Invalid Products');
         return back();
       } else if (Auth::check()) {
+        $auth = 1;
+
         $already_cart = Cart::where('user_id', auth()->user()->id)->where('product_id', $product->id)
           ->where('product_atrr_id', $proAttr->id)->first();
 
@@ -109,7 +112,7 @@ class CartController extends Controller
       }
     }
 
-    return ('Added to cart successfully');
+    return $auth;
   }
 
   public function cartDelete(Request $request)
