@@ -460,6 +460,10 @@ class FrontendController extends Controller
     public function showResetForm(){
         return view('auth.passwords.old-reset');
     }
+    public function PassResetForm(Request $request){
+        //dd($request->all());
+        return view('auth.passwords.reset')->with('request',$request);
+    }
 
     public function subscribe(Request $request){
         if(! Newsletter::isSubscribed($request->email)){

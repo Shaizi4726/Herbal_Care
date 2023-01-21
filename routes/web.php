@@ -23,6 +23,7 @@ Route::get('user/register','FrontendController@register')->name('register.form')
 Route::post('user/register','FrontendController@registerSubmit')->name('register.submit');
 // Reset password
 Route::get('password-reset', 'FrontendController@showResetForm')->name('password.reset'); 
+Route::get('password-resets', 'FrontendController@PassResetForm')->name('password.resets');
 // Socialite 
 Route::get('login/{provider}/', 'Auth\LoginController@redirect')->name('login.redirect');
 Route::get('login/{provider}/callback/', 'Auth\LoginController@Callback')->name('login.callback');
