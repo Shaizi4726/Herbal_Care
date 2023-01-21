@@ -130,95 +130,96 @@ class FrontendController extends Controller
         
     }
 
-    public function productFilter(Request $request)
-    {
-       if($request->search) {
-        $products=Product::orwhere('title','like','%'.$request->que.'%')
-        ->orwhere('slug','like','%'.$request->que.'%')
-        ->orwhere('description','like','%'.$request->que.'%')
-        ->orwhere('summary','like','%'.$request->que.'%')
-        ->orderBy('id','DESC')
-        ->paginate('9');
-       }
-       else {
+    public function productFilter(Request $request) {
+      if($request->search) {
+        $products=Product::orwhere('title','like','%'.$request->que.'%')->orwhere('slug','like','%'.$request->que.'%')->orwhere('description','like','%'.$request->que.'%')->orwhere('summary','like','%'.$request->que.'%')->orderBy('id','DESC')->paginate('9');
+      }
+
+      else {
         $products = Category::getProductByCat($request->que);
         $products = $products->products;
-       }
-       $sort_by = $request->sorting;
+      }
 
-        if ($request->sub_cat) {
+      $sort_by = $request->sorting;
+
+      if ($request->sub_cat) {
         $products = $products->where('child_cat_id', $request->sub_cat);
-        }
+      }
 
         
-        if ($request->promotion) {
+      if ($request->promotion) {
         $products = $products->where('promotion', $request->promotion);
-        }
+      }
 
-        if ($sort_by) {
-          if($sort_by == 'a-z')
+      if ($sort_by) {
+        if($sort_by == 'a-z')
           $products = $products->sortBy('title');
-          else if($sort_by == 'z-a')
+        else if($sort_by == 'z-a')
           $products = $products->sortByDesc('title');
-          else if($sort_by == 'low-prc')
+        else if($sort_by == 'low-prc')
           $products = $products->sortBy('price');
-          else if($sort_by == 'hgh-prc')
+        else if($sort_by == 'hgh-prc')
           $products = $products->sortByDesc('price');
+      }
+
+      if (count($products) !== 0) {
+        $content = '';
+
+        foreach ($products as $product) {
+          $maxprice = DB::table('products_attributes')->where('product_id', $product->id)->max('price');
+          $Forms = DB::table('products_attributes')->where('product_id', $product->id)->distinct()->pluck('form');
+          $Images = DB::table('images')->where('product_id', $product->id)->pluck('image');
+          $Sizes = array();
+          
+          foreach ($Forms as $form) {
+            ${$form . "sizes"} = DB::table('products_attributes')->where('product_id', $product->id)->where('form', $form)->pluck('size');
+            $Sizes[$form] = ${$form . "sizes"};
+          }
+
+          $Sizes = json_encode($Sizes);
+          $minPrice = number_format($product->price, 2);
+          $maxPrice = number_format($maxprice, 2);
+
+          $content .= <<<EOD
+            <div class="product-card carousel-cell">
+            <img class="product-image" src="{$product->photo}" alt="product image">
+            
+            <div class="overlay">
+              <button id="{$product->id}" class="btn btn-quick-view" title="Quick View" onclick='showModal(id, `{$product->photo}`, {$Images}, `{$product->title}`, {$Forms}, {$Sizes}, {$product->price}, {$maxprice}, `{$product->slug}`, Auth::check())'> 
+                <i class="fa-regular fa-eye"></i>
+                <p>Quick View</p>
+              </button>
+            </div>
+
+            <div class="meta-detail">
+              <h3 class="product-title">{$product->title}</h3>
+          EOD;
+
+          if($product->price == $maxprice) {
+            $content .= <<<EOD
+              <p class="price">AED <span class="value">{$minPrice}</span></p>
+            EOD;
+          } else {
+            $content .= <<<EOD
+              <p class="price">AED <span class="value">{$minPrice}</span> - AED <span class="value">{$maxPrice}</span></p>
+            EOD;
+          }
+
+          $content .= <<<EOD
+              </div>
+
+              <div class="prod-detail-link">
+                <a href="/product-detail/{$product->slug}" class="btn btn-submit detail-link"> Product Details </a>
+                <button class="btn favbtn" onclick="fav(this)"><i class="fa-regular fa-heart fav"></i></button>
+              </div>
+            </div>
+          EOD; 
+        } 
+      } else {
+          $content = <<<EOD
+            <p class="no-product">There is no product in this criteria.</p>
+          EOD;
         }
-
-        if (count($products) !== 0)
-        {
-          $content = '';
-            foreach ($products as $product)
-            {
-                $maxprice = DB::table('products_attributes')->where('product_id', $product->id)->max('price');
-                $Forms = DB::table('products_attributes')->where('product_id', $product->id)->distinct()->pluck('form');
-                $Images = DB::table('images')->where('product_id', $product->id)->pluck('image');
-
-                $Sizes = array();
-                foreach ($Forms as $form)
-                {
-                    $
-                    {
-                        $form . "sizes"
-                    } = DB::table('products_attributes')->where('product_id', $product->id)
-                        ->where('form', $form)->pluck('size');
-                    $Sizes[$form] = $
-                    {
-                        $form . "sizes"
-                    };
-                }
-                $Sizes = json_encode($Sizes);
-                $minPrice = number_format($product->price, 2);
-                $maxPrice = number_format($maxprice, 2);
-
-                $content .= <<<EOD
-                    <div class="product-card carousel-cell">
-                    <img class="product-image" src="{$product->photo}" alt="product image">
-                    
-                    <div class="overlay">
-                        <button id="{$product->id}" class="btn btn-quick-view" 
-                        title="Quick View" onclick='showModal(id, `{$product->photo}`, {$Images}, 
-                        `{$product->title}`, {$Forms}, {$Sizes}, {$product->price}, {$maxprice}, `{$product->slug}`)'> 
-                            <i class="fa-regular fa-eye"></i><p>Quick View</p></button>
-                    </div>
-
-                    <div class="meta-detail">
-                        <h3 class="product-title">{$product->title}</h3>
-                        <p class="price">AED <span class="value">{$minPrice}</span> - AED <span class="value">{$maxPrice}</span></p>
-                    </div>
-                    <div class="prod-detail-link">
-                        <a href="/product-detail/{$product->slug}" class="btn btn-submit detail-link"> Product Details </a>
-                        <button class="btn favbtn" onclick="fav(this)"><i class="fa-regular fa-heart fav"></i></button>
-                    </div>
-                    </div>
-                  EOD; }
-                }
-            else {
-                $content = <<<EOD
-                <p class="no-product">There is no product in this criteria.</p>
-              EOD;
-            }
       return $content;
     }
 

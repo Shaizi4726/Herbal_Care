@@ -61,7 +61,11 @@
             <input type="hidden" name="product-id" value="{{$product_detail->id}}">
             <div class="forms modal-radio" id="forms"></div>
             <div class="prices" id="price">
+            @if($minprice==$maxprice)
+              <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span></p>
+            @else
               <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span> - AED <span class="value">{{number_format($maxprice,2)}}</span></p>
+            @endif            
             </div>
             <div class="sizes modal-radio" id="sizes"></div>
             <input type="hidden" name="price-input" id="price-input" value="">
@@ -264,8 +268,12 @@
 
 							<div class="meta-detail">
 								<h3 class="product-title">{{$product->title}}</h3>
-								<p class="price">AED <span class="value">{{number_format($minprice,2)}}</span> - AED <span class="value">{{number_format($maxprice,2)}}</span></p>
-							</div>
+                @if($minprice==$maxprice)
+                  <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span></p>
+                @else
+                  <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span> - AED <span class="value">{{number_format($maxprice,2)}}</span></p>
+                @endif							
+              </div>
 							<div class="prod-detail-link">
 								<a href="{{route('product-detail', $product->slug)}}" class="btn btn-submit detail-link"> Product Details </a>
 								<button class="btn favbtn" onclick="fav(this)"><i class="fa-regular fa-heart fav"></i></button>

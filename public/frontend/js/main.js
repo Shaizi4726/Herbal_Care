@@ -1,4 +1,3 @@
-var auth;
 /*==================== Exzoom function ====================*/
 var shazoom = function () {
   $("#shazoom").exzoom({
@@ -171,8 +170,7 @@ function cartAdd(url, id) {
       id: id,
       cart: cartList
     },
-    success: function (resp) {
-      auth = resp;
+    success: function () {
       let button = $(".cart-button")[0];
       let chModal = $("#ch-popup-sec")[0];
       button.classList.add('clicked');

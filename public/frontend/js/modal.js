@@ -44,7 +44,13 @@ function showModal(...args) {
               <div class="forms modal-radio" id="forms">
               </div>
               <div class="prices" id="price">
-                <h3>AED ${args[6]} - AED ${args[7]}</h3>
+                ${(() => {
+                  if (args[6] == args[7]) {
+                    return `<h3>AED ${args[6]}</h3>`
+                  } else {
+                    return `<h3>AED ${args[6]} - AED ${args[7]}</h3>`
+                  }
+                })()}
               </div>
               <div class="sizes modal-radio" id="sizes"></div>
               <input type="hidden" name="price-input" id="price-input" value="">
@@ -75,10 +81,9 @@ function showModal(...args) {
               <button id="page-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="remInnerModal()">Stay on Page</button>
               <button id="shop-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="location.href = '/home'">Continue Shopping</button>
               ${(() => {
-                if (auth == 1) {
-                  return `
-                  <button id="chkt-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="location.href = '/checkout'">Checkout</button>
-                  `
+                if (args[9]) {
+                  console.log(args[9]);
+                  return `<button id="chkt-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="location.href = '/checkout'">Checkout</button>`
                 } else {
                   return `<button id="chkt-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="chOptions()">Checkout</button>`
                 }
