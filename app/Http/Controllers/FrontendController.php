@@ -449,6 +449,7 @@ class FrontendController extends Controller
             return back();
         }
     }
+
     public function create(array $data){
         return User::create([
             'name'=>$data['name'],
@@ -457,6 +458,7 @@ class FrontendController extends Controller
             'status'=>'active'
             ]);
     }
+
     // Reset password
     public function showResetForm(){
         return view('auth.passwords.old-reset');
@@ -494,4 +496,13 @@ class FrontendController extends Controller
         return $proAttr->price;
     }
 
+    public function getStates(Request $request) {
+      $states = DB::table('states')->where('country_id', $request->id)->get();
+      return $states;
+    }
+
+    public function getCities(Request $request) {
+      $cities = DB::table('cities')->where(['country_id' => $request->id, 'state_id' => $request->st_id])->get();
+      return $cities;
+    }
 }

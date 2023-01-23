@@ -44,9 +44,8 @@
             <div class="cart-page-item-data">
               <h4>Total: </h4> 
               <p id="{{$cart->id}}-total">AED {{number_format($cart->t_amount, 2)}}</p>
-
-              <button class="remove-btn btn"><a href="{{route('cart-delete', $cart->id)}}"> Remove </a></button>
             </div>
+              <button class="remove-btn btn"><a href="{{route('cart-delete', $cart->id)}}"> Remove </a></button>
           </div>
         @endforeach
 
@@ -66,14 +65,7 @@
       <div class="summary-title-container">
         <h2>Cart Summary</h2>
       </div>
-      <div class="coupon">
-        <h4>Have Coupon?</h4>
-        <form action="{{route('coupon-store')}}" method="POST">
-          @csrf
-          <input name="code" placeholder="Enter Coupon Code">
-          <button class="btn coupon-btn">Apply</button>
-        </form>
-      </div>
+      
       <div class="cart-totals">
         <div class="cart-total-value">
           <h4 class="subtotal"> Subtotal: </h4>

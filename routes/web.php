@@ -51,6 +51,10 @@ Route::get('cart-update','CartController@cartUpdate')->name('cart.update');
 Route::get('/cart', function(){
     return view('frontend.pages.cart');
 })->name('cart');
+
+Route::get('/states', 'FrontendController@getStates');
+Route::get('/cities', 'FrontendController@getCities');
+
 Route::get('/checkout','CartController@checkout')->name('checkout');
 // Wishlist
 Route::get('/wishlist',function(){
