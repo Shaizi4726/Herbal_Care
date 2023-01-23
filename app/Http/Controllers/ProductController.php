@@ -70,14 +70,11 @@ class ProductController extends Controller
             'promotion'=>'required|in:default,new,trending'
             
         ]);
-        $data=$request->all();
-        
+        $data=$request->all();        
         $slug=Str::slug($request->title);
-        $count=Product::where('slug',$slug)->count();
-        
+        $count=Product::where('slug',$slug)->count();        
         $data['slug']=$slug;
         $data['is_featured']=$request->input('is_featured',0);
-
         $status=Product::create($data);
             $categories = [];
             $categories[] = $request->cat_id;
@@ -85,29 +82,38 @@ class ProductController extends Controller
                 $cat= 'cat_id'.$i;
                 $categories[] = $request->$cat;
             }
-
             foreach ($categories as $product_cat) {
                 $category = new ProductCategory;
                 $category['product_id']=$status->id;           
                 $category['category_id']=$product_cat;
                 $category->save();
+            }        
+            if($request->hasFile("images")){
+                $files=$request->file("images");
+                foreach($files as $file){
+                    $imageName=time().'_'.$file->getClientOriginalName();
+                    $request['product_id']=$status->id;
+                    $request['plu']=$status->plu;
+                    $request['image']=$imageName;
+                    $file->move(\public_path("/images"),$imageName);
+                    Image::create($request->all());
+
+                }
             }
-
-        
-        
-        if($request->hasFile("images")){
-            $files=$request->file("images");
-            foreach($files as $file){
-                $imageName=time().'_'.$file->getClientOriginalName();
-                $request['product_id']=$status->id;
-                $request['plu']=$status->plu;
-                $request['image']=$imageName;
-                $file->move(\public_path("/images"),$imageName);
-                Image::create($request->all());
-
-            }
-        }
-
+        for($i=0; $i<count($request->form); $i++){
+            $attribute = new ProductsAttribute;
+            $attribute['product_id']=$status->id;           
+            $attribute['plu']=$request->plu;
+            $attribute['sku']= $request->sku[$i];
+            $attribute['form']=$request->form[$i];
+            $attribute['size']=$request->size[$i];
+            $attribute['price']=$request->price[$i];
+            $attribute['discount']=$request->discount[$i];
+            $attribute['stock']=$request->stock[$i];
+            $attribute['is_featured']=$request->is_featured; 
+            //dd($request->all());
+            $attribute->save();                             
+        }  
         if($status){
             request()->session()->flash('success','Product Successfully added');
         }
@@ -202,6 +208,8 @@ class ProductController extends Controller
                 $category['category_id']=$product_cat;
                 $category->save();
             }
+
+            
         if($status){
             
             request()->session()->flash('success','Product Successfully updated');
@@ -285,50 +293,50 @@ class ProductController extends Controller
             return redirect()->back();
         }
 
-        public function addAttributes(Request $request, $id=null){
+    //     public function addAttributes(Request $request, $id=null){
         
 
-            $productDetails = Product::with('attributes')->where(['id'=>$id])->first();
-            $form = ProductForm::with('attributesForm')->get();
+    //         $productDetails = Product::with('attributes')->where(['id'=>$id])->first();
+    //         $form = ProductForm::with('attributesForm')->get();
             
     
-      //      $productDetails =json_decode(json_encode($productDetails));
-     //       echo "<pre>"; print_r($productDetails);die;
+    //   //      $productDetails =json_decode(json_encode($productDetails));
+    //  //       echo "<pre>"; print_r($productDetails);die;
     
-            if($request->isMethod('post')){
-                $data =$request->all();
-                $plu=$data['plu'];
+    //         if($request->isMethod('post')){
+    //             $data =$request->all();
+    //             $plu=$data['plu'];
                 
-                foreach($data['sku'] as $key=>$val){
+    //             foreach($data['sku'] as $key=>$val){
                     
-                    if(!empty($val)){
+    //                 if(!empty($val)){
                         
-                        //sku duplicate check
-                        $attrCountSKU=ProductsAttribute::where('sku',$val)->count();
-                        if($attrCountSKU>0){
-                            return redirect('/admin/product/add-attributes/'.$id)->with('Error',
-                            'SKU already exists! Please add another SKU');
-                        }
+    //                     //sku duplicate check
+    //                     $attrCountSKU=ProductsAttribute::where('sku',$val)->count();
+    //                     if($attrCountSKU>0){
+    //                         return redirect('/admin/product/add-attributes/'.$id)->with('Error',
+    //                         'SKU already exists! Please add another SKU');
+    //                     }
                         
-                        $attribute = new ProductsAttribute;
-                        $attribute->product_id=$id;
-                        $attribute->plu=$plu;
-                        $attribute->sku= $val;
-                        $attribute->form=$data['form'][$key];
-                        $attribute->size=$data['size'][$key];
-                        $attribute->price=$data['price'][$key];
-                        $attribute->discount=$data['discount'][$key];
-                        $attribute->stock=$data['stock'][$key];
-                        $attribute->is_featured=true;    
-                        $attribute->save();
-                    }
-                }
+    //                     $attribute = new ProductsAttribute;
+    //                     $attribute->product_id=$id;
+    //                     $attribute->plu=$plu;
+    //                     $attribute->sku= $val;
+    //                     $attribute->form=$data['form'][$key];
+    //                     $attribute->size=$data['size'][$key];
+    //                     $attribute->price=$data['price'][$key];
+    //                     $attribute->discount=$data['discount'][$key];
+    //                     $attribute->stock=$data['stock'][$key];
+    //                     $attribute->is_featured=true;    
+    //                     $attribute->save();
+    //                 }
+    //             }
         
-                return redirect('/admin/product/add-attributes/'.$id)->with('success','Product Attributes has been added successfully!');
-            }
+    //             return redirect('/admin/product/add-attributes/'.$id)->with('success','Product Attributes has been added successfully!');
+    //         }
             
-            return view('backend.product.add_attributes')->with(compact('productDetails'))->with('forms',$form);
-        }
+    //         return view('backend.product.add_attributes')->with(compact('productDetails'))->with('forms',$form);
+    //     }
         public function deleteAttribute($id){
             $product=ProductsAttribute::findOrFail($id);
             $status=$product->delete();

@@ -5,7 +5,7 @@
 <div class="card">
     <h5 class="card-header">Edit Product</h5>
     <div class="card-body">
-      <form method="post" action="{{route('product.update',$product->id)}}">
+      <form method="post" id="main-form" action="{{route('product.update',$product->id)}}">
         @csrf 
         @method('PATCH')
         <div class="form-group">
@@ -151,20 +151,102 @@
           <span class="text-danger">{{$message}}</span>
           @enderror
         </div>
+        </form>
+        @php
+          $forms = DB::table('product_forms')->get();
+        @endphp
+
+        <div class="controls">
+            <label class="control-label">Size Wise Price: </label>                        
+        </div>                                
+        <div class="control-group">
+          <label class="control-label"></label>
+          <div class="field_wrapper">
+            <div class="abc">
+              <select>@foreach($forms as $form)<option type="select" class="title" name="form[]" id="form" placeholder="form" value="{{$form->title}}" style="width:120px;">{{$form->title}}</option>@endforeach</select>
+              <input type="text" name="sku[]" id="sku" placeholder="sku" style="width:120px;" required/>                                    
+              <input type="text" name="size[]" id="size" placeholder="size" style="width:120px;"required/>
+              <input type="float"  name="price[]" id="price" placeholder="price" style="width:120px;"required/>
+              <input id="discount" type="numberfloat" name="discount[]" min="0" max="100" placeholder="Enter discount" style="width:120px;"required/>
+              <input type="float" name="stock[]" id="stock" placeholder="stock" style="width:120px;"required/>
+              IsFeature  <input type="checkbox" name="is_featured" id="is_featured" placeholder="Is Feature" value="1" checked> Yes
+              <a href="javascript:void(0);" class="add_button1" title="Add field">Add</a><br>
+            </div>
+          </div>
+        </div>
+        <div class="widget-title"  ><span class="icon"><i class="icon-info-sign"></i></span>
+        <h5> Product Attributes List</h5>
+        </div>
+      
+        <form method="post" action="{{url('/admin/product/edit-attributes/'.$product->id)}}" >
+        {{csrf_field()}}
+            <table class="table table-bordered" id="product-dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Product Id</th>
+                        <th>SKU</th>
+                        <th>Form</th>
+                        <th>Size</th>
+                        <th>Price</th>
+                        <th>Discount</th>
+                        <th>Stock</th>                                    
+                        <th>Action</th>
+                    </tr>
+                </thead>  
+                <tfoot>
+                    <tr>
+                        <th>Product Id</th>
+                        <th>SKU</th>
+                        <th>Form</th>
+                        <th>Size</th>
+                        <th>Price</th>
+                        <th>Discount</th>
+                        <th>Stock</th>                                    
+                        <th>Action</th>
+                    </tr>
+                </tfoot>
+                <body>
+                  @foreach($product['attributes'] as $attribute)
+                        <tr>
+                            <td><input type="hidden" name="idAttr[]" value="{{$attribute->id}}">{{$attribute->id}}</td>
+                            <td>{{$attribute->sku}}</td>                                        
+                            <td>{{$attribute->form}}</td>
+                            <td>{{$attribute->size}} </td>
+                            <td><input type="float" name="price[]" value="{{$attribute->price}}" style="width:80px;"></td>
+                            <td><input type="float" name="discount[]" value="{{$attribute->discount}}" style="width:80px;"></td>
+                            <td><input type="number" name="stock[]" value="{{$attribute->stock}}" style="width:80px;"></td>
+                        
+                            <td class="center">
+                                <input type="submit" value="Update" class="btn btn-primary btn-mini">
+                        </form>                                                                                   
+                                <form method="get" action="{{url('admin/product/delete-attributes',[$attribute->id])}}">
+                                    @csrf
+                                    @method('delete')
+                                    <button class="btn btn-danger btn-sm dltBtn" data-id="{{$attribute->id}}" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>  
+                                </form>
+                            </td>                        
+                        </tr>                    
+                    @endforeach
+                    
+                </body>
+            </table>
+
+
+
         <div class="form-group">
           <label for="status" class="col-form-label">Status <span class="text-danger">*</span></label>
-          <select name="status" class="form-control">
+          <select name="status" form="main-form" class="form-control">
             <option value="active" {{(($product->status=='active')? 'selected' : '')}}>Active</option>
             <option value="inactive" {{(($product->status=='inactive')? 'selected' : '')}}>Inactive</option>
-        </select>
+          </select>
           @error('status')
           <span class="text-danger">{{$message}}</span>
           @enderror
         </div>
         <div class="form-group mb-3">
-           <button class="btn btn-success" type="submit">Update</button>
+           <button class="btn btn-success" form="main-form" type="submit">Update</button>
         </div>
-      </form>
+      
     </div>
 </div>
 

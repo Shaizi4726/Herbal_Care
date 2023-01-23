@@ -95,9 +95,9 @@
                                         <td>{{$attribute->sku}}</td>                                        
                                         <td>{{$attribute->form}}</td>
                                         <td>{{$attribute->size}} </td>
-                                        <td><input type="float" name="price[]" value="{{$attribute->price}}"></td>
-                                        <td><input type="float" name="discount[]" value="{{$attribute->discount}}"></td>
-                                        <td><input type="number" name="stock[]" value="{{$attribute->stock}}"></td>
+                                        <td><input type="float" name="price[]" value="{{$attribute->price}}"style="width:80px;"></td>
+                                        <td><input type="float" name="discount[]" value="{{$attribute->discount}}"style="width:80px;"></td>
+                                        <td><input type="number" name="stock[]" value="{{$attribute->stock}}"style="width:80px;"></td>
                                     
                                         <td class="center">
                                             <input type="submit" value="Update" class="btn btn-primary btn-mini">
