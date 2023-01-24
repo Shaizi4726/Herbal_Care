@@ -49,8 +49,8 @@
                     <td>{{$order->first_name}} {{$order->last_name}}</td>
                     <td>{{$order->email}}</td>
                     <td>{{$order->quantity}}</td>
-                    @if(!empty($shipping))
-                      <td> : AED {{$order->shipping->price}}</td>
+                    @if(!empty($city))
+                      <td> : AED {{$order->city->price}}</td>
                     @endif
                     <td>AED {{number_format($order->total_amount,2)}}</td>
                     <td>

@@ -80,7 +80,7 @@
     $subtotal = Helper::CartAmount();
     $tax = Helper::totalCartTax();
     $total_amount = Helper::totalCartAmount();
-    $shipping=DB::table('shippings')->where('status','active')->limit(1)->get();
+    $city=DB::table('citys')->where('status','active')->limit(1)->get();
     @endphp
 
     <div class="summary-title-container">

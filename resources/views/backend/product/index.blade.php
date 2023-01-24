@@ -136,16 +136,6 @@
                     <td>
                         <a href="{{route('product.edit',$product->id)}}" class="btn btn-primary btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>
                         
-                        <form method="get" action="{{url('/admin/product/add-attributes',$product->id)}}">
-                            @csrf
-                            @method('post')
-                                <button class="btn btn-primary btn-sm float-left mr-1" data-id="{{$product->id}}" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="ADD"><i class="fas fa-plus"></i></button>  
-                        </form> 
-                        <form method="get" action="{{url('/admin/product/add-images',$product->id)}}">
-                            @csrf
-                            @method('post')
-                            <button class="btn btn-primary btn-sm float-left mr-1" data-id="{{$product->id}}" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="ADD"><i class="fas fa-image"></i></button>  
-                        </form>
                         <form method="POST" action="{{route('product.destroy',[$product->id])}}">
                             @csrf
                             @method('delete')

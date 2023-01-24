@@ -5,7 +5,7 @@ use App\Models\PostTag;
 use App\Models\PostCategory;
 use App\Models\Order;
 use App\Models\Wishlist;
-use App\Models\Shipping;
+use App\Models\city;
 use App\Models\Product;
 use App\Models\Cart;
 
@@ -207,23 +207,23 @@ class Helper
     }
   }
 
-  // Total price with shipping and coupon
+  // Total price with city and coupon
   public static function grandPrice($id, $user_id)
   {
     $order = Order::find($id);
     //        dd($id);
     if ($order) {
-      $shipping_price = (float) $order->shipping->price;
+      $city_price = (float) $order->city->price;
       $order_price = self::orderPrice($id, $user_id);
-      return number_format((float) ($order_price + $shipping_price), 2, '.', '');
+      return number_format((float) ($order_price + $city_price), 2, '.', '');
     } else {
       return 0;
     }
   }
 
-  public static function shipping()
+  public static function city()
   {
-    return Shipping::orderBy('id', 'DESC')->get();
+    return city::orderBy('id', 'DESC')->get();
   }
 }
 

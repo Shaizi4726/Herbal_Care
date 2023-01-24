@@ -555,7 +555,7 @@ stay-linked:
     - dolly
     - dolly-flatbed
     - pallet
-    - shipping-fast
+    - city-fast
     - truck
     - warehouse
   label: StayLinked

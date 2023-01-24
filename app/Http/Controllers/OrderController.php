@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\Order;
-use App\Models\Shipping;
+use App\Models\city;
 use App\User;
 use PDF;
 use Notification;
@@ -93,8 +93,8 @@ class OrderController extends Controller
         $order_data=$request->all();
         $order_data['order_number']='ORD-'.strtoupper(Str::random(10));
         $order_data['user_id']=$request->user()->id;
-        $order_data['shipping_id']=$request->shipping;
-        $shipping=Shipping::where('id',$order_data['shipping_id'])->pluck('price');
+        $order_data['city_id']=$request->city;
+        $city=city::where('id',$order_data['city_id'])->pluck('price');
         // return session('coupon')['value'];
         $order_data['sub_total']=Helper::totalCartAmount();
         $order_data['tax_total']=Helper::totalCartTax();
@@ -104,12 +104,12 @@ class OrderController extends Controller
         if(session('coupon')){
             $order_data['coupon']=session('coupon')['value'];
         }
-        if($request->shipping){
+        if($request->city){
             if(session('coupon')){
-                $order_data['total_amount']=Helper::totalCartAmount()+$shipping[0]-session('coupon')['value'];
+                $order_data['total_amount']=Helper::totalCartAmount()+$city[0]-session('coupon')['value'];
             }
             else{
-                $order_data['total_amount']=Helper::totalCartAmount()+$shipping[0];
+                $order_data['total_amount']=Helper::totalCartAmount()+$city[0];
             }
         }
         else{

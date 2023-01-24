@@ -147,14 +147,13 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
 
     // Order
     Route::resource('/order','OrderController');
-    // Shipping
-    Route::resource('/shipping','ShippingController');
+    // city
+    Route::resource('/city','CityController');
     // Coupon
     Route::resource('/coupon','CouponController');
     // Settings
     Route::get('settings','AdminController@settings')->name('settings');
     Route::post('setting/update','AdminController@settingsUpdate')->name('settings.update');
-
 
     // Notification
     Route::get('/notification/{id}','NotificationController@show')->name('admin.notification');

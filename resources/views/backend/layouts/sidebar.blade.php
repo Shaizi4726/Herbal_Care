@@ -115,17 +115,17 @@
         </div>
     </li>
 
-    {{-- Shipping --}}
+    {{-- city --}}
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#shippingCollapse" aria-expanded="true" aria-controls="shippingCollapse">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#cityCollapse" aria-expanded="true" aria-controls="cityCollapse">
           <i class="fas fa-truck"></i>
-          <span>Shipping</span>
+          <span>city</span>
         </a>
-        <div id="shippingCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="cityCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Shipping Options:</h6>
-            <a class="collapse-item" href="{{route('shipping.index')}}">Shipping</a>
-            <a class="collapse-item" href="{{route('shipping.create')}}">Add Shipping</a>
+            <h6 class="collapse-header">city Options:</h6>
+            <a class="collapse-item" href="{{route('city.index')}}">city</a>
+            <a class="collapse-item" href="{{route('city.create')}}">Add city</a>
           </div>
         </div>
     </li>
