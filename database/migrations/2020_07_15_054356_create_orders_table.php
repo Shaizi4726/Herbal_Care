@@ -18,7 +18,7 @@ class CreateOrdersTable extends Migration
             $table->string('order_number')->unique();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->float('sub_total');
-            $table->unsignedBigInteger('shipping_id')->nullable();
+            $table->unsignedBigInteger('city_id')->nullable();
             $table->float('coupon')->nullable();
             $table->float('total_amount');
             $table->integer('quantity');
@@ -26,7 +26,7 @@ class CreateOrdersTable extends Migration
             $table->enum('payment_status',['paid','unpaid'])->default('unpaid');
             $table->enum('status',['new','process','delivered','cancel'])->default('new');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('SET NULL');
-            $table->foreign('shipping_id')->references('id')->on('shippings')->onDelete('SET NULL');
+            $table->foreign('city_id')->references('id')->on('citys')->onDelete('SET NULL');
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email');

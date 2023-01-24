@@ -40,7 +40,7 @@ class PaypalController extends Controller
 
         $data['total'] = $total;
         if(session('coupon')){
-            $data['shipping_discount'] = session('coupon')['value'];
+            $data['city_discount'] = session('coupon')['value'];
         }
         Cart::where('user_id', auth()->user()->id)->where('order_id', null)->update(['order_id' => session()->get('id')]);
 

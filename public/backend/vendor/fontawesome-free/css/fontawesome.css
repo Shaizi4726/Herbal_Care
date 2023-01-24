@@ -3435,7 +3435,7 @@ readers do not read off random characters that represent icons */
 .fa-ship:before {
   content: "\f21a"; }
 
-.fa-shipping-fast:before {
+.fa-city-fast:before {
   content: "\f48b"; }
 
 .fa-shirtsinbulk:before {

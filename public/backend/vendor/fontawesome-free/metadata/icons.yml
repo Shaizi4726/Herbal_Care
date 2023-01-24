@@ -5424,7 +5424,7 @@ dhl:
       - Hillblom and Lynn
       - german
       - package
-      - shipping
+      - city
   styles:
     - brands
   unicode: f790
@@ -5792,7 +5792,7 @@ dolly:
   search:
     terms:
       - carry
-      - shipping
+      - city
       - transport
   styles:
     - solid
@@ -5806,7 +5806,7 @@ dolly-flatbed:
     terms:
       - carry
       - inventory
-      - shipping
+      - city
       - transport
   styles:
     - solid
@@ -6920,7 +6920,7 @@ fedex:
     terms:
       - Federal Express
       - package
-      - shipping
+      - city
   styles:
     - brands
   unicode: f797
@@ -13596,7 +13596,7 @@ pallet:
       - archive
       - box
       - inventory
-      - shipping
+      - city
       - warehouse
   styles:
     - solid
@@ -16260,10 +16260,10 @@ ship:
     - solid
   unicode: f21a
   voted: false
-shipping-fast:
+city-fast:
   changes:
     - 5.0.7
-  label: Shipping Fast
+  label: city Fast
   search:
     terms:
       - express
@@ -19484,7 +19484,7 @@ truck:
     terms:
       - cargo
       - delivery
-      - shipping
+      - city
       - vehicle
   styles:
     - solid
@@ -19935,7 +19935,7 @@ ups:
     terms:
       - United Parcel Service
       - package
-      - shipping
+      - city
   styles:
     - brands
   unicode: f7e0
@@ -20414,7 +20414,7 @@ usps:
     terms:
       - american
       - package
-      - shipping
+      - city
       - usa
   styles:
     - brands

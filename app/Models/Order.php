@@ -9,7 +9,7 @@ use Spatie\Permission\Models\Permission;
 
 class Order extends Model
 {
-    protected $fillable=['user_id','order_number','sub_total','tax_total','t_total','quantity','form','delivery_charge','status','total_amount','first_name','last_name','country','city','post_code','address1','address2','phone','email','payment_method','payment_status','shipping_id','coupon'];
+    protected $fillable=['user_id','order_number','sub_total','tax_total','t_total','quantity','form','delivery_charge','status','total_amount','first_name','last_name','country','city','post_code','address1','address2','phone','email','payment_method','payment_status','city_id','coupon'];
 
     public function cart_info(){
         return $this->hasMany('App\Models\Cart','order_id','id');
@@ -28,8 +28,8 @@ class Order extends Model
         return $this->hasMany(Cart::class);
     }
 
-    public function shipping(){
-        return $this->belongsTo(Shipping::class,'shipping_id');
+    public function city(){
+        return $this->belongsTo(city::class,'city_id');
     }
     public function user()
     {

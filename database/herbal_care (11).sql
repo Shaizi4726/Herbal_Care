@@ -439,7 +439,7 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (9, '2020_07_12_073701_create_post_tags_table', 1),
 (10, '2020_07_12_083638_create_posts_table', 1),
 (11, '2020_07_13_151329_create_messages_table', 1),
-(12, '2020_07_14_023748_create_shippings_table', 1),
+(12, '2020_07_14_023748_create_citys_table', 1),
 (13, '2020_07_15_054356_create_orders_table', 1),
 (14, '2020_07_15_102626_create_carts_table', 1),
 (15, '2020_07_16_041623_create_notifications_table', 1),
@@ -571,7 +571,7 @@ CREATE TABLE `orders` (
   `sub_total` double(8,2) NOT NULL,
   `tax_total` double(8,2) NOT NULL,
   `t_total` double(8,2) NOT NULL,
-  `shipping_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `city_id` bigint(20) UNSIGNED DEFAULT NULL,
   `coupon` double(8,2) DEFAULT NULL,
   `total_amount` double(8,2) NOT NULL,
   `quantity` int(11) NOT NULL,
@@ -3267,10 +3267,10 @@ INSERT INTO `settings` (`id`, `description`, `short_des`, `logo`, `photo`, `addr
 -- --------------------------------------------------------
 
 --
--- Table structure for table `shippings`
+-- Table structure for table `citys`
 --
 
-CREATE TABLE `shippings` (
+CREATE TABLE `citys` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `type` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `price` decimal(8,2) NOT NULL,
@@ -3280,10 +3280,10 @@ CREATE TABLE `shippings` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `shippings`
+-- Dumping data for table `citys`
 --
 
-INSERT INTO `shippings` (`id`, `type`, `price`, `status`, `created_at`, `updated_at`) VALUES
+INSERT INTO `citys` (`id`, `type`, `price`, `status`, `created_at`, `updated_at`) VALUES
 (5, 'Dubai', '10.00', 'active', '2022-07-11 04:29:45', '2022-08-29 02:19:32'),
 (6, 'Bur Dubai', '15.00', 'active', '2022-07-11 04:29:57', '2022-08-29 02:19:40');
 
@@ -3436,7 +3436,7 @@ ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `orders_order_number_unique` (`order_number`),
   ADD KEY `orders_user_id_foreign` (`user_id`),
-  ADD KEY `orders_shipping_id_foreign` (`shipping_id`);
+  ADD KEY `orders_city_id_foreign` (`city_id`);
 
 --
 -- Indexes for table `password_resets`
@@ -3551,9 +3551,9 @@ ALTER TABLE `settings`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `shippings`
+-- Indexes for table `citys`
 --
-ALTER TABLE `shippings`
+ALTER TABLE `citys`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -3709,9 +3709,9 @@ ALTER TABLE `settings`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `shippings`
+-- AUTO_INCREMENT for table `citys`
 --
-ALTER TABLE `shippings`
+ALTER TABLE `citys`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
@@ -3768,7 +3768,7 @@ ALTER TABLE `model_has_roles`
 -- Constraints for table `orders`
 --
 ALTER TABLE `orders`
-  ADD CONSTRAINT `orders_shipping_id_foreign` FOREIGN KEY (`shipping_id`) REFERENCES `shippings` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `orders_city_id_foreign` FOREIGN KEY (`city_id`) REFERENCES `citys` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `orders_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL;
 
 --
