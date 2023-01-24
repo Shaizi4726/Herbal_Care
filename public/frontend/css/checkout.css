@@ -24,6 +24,16 @@ form {
   width: 100%;
 }
 
+fieldset {
+  padding: 1em;
+}
+
+fieldset legend {
+  font-weight: bold;
+  font-size: 16px;
+  padding: 0.5em;
+}
+
 label {
   display: block;
   font-size: 14px;
@@ -53,8 +63,19 @@ label {
   margin-right: 0.5em;
 }
 
+.shipping-mthd .form-group {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  width: 25vw;
+  margin-bottom: 1em;
+}
 
-.order-summary {
+.shipping-mthd .form-group input {
+  width: 2vw;
+}
+
+.sums-summary, .cart {
   width: 95vw;
   font-size: 2vw;
   color: #2c542f;
@@ -62,6 +83,10 @@ label {
   margin: 1em auto;
   padding: 0.3em;
   text-align: justify;
+}
+
+.shipping-mthd .form-group label {
+  margin-left: 2vw;
 }
 
 .summary-title-container {
@@ -105,8 +130,9 @@ label {
   border: 1px solid #2c542f;
 }
 
-h4, p {
+.order-summary h4, .order-summary p {
   display: inline-block;
+  margin: 0;
 }
 
 .cart-totals {
@@ -139,6 +165,28 @@ h4, p {
   width: 100%;
 }
 
+.cart {
+  margin-top: 2em;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cart-item:not(:last-child) {
+  margin-bottom: 1.5em;
+}
+
+.cart-item-meta {
+  margin-left: 0.5em;
+}
+
+.cart img {
+  width: 100px;
+  height: 100px;
+}
+
 @media screen and (min-width: 768px) {
   .page-title {
     font-size: 40px;
@@ -155,12 +203,16 @@ h4, p {
     width: 65vw;
     margin: 0 1em 1em;
   }
-
-  .order-summary {
+  
+  .sums-summary, .cart {
     width: 25vw;
     font-size: 1.1vw;
     margin: 0 1em 0 0;
     box-shadow: 0 5px 10px 2px rgba(44, 84, 47, 0.5);
+  }
+
+  .cart {
+    margin-top: 1em;
   }
 
   .summary-title-container {
@@ -189,5 +241,12 @@ h4, p {
 
   a.btn-checkout {
     color: #faf9f6;
+  }
+
+  .cart-item-stats {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    margin-right: 0.5em;
   }
 }
