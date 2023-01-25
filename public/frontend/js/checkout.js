@@ -2,13 +2,13 @@ $(function() {
   let cnty = $('#country');
   cnty.val('United Arab Emirates');
 
-  $('#country').on('change', function() {
+  cnty.on('change', function() {
     let dl= $("#countries")[0];
     $('#state').val('');
     $('#city').val('');
     $('#states').empty();
     $('#cities').empty();
-    if(this.value.trim() != ''){
+    if(this.value.trim() != '') {
       let opSelected = dl.querySelector(`[value="${this.value}"]`);
       let id = opSelected.getAttribute('id');
 
@@ -44,7 +44,6 @@ $(function() {
       });
     }
   });
-
 
   $('#state').on('change', function() {
     let dl= $("#states")[0];
@@ -86,3 +85,34 @@ $(function() {
   });
   cnty.trigger('change');
 });
+
+function cardNum(el, event) {
+  let ws = $(el).val().split(" ").join("");
+  
+  if(isNaN(Number(ws)) || event.data == ' ')
+    el.value = el.value.slice(0, -1);
+
+  if(el.value.length >= 19)
+    return false;
+
+  if (ws.length > 0) {
+    if(ws.length % 4 == 0) {
+      el.value = el.value.trim();
+      el.value += ' ';
+    }
+  }
+
+  if(event.data == null) {
+    el.value = el.value.trim();
+  }
+}
+
+function cardLen(el, event) {
+  let ws = $(el).val().split(" ").join("");
+
+  if(el.value.length >= 19 || isNaN(Number(ws))) {
+    event.preventDefault();
+    event.stopPropagation();
+    return false;
+  }
+}

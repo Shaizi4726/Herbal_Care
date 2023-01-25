@@ -49,11 +49,11 @@
             <label for="country">Country<span>*</span></label>
             <input list="countries" placeholder="Country" name="country" id="country" class="countries-list">
             @php
-            $countries = DB::table('countries')->where('status', 'active')->get();
+              $countries = DB::table('countries')->where('status', 'active')->get();
             @endphp
             <datalist id="countries">
               @foreach($countries as $country)
-              <option id="{{$country->id}}" value="{{$country->name}}">{{$country->name}}</option>
+                <option id="{{$country->id}}" value="{{$country->name}}">{{$country->name}}</option>
               @endforeach
             </datalist>
           </div>
@@ -79,94 +79,149 @@
       <fieldset class="shipping-mthd">
         <legend>Payment Method</legend>
         <div class="form-group">
-          <input type="radio" name="ship_mthd" id="ship-mthd" value="COD">
+          <input type="radio" name="ship_mthd" id="cod-input" value="COD">
           <label for="ship-mthd">Cash on Delivery</label>
         </div>
         <div class="form-group">
-          <input type="radio" name="ship_mthd" id="ship-mthd" value="OP">
+          <input type="radio" name="ship_mthd" id="op-input" value="OP">
           <label for="ship-mthd">Online Payment</label>
         </div>
+      </fieldset>
+      <fieldset>
+        <div class="card col-md-15" name="paymentForm" id="paymentForm">
+
+          @php
+          $stripe_key = 'pk_test_51LjzKRJe1uNOXrEYDOhtp1rq5eEmmhAx00Dixh0ERB151Q0QSxT0nVFFylABlBZTWCwzJF6eXMB7LHg6GSFqUudV007w06Aamx';
+          @endphp
+
+          @if (Session::has('success'))
+          <div class="alert alert-success text-center">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+            <p>{{ Session::get('success') }}</p>
+          </div>
+          @endif
+
+          <div class='col-md-10' id="mainDiv">
+            <div class='form-row'>
+              <div class='col-xs-12 form-group card'>
+                <label class='control-label'>Card Name</label>
+                <input autocomplete='off' id='nameDiv' class='form-control card-name' size='20' type='text'
+                  name="card_name">
+              </div>
+            </div>
+            <div class='form-row'>
+              <div class='col-xs-12 form-group card'>
+                <label class='control-label'>Card Number</label>
+                <input autocomplete='off' id='noDiv' class='form-control card-number' onkeypress="cardLen(this, event)" oninput="cardNum(this, event)" type='tel' name="card_no">
+              </div>
+            </div>
+            <div class='form-row'>
+              <div class='col-xs-4 form-group cvc'>
+                <label class='control-label'>CVV</label>
+                <input autocomplete='off' id='cvvDiv' class='form-control card-cvc'
+                  onKeyPress="if(this.value.length==3) return false;" type='password' name="cvvNumber">
+              </div>
+
+              <div class='col-xs-4 form-group expiration'>
+                <label class='control-label'>Expiration</label>
+                <input class='form-control card-expiry-month' id='monDiv' placeholder='MM'
+                  onKeyPress="if(this.value.length==2) return false;" type='text' name="ccExpiryMonth">
+              </div>
+              <div class='col-xs-4 form-group expiration'>
+                <label class='control-label'> Date </label>
+                <input class='form-control card-expiry-year' id='yearDiv' placeholder='YYYY' onKeyPress="if(this.value.length==4) return false;" type='number' name="ccExpiryYear">
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="single-widget payement">
+          <div class="content">
+            <img src="{{('backend/img/payment-method.png')}}" alt="#">
+          </div>
+        </div>
+        <!--/ End Payment Method Widget -->
       </fieldset>
     </form>
   </div>
 
-  <div class="order-summary">
-    <div class = "sums-summary">
-      @php
+    <div class="order-summary">
+      <div class="sums-summary">
+        @php
         $subtotal = Helper::CartAmount();
         $tax = Helper::totalCartTax();
         $total_amount = Helper::totalCartAmount();
-      @endphp
+        @endphp
 
-      <div class="summary-title-container">
-        <h2>Order Summary</h2>
-      </div>
-      <div class="coupon">
-        <h4>Have Coupon?</h4>
-        <form action="{{route('coupon-store')}}" method="POST">
-          @csrf
-          <input name="code" placeholder="Enter Coupon Code">
-          <button class="btn coupon-btn">Apply</button>
-        </form>
-      </div>
-      <div class="cart-totals">
-        <div class="cart-total-value">
-          <h4 class="subtotal"> Subtotal: </h4>
-          <p id="subtotal-value">AED {{number_format($subtotal, 2)}}</p>
+        <div class="summary-title-container">
+          <h2>Order Summary</h2>
         </div>
-        <div class="cart-total-value">
-          <h4 class="tax"> VAT(5%): </h4>
-          <p id="tax-value">AED {{number_format($tax, 2)}}</p>
+        <div class="coupon">
+          <h4>Have Coupon?</h4>
+          <form action="{{route('coupon-store')}}" method="POST">
+            @csrf
+            <input name="code" placeholder="Enter Coupon Code">
+            <button class="btn coupon-btn">Apply</button>
+          </form>
         </div>
+        <div class="cart-totals">
+          <div class="cart-total-value">
+            <h4 class="subtotal"> Subtotal: </h4>
+            <p id="subtotal-value">AED {{number_format($subtotal, 2)}}</p>
+          </div>
+          <div class="cart-total-value">
+            <h4 class="tax"> VAT(5%): </h4>
+            <p id="tax-value">AED {{number_format($tax, 2)}}</p>
+          </div>
+        </div>
+        <div class="cart-total-value grand-total">
+          <h4 class="total"> Grand Total: </h4>
+          <p id="grand-total-value">AED {{number_format($total_amount, 2)}}</p>
+        </div>
+        <a href="{{route('checkout')}}" class="btn btn-checkout">Place Order</a>
       </div>
-      <div class="cart-total-value grand-total">
-        <h4 class="total"> Grand Total: </h4>
-        <p id="grand-total-value">AED {{number_format($total_amount, 2)}}</p>
-      </div>
-      <a href="{{route('checkout')}}" class="btn btn-checkout">Place Order</a>
-    </div>
-    <div class="cart">
-      @php
+      <div class="cart">
+        @php
         $cart_products = Helper::getAllProductFromCart();
-      @endphp
+        @endphp
 
-      @if($cart_products)
+        @if($cart_products)
         @foreach($cart_products as $key=>$cart)
-          <div class="cart-item">
-            <img src="{{$cart->product['photo']}}" alt="product photo" class="cart-product-img zoom-img">
-            <div class="cart-item-meta">
-              <h2 class="cart-page-item-name">{{$cart->product['title']}}</h2>
-              <div class="cart-item-stats">
-                <div class="cart-page-item-price">
-                  <h4>Price: </h4>
-                  <p>AED {{number_format($cart->price, 2)}}</p>
-                </div>
-                <div class="cart-page-item-form">
-                  <h4>Form: </h4>
-                  <p>{{$cart->form}}</p>
-                </div>
-                <div class="cart-page-item-size">
-                  <h4>Size: </h4> 
-                  <p>{{$cart->size}}</p>
-                </div>
-                <div class="cart-page-item-quantity">
-                  <h4>Quantity: </h4>
-                  <p>{{$cart->quantity}}</p>
-                </div>
-                <div class="cart-page-item-total">
-                  <h4>Total: </h4> 
-                  <p id="{{$cart->id}}-total">AED {{number_format($cart->t_amount, 2)}}</p>
-                </div>
+        <div class="cart-item">
+          <img src="{{$cart->product['photo']}}" alt="product photo" class="cart-product-img zoom-img">
+          <div class="cart-item-meta">
+            <h2 class="cart-page-item-name">{{$cart->product['title']}}</h2>
+            <div class="cart-item-stats">
+              <div class="cart-page-item-price">
+                <h4>Price: </h4>
+                <p>AED {{number_format($cart->price, 2)}}</p>
+              </div>
+              <div class="cart-page-item-form">
+                <h4>Form: </h4>
+                <p>{{$cart->form}}</p>
+              </div>
+              <div class="cart-page-item-size">
+                <h4>Size: </h4>
+                <p>{{$cart->size}}</p>
+              </div>
+              <div class="cart-page-item-quantity">
+                <h4>Quantity: </h4>
+                <p>{{$cart->quantity}}</p>
+              </div>
+              <div class="cart-page-item-total">
+                <h4>Total: </h4>
+                <p id="{{$cart->id}}-total">AED {{number_format($cart->t_amount, 2)}}</p>
               </div>
             </div>
           </div>
+        </div>
         @endforeach
 
-      @else
-      <p>Sorry! Your cart is empty. Choose products <a href="{{route('home')}}"> here </a>!</p>
-      @endif
-    </div> 
-  </div>
+        @else
+        <p>Sorry! Your cart is empty. Choose products <a href="{{route('home')}}"> here </a>!</p>
+        @endif
+      </div>
+    </div>
 </section>
 @endsection
 
