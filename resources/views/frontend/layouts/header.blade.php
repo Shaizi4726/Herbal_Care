@@ -144,9 +144,9 @@
       <li><i class="fa-solid fa-location-dot"></i><a class="user-nav" href="{{route('order.track')}}" >Track Order</a></li>
       @auth 
         @if(Auth::user()->role=='admin')
-          <li><i class="fa-solid fa-user-tie"></i><a class="user-nav" href="{{route('admin')}}"  target="_blank">Dashboard</a></li>
+          <li><i class="fa-solid fa-user-tie"></i><a class="user-nav" href="{{route('admin')}}"  target="_blank">{{Auth::user()->name}}</a></li>
         @else 
-          <li><i class="fa-solid fa-user"></i><a class="user-nav" href="{{route('user')}}"  target="_blank">Dashboard</a></li>
+          <li><i class="fa-solid fa-user"></i><a class="user-nav" href="{{route('user')}}"  target="_blank">{{Auth::user()->name}}</a></li>
         @endif
           <li><i class="fa-solid fa-right-from-bracket"></i><a class="user-nav" href="{{route('user.logout')}}">Logout</a></li>
       @else
