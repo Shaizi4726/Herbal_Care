@@ -4,12 +4,10 @@
 	<div class="footer-top main-footer">				
 		<div class="footer-about">
 			<div class="logo">
-				<a href="{{route('home')}}"><img src="{{asset('backend/img/logo2.png')}}" alt="#"></a>
+        @php $settings=DB::table('settings')->get(); @endphp
+				<a href="{{route('home')}}"><img src="@foreach($settings as $data) {{$data->logo}} @endforeach" alt="#"></a>
 			</div>
 			<hr>
-			@php
-				$settings=DB::table('settings')->get();
-			@endphp
 
 			<div class="footer-desc">
 				<p class="desc-text">@foreach($settings as $data) {{$data->short_des}} @endforeach</p>
@@ -36,7 +34,7 @@
 					<li><a href="#">Payment Methods</a></li>
 					<li><a href="#">Money-back</a></li>
 					<li><a href="#">Returns</a></li>
-					<li><a href="#">Shipping</a></li>
+					<li><a href="#">city</a></li>
 					<li><a href="{{route('contact')}}">Contact Us</a></li>
 				</ul>
 			</div>
@@ -66,19 +64,15 @@
 		<!-- Features -->
     <div class="features" >
 			<div class="feature1" >
-				<h4><i class="fa-solid fa-rocket"></i> Free shipping<br>Orders over AED. 100</h4>
+				<h4><i class="fa-solid fa-rocket"></i> Free city<br>Orders over AED 100</h4>
 			</div>
 												
 			<div class="feature2">
-				<h4><i class="fa-solid fa-clock-rotate-left"></i> Free Return<br>Within 30 days returns</h4>
+				<h4><i class="fa-solid fa-clock-rotate-left"></i> Free Return<br>Within 30 days</h4>
 			</div>
 										
 			<div class="feature3">
 				<h4><i class="fa-solid fa-lock"></i> Secure Payment<br>100% secure payment</h4>
-			</div>
-												
-			<div class="feature4">
-				<h4><i class="fa-solid fa-tag"></i> Best Price <br>Guaranteed price</h4>
 			</div>
 		</div>
 		<!-- End Features -->

@@ -23,6 +23,7 @@ Route::get('user/register','FrontendController@register')->name('register.form')
 Route::post('user/register','FrontendController@registerSubmit')->name('register.submit');
 // Reset password
 Route::get('password-reset', 'FrontendController@showResetForm')->name('password.reset'); 
+Route::get('password-resets', 'FrontendController@PassResetForm')->name('password.resets');
 // Socialite 
 Route::get('login/{provider}/', 'Auth\LoginController@redirect')->name('login.redirect');
 Route::get('login/{provider}/callback/', 'Auth\LoginController@Callback')->name('login.callback');
@@ -43,15 +44,18 @@ Route::get('/product-sub-cat/{slug}/{sub_slug}','FrontendController@productSubCa
 Route::get('/product-brand/{slug}','FrontendController@productBrand')->name('product-brand');
 
 // Cart section
-Route::get('/add-to-cart/{id}','CartController@addToCart')->name('add-to-cart')->middleware('user');
-Route::match(['get','post'],'/add-to-cart','CartController@singleAddToCart')->name('single-add-to-cart')->middleware('user');
+Route::match(['get','post'],'/add-to-cart','CartController@singleAddToCart')->name('single-add-to-cart');
 Route::get('cart-delete/{id}','CartController@cartDelete')->name('cart-delete');
-Route::post('cart-update','CartController@cartUpdate')->name('cart.update');
+Route::get('cart-update','CartController@cartUpdate')->name('cart.update');
 
-Route::get('/cart',function(){
+Route::get('/cart', function(){
     return view('frontend.pages.cart');
 })->name('cart');
-Route::get('/checkout','CartController@checkout')->name('checkout')->middleware('user');
+
+Route::get('/states', 'FrontendController@getStates');
+Route::get('/cities', 'FrontendController@getCities');
+
+Route::get('/checkout','CartController@checkout')->name('checkout');
 // Wishlist
 Route::get('/wishlist',function(){
     return view('frontend.pages.wishlist');
@@ -75,14 +79,11 @@ Route::get('/blog/search','FrontendController@blogSearch')->name('blog.search');
 Route::post('/blog/filter','FrontendController@blogFilter')->name('blog.filter');
 Route::get('blog-cat/{slug}','FrontendController@blogByCategory')->name('blog.category');
 Route::get('blog-tag/{slug}','FrontendController@blogByTag')->name('blog.tag');
-
 // NewsLetter
 Route::post('/subscribe','FrontendController@subscribe')->name('subscribe');
-
 // Product Review
 Route::resource('/review','ProductReviewController');
 Route::post('product/{slug}/review','ProductReviewController@store')->name('review.store');
-
 // Post Comment 
 Route::post('post/{slug}/comment','PostCommentController@store')->name('post-comment.store');
 Route::resource('/comment','PostCommentController');
@@ -95,27 +96,19 @@ Route::post('/coupon-store','CouponController@couponStore')->name('coupon-store'
 Route::match(['get','post'],'/stripe', 'StripeController@payment')->name('stripe.post');
 Route::get('cancel', 'PayPalController@cancel')->name('payment.cancel');
 Route::get('payment/success', 'PayPalController@success')->name('payment.success');
-
- 
 //ProductAttribute
 Route::match(['get','post'], 'admin/product/add-attributes/{id}','ProductController@addAttributes');
 Route::match(['get','post'],'admin/product/edit-attributes/{id}','ProductController@editAttributes');
 Route::match(['get','post'],'admin/product/delete-attributes/{id}','ProductController@DeleteAttribute')->name('delete-attribute');
-
 //Add Product Image
 Route::match(['get','post'], 'admin/product/add-images/{id}','ProductController@addImage');
 Route::match(['get','post'],'admin/product/delete-images/{id}','ProductController@deleteImage')->name('delete-image');
-
-
-
+//Delete category
+Route::match(['get','post'],'admin/product/delete-category/{id}','ProductController@DeleteCategory')->name('delete-category');
 Route::match(['get','post'],'/get-product-price','FrontendController@getProductPrice');
 Route::match(['get','post'],'/get-product-form','ProductController@getProductForm');
 Route::match(['get','post'],'/get-product-size','FrontendController@getProductSize');
-
-
-
 // Backend section start
-
 Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     Route::get('/','AdminController@index')->name('admin');
     Route::get('/file-manager',function(){
@@ -140,10 +133,6 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     Route::resource('/product','ProductController');
     //import product
     Route::resource('/productImport','ProductImportController');
-    //Attribute Import
-    Route::resource('/attributeImport','AttributeImportController');
-    //Image Import
-    Route::resource('/imageImport','ImageImportController');
     // Ajax for sub category
     Route::post('/category/{id}/child','CategoryController@getChildByParent');
     // POST category
@@ -158,18 +147,13 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
 
     // Order
     Route::resource('/order','OrderController');
-    // Shipping
-    Route::resource('/shipping','ShippingController');
+    // city
+    Route::resource('/city','CityController');
     // Coupon
     Route::resource('/coupon','CouponController');
     // Settings
     Route::get('settings','AdminController@settings')->name('settings');
     Route::post('setting/update','AdminController@settingsUpdate')->name('settings.update');
-
-    //User Import
-
-    // Route::get('/users/index', 'UsersImportController@show');
-    // Route::post('/users/index', 'UsersImportController@store');
 
     // Notification
     Route::get('/notification/{id}','NotificationController@show')->name('admin.notification');

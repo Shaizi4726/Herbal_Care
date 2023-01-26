@@ -76,15 +76,19 @@
                   <img class="product-image" src="{{$product->photo}}" alt="product image">
                   
                   <div class="overlay">
-                      <button id="{{$product->id}}" class="btn btn-quick-view" 
-                      title="Quick View" onclick="showModal(id, `{{$product->photo}}`, {{$Images}}, 
-                      `{{$product->title}}`, {{$Forms}}, {{$Sizes}}, {{$minprice}}, {{$maxprice}}, `{{$product->slug}}`)"> 
-                          <i class="fa-regular fa-eye"></i><p>Quick View</p></button>
+                    <button id="{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, `{{$product->photo}}`, {{$Images}}, `{{$product->title}}`, {{$Forms}}, {{$Sizes}}, {{$minprice}}, {{$maxprice}}, `{{$product->slug}}`, {{Auth::check()}})"> 
+                      <i class="fa-regular fa-eye"></i>
+                      <p>Quick View</p>
+                    </button>
                   </div>
 
                   <div class="meta-detail">
-                      <h3 class="product-title">{{$product->title}}</h3>
+                    <h3 class="product-title">{{$product->title}}</h3>
+                    @if($minprice==$maxprice)
+                      <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span></p>
+                    @else
                       <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span> - AED <span class="value">{{number_format($maxprice,2)}}</span></p>
+                    @endif                  
                   </div>
                   <div class="prod-detail-link">
                       <a href="{{route('product-detail', $product->slug)}}" class="btn btn-submit detail-link"> Product Details </a>
@@ -101,7 +105,7 @@
                   </div>
               @endforeach
           @else
-              <p class="no-product">There is no product in this criteria.</p>
+              <p class="no-product">There is no product in this category.</p>
           @endif
       </div>
       <div class="modal-container" id="modal-container"></div>

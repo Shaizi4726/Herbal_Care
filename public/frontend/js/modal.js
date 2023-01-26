@@ -14,6 +14,7 @@ function showModal(...args) {
     modal = document.createElement('div');
     modal.setAttribute('class', 'modal');
     modal.setAttribute('id', 'modal' + args[0]);
+
     modal.innerHTML = `
       <button type="button" class="btn close" id="close-btn" onclick="closeModal(${args[0]})"><i class="fa-solid fa-xmark"></i></button>
       <div class="modal-content">
@@ -43,29 +44,55 @@ function showModal(...args) {
               <div class="forms modal-radio" id="forms">
               </div>
               <div class="prices" id="price">
-                <h3>AED ${args[6]} - AED ${args[7]}</h3>
+                ${(() => {
+                  if (args[6] == args[7]) {
+                    return `<h3>AED ${args[6]}</h3>`
+                  } else {
+                    return `<h3>AED ${args[6]} - AED ${args[7]}</h3>`
+                  }
+                })()}
               </div>
               <div class="sizes modal-radio" id="sizes"></div>
               <input type="hidden" name="price-input" id="price-input" value="">
               <div class="qty-manage" id="qty-manage">
                 <input type="button" value="-" class="qty-minus minus qty-control" field="quantity" disabled>
-                <input type="number" name="quantity" value="1" min="1" class="qty">
+                <input type="number" name="quantity" value="1" min="1" class="qty" oninput="this.value = Math.abs(this.value)">
                 <input type="button" value="+" class="qty-plus plus qty-control" field="quantity">
               </div>
-              <input type="button" id="modal-add-list" class="btn btn-submit" value="Add to List" onclick="shopList()">
+              <input type="button" id="modal-add-list" class="btn btn-submit add-list" value="Add to List" onclick="shopList()">
+              <i id="cart-button-arrow" class="fa-solid fa-right-long"></i>
+              <div class="cart-button-div">
+                <button form="modal-cart-form" id="modal-cart-button" class="cart-button">
+                  <span class="add-to-cart">Add to Cart</span>
+                  <span class="added">Added</span>
+                  <i class="fas fa-shopping-cart"></i>
+                  <i class="fas fa-box"></i>
+                </button>
+              </div>
             </form>
 
-            <form "  action="/add-to-cart" data="${args[0]}" id="modal-cart-form">
-              <button id="modal-cart-button" class="modal-cart-button">
-                <span class="add-to-cart">Add to cart</span>
-                <span class="added">Added</span>
-                <i class="fas fa-shopping-cart"></i>
-                <i class="fas fa-box"></i>
-              </button>
-            </form>
+            <form "  action="/add-to-cart" data="${args[0]}" id="modal-cart-form"></form>
             
             <a href="/product-detail/${args[8]}" class="modal-view-link btn" id="modal-view-link"><i class="fa-solid fa-circle-info" id="product-details-icon"></i>VIEW PRODUCT DETAILS</a>
           </div>
+
+          <section class="popup-section" id="ch-popup-sec">
+            <div id="location-popup" class="ch-popup">
+              <button id="page-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="remInnerModal()">Stay on Page</button>
+              <button id="shop-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="location.href = '/home'">Continue Shopping</button>
+              ${(() => {
+                if (args[9]) {
+                  console.log(args[9]);
+                  return `<button id="chkt-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="location.href = '/checkout'">Checkout</button>`
+                } else {
+                  return `<button id="chkt-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="chOptions()">Checkout</button>`
+                }
+              })()}
+                   
+              <button id="guest-chkt-btn" class="btn btn-submit popup-btn chkt-btn collapse" onclick="location.href = '/checkout'">Checkout as Guest</button>
+              <button id="login-chkt-btn" class="btn btn-submit popup-btn chkt-btn collapse" onclick="location.href = '/user/login?checkout=1'">Login to Checkout</button>
+            </div>
+          </section>
 
           <div class="modal-shopping-list" id="modal-shopping-list">
               <table id="shopping-list-table">
@@ -93,6 +120,11 @@ function showModal(...args) {
       </div>
     `;
     el.appendChild(modal);
+
+    $(body).on('keydown', function(event) {
+      if(event.key == "Escape")
+        closeModal(args[0]);
+    });
   };
   createModal();
 
@@ -106,9 +138,9 @@ function showModal(...args) {
   shazoom();
 
   /* Hide exzoom navbar and nav buttons when only 1 image */
-  if (args[3].length == 0) {
-    $(".exzoom_btn").hide();
-    $(".exzoom_nav").hide();
+  if (args[2].length == 0) {
+    $(".zoom-btn").hide();
+    $(".zoom-nav").hide();
   }
 
   createForms(args[4]);
@@ -117,7 +149,7 @@ function showModal(...args) {
   /* Actions when size is not checked */
   if($("[name|='product-size']:checked").val() == undefined) {
     $(".plus").prop('disabled', true);
-    $('#modal-add-list').hide();
+    $('.add-list').hide();
     $("input.qty").prop('disabled', true);
   }
 
@@ -125,13 +157,13 @@ function showModal(...args) {
 
   $(function() {
     /* Actions when form is changed */
-    $("[name|='product-form']").change(() => {
+    $("[name|='product-form']").on('change', () => {
       var form = $("[name|='product-form']:checked").val();
       createSizes(form, args[5]);
       if($("[name|='product-size']:checked").val() == undefined) {
         $("#price").html(`<h3>AED ${args[6]} - AED ${args[7]}</h3>`);
         $(".plus").prop('disabled', true);
-        $('#modal-add-list').hide();
+        $('.add-list').hide();
         $("input.qty").val('1');
         $("input.qty").prop('disabled', true)
         $('.minus').prop('disabled', true);
@@ -139,10 +171,8 @@ function showModal(...args) {
       Price(args[0]);
     })
 
-    $("#modal-cart-button:eq(0)").hide();
-
     /* Enable minus button when value of input quantity is greater than 1 and vice versa */
-    $('input.qty').change(() => {
+    $('input.qty').on('change', () => {
       if ($('input.qty').val() > 1)
         $('.minus').prop('disabled', false);
       else
@@ -151,23 +181,23 @@ function showModal(...args) {
   })
 
   /* Plus button function */
-  $('.plus').click(function(e) {
-    let $input = $('.plus').prev('input.qty');
-    let val = parseInt($input.val());
-    $input.val( val+1 ).change();
+  $('.plus').on('click', function(e) {
+    let qtyinput = $(this).prev('input.qty');
+    let val = parseInt(qtyinput.val());
+    qtyinput.val( val+1 ).trigger('change');
   });
   
   /* Minus button function */
-  $('.minus').click(function(e) {
-    let $input = $('.minus').next('input.qty');
-    var val = parseInt($input.val());
+  $('.minus').on('click', function(e) {
+    let qtyinput = $(this).next('input.qty');
+    var val = parseInt(qtyinput.val());
     if (val > 1) {
-      $input.val( val-1 ).change();
+      qtyinput.val( val-1 ).trigger('change');
     }
   });
 
   /* Function when modal shopping list table is submitted */
-  $("#modal-cart-form").submit(function(e) {
+  $("#modal-cart-form").on('submit', function(e) {
     e.preventDefault();
     let modalForm = $("#modal-cart-form");
     let actionUrl = modalForm.attr('action');
@@ -184,5 +214,14 @@ function closeModal(a) {
   body.style.overflow = "auto";
   el.style.transform = "scale(0)";
   el.style.opacity = "0";
-  modal.remove();
+  setTimeout(function() {
+    modal.remove();
+}, 1000);
+}
+
+function remInnerModal() {
+  let button = $(".cart-button")[0];
+  let chModal = $("#ch-popup-sec")[0];
+  button.classList.remove('clicked');
+  chModal.style.transform = "scale(0)";
 }

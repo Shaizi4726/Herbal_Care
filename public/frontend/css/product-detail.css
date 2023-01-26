@@ -5,12 +5,11 @@
 
 .details-review-div {
   text-align: center;
-  margin-top: 2em;
 }
 
 .details-review-btn {
   font-size: 1em;
-  background-color: #443a2e;
+  background-color: #2c542f;
   color: #faf9f6;
   width: 8rem;
   height: 2rem;
@@ -20,22 +19,35 @@
 }
 
 .details-review-btn:hover {
-  background-color: #d7c89d;
-  color: #443a2e;
+  background-color: #f2f4e6;
+  color: #2c542f;
   transform: translate(0, 0.3em);
   transform: scale(0.95);
 }
 
 .active-details-review {
-  background-color: #d7c89d;
-  color: #443a2e;
+  background-color: #f2f4e6;
+  color: #2c542f;
   font-weight: bold;
   font-size: 1.2em;
 }
 
 .tab-content {
+  text-align: justify;
   width: 80vw;
-  margin: auto;
+  margin: 0 auto 3em;
+}
+
+.tab-panel h3 {
+  margin-top: 2em;
+}
+
+.tab-panel h4 {
+  margin-top: 2em;
+}
+
+.tab-panel p {
+  text-indent: 8vw;
 }
 
 .benefits li {
@@ -49,6 +61,7 @@
   font-weight: normal;
   font-size: 1em;
   font-style: oblique;
+  text-align: justify;
 }
 
 .precautions li {
@@ -82,11 +95,11 @@
   content: '★ ';
 }
 .rate > input:checked ~ label {
-  color: #ffd700;    
+  color: #f2f4e6;    
 }
 .rate:not(:checked) > label:hover,
 .rate:not(:checked) > label:hover ~ label {
-  color: #ffd700;  
+  color: #f2f4e6;  
 }
 .rate > input:checked + label:hover,
 .rate > input:checked + label:hover ~ label,
@@ -111,7 +124,7 @@
   width: 6em;
   height: 2em;
   background: linear-gradient(to right, #BF953F, #FCF6BA, #e2ae3c, #FBF5B7, #AA771C);
-  box-shadow: 0 5px 10px 2px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 5px 10px 2px rgba(44, 84, 47, 0.5);
   transition: all 300ms ease-in-out;
 }
 
@@ -123,7 +136,7 @@
   margin-top: 0.25em;
   font-size: 1.2em;
   font-weight: bold;
-  color: #443a2e;
+  color: #2c542f;
 }
 
 a.review-auth-link {
@@ -132,7 +145,7 @@ a.review-auth-link {
 
 .single-rating {
   margin: 1em 0;
-  background-color: #d7c89d;
+  background-color: #f2f4e6;
   border: 2px solid grey;
   padding: 1em 2em;
 }
@@ -154,4 +167,8 @@ a.review-auth-link {
 
 .prev-reviews {
   margin: 1.5em 0;
+}
+
+.related-products .section-title {
+  margin: 1em;
 }

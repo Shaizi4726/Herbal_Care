@@ -13,9 +13,9 @@ class ProductsAttribute extends Model
     public function product(){
         return $this->belongsTo(Product::class,'id','product_id');
      }
-     public function productForm(){
-        return $this->hasMany(ProductForm::class,'id','form_id');
-     }
+    //  public function productForm(){
+    //     return $this->hasMany(ProductForm::class,'id','form_id');
+    //  }
      public function carts(){
         return $this->hasMany(Cart::class)->whereNotNull('order_id');
     }

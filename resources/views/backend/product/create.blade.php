@@ -9,7 +9,7 @@
       <form method="post" action="{{route('product.store')}}" enctype="multipart/form-data">
         {{csrf_field()}}
         <div class="form-group">
-          <label for="inputTitle" class="col-form-label">Plu Code</label>
+          <label for="inputTitle" class="col-form-label">Plu Code <span class="text-danger">*</span></label>
           <input id="inputTitle" type="text" name="plu" placeholder="Enter Plu"  value="{{old('plu')}}" class="form-control">
           @error('title')
           <span class="text-danger">{{$message}}</span>
@@ -23,14 +23,14 @@
           @enderror
         </div>
         <div class="form-group">
-          <label for="inputTitle" class="col-form-label">Scientific Name/ Boltical Name <span class="text-danger">*</span></label>
+          <label for="inputTitle" class="col-form-label">Scientific Name</label>
           <input id="inputTitle" type="text" name="scientific" placeholder="Enter Scientific Name"  value="{{old('scientific')}}" class="form-control">
           @error('scientific')
           <span class="text-danger">{{$message}}</span>
           @enderror
         </div>
         <div class="form-group">
-          <label for="other_name" class="col-form-label">Other Name <span class="text-danger">*</span></label>
+          <label for="other_name" class="col-form-label">Other Name </label>
           <textarea class="form-control" id="other_name" name="other_name">{{old('summary')}}</textarea>
           @error('other_name')
           <span class="text-danger">{{$message}}</span>
@@ -54,17 +54,25 @@
           <label for="is_featured">Is Featured</label><br>
           <input type="checkbox" name='is_featured' id='is_featured' value='1' checked> Yes                        
         </div>
+        <div class="AddCategory">
             {{-- {{$categories}} --}}
-        <div class="form-group">
-          <label for="cat_id">Category <span class="text-danger">*</span></label>
-          <select name="cat_id" id="cat_id" class="form-control">
+          @php
+            $categories = DB::table('categories')->get();
+          @endphp
+          <div class="form-group">
+            <label for="cat_id">Category <span class="text-danger">*</span></label>
+            <select name="cat_id" id="cat_id" class="control-group">
               <option value="">--Select any category--</option>
               @foreach($categories as $key=>$cat_data)
                   <option value='{{$cat_data->id}}'>{{$cat_data->title}}</option>
               @endforeach
-          </select>
+            </select>
+          
+          <a href="javascript:void(0);" class="add_button" title="Add field">Add</a><br>
+          <input type="hidden" id="cat_count" name="cat_count" value="">
         </div>
-        <div class="form-group d-none" id="child_cat_div">
+      </div>
+        <!-- <div class="form-group d-none" id="child_cat_div">
           <label for="child_cat_id">Sub Category</label>
           <select name="child_cat_id" id="child_cat_id" class="form-control">
               <option value="">--Select any category--</option>
@@ -72,7 +80,7 @@
                   <option value='{{$parent_cat->id}}'>{{$parent_cat->title}}</option>
               @endforeach --}}
           </select>
-        </div>       
+        </div>        -->
         <div class="form-group">
           <label for="brand_id">Brand</label>
           {{-- {{$brands}} --}}
@@ -84,14 +92,45 @@
           </select>
         </div>
         <div class="form-group">
-          <label for="condition">Condition</label>
-          <select name="condition" class="form-control">
-              <option value="">--Select Condition--</option>
+          <label for="promotion">Promotion</label>
+          <select name="promotion" class="form-control">
+              <option value="">--Select Promotion--</option>
               <option value="default">Default</option>
               <option value="new">New</option>
               <option value="trending">Trending</option>
           </select>
         </div>
+        <div class="form-group">
+          <label for="minprice" class="col-form-label">Min Price <span class="text-danger">*</span></label>
+          <input id="minprice" type="number" name="minprice" value="{{old('minprice')}}" class="form-control">
+          @error('minprice')
+          <span class="text-danger">{{$message}}</span>
+          @enderror
+        </div>
+
+        @php
+          $forms = DB::table('product_forms')->get();
+        @endphp
+
+        <div class="controls">
+          <label class="control-label">Size Wise Price: </label>                                
+          <div class="control-group">
+            
+            <div class="field_wrapper">
+              <div class="abc">
+                <input type="select" class="title" name="form[]" id="form" placeholder="form" style="width:120px;"/>
+                <input type="text" name="sku[]" id="sku" placeholder="sku" style="width:120px;" required/>                                    
+                <input type="text" name="size[]" id="size" placeholder="size" style="width:120px;"required/>
+                <input type="float"  name="price[]" id="price" placeholder="price" style="width:120px;"required/>
+                <input id="discount" type="numberfloat" name="discount[]" min="0" max="100" placeholder="Enter discount" style="width:120px;"required/>
+                <input type="float" name="stock[]" id="stock" placeholder="stock" style="width:120px;"required/>
+            IsFeature    <input type="checkbox" name="is_featured" id="is_featured" placeholder="Is Feature" value="1" checked> Yes
+                <a href="javascript:void(0);" class="add_button1" title="Add field">Add</a><br>
+              </div>
+            </div>
+          </div>
+        </div>
+
        <div class="form-group">
           <label for="inputPhoto" class="col-form-label">Photo <span class="text-danger">*</span></label>
           <div class="input-group">
@@ -116,13 +155,7 @@
               </span>          
           </div>
         </div>
-        <div class="form-group">
-          <label for="inputPrice" class="col-form-label">Min Price <span class="text-danger">*</span></label>
-          <input id="inputPrice" type="number" name="inputPrice" value="{{old('minprice')}}" class="form-control">
-          @error('minprice')
-          <span class="text-danger">{{$message}}</span>
-          @enderror
-        </div>
+        
         <div class="form-group">
           <label for="status" class="col-form-label">Status <span class="text-danger">*</span></label>
           <select name="status" class="form-control">
@@ -182,7 +215,7 @@
 
 </script>
 
-<script>
+<!-- <script>
   $('#cat_id').change(function(){
     var cat_id=$(this).val();
     // alert(cat_id);
@@ -223,7 +256,7 @@
     else{
     }
   })
-</script>
+</script> -->
 
 <script type="text/javascript">
     $(document).ready(function() {
@@ -235,5 +268,57 @@
           $(this).parents(".control-group").remove();
       });
     });
+
+
+    $(document).ready(function() {
+    var max_fields = 10;
+    var wrapper = $(".AddCategory");
+    var add_button = $(".add_button");
+
+    var x = 1;
+    $(add_button).click(function(e) {
+        e.preventDefault();
+        if (x < max_fields) {
+            x++;
+            $(wrapper).append(`<div><div class="control-group"><label for="cat_id${x}">Category <span class="text-danger">*</span></label><select name="cat_id${x}" id="cat_id${x}" class="control-group"><option value="">--Select any category--</option>@foreach($categories as $key=>$cat_data)<option value="{{$cat_data->id}}">{{$cat_data->title}}</option>@endforeach</select><a href="#" class="delete">Delete</a></div></div>`); //add input box
+            $("#cat_count").val(x);
+          } 
+          else {
+            alert('You Reached the limits')
+        }
+    });
+
+    $(wrapper).on("click", ".delete", function(e) {
+        e.preventDefault();
+        $(this).parent('div').remove();
+        x--;
+    })
+});
+
+$(document).ready(function() {
+    var max_fields = 15;
+    var wrapper = $(".abc");
+    var add_button = $(".add_button1");
+
+    var x = 1;
+    $(add_button).click(function(e) {
+        e.preventDefault();
+        if (x < max_fields) {
+            x++;
+            $(wrapper).append('<div><input type="select" class="title" name="form[]" id="form" placeholder="form" style="width:120px;"/><input type="text" name="sku[]" id="sku" placeholder="sku" style="width:120px; margin-right:5px; margin-top:5px;" required /><input type="text" name="size[]" id="size" placeholder="size" style="width:120px; margin-right:5px" required/><input type="text" name="price[]" id="price" placeholder="price" style="width:120px; margin-right:4px" required/><input id="discount" type="number" name="discount[]" min="0" max="100" placeholder="Enter discount" style="width:120px;"required/><input type="text" name="stock[]" id="stock" placeholder="stock" style="width:120px; margin-right:4px" required/>IsFeature    <input type="checkbox" name="is_featured" id="is_featured" placeholder="Is Feature" value="1" checked> Yes <a href="#" class="delete">Delete</a></div>');//add input box
+           
+        } else {
+            alert('You Reached the limits')
+        }
+    });
+
+    $(wrapper).on("click", ".delete", function(e) {
+        e.preventDefault();
+        $(this).parent('div').remove();
+        x--;
+    })
+});
+
+
 </script>
 @endpush

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\ProductsAttribute;
+use App\Models\ProductCategory;
 use App\Models\ProductForm;
 use App\Models\Category;
 use App\Models\Brand;
@@ -49,81 +50,77 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {               
-       
+    {                    
         $this->validate($request,[
+            'plu'=>'required|numeric',
             'title'=>'string|required',
             'scientific'=>'string|nullable',
             'other_name'=>'string|nullable',
             'benefit'=>'string|nullable',
-            'description'=>'string|nullable',
-            'plu'=>'nullable|numeric',
+            'description'=>'string|nullable',            
             'photo'=>'required',
-            'minprice'=>'numeric|required',
+            'minprice'=>'numeric|nullable',
             'photo.*'=>'image|mimes:jpg,jpeg,png,gif|max:1024|required',
-            // 'photo'=>'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'cat_id'=>'required|exists:categories,id',
-            'child_cat_id'=>'nullable|exists:categories,id',
+            // 'cat_id'=>'required|exists:categories,id',
+            // 'child_cat_id'=>'nullable|exists:categories,id',
             'brand_id'=>'nullable|exists:brands,id',            
             'is_featured'=>'sometimes|in:1',
             'status'=>'required|in:active,inactive',
-            'condition'=>'required|in:default,new,trending'
-            
+            'promotion'=>'required|in:default,new,trending'            
         ]);
-        $data=$request->all();
-        //dd($data);
+        $data=$request->all();        
         $slug=Str::slug($request->title);
-        $count=Product::where('slug',$slug)->count();
-        // if($count>0){
-        //     $slug=$slug.'-'.date('ymdis').'-'.rand(0,999);
-        // }
+        $count=Product::where('slug',$slug)->count();        
         $data['slug']=$slug;
         $data['is_featured']=$request->input('is_featured',0);
-        
-/*        $size=$request->input('size');
-        if($size){
-            $data['size']=implode(',',$size);
-        }
-        else{
-            $data['size']='';
-        }
-        // return $size;
-        // return $data;
         $status=Product::create($data);
-        $product = Product::createForSizes(
-            $request->only('name', 'sizes', 'prices')
-        );
-    
-        return $product 
-            ? redirect()->route('some.route')
-            : redirect()->route('some.other.route');
-            
-*/
-        $status=Product::create($data);
-        
-        if($request->hasFile("images")){
-            $files=$request->file("images");
-            foreach($files as $file){
-                $imageName=time().'_'.$file->getClientOriginalName();
-                $request['product_id']=$status->id;
-                $request['plu']=$status->plu;
-                $request['image']=$imageName;
-                $file->move(\public_path("/images"),$imageName);
-                Image::create($request->all());
-
+            $categories = [];
+            $categories[] = $request->cat_id;
+            for($i=2; $i<=$request->cat_count; $i++){
+                $cat= 'cat_id'.$i;
+                $categories[] = $request->$cat;
             }
-        }
+            foreach ($categories as $product_cat) {
+                $category = new ProductCategory;
+                $category['product_id']=$status->id;           
+                $category['category_id']=$product_cat;
+                $category->save();
+            }        
+            if($request->hasFile("images")){
+                $files=$request->file("images");
+                foreach($files as $file){
+                    $imageName=time().'_'.$file->getClientOriginalName();
+                    $request['product_id']=$status->id;
+                    $request['plu']=$status->plu;
+                    $request['image']=$imageName;
+                    $file->move(\public_path("/images"),$imageName);
+                    Image::create($request->all());
+                }
+            }            
+            for($i=0; $i<count($request->form); $i++){
+                $attribute = new ProductsAttribute;
+                $attribute['product_id']=$status->id;           
+                $attribute['plu']=$request->plu;
+                $attribute['sku']= $request->sku[$i];
+                $attribute['form']=$request->form[$i];
+                $attribute['size']=$request->size[$i];
+                $attribute['price']=$request->price[$i];
+                $attribute['discount']=$request->discount[$i];
+                $attribute['stock']=$request->stock[$i];
+                $attribute['is_featured']=$request->is_featured; 
+                //dd($request->all());
+                $attribute->save();                             
+            }
+            if($status){
+                request()->session()->flash('success','Product Successfully added');
+            }
+            else{
+                request()->session()->flash('error','Please try again!!');
+            }
+            return redirect()->route('product.index');
 
-        if($status){
-            request()->session()->flash('success','Product Successfully added');
+    
         }
-        else{
-            request()->session()->flash('error','Please try again!!');
-        }
-        return redirect()->route('product.index');
-
-  
-}
 
     /**
      * Display the specified resource.
@@ -148,12 +145,14 @@ class ProductController extends Controller
         $product=Product::findOrFail($id);
         $category=Category::where('is_parent',1)->get();
         $items=Product::where('id',$id)->get();
+        $attribute=ProductsAttribute::where('id',$id)->get();
         $image=Image::where('id',$id);
         // return $items;
         return view('backend.product.edit')->with('product',$product)
             ->with('brands',$brand)
             ->with('categories',$category)
             ->with('items',$items)
+            ->with('attributes',$attribute)
             ->with('image',$image);
     }
 
@@ -166,39 +165,67 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //dd($request->all());
         $product=Product::findOrFail($id);
-        $this->validate($request,[
-            'title'=>'string|required',
-            'scientific'=>'string|nullable',
-            'other_name'=>'string|nullable',
-            'benafit'=>'string|nullable',
-            'description'=>'string|nullable',
-            'photo'=>'string|required',
-            'minprice'=>'numeric|required',
-            'cat_id'=>'required|exists:categories,id',
-            'child_cat_id'=>'nullable|exists:categories,id',
-            'is_featured'=>'sometimes|in:1',
-            'brand_id'=>'nullable|exists:brands,id',
-            'status'=>'required|in:active,inactive',
-            'condition'=>'required|in:default,new,trending',
-            'plu'=>'nullable|numeric'
-        ]);
+        // $this->validate($request,[
+        //     'title'=>'string|required',
+        //     'scientific'=>'string|nullable',
+        //     'other_name'=>'string|nullable',
+        //     'benafit'=>'string|nullable',
+        //     'description'=>'string|nullable',
+        //     'photo'=>'string|required',
+        //     'minprice'=>'numeric|required',
+        //     // 'cat_id'=>'required|exists:categories,id',
+        //     // 'child_cat_id'=>'nullable|exists:categories,id',
+        //     'is_featured'=>'sometimes|in:1',
+        //     'brand_id'=>'nullable|exists:brands,id',
+        //     'status'=>'required|in:active,inactive',
+        //     'condition'=>'required|in:default,new,trending',
+        //     'plu'=>'required|numeric'
+        // ]);
         
         $data=$request->all();
+        
        
         $data['is_featured']=$request->input('is_featured',0);
         $size=$request->input('size');
-        // if($size){
-        //     $data['size']=implode(',',$size);
-        // }
-        // else{
-        //     $data['size']='';
-        // }
                 
-        // return $data;
-        
         $status=$product->fill($data)->save();
         
+        $categories = [];
+        
+            $categories[] = $request->cat_id;
+            for($i=2; $i<=$request->cat_count; $i++){
+                $cat= 'cat_id'.$i;
+                $categories[] = $request->$cat;
+            }
+            
+           if($categories[0] != null)
+            foreach ($categories as $product_cat) {
+                $category = new ProductCategory;
+                $category['product_id']=$id;           
+                $category['category_id']=$product_cat;
+                $category->save();
+            }
+           // dd($request->sku[0]);
+     
+            if($request->sku[0] != null)        
+            for($i=0; $i<count((array)$request->form); $i++){
+                $attribute = new ProductsAttribute;
+                $attribute['product_id']=$id;           
+                $attribute['plu']=$request->plu;
+                $attribute['sku']= $request->sku[$i];
+                $attribute['form']=$request->form[$i];
+                $attribute['size']=$request->size[$i];
+                $attribute['price']=$request->price[$i];
+                $attribute['discount']=$request->discount[$i];
+                $attribute['stock']=$request->stock[$i];
+                $attribute['is_featured']=$request->is_featured; 
+               
+                $attribute->save();                             
+            }  
+
+            
         if($status){
             
             request()->session()->flash('success','Product Successfully updated');
@@ -251,6 +278,22 @@ class ProductController extends Controller
     }
             return view('backend.product.image')->with(compact('productDetails'));
     }
+
+    //delete Category
+    public function deleteCategory($id, Request $request){
+        $productCategory=ProductCategory::where('category_id',  $id)->where('product_id', $request->productId)->delete();
+        //$status=$productCategory->delete();
+        
+        
+        if($productCategory){
+            request()->session()->flash('success','Product successfully deleted');
+        }
+        else{
+            request()->session()->flash('error','Error while deleting product');
+        }
+    
+        //return redirect()->back();
+    }
         public function deleteImage($id){
             $product=Image::findOrFail($id);
             $status=$product->delete();
@@ -266,50 +309,6 @@ class ProductController extends Controller
             return redirect()->back();
         }
 
-        public function addAttributes(Request $request, $id=null){
-        
-
-            $productDetails = Product::with('attributes')->where(['id'=>$id])->first();
-            $form = ProductForm::with('attributesForm')->get();
-            
-    
-      //      $productDetails =json_decode(json_encode($productDetails));
-     //       echo "<pre>"; print_r($productDetails);die;
-    
-            if($request->isMethod('post')){
-                $data =$request->all();
-                $plu=$data['plu'];
-                
-                foreach($data['sku'] as $key=>$val){
-                    
-                    if(!empty($val)){
-                        
-                        //sku duplicate check
-                        $attrCountSKU=ProductsAttribute::where('sku',$val)->count();
-                        if($attrCountSKU>0){
-                            return redirect('/admin/product/add-attributes/'.$id)->with('Error',
-                            'SKU already exists! Please add another SKU');
-                        }
-                        
-                        $attribute = new ProductsAttribute;                        
-                        $attribute->product_id=$id;
-                        $attribute->plu=$plu;
-                        $attribute->sku= $val;
-                        $attribute->form=$data['form'][$key];
-                        $attribute->size=$data['size'][$key];
-                        $attribute->price=$data['price'][$key];
-                        $attribute->discount=$data['discount'][$key];
-                        $attribute->stock=$data['stock'][$key];
-                        $attribute->is_featured=true;    
-                        $attribute->save();
-                    }
-                }
-        
-                return redirect('/admin/product/add-attributes/'.$id)->with('success','Product Attributes has been added successfully!');
-            }
-            
-            return view('backend.product.add_attributes')->with(compact('productDetails'))->with('forms',$form);
-        }
         public function deleteAttribute($id){
             $product=ProductsAttribute::findOrFail($id);
             $status=$product->delete();

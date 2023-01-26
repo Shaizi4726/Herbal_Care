@@ -26,10 +26,10 @@
         </div>
 
         <div class="form-group">
-        <label for="inputPhoto" class="col-form-label">Photo <span class="text-danger">*</span></label>
-        <div class="input-group">
+          <label for="inputPhoto" class="col-form-label">Photo <span class="text-danger">*</span></label>
+          <div class="input-group">
             <span class="input-group-btn">
-                <a id="lfm" data-input="thumbnail" data-preview="holder" class="btn btn-primary">
+                <a id="lfm" data-input="thumbnail" data-preview="holder" class="btn btn-primary lfm">
                 <i class="fa fa-picture-o"></i> Choose
                 </a>
             </span>
@@ -37,6 +37,36 @@
         </div>
         <div id="holder" style="margin-top:15px;max-height:100px;"></div>
           @error('photo')
+          <span class="text-danger">{{$message}}</span>
+          @enderror
+        </div>
+        <div class="form-group">
+          <label for="inputPhoto" class="col-form-label">Photo Tablet <span class="text-danger">*</span></label>
+          <div class="input-group">
+            <span class="input-group-btn">
+                <a id="lfm" data-input="thumbnail1" data-preview="holder_tablet" class="btn btn-primary lfm">
+                <i class="fa fa-picture-o"></i> Choose
+                </a>
+            </span>
+          <input id="thumbnail1" class="form-control" type="text" name="photo_tablet" value="{{old('photo_tablet')}}">
+        </div>
+        <div id="holder_tablet" style="margin-top:15px;max-height:100px;"></div>
+          @error('photo_tablet')
+          <span class="text-danger">{{$message}}</span>
+          @enderror
+        </div>
+        <div class="form-group">
+          <label for="inputPhoto" class="col-form-label">Photo Mobile <span class="text-danger">*</span></label>
+          <div class="input-group">
+            <span class="input-group-btn">
+                <a id="lfm" data-input="thumbnail2" data-preview="holder_mobile" class="btn btn-primary lfm">
+                <i class="fa fa-picture-o"></i> Choose
+                </a>
+            </span>
+          <input id="thumbnail2" class="form-control" type="text" name="photo_mobile" value="{{old('photo_mobile')}}">
+        </div>
+        <div id="holder_mobile" style="margin-top:15px;max-height:100px;"></div>
+          @error('photo_mobile')
           <span class="text-danger">{{$message}}</span>
           @enderror
         </div>
@@ -68,7 +98,7 @@
 <script src="/vendor/laravel-filemanager/js/stand-alone-button.js"></script>
 <script src="{{asset('backend/summernote/summernote.min.js')}}"></script>
 <script>
-    $('#lfm').filemanager('image');
+    $('.lfm').filemanager('image');
 
     $(document).ready(function() {
     $('#description').summernote({

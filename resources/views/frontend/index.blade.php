@@ -8,15 +8,16 @@
 
 @section('main-content')
   <!-- <video src="{{asset('images/bannert.mp4')}}" autoplay muted loop></video> -->
+
   @if(count($banners)>0)
     <section id="slider" class="slider">         
       <ul id="carousel-wrap" class="carousel-wrap">
         @foreach($banners as $key=>$banner)                                    
           <li>
             <picture>
-              <source media="(min-width: 600px)" srcset="{{$banner->photo}}">
               <source media="(min-width: 768px)" srcset="{{$banner->photo}}">
-              <img class="slide-img" src="{{$banner->photo}}" alt="Slider Image">
+              <source media="(min-width: 420px)" srcset="{{$banner->photo_tablet}}">
+              <img class="slide-img" src="{{$banner->photo_mobile}}" alt="Slider Image">
             </picture>
           </li>
         @endforeach
@@ -30,9 +31,10 @@
   <section class="products-catalog">
     @php
       $CategoryLists=DB::table('categories')->where('status','active')->where('is_parent','1')->get();
-      $PopProducts = DB::table('products')->where('promotion', 'popular')->where('status', 'active')->get();
-      $TrnProducts = DB::table('products')->where('promotion', 'trending')->where('status', 'active')->get();
-      $NewProducts = DB::table('products')->where('promotion', 'new')->where('status', 'active')->get();
+      $PopProducts = DB::table('products')->where('promotion', 'popular')->where('status', 'active')->limit(9)->get();
+      $TrnProducts = DB::table('products')->where('promotion', 'trending')->where('status', 'active')->limit(9)->get();
+      $NewProducts = DB::table('products')->where('promotion', 'new')->where('status', 'active')->limit(9)->get();
+      $auth = Auth::check();
     @endphp
 
     @if(count($PopProducts) != 0)
@@ -62,7 +64,7 @@
               <img class="product-image" src="{{$product->photo}}" alt="product image">
               
               <div class="overlay">
-                <button id="{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, `{{$product->photo}}`, {{$Images}}, `{{$product->title}}`, {{$Forms}}, {{$Sizes}}, {{$minprice}}, {{$maxprice}}, `{{$product->slug}}`)"> 
+                <button id="{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, `{{$product->photo}}`, {{$Images}}, `{{$product->title}}`, {{$Forms}}, {{$Sizes}}, {{$minprice}}, {{$maxprice}}, `{{$product->slug}}`, {{$auth}})"> 
                   <i class="fa-regular fa-eye"></i>
                   <p>Quick View</p>
                 </button>
@@ -70,7 +72,11 @@
 
               <div class="meta-detail">
                 <h3 class="product-title">{{$product->title}}</h3>
+              @if($minprice==$maxprice)
+                <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span></p>
+              @else
                 <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span> - AED <span class="value">{{number_format($maxprice,2)}}</span></p>
+              @endif
               </div>
               <div class="prod-detail-link">
                 <a href="{{route('product-detail', $product->slug)}}" class="btn btn-submit detail-link"> Product Details </a>
@@ -118,7 +124,7 @@
               <img class="product-image" src="{{$product->photo}}" alt="product image">
               
               <div class="overlay">
-                <button id="{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, `{{$product->photo}}`, {{$Images}}, `{{$product->title}}`, {{$Forms}}, {{$Sizes}}, {{$minprice}}, {{$maxprice}}, `{{$product->slug}}`)"> 
+                <button id="{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, `{{$product->photo}}`, {{$Images}}, `{{$product->title}}`, {{$Forms}}, {{$Sizes}}, {{$minprice}}, {{$maxprice}}, `{{$product->slug}}`, {{$auth}})"> 
                   <i class="fa-regular fa-eye"></i>
                   <p>Quick View</p>
                 </button>
@@ -126,8 +132,11 @@
 
               <div class="meta-detail">
                 <h3 class="product-title">{{$product->title}}</h3>
+              @if($minprice==$maxprice)
+                <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span></p>
+              @else
                 <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span> - AED <span class="value">{{number_format($maxprice,2)}}</span></p>
-              </div>
+              @endif              </div>
               <div class="prod-detail-link">
                 <a href="{{route('product-detail', $product->slug)}}" class="btn btn-submit detail-link"> Product Details </a>
                 
@@ -174,7 +183,7 @@
               <img class="product-image" src="{{$product->photo}}" alt="product image">
               
               <div class="overlay">
-                <button id="{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, `{{$product->photo}}`, {{$Images}}, `{{$product->title}}`, {{$Forms}}, {{$Sizes}}, {{$minprice}}, {{$maxprice}}, `{{$product->slug}}`)"> 
+                <button id="{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, `{{$product->photo}}`, {{$Images}}, `{{$product->title}}`, {{$Forms}}, {{$Sizes}}, {{$minprice}}, {{$maxprice}}, `{{$product->slug}}`, {{$auth}})"> 
                   <i class="fa-regular fa-eye"></i>
                   <p>Quick View</p>
                 </button>
@@ -182,8 +191,11 @@
 
               <div class="meta-detail">
                 <h3 class="product-title">{{$product->title}}</h3>
+              @if($minprice==$maxprice)
+                <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span></p>
+              @else
                 <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span> - AED <span class="value">{{number_format($maxprice,2)}}</span></p>
-              </div>
+              @endif              </div>
               <div class="prod-detail-link">
                 <a href="{{route('product-detail', $product->slug)}}" class="btn btn-submit detail-link"> Product Details </a>
                 @auth
@@ -214,7 +226,7 @@
               <h2> {{$cat->title}} </h2>
             </div>
           
-            <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false}'>
+            <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false }'>
               @foreach($CatProducts as $product)
                 @php
                   $minprice = DB::table('products_attributes')->where('product_id', $product->id)->min('price');
@@ -236,7 +248,7 @@
                   <img class="product-image" src="{{$product->photo}}" alt="product image">
                   
                   <div class="overlay">
-                    <button id="{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, `{{$product->photo}}`, {{$Images}}, `{{$product->title}}`, {{$Forms}}, {{$Sizes}}, {{$minprice}}, {{$maxprice}}, `{{$product->slug}}`)"> 
+                    <button id="{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, `{{$product->photo}}`, {{$Images}}, `{{$product->title}}`, {{$Forms}}, {{$Sizes}}, {{$minprice}}, {{$maxprice}}, `{{$product->slug}}`, {{$auth}})"> 
                       <i class="fa-regular fa-eye"></i>
                       <p>Quick View</p>
                     </button>
@@ -244,8 +256,11 @@
 
                   <div class="meta-detail">
                     <h3 class="product-title">{{$product->title}}</h3>
+                  @if($minprice==$maxprice)
+                    <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span></p>
+                  @else
                     <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span> - AED <span class="value">{{number_format($maxprice,2)}}</span></p>
-                  </div>
+                  @endif                  </div>
                   <div class="prod-detail-link">
                     <a href="{{route('product-detail', $product->slug)}}" class="btn btn-submit detail-link"> Product Details </a>
                     @auth

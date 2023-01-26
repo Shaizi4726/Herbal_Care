@@ -349,13 +349,13 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="shipping col-lg-6 col-md-6 col-12">
-                                                Shipping Cost
-                                                @if(count(Helper::shipping())>0 && Helper::cartCount()>0)
-                                                    <select name="shipping" class="nice-select">
+                                    <div class="city col-lg-6 col-md-6 col-12">
+                                                city Cost
+                                                @if(count(Helper::city())>0 && Helper::cartCount()>0)
+                                                    <select name="city" class="nice-select">
                                                         <option value="">Select your address</option>
-                                                        @foreach(Helper::shipping() as $shipping)
-                                                        <option value="{{$shipping->id}}" class="shippingOption" data-price="{{$shipping->price}}">{{$shipping->type}}: ${{$shipping->price}}</option>
+                                                        @foreach(Helper::city() as $city)
+                                                        <option value="{{$city->id}}" class="cityOption" data-price="{{$city->price}}">{{$city->type}}: ${{$city->price}}</option>
                                                         @endforeach
                                                     </select>
                                                 @else 
@@ -374,14 +374,14 @@
                                     <h2>CART  TOTALS</h2>
                                     <div class="content">
                                         <ul>
-										    <li class="order_subtotal" data-price="{{Helper::totalCartPrice()}}">Cart Subtotal<span>${{number_format(Helper::totalCartPrice(),2)}}</span></li>
+										    <li class="order_subtotal" data-price="{{Helper::totalCartAmount()}}">Cart Subtotal<span>${{number_format(Helper::totalCartAmount(),2)}}</span></li>
                                             
                                             
                                             @if(session('coupon'))
                                             <li class="coupon_price" data-price="{{session('coupon')['value']}}">You Save<span>${{number_format(session('coupon')['value'],2)}}</span></li>
                                             @endif
                                             @php
-                                                $total_amount=Helper::totalCartPrice();
+                                                $total_amount=Helper::totalCartAmount();
                                                 if(session('coupon')){
                                                     $total_amount=$total_amount-session('coupon')['value'];
                                                 }
@@ -504,12 +504,12 @@
 @endsection
 @push('styles')
 	<style>
-		li.shipping{
+		li.city{
 			display: inline-flex;
 			width: 100%;
 			font-size: 14px;
 		}
-		li.shipping .input-group-icon {
+		li.city .input-group-icon {
 			width: 100%;
 			margin-left: 10px;
 		}
@@ -557,7 +557,7 @@
 	<script>
 		function showMe(box){
             
-			var checkbox=document.getElementById('shipping').style.display;
+			var checkbox=document.getElementById('city').style.display;
 			// alert(checkbox);
 			var vis= 'none';
 			if(checkbox=="none"){
@@ -571,7 +571,7 @@
 	</script>
 	<script>
 		$(document).ready(function(){
-			$('.shipping select[name=shipping]').change(function(){
+			$('.city select[name=city]').change(function(){
 				let cost = parseFloat( $(this).find('option:selected').data('price') ) || 0;
 				let subtotal = parseFloat( $('.order_subtotal').data('price') ); 
 				let coupon = parseFloat( $('.coupon_price').data('price') ) || 0; 

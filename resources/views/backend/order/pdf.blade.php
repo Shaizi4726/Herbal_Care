@@ -199,16 +199,16 @@
           <th scope="col" class="empty"></th>
           
           @php
-            $shipping_charge=DB::table('shippings')->where('id',$order->shipping_id)->pluck('price');
+            $city_charge=DB::table('citys')->where('id',$order->city_id)->pluck('price');
           @endphp
-          @if($order->shipping_id == null)
-          {{-- @if(!empty($shipping_charge))
-          <th scope="col" class="text-right ">Shipping:</th>
-          <th><span>+ ${{number_format($shipping_charge[0],2)}}</span></th>
+          @if($order->city_id == null)
+          {{-- @if(!empty($city_charge))
+          <th scope="col" class="text-right ">city:</th>
+          <th><span>+ ${{number_format($city_charge[0],2)}}</span></th>
           @endif --}}
           @else
-          <th scope="col" class="text-right ">Shipping:</th>
-          <th><span>+ ${{number_format($shipping_charge[0],2)}}</span></th>
+          <th scope="col" class="text-right ">city:</th>
+          <th><span>+ ${{number_format($city_charge[0],2)}}</span></th>
           @endif
         </tr>
         <tr>

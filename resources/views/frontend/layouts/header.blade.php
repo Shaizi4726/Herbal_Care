@@ -4,7 +4,7 @@
     <div class="header-content">
       <div id="header-logo-title">
         @php $settings=DB::table('settings')->get(); @endphp
-        <a href="{{route('home')}}">
+        <a href="{{route('home')}}" class="header-logo">
           <img src="@foreach($settings as $data) {{$data->logo}} @endforeach" alt="logo">
         </a>
         <h2 class="header-title">HerbalCare</h2>
@@ -22,21 +22,27 @@
         <i class="fa-solid fa-heart" id="fav-icon"></i>
         <div class="items-count"><span class="fav-qty">{{Helper::favCount()}}</span></div></a>
       </button>
-      <button id="mob-cart-button" class="btn header-icon items-menu-button">
+      <button id="mob-cart-btn" class="btn header-icon items-menu-button">
         <a href="{{route('cart')}}">
         <i class="fa-solid fa-cart-shopping" id="cart-icon"></i>
-        <div class="items-count"><span>{{Helper::cartCount()}}</span></div></a>
+
+        @auth
+          <div class="items-count"><span>{{count(Helper::getAllProductFromCart())}}</span></div></a>
+        @else
+          <div class="items-count"><span>{{count(Helper::getAllProductFromCart())}}</span></div></a>
+        @endauth
+
       </button>
     </div>      
   </div>      
   
   <div class="topbar" id="desktop-header">
     <div class="header-content">
-      <div id="header-logo">
+      <div id="header-logo" class="header-logo">
         @php
           $settings=DB::table('settings')->get();
         @endphp                    
-        <a href="{{route('home')}}"><img src="@foreach($settings as $data) {{$data->logo}} @endforeach" alt="logo"></a>
+        <a href="{{route('home')}}"><img src="@foreach($settings as $data) {{$data->logo}} @endforeach" alt="logo" width="50" height="50"></a>
       </div>
 
       <div class="header-title-div">
@@ -88,8 +94,7 @@
       <button class="btn header-icon items-menu-button">
         <a href="{{route('cart')}}" class="header-icon">
         <i class="fa-solid fa-cart-shopping" id="cart-icon"></i>
-        <div class="items-count"><span style="position: relative;top: 0.14em;">{{Helper::cartCount()}}</span></div></a>
-          @auth
+        <div class="items-count"><span style="position: relative;top: 0.14em;">{{count(Helper::getAllProductFromCart())}}</span></div></a>
             <div class="collapse shopping-item">
               <div class="dropdown-cart-header">
                 <span>{{count(Helper::getAllProductFromCart())}} Items</span>
@@ -98,16 +103,14 @@
 
               <ul class="shopping-list">
                 @foreach(Helper::getAllProductFromCart() as $data)
-                  @php
-                      $photo=explode(',',$data->product['photo']);
-                  @endphp
                   <li>
                     <div class="product-det">
                       <h4><a class="prod-name" href="{{route('product-detail',$data->product['slug'])}}" target="_blank">{{$data->product['title']}}</a></h4>
+                      <p class="total-cal font">{{$data->form}} - <span class="total-cal font">{{($data->size)}}</span></p>
                       <p class="total-cal font">{{$data->quantity}} x <span class="amount">{{number_format($data->price,2)}} AED</span></p>
-                      <a href="{{route('cart-delete',$data->id)}}" class="remove font" title="Remove"><i class="fa-regular fa-trash-can"></i> Remove Item</a>
+                      <a href="{{route('cart-delete', $data->id)}}" class="remove font" title="Remove"><i class="fa-regular fa-trash-can"></i> Remove Item</a>
                     </div>
-                    <a class="cart-img" href="#"><img src="{{$photo[0]}}" alt="{{$photo[0]}}"></a>
+                    <a class="cart-img" href="#"><img src="{{$data->product['photo']}}" alt="product photo"></a>
                   </li>
                 @endforeach
               </ul>
@@ -115,15 +118,14 @@
               <div class="bottom">
                 <div class="total">
                     <span>Total = </span>
-                    <span class="total-amount">AED {{number_format(Helper::totalCartPrice(),2)}}</span>
+                    <span class="total-amount">AED {{number_format(Helper::totalCartAmount(),2)}}</span>
                 </div>
                 <div class="btn anim-checkout-btn">
                 <a href="{{route('checkout')}}">Checkout</a>
                 <div class="hover"></div>
                 </div>
               </div>              
-            </div>                                        
-          @endauth
+            </div>
       </button> 
     </nav>
   </div> 

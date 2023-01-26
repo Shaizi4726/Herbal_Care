@@ -24,7 +24,6 @@
               <th>Quantity</th>
               <th>Charge</th>
               <th>Total Amount</th>
-              <!-- <th>Form</th> -->
               <th>payment Status</th>
               <th>Status</th>
               <th>Action</th>
@@ -39,7 +38,6 @@
               <th>Quantity</th>
               <th>Charge</th>
               <th>Total Amount</th>
-              <!-- <th>Form</th> -->
               <th>payment Status</th>
               <th>Status</th>
               <th>Action</th>
@@ -48,7 +46,7 @@
           <tbody>
             @foreach($orders as $order)  
             @php
-                $shipping_charge=DB::table('shippings')->where('id',$order->shipping_id)->pluck('price');
+                $city_charge=DB::table('citys')->where('id',$order->city_id)->pluck('price');
             @endphp 
             <!-- @php
                 $cart=DB::table('carts')->get();
@@ -59,8 +57,8 @@
                     <td>{{$order->first_name}} {{$order->last_name}}</td>
                     <td>{{$order->email}}</td>
                     <td>{{$order->quantity}}</td>
-                    <td>@foreach($shipping_charge as $data) $ {{number_format($data,2)}} @endforeach</td>
-                    <td>${{number_format($order->total_amount,2)}}</td>
+                    <td>@foreach($city_charge as $data) AED {{number_format($data,2)}} @endforeach</td>
+                    <td>AED {{number_format($order->total_amount,2)}}</td>
                     <!-- <th>@foreach($cart as $data) @if($order->id == $data->order_id) {{$data->form}} @endif @endforeach</th> -->
                     <td>{{$order->payment_status}}</td>
                     <td>

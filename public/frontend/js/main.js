@@ -1,38 +1,63 @@
 
 /*==================== Exzoom function ====================*/
-var shazoom = function(){
+var shazoom = function () {
   $("#shazoom").exzoom({
     "autoPlay": false
   });
 };
 
+/* Plus button function */
+$('.plus').on('click', function (e) {
+  let qtyinput = $(this).prev('input.qty');
+  let val = parseInt(qtyinput.val());
+  qtyinput.val(val + 1).trigger('change');
+});
+
+/* Minus button function */
+$('.minus').on('click', function (e) {
+  let qtyinput = $(this).next('input.qty');
+  var val = parseInt(qtyinput.val());
+  if (val > 1) {
+    qtyinput.val(val - 1).trigger('change');
+  }
+});
+
+$(function () {
+  document.oncontextmenu = () => false;;
+  document.onselectstart = () => false;
+  $('#main-content').on('cut copy paste', function (event) {
+    event.preventDefault();
+  });
+});
+
+
 /*==================== Request product price from database ====================*/
 function Price(id) {
   $(function () {
-    $("[name|='product-size']").change(() => {
+    $("[name|='product-size']").on('change', () => {
       var form = $("[name='product-form']:checked").val();
       var size = $("input[name|='product-size']:checked").val();
       $('.plus').prop('disabled', false);
-      $('#modal-add-list').show();
+      $('.add-list').show();
       $('input.qty').val(1);
       $('input.qty').prop('disabled', false);
       $.ajax({
         type: 'get',
         url: '/get-product-price',
-        data: { 
-          id: id,         
+        data: {
+          id: id,
           size: size,
           form: form
         },
-        success: function(resp) {   
-          resp = Number(resp).toFixed(2);                                   
+        success: function (resp) {
+          resp = Number(resp).toFixed(2);
           $("#price").html(`<h3>AED ${resp}</h3>`);
           $('#price-input').val(resp);
         },
-        error: function(resp) {
+        error: function (resp) {
           alert('error');
-        }                
-      }); 
+        }
+      });
     });
   })
 }
@@ -49,7 +74,7 @@ function createForms(forms) {
       <label for="${item}">${item}</label>`;
     }
     else
-     formsInput += `<input type="radio" id="${item}" name="product-form" value="${item}">
+      formsInput += `<input type="radio" id="${item}" name="product-form" value="${item}">
      <label for="${item}">${item}</label>`;
   });
   formsMenu.innerHTML = formsInput;
@@ -58,18 +83,18 @@ function createForms(forms) {
 
 /*========== Product Sizes Creation ==========*/
 function createSizes(form, sizes) {
-  if(document.getElementById("sizes-menu"))
+  if (document.getElementById("sizes-menu"))
     document.getElementById("sizes-menu").remove();
   var sizeMenu = document.createElement('div');
   sizeMenu.setAttribute('class', form + '-sizes sizes-list');
   sizeMenu.setAttribute('id', 'sizes-menu');
-    var sizesInput = ``;
-      sizes[form].map(size => {
-        sizesInput += `<input type="radio" id="${form}${size}" name="product-size" class="product-size" value="${size}">
+  var sizesInput = ``;
+  sizes[form].map(size => {
+    sizesInput += `<input type="radio" id="${form}${size}" name="product-size" class="product-size" value="${size}">
         <label for="${form}${size}">${size}</label>`;
-    });
-    sizeMenu.innerHTML = sizesInput;
-    document.getElementById("sizes").appendChild(sizeMenu);
+  });
+  sizeMenu.innerHTML = sizesInput;
+  document.getElementById("sizes").appendChild(sizeMenu);
 };
 
 /*==================== Shopping List Table ====================*/
@@ -81,9 +106,9 @@ function shopList() {
   let size = $("[name='product-size']:checked").val();
   let quant = $("[name='quantity']").val();
   let amount = price * quant;
- 
+
   let row = document.getElementById(`${form}-${size}-quant`);
-  
+
   tableRow: {
     if (row !== null) {
       let quantity = Number(row.innerHTML) + Number(quant);
@@ -101,8 +126,9 @@ function shopList() {
   }
 
   $("#list-total").html(`AED ${totalAmount.toFixed(2)}`);
-  let cartButton = $("#modal-cart-button");
-  cartButton.show();
+  let cartButton = $(".cart-button-div")[0];
+  $("#cart-button-arrow").css('display', 'inline');
+  cartButton.style.width = "12.5em";
 }
 
 /*========== Add shopping list items to cart ==========*/
@@ -116,11 +142,11 @@ function cartAdd(url, id) {
   /* Store shopping list data in arrays */
   $("#shopping-list-table tr:gt(0)").each(function () {
     let this_row = $(this);
-    let form = $.trim(this_row.find('td:eq(0)').html());
-    let size = $.trim(this_row.find('td:eq(1)').html());
-    let quantity = $.trim(this_row.find('td:eq(2)').html());
-    let price = $.trim(this_row.find('td:eq(3)').html());
-    
+    let form = this_row.find('td:eq(0)').html();
+    let size = this_row.find('td:eq(1)').html();
+    let quantity = this_row.find('td:eq(2)').html();
+    let price = this_row.find('td:eq(3)').html();
+
     formArr.push(form);
     priceArr.push(price);
     sizeArr.push(size);
@@ -141,22 +167,25 @@ function cartAdd(url, id) {
   $.ajax({
     type: 'get',
     url: url,
-    data: {        
+    data: {
       id: id,
       cart: cartList
     },
-    success: function() {
-      let button = $("#modal-cart-button")[0];
+    success: function () {
+      let button = $(".cart-button")[0];
+      let chModal = $("#ch-popup-sec")[0];
       button.classList.add('clicked');
       $("#list-body").empty();
-      setTimeout(() => {
-        document.location.reload();
-      }, 1500);
+      body.style.height = "90vh";
+      body.style.overflow = "hidden";
+      chModal.style.visibility = "visible";
+      chModal.style.opacity = "1";
+      chModal.style.transform = "scale(1)";
     },
-    error: function() {
+    error: function () {
       alert("An error occured while adding to cart")
-    }                
-  }); 
+    }
+  });
 }
 
 /*==================== Add product to favorites ====================*/
@@ -196,4 +225,9 @@ function fav(ico, id) {
       }                
     }); 
   }
+}
+
+function chOptions() {
+  $(".loc-btn").hide();
+  $(".chkt-btn").removeClass('collapse');
 }

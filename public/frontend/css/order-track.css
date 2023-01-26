@@ -1,0 +1,47 @@
+.track-order-container {
+  margin: 1em 0 0 3em;
+}
+
+.track-order-container p {
+  margin-bottom: 3em;
+  text-align: justify;
+  width: 80%;
+}
+
+.tracking-form label {
+  display: block;
+  font-weight: bold;
+}
+
+.tracking-form input {
+  width: 80%;
+  height: 2.5em;
+  border-radius: 5px;
+  padding: 0.5em;
+}
+
+.img-container img {
+  max-width: 100%;
+}
+
+.btn-submit {
+  text-align: center;
+  width: 30%;
+}
+
+@media screen and (min-width: 768px) {
+  .tracking-order-section {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .track-order-container {
+    flex: 40%;
+  }
+
+  .img-container {
+    flex: 60%;
+  }
+}

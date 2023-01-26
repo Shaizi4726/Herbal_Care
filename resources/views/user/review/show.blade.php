@@ -79,7 +79,7 @@
                         <td> : {{$order->status}}</td>
                     </tr>
                     <tr>
-                        <td>Shipping Charge</td>
+                        <td>city Charge</td>
                         <td> : $ {{number_format($order->delivery_charge,2)}}</td>
                     </tr>
                     <tr>
@@ -99,8 +99,8 @@
           </div>
 
           <div class="col-lg-6 col-lx-4">
-            <div class="shipping-info">
-              <h4 class="text-center pb-4">SHIPPING INFORMATION</h4>
+            <div class="city-info">
+              <h4 class="text-center pb-4">city INFORMATION</h4>
               <table class="table">
                     <tr class="">
                         <td>Full Name</td>
@@ -140,11 +140,11 @@
 
 @push('styles')
 <style>
-    .order-info,.shipping-info{
+    .order-info,.city-info{
         background:#ECECEC;
         padding:20px;
     }
-    .order-info h4,.shipping-info h4{
+    .order-info h4,.city-info h4{
         text-decoration: underline;
     }
 

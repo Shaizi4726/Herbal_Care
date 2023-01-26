@@ -9,10 +9,9 @@
      </div>
      <div class="card-body">
         <div class="row ">
-            <div class="col-md-3">
+            <div class="card-header py-3">
                 <div class="card">
                     <div class="card-header">Import Product</div>
-
                     <div class="card-body">
                         @if (session('status'))
                             <div class="alert alert-success" role="alert">
@@ -68,139 +67,11 @@
                 </div>
             </div>
         </div>
-       
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-header">Import Price</div>
-
-                    <div class="card-body">
-                        @if (session('status'))
-                            <div class="alert alert-success" role="alert">
-                                {{ session('status') }}
-                            </div>
-                        @endif
-
-                        @if (isset($errors) && $errors->any())
-                            <div class="alert alert-danger">
-                                @foreach ($errors->all() as $error)
-                                    {{ $error }}
-                                @endforeach
-                            </div>
-                        @endif
-
-                        @if (session()->has('failures'))
-
-                            <table class="table table-danger">
-                                <tr>
-                                    <th>Row</th>
-                                    <th>Attribute</th>
-                                    <th>Errors</th>
-                                    <th>Value</th>
-                                </tr>
-
-                                @foreach (session()->get('failures') as $validation)
-                                    <tr>
-                                        <td>{{ $validation->row() }}</td>
-                                        <td>{{ $validation->attribute() }}</td>
-                                        <td>
-                                            <ul>
-                                                @foreach ($validation->errors() as $e)
-                                                    <li>{{ $e }}</li>
-                                                @endforeach
-                                            </ul>
-                                        </td>
-                                        <td>
-                                            {{ $validation->values()[$validation->attribute()] }}
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </table>
-                        @endif
-
-                    <form action="{{route('attributeImport.store')}}" method="post" enctype="multipart/form-data">
-                            @csrf
-
-                            <div class="form-group">
-                                <input type="file" name="file" />
-
-                                <button type="submit" class="btn btn-primary" style="margin-top:10px;">Import</button>
-                            </div>
-                    </form>
-                    
-                </div>
-            </div>
-            
-        </div>
-       
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-header">Import Image</div>
-
-                    <div class="card-body">
-                        @if (session('status'))
-                            <div class="alert alert-success" role="alert">
-                                {{ session('status') }}
-                            </div>
-                        @endif
-
-                        @if (isset($errors) && $errors->any())
-                            <div class="alert alert-danger">
-                                @foreach ($errors->all() as $error)
-                                    {{ $error }}
-                                @endforeach
-                            </div>
-                        @endif
-
-                        @if (session()->has('failures'))
-
-                            <table class="table table-danger">
-                                <tr>
-                                    <th>Row</th>
-                                    <th>Attribute</th>
-                                    <th>Errors</th>
-                                    <th>Value</th>
-                                </tr>
-
-                                @foreach (session()->get('failures') as $validation)
-                                    <tr>
-                                        <td>{{ $validation->row() }}</td>
-                                        <td>{{ $validation->attribute() }}</td>
-                                        <td>
-                                            <ul>
-                                                @foreach ($validation->errors() as $e)
-                                                    <li>{{ $e }}</li>
-                                                @endforeach
-                                            </ul>
-                                        </td>
-                                        <td>
-                                            {{ $validation->values()[$validation->attribute()] }}
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </table>
-                        @endif
-
-                    <form action="{{route('imageImport.store')}}" method="post" enctype="multipart/form-data">
-                            @csrf
-
-                            <div class="form-group">
-                                <input type="file" name="file" />
-
-                                <button type="submit" class="btn btn-primary" style="margin-top:10px;">Import</button>
-                            </div>
-                    </form>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-</div>
     </div>
 </div>
-     <div class="card-header py-3">
-      <h6 class="m-0 font-weight-bold text-primary float-left">Product Lists</h6>
-      <a href="{{route('product.create')}}" class="btn btn-primary btn-sm float-right" data-toggle="tooltip" data-placement="bottom" title="Add User"><i class="fas fa-plus"></i> Add Product</a>
+<div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary float-left">Product Lists</h6>
+    <a href="{{route('product.create')}}" class="btn btn-primary btn-sm float-right" data-toggle="tooltip" data-placement="bottom" title="Add User"><i class="fas fa-plus"></i> Add Product</a>
     </div>
     <div class="card-body">
       <div class="table-responsive">
@@ -209,10 +80,10 @@
           <thead>
             <tr>
               <th>S.N.</th>
+              <th> PLU </th>
               <th>Name</th>
-              <th>Category</th>
               <th>Is Featured</th>
-              <th>Condition</th>
+              <th>Promotion</th>
               <th>Photo</th>
               <th>Status</th>
               <th>Action</th>
@@ -221,10 +92,10 @@
           <tfoot>
             <tr>
               <th>S.N.</th>
+              <th> PLU </th>
               <th>Name</th>
-              <th>Category</th>
               <th>Is Featured</th>
-              <th>Condition</th>
+              <th>Promotion</th>
               <th>Photo</th>
               <th>Status</th>
               <th>Action</th>
@@ -240,15 +111,10 @@
               @endphp
                 <tr>
                     <td>{{$product->id}}</td>
-                    <td>{{$product->title}}</td>
-                    <td>{{$product->cat_info['title']}}
-                      <sub>
-                          {{$product->sub_cat_info->title ?? ''}}
-                      </sub>
-                    </td>
+                    <td>{{$product->plu}}</td>
+                    <td>{{$product->title}}</td>                    
                     <td>{{(($product->is_featured==1)? 'Yes': 'No')}}</td>
-                    <td>{{$product->condition}}</td>
-                    
+                    <td>{{$product->promotion}}</td>                    
                     <td>
                         @if($product->photo)
                             @php
@@ -270,16 +136,6 @@
                     <td>
                         <a href="{{route('product.edit',$product->id)}}" class="btn btn-primary btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>
                         
-                        <form method="get" action="{{url('/admin/product/add-attributes',$product->id)}}">
-                            @csrf
-                            @method('post')
-                                <button class="btn btn-primary btn-sm float-left mr-1" data-id="{{$product->id}}" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="ADD"><i class="fas fa-plus"></i></button>  
-                        </form> 
-                        <form method="get" action="{{url('/admin/product/add-images',$product->id)}}">
-                            @csrf
-                            @method('post')
-                            <button class="btn btn-primary btn-sm float-left mr-1" data-id="{{$product->id}}" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="ADD"><i class="fas fa-image"></i></button>  
-                        </form>
                         <form method="POST" action="{{route('product.destroy',[$product->id])}}">
                             @csrf
                             @method('delete')

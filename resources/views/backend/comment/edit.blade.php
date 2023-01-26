@@ -33,11 +33,11 @@
 
 @push('styles')
 <style>
-    .order-info,.shipping-info{
+    .order-info,.city-info{
         background:#ECECEC;
         padding:20px;
     }
-    .order-info h4,.shipping-info h4{
+    .order-info h4,.city-info h4{
         text-decoration: underline;
     }
 </style>

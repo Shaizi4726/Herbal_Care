@@ -15,13 +15,6 @@
           @enderror
         </div>
 
-        <div class="form-group">
-          <label for="summary" class="col-form-label">Summary</label>
-          <textarea class="form-control" id="summary" name="summary">{{old('summary')}}</textarea>
-          @error('summary')
-          <span class="text-danger">{{$message}}</span>
-          @enderror
-        </div>
 
         <div class="form-group">
           <label for="is_parent">Is Parent</label><br>

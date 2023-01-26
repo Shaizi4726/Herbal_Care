@@ -41,6 +41,8 @@ class BannerController extends Controller
             'title'=>'string|required|max:50',
             'description'=>'string|nullable',
             'photo'=>'string|required',
+            'photo_tablet'=>'string|required',
+            'photo_mobile'=>'string|required',
             'status'=>'required|in:active,inactive',
         ]);
         $data=$request->all();
@@ -67,11 +69,6 @@ class BannerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
-    }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -98,6 +95,8 @@ class BannerController extends Controller
             'title'=>'string|required|max:50',
             'description'=>'string|nullable',
             'photo'=>'string|required',
+            'photo_tablet'=>'string|required',
+            'photo_mobile'=>'string|required',
             'status'=>'required|in:active,inactive',
         ]);
         $data=$request->all();
