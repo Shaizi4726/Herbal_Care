@@ -24,9 +24,9 @@ class FrontendController extends Controller
 
     public function index(Request $request)
     {
-        return redirect()->route($request->user()
-            ->role);
+        return view('frontend.pages.login')->with('checkout', $request->checkout);
     }
+    
 
     public function home()
     {
@@ -252,11 +252,11 @@ class FrontendController extends Controller
     public function productSearch(Request $request){
         $recent_products=Product::where('status','active')->orderBy('id','DESC')->limit(3)->get();
         $products=Product::orwhere('title','like','%'.$request->search.'%')
-                    ->orwhere('slug','like','%'.$request->search.'%')
-                    ->orwhere('description','like','%'.$request->search.'%')
-                    ->orwhere('other_name','like','%'.$request->search.'%')
-                    ->orderBy('id','DESC')
-                    ->paginate('9');
+            ->orwhere('slug','like','%'.$request->search.'%')
+            ->orwhere('description','like','%'.$request->search.'%')
+            ->orwhere('other_name','like','%'.$request->search.'%')
+            ->orderBy('id','DESC')
+            ->paginate('9');
         return view('frontend.pages.product-grids')->with('products',$products)->with('recent_products',$recent_products)->with('sub_cat', [])->with('query', $request->search)->with('search', 1);
     }
     
