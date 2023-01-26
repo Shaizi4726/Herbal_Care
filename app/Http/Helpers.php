@@ -7,8 +7,8 @@
   use App\Models\Wishlist;
   use App\Models\Shipping;
   use App\Models\Cart;
-  // use Auth;
 
+  // use Auth;
   class Helper {
     public static function messageList() {
       return Message::whereNull('read_at')->orderBy('created_at', 'desc')->get();
@@ -34,9 +34,9 @@
   <a href="<?php echo route('product-cat',$cat_info->slug); ?>" class="dropdown-item"><?php echo $cat_info->title; ?></a>
   <ul class="collapse cat-submenu">
     <?php
-      foreach($cat_info->child_cat as $sub_menu){
+      foreach($cat_info->child_cat as $sub_cat){
     ?>
-    <li><a href="<?php echo route('product-sub-cat',[$cat_info->slug,$sub_menu->slug]); ?>" class="dropdown-item"><?php echo $sub_menu->title; ?></a></li>
+    <li><a href="<?php echo route('product-cat',$cat_info->slug);?>?subCat=<?=$sub_cat->id?>" class="dropdown-item"><?php echo $sub_cat->title; ?></a></li>
     <?php
       }
     ?>
@@ -81,11 +81,21 @@
   }
 
   // Cart Count
-  public static function cartCount($user_id='') {
+  public static function cartCount() {
     if(Auth::check()) {
-      if($user_id=="") 
-        $user_id=auth()->user()->id;
-      return Cart::where('user_id',$user_id)->where('order_id',null)->sum('quantity');
+      $user_id=auth()->user()->id;
+      return Cart::where('user_id',$user_id)->where('order_id',null)->count('product_id');
+    }
+    else {
+      return 0;
+    }
+  }
+
+  // Favorites Count
+  public static function favCount() {
+    if(Auth::check()) {
+      $user_id=auth()->user()->id;
+      return Wishlist::where('user_id',$user_id)->count('product_id');
     }
     else {
       return 0;
@@ -99,8 +109,8 @@
 
     public static function getAllProductFromCart($user_id=''){
         if(Auth::check()){
-            if($user_id=="") $user_id=auth()->user()->id;
-            return Cart::with('product')->where('user_id',$user_id)->where('order_id',null)->get();
+          if($user_id=="") $user_id=auth()->user()->id;
+          return Cart::with('product')->where('user_id',$user_id)->where('order_id',null)->get();
         }
         else{
             return 0;
@@ -137,27 +147,7 @@
             return 0;
         }
     }
-    // public static function form($user_id=''){
-       
-    //     if(Auth::check()){
-    //         if($user_id=="") $user_id=auth()->user()->id;
-    //         return Cart::where('user_id',$user_id)->where('order_id',null)->get();
-    //     }
-    //     else{
-    //         return 0;
-    //     }
-    // }
-    // Wishlist Count
-    public static function wishlistCount($user_id=''){
-       
-        if(Auth::check()){
-            if($user_id=="") $user_id=auth()->user()->id;
-            return Wishlist::where('user_id',$user_id)->where('cart_id',null)->sum('quantity');
-        }
-        else{
-            return 0;
-        }
-    }
+    
     public static function getAllProductFromWishlist($user_id=''){
         if(Auth::check()){
             if($user_id=="") $user_id=auth()->user()->id;

@@ -1,0 +1,108 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Poppins, Verdana, Tahoma, sans-serif;
+  background-color: #faf9f6;
+}
+
+.shop-signing {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 80vw;
+  margin: 1em auto;
+  padding: 1em;
+  border: 1px solid #d7c89d;
+  box-shadow: 0 5px 10px 2px rgba(0, 0, 0, 0.5);
+}
+
+.signing-img-container {
+  display: none;
+}
+
+.signing-form-container {
+  color: #443a2e;
+  text-align: center;
+  font-size: 16px;
+}
+
+.signing-web-logo {
+  width: 30%;
+  height: 3.5em;
+}
+
+.signing-web-title {
+  font-family: Vollkorn, 'Times New Roman', Times, serif;
+  margin: 1em;
+}
+
+.signing-form-container h2 {
+  font-size: 18px;
+  margin: 0.5em 0;
+}
+
+.signing-form-container p {
+  font-size: 12px;
+  margin: 0.5em 0;
+}
+
+.form-group {
+  margin: 0.5em;
+  text-align: left;
+}
+
+.form-group input {
+  display: block;
+  background-color: aliceblue;
+  width: 90%;
+  height: 2em;
+  margin: auto;
+  padding: 0.2em;
+  border: 1px solid #443a2e;
+}
+
+.checkbox {
+  text-align: left;
+}
+
+.checkbox .checkbox-login {
+  font-size: 14px;
+}
+
+.signing-btn {
+  font-size: 18px;
+  background-color: #443a2e;
+  padding: 0.3em 0;
+  width: 8em;
+  color: #faf9f6;
+  font-weight: bold;
+  border-radius: 10px;
+}
+
+.login-btn {
+  text-align: center;
+}
+
+@media screen and (min-width: 768px) {
+  .shop-signing {
+    width: 90vw;
+    padding: 0;
+  }
+
+  .signing-img-container {
+    display: block;
+    flex: 50%;
+    overflow: hidden;
+    height: 100vh;
+  }
+
+  .signing-form-container {
+    margin-left: 2em;
+    flex: 40%;
+  }
+}

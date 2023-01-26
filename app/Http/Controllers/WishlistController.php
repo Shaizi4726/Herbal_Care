@@ -8,70 +8,49 @@ use App\Models\Wishlist;
 use App\Models\ProductsAttribute;
 class WishlistController extends Controller
 {
-    protected $product=null;
+    protected $product = null;
     public function __construct(Product $product){
-        $this->product=$product;
+        $this->product = $product;
     }
 
-    public function wishlist(Request $request){
-        // dd($request->all());
-        if (empty($request->slug)) {
-            request()->session()->flash('error','Invalid Products');
-            return back();
-        }        
-        $product = Product::with('attributes')->where('slug', $request->slug)->first();
-        $request->validate([
-            'slug'      =>  'required',
-            'price'      =>  'required',
-            'price'     =>  'required',
-            'size'      =>  'required',
-          
-        ]);
+    public function wishlist_add (Request $request) {
+      $request->validate([
+          'id'      =>  'required',
+      ]);
 
-        $product = Product::with('attributes')->where('slug', $request->slug)->first();
-       
-        $data = $request->all();
-        $proArr = explode("-",$data['price']);
-        $proAttr = ProductsAttribute::where(['price' => $proArr[0]])->first();
-        //dd($proAttr);
-        // return $product;
-        if (empty($product)) {
-            request()->session()->flash('error','Invalid Products');
-            return back();
-        }
-        
- //       dd($proAttr);
+        $product = Product::where('id', $request->id)->first();
+        $user_id = auth()->user()->id;
 
-        $already_wishlist = Wishlist::where('user_id', auth()->user()->id)->where('cart_id',null)->where('product_id', $product->id)->first();
-        // return $already_wishlist;
-        if($already_wishlist ) {
-            request()->session()->flash('error','You already placed in wishlist');
-            return back();
-        }else{
+        // $already_wishlist = Wishlist::where('user_id', auth()->user()->id)->where('product_id', $request->id)->first();
+        // if($already_wishlist ) {
+        //     request()->session()->flash('error','You already placed in wishlist');
+        //     return back();
+        // }else{
             
             $wishlist = new Wishlist;
-            $wishlist->user_id = auth()->user()->id;
+            $wishlist->user_id = $user_id;
             $wishlist->product_id = $product->id;
+            $wishlist->title = $product->title;
             $wishlist->plu = $product->plu;
-            $wishlist->price = ($proAttr->price-($proAttr->price*$proAttr->discount)/100);
-            $wishlist->quantity = 1;
-            $wishlist->amount=$wishlist->price*$wishlist->quantity;
-            if ($wishlist->product->stock < $wishlist->quantity || $wishlist->product->stock <= 0) return back()->with('error','Stock not sufficient!.');
-           // dd($wishlist);
+
             $wishlist->save();
-        }
-        request()->session()->flash('success','Product successfully added to wishlist');
-        return back();       
-    }  
-    
-    public function wishlistDelete(Request $request){
-        $wishlist = Wishlist::find($request->id);
-        if ($wishlist) {
-            $wishlist->delete();
+
+            $products = Product::with('wishlists')->where('id', $product->id)->get();
+
+            $fav_counts = Wishlist::where('user_id', $user_id)->count('product_id');
+
+            return $fav_counts;
+            
+            request()->session()->flash('success','Product successfully added to wishlist');  
+          }  
+          
+          public function wishlist_delete(Request $request){
+            
+            $wishlist = Wishlist::where('product_id', $request->id)->delete();
             request()->session()->flash('success','Wishlist successfully removed');
-            return back();  
-        }
-        request()->session()->flash('error','Error please try again');
-        return back();       
+            $user_id = auth()->user()->id;
+            $fav_counts = Wishlist::where('user_id', $user_id)->count('product_id');
+      
+            return $fav_counts;
     }     
 }

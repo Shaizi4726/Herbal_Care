@@ -47,7 +47,7 @@
   color: #d7c89d;
 }
 
-.cart-quantity {
+.items-count {
   height: 18px;
   width: 18px;
   display: inline-block;
@@ -60,7 +60,7 @@
   font-size: 12px;
 }
 
-.cart-quantity span {
+.items-count span {
   position: relative;
   top: 0.25em;
 }
@@ -174,6 +174,13 @@
   font-weight: bold;
 }
 
+.fav-button {
+  font-size: 25px;
+  position: absolute;
+  right: 0.7em;
+  top: 4.6em;
+}
+
 /*========== Category Dropdown ==========*/
 .cat-menu {
   padding: 0;
@@ -186,6 +193,11 @@
   color: #443a2e;
 }
 
+#mob-fav-button.mob-sticky {
+  position: relative;
+  left: 0.4em;
+  top: 0.4em;
+}
 
 .mob-sticky {
   font-size: 20px;
@@ -193,7 +205,7 @@
 }
 
 /*========== Sticky Mobile Menu ==========*/
-.mob-sticky .cart-quantity {
+.mob-sticky .items-count {
   height: 12px;
   width: 12px;
   position: relative;
@@ -207,7 +219,7 @@
   top: 0.1em;
 }
 
-.fav-button .cart-quantity {
+.fav-button .items-count {
   height: 12px;
   width: 12px;
   position: relative;
@@ -219,13 +231,6 @@
 
 .fav-button span {
   top: 0.1em;
-}
-
-.fav-button {
-  font-size: 25px;
-  position: relative;
-  left: 2em;
-  top: 0.3em;
 }
 
 @media only screen and (min-width: 768px) {
@@ -410,17 +415,17 @@
   }
 
   /*===== Cart Menu =====*/
-  .cart-button {
+  .items-menu-button {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     width: 10%;
   }
 
-  .cart-button:hover .shopping-item {
+  .items-menu-button:hover .shopping-item {
     display: block;
   }
 
-  .cart-quantity {
+  .items-count {
     height: 14px;
     width: 14px;
     bottom: 2em;

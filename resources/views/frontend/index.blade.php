@@ -30,9 +30,9 @@
   <section class="products-catalog">
     @php
       $CategoryLists=DB::table('categories')->where('status','active')->where('is_parent','1')->get();
-      $PopProducts = DB::table('products')->where('promotion', 'popular')->where('status', 'active')->limit(9)->get();
-      $TrnProducts = DB::table('products')->where('promotion', 'trending')->where('status', 'active')->limit(9)->get();
-      $NewProducts = DB::table('products')->where('promotion', 'new')->where('status', 'active')->limit(9)->get();
+      $PopProducts = DB::table('products')->where('promotion', 'popular')->where('status', 'active')->get();
+      $TrnProducts = DB::table('products')->where('promotion', 'trending')->where('status', 'active')->get();
+      $NewProducts = DB::table('products')->where('promotion', 'new')->where('status', 'active')->get();
     @endphp
 
     @if(count($PopProducts) != 0)
@@ -41,13 +41,15 @@
           <h2> Popular Items </h2>
         </div>
       
-        <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false, "initialIndex": 2 }'>
+        <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false, "autoPlay": 1500}'>
           @foreach($PopProducts as $product)
             @php
               $minprice = DB::table('products_attributes')->where('product_id', $product->id)->min('price');
               $maxprice = DB::table('products_attributes')->where('product_id', $product->id)->max('price');
               $Images = DB::table('images')->where('product_id', $product->id)->pluck('image');
               $Forms = DB::table('products_attributes')->where('product_id', $product->id)->distinct()->pluck('form');
+              if(Auth::user())
+              $wishlist = DB::table('wishlists')->where('product_id', $product->id)->where('user_id', auth()->user()->id)->get();
               
               $Sizes = array();
               foreach ($Forms as $form) {
@@ -56,7 +58,7 @@
               }
               $Sizes = json_encode($Sizes);
             @endphp
-            <div class="product-card carousel-cell">
+            <div class="product-card {{$product->id}}-card carousel-cell">
               <img class="product-image" src="{{$product->photo}}" alt="product image">
               
               <div class="overlay">
@@ -72,30 +74,37 @@
               </div>
               <div class="prod-detail-link">
                 <a href="{{route('product-detail', $product->slug)}}" class="btn btn-submit detail-link"> Product Details </a>
-                <button class="btn favbtn" onclick="fav(this)"><i class="fa-regular fa-heart fav"></i></button>
+                @auth
+                  @if(count($wishlist) != 0)
+                    <button class="btn favbtn" onclick="fav(this, {{$product->id}})"><i class="fa-solid fa-heart fav"></i></button>
+                  @else
+                    <button class="btn favbtn" onclick="fav(this, {{$product->id}})"><i class="fa-regular fa-heart fav"></i></button>
+                  @endif
+                @else
+                  <button class="btn favbtn" onclick="window.location.href = 'user/login';"><i class="fa-regular fa-heart fav"></i></button>
+                @endauth
               </div>
             </div>
           @endforeach
-          <div class="product-card carousel-cell link-card">
-            <a href="{{route('product-cat', 'popular')}}" class="view-link">View All</a>
-          </div>
         </div>
       </div>
     @endif
 
-    @if(count($TrnProducts) != 0)
+    @if(count($TrnProducts) != null)
       <div class="products">
         <div class="title-content">                        
           <h2> Trending Items </h2>
         </div>
       
-        <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false, "initialIndex": 2 }'>
+        <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false, "autoPlay": 1500}'>
           @foreach($TrnProducts as $product)
             @php
               $minprice = DB::table('products_attributes')->where('product_id', $product->id)->min('price');
               $maxprice = DB::table('products_attributes')->where('product_id', $product->id)->max('price');
               $Images = DB::table('images')->where('product_id', $product->id)->pluck('image');
               $Forms = DB::table('products_attributes')->where('product_id', $product->id)->distinct()->pluck('form');
+              if(Auth::user())
+              $wishlist = DB::table('wishlists')->where('product_id', $product->id)->where('user_id', auth()->user()->id)->get();
               
               $Sizes = array();
               foreach ($Forms as $form) {
@@ -104,7 +113,8 @@
               }
               $Sizes = json_encode($Sizes);
             @endphp
-            <div class="product-card carousel-cell">
+           
+            <div class="product-card {{$product->id}}-card carousel-cell">
               <img class="product-image" src="{{$product->photo}}" alt="product image">
               
               <div class="overlay">
@@ -120,30 +130,38 @@
               </div>
               <div class="prod-detail-link">
                 <a href="{{route('product-detail', $product->slug)}}" class="btn btn-submit detail-link"> Product Details </a>
-                <button class="btn favbtn" onclick="fav(this)"><i class="fa-regular fa-heart fav"></i></button>
+                
+                @auth
+                  @if(count($wishlist) != 0)
+                    <button class="btn favbtn" onclick="fav(this, {{$product->id}})"><i class="fa-solid fa-heart fav"></i></button>
+                  @else
+                    <button class="btn favbtn" onclick="fav(this, {{$product->id}})"><i class="fa-regular fa-heart fav"></i></button>
+                  @endif
+                @else
+                  <button class="btn favbtn" onclick="window.location.href = 'user/login';"><i class="fa-regular fa-heart fav"></i></button>
+                @endauth
               </div>
             </div>
           @endforeach
-          <div class="product-card carousel-cell link-card">
-            <a href="{{route('product-cat', 'trending')}}" class="view-link">View All</a>
-          </div>
         </div>
       </div>
     @endif
-
     @if(count($NewProducts) != 0)
       <div class="products">
         <div class="title-content">                        
           <h2> New Items </h2>
         </div>
       
-        <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false, "initialIndex": 2 }'>
+        <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false, "autoPlay": 1500}'>
           @foreach($NewProducts as $product)
             @php
               $minprice = DB::table('products_attributes')->where('product_id', $product->id)->min('price');
               $maxprice = DB::table('products_attributes')->where('product_id', $product->id)->max('price');
               $Images = DB::table('images')->where('product_id', $product->id)->pluck('image');
               $Forms = DB::table('products_attributes')->where('product_id', $product->id)->distinct()->pluck('form');
+
+              if(Auth::user())
+              $wishlist = DB::table('wishlists')->where('product_id', $product->id)->where('user_id', auth()->user()->id)->get();
               
               $Sizes = array();
               foreach ($Forms as $form) {
@@ -152,7 +170,7 @@
               }
               $Sizes = json_encode($Sizes);
             @endphp
-            <div class="product-card carousel-cell">
+            <div class="product-card {{$product->id}}-card carousel-cell">
               <img class="product-image" src="{{$product->photo}}" alt="product image">
               
               <div class="overlay">
@@ -168,13 +186,18 @@
               </div>
               <div class="prod-detail-link">
                 <a href="{{route('product-detail', $product->slug)}}" class="btn btn-submit detail-link"> Product Details </a>
-                <button class="btn favbtn" onclick="fav(this)"><i class="fa-regular fa-heart fav"></i></button>
+                @auth
+                  @if(count($wishlist) != 0)
+                    <button class="btn favbtn" onclick="fav(this, {{$product->id}})"><i class="fa-solid fa-heart fav"></i></button>
+                  @else
+                    <button class="btn favbtn" onclick="fav(this, {{$product->id}})"><i class="fa-regular fa-heart fav"></i></button>
+                  @endif
+                @else
+                  <button class="btn favbtn" onclick="window.location.href = 'user/login';"><i class="fa-regular fa-heart fav"></i></button>
+                @endauth
               </div>
             </div>
           @endforeach
-          <div class="product-card carousel-cell link-card">
-            <a href="{{route('product-cat', 'new')}}" class="view-link">View All</a>
-          </div>
         </div>
       </div>
     @endif
@@ -191,13 +214,16 @@
               <h2> {{$cat->title}} </h2>
             </div>
           
-            <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false, "initialIndex": 2 }'>
+            <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false}'>
               @foreach($CatProducts as $product)
                 @php
                   $minprice = DB::table('products_attributes')->where('product_id', $product->id)->min('price');
                   $maxprice = DB::table('products_attributes')->where('product_id', $product->id)->max('price');
                   $Images = DB::table('images')->where('product_id', $product->id)->pluck('image');
                   $Forms = DB::table('products_attributes')->where('product_id', $product->id)->distinct()->pluck('form');
+
+                  if(Auth::user())
+                  $wishlist = DB::table('wishlists')->where('product_id', $product->id)->where('user_id', auth()->user()->id)->get();
                   
                   $Sizes = array();
                   foreach ($Forms as $form) {
@@ -206,7 +232,7 @@
                   }
                   $Sizes = json_encode($Sizes);
                 @endphp
-                <div class="product-card carousel-cell">
+                <div class="product-card {{$product->id}}-card carousel-cell">
                   <img class="product-image" src="{{$product->photo}}" alt="product image">
                   
                   <div class="overlay">
@@ -222,11 +248,19 @@
                   </div>
                   <div class="prod-detail-link">
                     <a href="{{route('product-detail', $product->slug)}}" class="btn btn-submit detail-link"> Product Details </a>
-                    <button class="btn favbtn" onclick="fav(this)"><i class="fa-regular fa-heart fav"></i></button>
+                    @auth
+                  @if(count($wishlist) != 0)
+                    <button class="btn favbtn" onclick="fav(this, {{$product->id}})"><i class="fa-solid fa-heart fav"></i></button>
+                  @else
+                    <button class="btn favbtn" onclick="fav(this, {{$product->id}})"><i class="fa-regular fa-heart fav"></i></button>
+                  @endif
+                @else
+                  <button class="btn favbtn" onclick="window.location.href = 'user/login';"><i class="fa-regular fa-heart fav"></i></button>
+                @endauth
                   </div>
                 </div>
               @endforeach
-              <div class="product-card carousel-cell link-card">
+              <div class="product-card {{$product->id}}-card carousel-cell link-card">
                 <a href="{{route('product-cat', $cat->slug)}}" class="view-link">View All</a>
               </div>
             </div>

@@ -40,7 +40,7 @@
 					@endif
 				@endfor
 
-				<a href="#" class="total-review">({{$product_detail['getReview']->count()}}) Review</a>
+				<span class="total-review">({{$product_detail['getReview']->count()}}) Review</span>
 
 				<form id="modal-form">
 						@php
@@ -239,8 +239,10 @@
 						@php
 								$minprice = DB::table('products_attributes')->where('product_id', $product->id)->min('price');
 								$maxprice = DB::table('products_attributes')->where('product_id', $product->id)->max('price');
+                if(Auth::user())
+                  $wishlist = DB::table('wishlists')->where('product_id', $product->id)->where('user_id', auth()->user()->id)->get();
 						@endphp
-						<div class="product-card carousel-cell">
+						<div class="product-card {{$product->id}}-card carousel-cell">
 							<img class="product-image" src="{{$product->photo}}" alt="product image">
 
 							<div class="meta-detail">
@@ -249,7 +251,15 @@
 							</div>
 							<div class="prod-detail-link">
 								<a href="{{route('product-detail', $product->slug)}}" class="btn btn-submit detail-link"> Product Details </a>
-								<button class="btn favbtn" onclick="fav(this)"><i class="fa-regular fa-heart fav"></i></button>
+								@auth
+                  @if(count($wishlist) != 0)
+                    <button class="btn favbtn" onclick="fav(this, {{$product->id}})"><i class="fa-solid fa-heart fav"></i></button>
+                  @else
+                    <button class="btn favbtn" onclick="fav(this, {{$product->id}})"><i class="fa-regular fa-heart fav"></i></button>
+                  @endif
+                @else
+                  <button class="btn favbtn" onclick="window.location.href = 'user/login';"><i class="fa-regular fa-heart fav"></i></button>
+                @endauth
 							</div>
 						</div>
 					@endif

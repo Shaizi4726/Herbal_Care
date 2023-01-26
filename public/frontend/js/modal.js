@@ -169,8 +169,8 @@ function showModal(...args) {
   /* Function when modal shopping list table is submitted */
   $("#modal-cart-form").submit(function(e) {
     e.preventDefault();
-  
-    var actionUrl = modalForm.attr('action');
+    let modalForm = $("#modal-cart-form");
+    let actionUrl = modalForm.attr('action');
     let id = modalForm.attr('data');
     
     cartAdd(actionUrl, id); 

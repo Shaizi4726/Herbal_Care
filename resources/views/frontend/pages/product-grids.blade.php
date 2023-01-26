@@ -8,14 +8,8 @@
 
 @section('main-content')
   <div class="filters product-filters" id="product-filters">
-<<<<<<< HEAD
     @if(count($sub_cat) !== 0)
       <select name="sub-category" id="sub-category-filter" class="filter">
-=======
-
-    @if(count($sub_cat) !== 0)
-      <select name="sub-category" id="sub-category-filter">
->>>>>>> 740b1563fda71438632651a9439d11e54597e013
         <option selected disabled>Sub Category</option>
         @foreach($sub_cat as $id=>$cat)
           <option value="{{$id}}">{{$cat}}</option>
@@ -66,6 +60,9 @@
                       $maxprice = DB::table('products_attributes')->where('product_id', $product->id)->max('price');
                       $Images = DB::table('images')->where('product_id', $product->id)->pluck('image');
                       $Forms = DB::table('products_attributes')->where('product_id', $product->id)->distinct()->pluck('form');
+
+                      if(Auth::user())
+                        $wishlist = DB::table('wishlists')->where('product_id', $product->id)->where('user_id', auth()->user()->id)->get();
               
                       $Sizes = array();
                       foreach ($Forms as $form) {
@@ -75,7 +72,7 @@
                       $Sizes = json_encode($Sizes);
                   @endphp
 
-                  <div class="product-card carousel-cell">
+                  <div class="product-card {{$product->id}}-card carousel-cell">
                   <img class="product-image" src="{{$product->photo}}" alt="product image">
                   
                   <div class="overlay">
@@ -91,7 +88,15 @@
                   </div>
                   <div class="prod-detail-link">
                       <a href="{{route('product-detail', $product->slug)}}" class="btn btn-submit detail-link"> Product Details </a>
-                      <button class="btn favbtn" onclick="fav(this)"><i class="fa-regular fa-heart fav"></i></button>
+                      @auth
+                  @if(count($wishlist) != 0)
+                    <button class="btn favbtn" onclick="fav(this, {{$product->id}})"><i class="fa-solid fa-heart fav"></i></button>
+                  @else
+                    <button class="btn favbtn" onclick="fav(this, {{$product->id}})"><i class="fa-regular fa-heart fav"></i></button>
+                  @endif
+                @else
+                  <button class="btn favbtn" onclick="window.location.href = 'user/login';"><i class="fa-regular fa-heart fav"></i></button>
+                @endauth
                   </div>
                   </div>
               @endforeach
@@ -115,6 +120,13 @@
 
       filterQuery('<?=$query?>', subCat, promotion, sortBy, <?=$search?>);
     });
-  });
+
+    urlString = location.href;
+    var childCatId = new URL(urlString).searchParams.get('subCat');
+    if(childCatId) {
+      $('#sub-category-filter').val(childCatId);
+      filterQuery('<?=$query?>', childCatId, undefined, undefined, 0);
+    }
+})
   </script>
 @endpush

@@ -10,7 +10,7 @@ function filterQuery (...args) {
     type: 'get',
     url: '/filter',
     data: {
-      query: que,
+      que: que,
       sub_cat: subCat,
       promotion: promotion,
       sorting: sortBy,

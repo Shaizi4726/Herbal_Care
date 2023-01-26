@@ -1,108 +1,77 @@
-@extends('frontend.layouts.master')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HerbalCare || Login</title>
 
-@section('title','HERB || Login Page')
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="{{asset('images/favicon.png')}}">
 
-@section('main-content')
-    <!-- Breadcrumbs -->
-    <!-- <div class="breadcrumbs">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="bread-inner">
-                        <ul class="bread-list">
-                            <li><a href="{{route('home')}}">Home<i class="ti-arrow-right"></i></a></li>
-                            <li class="active"><a href="javascript:void(0);">Login</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
-    <!-- End Breadcrumbs -->
-            
-    <!-- Shop Login -->
-    <section class="shop login section">
-        <div class="container">
-            <div class="row"> 
-                <div class="col-lg-6 offset-lg-3 col-12">
-                    <div class="login-form">
-                        <h2>Login</h2>
-                        <p>Please register in order to checkout more quickly</p>
-                        <!-- Form -->
-                        <form class="form" method="post" action="{{route('login.submit')}}">
-                            @csrf
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label>Your Email<span>*</span></label>
-                                        <input type="email" name="email" placeholder="" required="required" value="{{old('email')}}">
-                                        @error('email')
-                                            <span class="text-danger">{{$message}}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label>Your Password<span>*</span></label>
-                                        <input type="password" name="password" placeholder="" required="required" value="{{old('password')}}">
-                                        @error('password')
-                                            <span class="text-danger">{{$message}}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-9">
-                                    <div class="form-group login-btn">
-                                        <button class="btn" type="submit">Login</button>
-                                        <a href="{{route('register.form')}}" class="btn">Register</a>
-                                        OR
-                                        <a href="{{route('login.redirect','facebook')}}" class="btn btn-facebook"><i class="ti-facebook"></i></a>
-                                        <a href="{{route('login.redirect','github')}}" class="btn btn-github"><i class="ti-github"></i></a>
-                                        <a href="{{route('login.redirect','google')}}" class="btn btn-google"><i class="ti-google"></i></a>  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Vollkorn:wght@700;900&display=swap" rel="stylesheet">
 
-                                    </div>
-                                    <div class="checkbox">
-                                        <label class="checkbox-inline" for="2"><input name="news" id="2" type="checkbox">Remember me</label>
-                                    </div>
-                                    @if (Route::has('password.request'))
-                                        <a class="lost-pass" href="{{ route('password.reset') }}">
-                                            Lost your password?
-                                        </a>
-                                    @endif
+  <!-- StyleSheet -->
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+
+    <!-- HerbalCare StyleSheet -->
+    <link href="{{asset('frontend/css/signin-up.css')}}" rel="stylesheet">
+</head>
+<body>
+  <section class="shop-signing">
+    <div class="signing-img-container">
+      <img src="{{asset('images/login-herbal.jpg')}}" alt="Login Image" id="login-img" class="signing-img logging-img">
+    </div>
+    <div class="signing-form-container">
+      <img src="{{asset('images/logo.png')}}" alt="Website Logo" class="signing-web-logo">
+      <h1 class="signing-web-title">The Herb Room</h1>
+                    <h2>Sign In</h2>
+                    <p>Please login in for checkout</p>
+                    <!-- Form -->
+                    <form class="form" method="post" action="{{route('login.submit')}}">
+                        @csrf
+                                <div class="form-group">
+                                    <label for="email">Email:<sup>*</sup></label>
+                                    <input type="email" name="email" id="email" placeholder="Enter Email..." value="" required>
+                                    @error('email')
+                                        <span class="invalid-value">{{$message}}</span>
+                                    @enderror
                                 </div>
-                            </div>
-                        </form>
-                        <!--/ End Form -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!--/ End Login -->
-@endsection
-@push('styles')
-<style>
-    .shop.login .form .btn{
-        margin-right:0;
-    }
-    .btn-facebook{
-        background:#39579A;
-    }
-    .btn-facebook:hover{
-        background:#073088 !important;
-    }
-    .btn-github{
-        background:#444444;
-        color:white;
-    }
-    .btn-github:hover{
-        background:black !important;
-    }
-    .btn-google{
-        background:#ea4335;
-        color:white;
-    }
-    .btn-google:hover{
-        background:rgb(243, 26, 26) !important;
-    }
-</style>
-@endpush
+                            
+                      
+                                <div class="form-group">
+                                    <label for="password">Password:<sup>*</sup></label>
+                                    <input type="password" name="password" id="password" placeholder="Enter Password..." value="" required>
+                                    @error('password')
+                                        <span class="invalid-value">{{$message}}</span>
+                                    @enderror
+                                </div>
+
+                                <div class="checkbox">
+                                  <input type="checkbox" name="remember_login" id="checkbox-login">
+                                  <label class="checkbox-login" for="checkbox-login">Remember me</label>
+                                </div>
+                            
+                                <div class="form-group login-btn">
+                                    <button class="btn signing-btn" type="submit">Login</button>
+                                    <p>Don't have an account? <a href="{{route('register.form')}}" class="btn">Register</a></p>
+                                    <a href="{{route('login.redirect','facebook')}}" class="btn btn-facebook"><i class="ti-facebook"></i></a>
+                                    <a href="{{route('login.redirect','github')}}" class="btn btn-github"><i class="ti-github"></i></a>
+                                    <a href="{{route('login.redirect','google')}}" class="btn btn-google"><i class="ti-google"></i></a>  
+                                </div>
+                                @if (Route::has('password.request'))
+                                    <a class="forgot-pass" href="{{ route('password.reset') }}">
+                                        Forgot password?
+                                    </a>
+                                @endif
+                           
+                    </form>
+                    <!--/ End Form -->
+    </div>
+  </section>
+</body>
+</html>

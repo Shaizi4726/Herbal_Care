@@ -175,45 +175,64 @@ class FrontendController extends Controller
                 $Forms = DB::table('products_attributes')->where('product_id', $product->id)->distinct()->pluck('form');
                 $Images = DB::table('images')->where('product_id', $product->id)->pluck('image');
 
+                if(Auth::user())
+                  $wishlist = DB::table('wishlists')->where('product_id', $product->id)->where('user_id', auth()->user()->id)->get();
+
                 $Sizes = array();
                 foreach ($Forms as $form)
                 {
-                    $
-                    {
-                        $form . "sizes"
-                    } = DB::table('products_attributes')->where('product_id', $product->id)
-                        ->where('form', $form)->pluck('size');
-                    $Sizes[$form] = $
-                    {
-                        $form . "sizes"
-                    };
+                    ${$form . "sizes"} = DB::table('products_attributes')->where('product_id', $product->id)->where('form', $form)->pluck('size');
+                    $Sizes[$form] = ${$form . "sizes"};
                 }
                 $Sizes = json_encode($Sizes);
                 $minPrice = number_format($product->price, 2);
                 $maxPrice = number_format($maxprice, 2);
 
                 $content .= <<<EOD
-                    <div class="product-card carousel-cell">
-                    <img class="product-image" src="{$product->photo}" alt="product image">
+                    <div class="product-card {$product->id}-card carousel-cell">
+                      <img class="product-image" src="{$product->photo}" alt="product image">
                     
-                    <div class="overlay">
-                        <button id="{$product->id}" class="btn btn-quick-view" 
-                        title="Quick View" onclick='showModal(id, `{$product->photo}`, {$Images}, 
-                        `{$product->title}`, {$Forms}, {$Sizes}, {$product->price}, {$maxprice}, `{$product->slug}`)'> 
-                            <i class="fa-regular fa-eye"></i><p>Quick View</p></button>
-                    </div>
+                      <div class="overlay">
+                          <button id="{$product->id}" class="btn btn-quick-view" 
+                          title="Quick View" onclick='showModal(id, `{$product->photo}`, {$Images}, 
+                          `{$product->title}`, {$Forms}, {$Sizes}, {$product->price}, {$maxprice}, `{$product->slug}`)'> 
+                              <i class="fa-regular fa-eye"></i><p>Quick View</p></button>
+                      </div>
 
-                    <div class="meta-detail">
-                        <h3 class="product-title">{$product->title}</h3>
-                        <p class="price">AED <span class="value">{$minPrice}</span> - AED <span class="value">{$maxPrice}</span></p>
-                    </div>
-                    <div class="prod-detail-link">
+                      <div class="meta-detail">
+                          <h3 class="product-title">{$product->title}</h3>
+                          <p class="price">AED <span class="value">{$minPrice}</span> - AED <span class="value">{$maxPrice}</span></p>
+                      </div>
+                      <div class="prod-detail-link">
                         <a href="/product-detail/{$product->slug}" class="btn btn-submit detail-link"> Product Details </a>
-                        <button class="btn favbtn" onclick="fav(this)"><i class="fa-regular fa-heart fav"></i></button>
-                    </div>
-                    </div>
-                  EOD; }
+                  EOD;
+
+                if(Auth::user()) {
+                  if(count($wishlist) != 0) {
+                    $content .= <<<EOD
+                        <button class="btn favbtn" onclick="fav(this, {$product->id})"><i class="fa-solid fa-heart fav"></i></button>
+                        </div>
+                      </div>
+                      EOD;
+                  }
+                  else {
+                    $content .= <<<EOD
+                        <button class="btn favbtn" onclick="fav(this, {$product->id})"><i class="fa-regular fa-heart fav"></i></button>
+                        </div>
+                      </div>
+                      EOD;
+                  }
                 }
+
+                else {
+                  $content .= <<<EOD
+                          <button class="btn favbtn" onclick="window.location.href = 'user/login';"><i class="fa-regular fa-heart fav"></i></button>
+                        </div>
+                      </div>
+                    EOD;
+                }
+            }
+          }
             else {
                 $content = <<<EOD
                 <p class="no-product">There is no product in this criteria.</p>

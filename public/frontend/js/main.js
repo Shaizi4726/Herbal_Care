@@ -1,3 +1,4 @@
+
 /*==================== Exzoom function ====================*/
 var shazoom = function(){
   $("#shazoom").exzoom({
@@ -159,15 +160,40 @@ function cartAdd(url, id) {
 }
 
 /*==================== Add product to favorites ====================*/
-function fav(ico) {
+function fav(ico, id) {
   let el = $(ico).children()[0];
   if ($(el).hasClass('fa-regular')) {
     el.classList.remove('fa-regular');
-    el.classList.add('fa-solid');
+    $(`.${id}-card .fa-heart`).addClass('fa-solid');
+    /* AJAX request for adding shopping list items to cart */
+    $.ajax({
+      type: 'get',
+      url: '/wishlist-add/',
+      data: {id: id},
+      success: function(response) {
+        $('.fav-qty').html(response);
+      },
+      error: function() {
+        alert("An error occured while adding to wishlist");
+      }                
+    }); 
   }
-
+  
   else if ($(el).hasClass('fa-solid')) {
     el.classList.remove('fa-solid');
-    el.classList.add('fa-regular');
+    $(`.${id}-card .fa-heart`).addClass('fa-regular');
+
+    /* AJAX request for adding shopping list items to cart */
+    $.ajax({
+      type: 'get',
+      url: '/wishlist-delete/',
+      data: {id: id},
+      success: function(response) {
+        $('.fav-qty').html(response);
+      },
+      error: function() {
+        alert("An error occured while removing from wishlist");
+      }                
+    }); 
   }
 }
