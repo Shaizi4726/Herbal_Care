@@ -68,21 +68,6 @@
           </div>
         </div>
     </li>
-    <!-- Form -->
-    <li class="nav-item">
-      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#formCollapse" aria-expanded="true" aria-controls="formCollapse">
-        <i class="fas fa-image"></i>
-        <span>Forms</span>
-      </a>
-      <div id="formCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-        <div class="bg-white py-2 collapse-inner rounded">
-          <h6 class="collapse-header">Form Options:</h6>
-          <a class="collapse-item" href="{{route('form.index')}}">Forms</a>
-          <a class="collapse-item" href="{{route('form.create')}}">Add Form</a>
-        </div>
-      </div>
-    </li>
-
     <!-- Product -->
     {{-- Products --}}
     <li class="nav-item">
@@ -115,17 +100,17 @@
         </div>
     </li>
 
-    {{-- city --}}
+    {{-- City --}}
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#cityCollapse" aria-expanded="true" aria-controls="cityCollapse">
           <i class="fas fa-truck"></i>
-          <span>city</span>
+          <span>City</span>
         </a>
         <div id="cityCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">city Options:</h6>
-            <a class="collapse-item" href="{{route('city.index')}}">city</a>
-            <a class="collapse-item" href="{{route('city.create')}}">Add city</a>
+            <h6 class="collapse-header">City Options:</h6>
+            <a class="collapse-item" href="{{route('city.index')}}">City</a>
+            <a class="collapse-item" href="{{route('city.create')}}">Add City</a>
           </div>
         </div>
     </li>
@@ -198,7 +183,21 @@
             </div>
         </div>
     </li>
-
+    <!-- Coupon -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#couponCollapse" aria-expanded="true" aria-controls="couponCollapse">
+            <i class="fas fa-coupons fa-folder"></i>
+            <span>Coupon</span>
+        </a>
+        <div id="couponCollapse" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Coupon Options:</h6>
+            <a class="collapse-item" href="{{route('coupon.index')}}">Coupon</a>
+            <a class="collapse-item" href="{{route('coupon.create')}}">Add Coupon</a>
+            </div>
+        </div>
+    </li>
+ 
       <!-- Comments -->
       <li class="nav-item">
         <a class="nav-link" href="{{route('comment.index')}}">

@@ -8,11 +8,22 @@ use Spatie\Permission\Models\Permission;
 
 class Coupon extends Model
 {
-    protected $fillable=['code','type','value','status'];
+    protected $fillable=['product_id','user_id','code','expiry_date','type','value','status'];
+    
+    protected $expiry = ['expiry_date' => 'datetime',];
 
-    public static function findByCode($code){
+
+    public function products(){
+        return $this->belongsTo(Product::class,'id','product_id');
+     }
+     public function users(){
+        return $this->belongsTo(User::class,'id','user_id');
+     }
+     
+    public static function findByCode(){
         return self::where('code',$code)->first();
     }
+    //public static coupan_check($code)
     public function discount($total){
         if($this->type=="fixed"){
             return $this->value;

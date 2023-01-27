@@ -54,8 +54,8 @@ trait ResetsPasswords
         // the application's home authenticated view. If there is an error we can
         // redirect them back to where they came from with their error message.
         return $response == Password::PASSWORD_RESET
-                    ? $this->sendResetResponse($request, $response)
-                    : $this->sendResetFailedResponse($request, $response);
+            ? $this->sendResetResponse($request, $response)
+            : $this->sendResetFailedResponse($request, $response);
     }
 
     /**
@@ -112,7 +112,7 @@ trait ResetsPasswords
 
         event(new PasswordReset($user));
 
-        $this->guard()->login($user);
+        $this->guard();
     }
 
     /**
@@ -141,7 +141,7 @@ trait ResetsPasswords
         }
 
         return redirect($this->redirectPath())
-                            ->with('status', trans($response));
+            ->with('status', trans($response));
     }
 
     /**
@@ -160,8 +160,8 @@ trait ResetsPasswords
         }
 
         return redirect()->back()
-                    ->withInput($request->only('email'))
-                    ->withErrors(['email' => trans($response)]);
+            ->withInput($request->only('email'))
+            ->withErrors(['email' => trans($response)]);
     }
 
     /**

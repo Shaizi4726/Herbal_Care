@@ -133,8 +133,8 @@ class DatabaseTokenRepository implements TokenRepositoryInterface
         )->first();
 
         return $record &&
-               ! $this->tokenExpired($record['created_at']) &&
-                 $this->hasher->check($token, $record['token']);
+            ! $this->tokenExpired($record['created_at']) &&
+            $this->hasher->check($token, $record['token']);
     }
 
     /**

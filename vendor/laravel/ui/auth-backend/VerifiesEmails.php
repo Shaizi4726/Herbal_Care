@@ -20,8 +20,8 @@ trait VerifiesEmails
     public function show(Request $request)
     {
         return $request->user()->hasVerifiedEmail()
-                        ? redirect($this->redirectPath())
-                        : view('auth.verify');
+            ? redirect($this->redirectPath())
+            : view('auth.verify');
     }
 
     /**
@@ -44,8 +44,8 @@ trait VerifiesEmails
 
         if ($request->user()->hasVerifiedEmail()) {
             return $request->wantsJson()
-                        ? new JsonResponse([], 204)
-                        : redirect($this->redirectPath());
+                ? new JsonResponse([], 204)
+                : redirect($this->redirectPath());
         }
 
         if ($request->user()->markEmailAsVerified()) {
@@ -57,8 +57,8 @@ trait VerifiesEmails
         }
 
         return $request->wantsJson()
-                    ? new JsonResponse([], 204)
-                    : redirect($this->redirectPath())->with('verified', true);
+            ? new JsonResponse([], 204)
+            : redirect($this->redirectPath())->with('verified', true);
     }
 
     /**
@@ -82,14 +82,14 @@ trait VerifiesEmails
     {
         if ($request->user()->hasVerifiedEmail()) {
             return $request->wantsJson()
-                        ? new JsonResponse([], 204)
-                        : redirect($this->redirectPath());
+                ? new JsonResponse([], 204)
+                : redirect($this->redirectPath());
         }
 
         $request->user()->sendEmailVerificationNotification();
 
         return $request->wantsJson()
-                    ? new JsonResponse([], 202)
-                    : back()->with('resent', true);
+            ? new JsonResponse([], 202)
+            : back()->with('resent', true);
     }
 }

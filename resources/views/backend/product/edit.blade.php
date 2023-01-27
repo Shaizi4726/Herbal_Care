@@ -148,10 +148,6 @@
             <span class="text-danger">{{$message}}</span>
           @enderror
         </div>
-      
-      @php
-        $forms = DB::table('product_forms')->get();
-      @endphp
       <div class="controls">
           <label class="control-label">Size Wise Price: </label>                        
       </div>                                

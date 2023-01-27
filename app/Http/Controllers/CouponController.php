@@ -37,8 +37,11 @@ class CouponController extends Controller
     {
         // return $request->all();
         $this->validate($request,[
-            'code'=>'string|required',
+            'product_id'=>'numeric|nullable',
+            'user_id'=>'numeric|nullable',  
+            'code'=>'string|required',        
             'type'=>'required|in:fixed,percent',
+            'expiry_date'=>'string|nullable',
             'value'=>'required|numeric',
             'status'=>'required|in:active,inactive'
         ]);
@@ -90,9 +93,13 @@ class CouponController extends Controller
     public function update(Request $request, $id)
     {
         $coupon=Coupon::find($id);
+        //dd($coupon);
         $this->validate($request,[
-            'code'=>'string|required',
+            'product_id'=>'numeric|nullable',
+            'user_id'=>'numeric|nullable',  
+            'code'=>'string|required',        
             'type'=>'required|in:fixed,percent',
+            'expiry_date'=>'string|nullable',
             'value'=>'required|numeric',
             'status'=>'required|in:active,inactive'
         ]);
@@ -136,7 +143,9 @@ class CouponController extends Controller
 
     public function couponStore(Request $request){
         // return $request->all();
+        
         $coupon=Coupon::where('code',$request->code)->first();
+            
         // dd($coupon);
         if(!$coupon){
             request()->session()->flash('error','Invalid coupon code, Please try again');

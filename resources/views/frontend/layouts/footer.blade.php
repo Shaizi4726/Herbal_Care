@@ -34,7 +34,7 @@
 					<li><a href="#">Payment Methods</a></li>
 					<li><a href="#">Money-back</a></li>
 					<li><a href="#">Returns</a></li>
-					<li><a href="#">city</a></li>
+					<li><a href="#">Shipping</a></li>
 					<li><a href="{{route('contact')}}">Contact Us</a></li>
 				</ul>
 			</div>
@@ -64,7 +64,7 @@
 		<!-- Features -->
     <div class="features" >
 			<div class="feature1" >
-				<h4><i class="fa-solid fa-rocket"></i> Free city<br>Orders over AED 100</h4>
+				<h4><i class="fa-solid fa-rocket"></i> Free Shipping<br>Over AED 100.00</h4>
 			</div>
 												
 			<div class="feature2">
@@ -72,7 +72,7 @@
 			</div>
 										
 			<div class="feature3">
-				<h4><i class="fa-solid fa-lock"></i> Secure Payment<br>100% secure payment</h4>
+				<h4><i class="fa-solid fa-lock"></i>100% Secure <br> Payment</h4>
 			</div>
 		</div>
 		<!-- End Features -->

@@ -15,6 +15,41 @@
           <span class="text-danger">{{$message}}</span>
           @enderror
           </div>
+          @php
+          $products = DB::table('products')->where('status', 'active')->get();
+          $users= DB::table('users')->where('status', 'active')->get();
+        @endphp
+        <div class="form-group">
+          <label for="product" class="col-form-label">Product Name </label>
+          <select name="product" class="form-control">
+          <option value="product-title">---Select Product ---</option>
+            @foreach($products as $product)
+              <option value="{{$product->id}}">{{$product->title}}</option>
+            @endforeach
+          </select>
+          @error('product')
+          <span class="text-danger">{{$message}}</span>
+          @enderror
+        </div>
+        <div class="form-group">
+          <label for="user" class="col-form-label">User Name </label>
+          <select name="user" class="form-control">
+          <option value="product-user">---Select User ---</option>
+            @foreach($users as $user)
+              <option value="{{$user->id}}">{{$user->name}}</option>
+            @endforeach
+          </select>
+          @error('user')
+          <span class="text-danger">{{$message}}</span>
+          @enderror
+        </div>
+        <div class="form-group">
+          <label for="expire-date" class="col-form-label">Expiry Date </label>
+          <input id="expire-date" type="date" name="expiry-date" placeholder="Expiry date"  value="{{old('expire_date')}}" class="form-control">
+          @error('expire_date')
+            <span class="text-danger">{{$message}}</span>
+          @enderror
+        </div>
   
           <div class="form-group">
               <label for="type" class="col-form-label">Type <span class="text-danger">*</span></label>
