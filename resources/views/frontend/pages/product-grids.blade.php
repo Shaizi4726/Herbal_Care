@@ -85,9 +85,9 @@
                   <div class="meta-detail">
                     <h3 class="product-title">{{$product->title}}</h3>
                     @if($minprice==$maxprice)
-                      <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span></p>
+                      <p class="price">AED <span class="value">{{number_format($product->minprice,2)}}</span></p>
                     @else
-                      <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span> - AED <span class="value">{{number_format($maxprice,2)}}</span></p>
+                      <p class="price">AED <span class="value">{{number_format($product->minprice,2)}}</span> - AED <span class="value">{{number_format($maxprice,2)}}</span></p>
                     @endif                  
                   </div>
                   <div class="prod-detail-link">

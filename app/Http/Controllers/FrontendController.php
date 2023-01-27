@@ -157,9 +157,9 @@ class FrontendController extends Controller
         else if($sort_by == 'z-a')
           $products = $products->sortByDesc('title');
         else if($sort_by == 'low-prc')
-          $products = $products->sortBy('price');
+          $products = $products->sortBy('minprice');
         else if($sort_by == 'hgh-prc')
-          $products = $products->sortByDesc('price');
+          $products = $products->sortByDesc('minprice');
       }
 
       if (count($products) !== 0) {
@@ -181,7 +181,7 @@ class FrontendController extends Controller
           }
 
           $Sizes = json_encode($Sizes);
-          $minPrice = number_format($product->price, 2);
+          $minPrice = number_format($product->minprice, 2);
           $maxPrice = number_format($maxprice, 2);
 
           $content .= <<<EOD
