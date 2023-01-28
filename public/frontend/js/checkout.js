@@ -1,4 +1,51 @@
 $(function() {
+  $('[name|=cust_type]').on('change', function() {
+    if(this.value == 'company') {
+      $('#company-name').removeClass('collapse');
+      $('#trn').removeClass('collapse');
+      $('#first-name').addClass('collapse');
+      $('#last-name').addClass('collapse');
+
+      $('#cname').attr('required', 'required');
+      $('#trn-number').attr('required', 'required');
+      $('#fname').removeAttr('required');
+      $('#lname').removeAttr('required');
+    }
+
+    else {
+      $('#company-name').addClass('collapse');
+      $('#trn').addClass('collapse');
+      $('#first-name').toggleClass('collapse');
+      $('#last-name').toggleClass('collapse');
+
+      $('#cname').removeAttr('required');
+      $('#trn-number').removeAttr('required');
+      $('#fname').attr('required', 'required');
+      $('#lname').attr('required', 'required');
+    }
+  });
+
+  $('[name|=pay_mthd]').on('change', function() {
+    if(this.value == 'OP') {
+      $('#op-form').toggleClass('collapse');
+
+      $('#account-name').attr('required', 'required');
+      $('#account-num').attr('required', 'required');
+      $('#cvv-cvc').attr('required', 'required');
+      $('#account-expiry').attr('required', 'required');
+    }
+
+    else {
+      if(!$('#op-form').hasClass('collapse'))
+        $('#op-form').addClass('collapse');
+
+        $('#account-name').removeAttr('required');
+        $('#account-num').removeAttr('required');
+        $('#cvv-cvc').removeAttr('required');
+        $('#account-expiry').removeAttr('required');
+    }
+  });
+
   let cnty = $('#country');
   cnty.val('United Arab Emirates');
 

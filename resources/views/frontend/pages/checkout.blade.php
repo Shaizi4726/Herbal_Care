@@ -13,41 +13,63 @@
 <section class="shop-checkout checkout-sec">
   <!-- Form -->
   <div class="form-container">
-    <form class="form" method="POST" action="{{route('cart.order')}}">
+    <form class="form" id="order-form" method="POST" action="{{route('cart.order')}}">
       @csrf
+      <fieldset class="type-selection">
+        <legend>Customer</legend>
+        <div class="form-group">
+          <input type="radio" name="cust_type" id="individual" value="individual" checked>
+          <label for="individual">Individual</label>
+        </div>
+        <div class="form-group">
+          <input type="radio" name="cust_type" id="company" value="company">
+          <label for="company">Business</label>
+        </div>
+      </fieldset>
+
       <fieldset class="details">
         <legend>Details</legend>
         <div class="fl-bl">
-          <div class="form-group">
+          <div class="form-group" id="first-name">
             <label for="fname">First Name<span>*</span></label>
-            <input type="text" id="fname" name="fname" placeholder="First Name" value="{{old('first_name')}}" required>
+            <input type="text" id="fname" name="fname" placeholder="First Name" value="" required="true">
           </div>
 
-          <div class="form-group">
+          <div class="form-group collapse" id="company-name">
+            <label for="cname">Company Name<span>*</span></label>
+            <input type="text" id="cname" name="cname" placeholder="Company Name" value="">
+          </div>
+
+          <div class="form-group" id="last-name">
             <label for="lname">Last Name<span>*</span></label>
-            <input type="text" id="lname" name="lname" placeholder="Last Name" required value="{{old('lat_name')}}">
+            <input type="text" id="lname" name="lname" placeholder="Last Name" value="" required="true">
+          </div>
+
+          <div class="form-group collapse" id="trn">
+            <label for="trn-number">TRN<span>*</span></label>
+            <input type="number" id="trn-number" name="trn_number" placeholder="TRN Number" value="">
           </div>
         </div>
 
         <div class="form-group">
           <label for="email">Email Address<span>*</span></label>
-          <input type="email" name="email" id="email" placeholder="Email Address" required value="{{old('email')}}">
+          <input type="email" name="email" id="email" placeholder="Email Address" value="" required>
         </div>
 
         <div class="form-group">
           <label for="address">Address<span>*</span></label>
-          <input type="text" name="address" id="address" placeholder="Address" required value="{{old('address1')}}">
+          <input type="text" name="address" id="address" placeholder="Address" value="" required>
         </div>
 
         <div class="fl-bl">
           <div class="form-group">
             <label for=post-code>Postal Code</label>
-            <input type="text" name="post_code" id="post-code" placeholder="Postal Code" value="{{old('post_code')}}">
+            <input type="text" name="post_code" id="post-code" placeholder="Postal Code" value="">
           </div>
 
           <div class="form-group">
             <label for="country">Country<span>*</span></label>
-            <input list="countries" placeholder="Country" name="country" id="country" class="countries-list">
+            <input list="countries" placeholder="Country" name="country" id="country" class="countries-list" required>
             @php
             $countries = DB::table('countries')->where('status', 'active')->get();
             @endphp
@@ -61,66 +83,63 @@
         <div class="fl-bl">
           <div id="state-div" class="form-group">
             <label for="state">State<span>*</span></label>
-            <input list="states" placeholder="State" name="state" id="state" class="states-list">
+            <input list="states" placeholder="State" name="state" id="state" class="states-list" required>
             <datalist id="states"></datalist>
           </div>
           <div id="city-div" class="form-group">
             <label for="city">City<span>*</span></label>
-            <input list="cities" placeholder="City" name="city" id="city" class="cities-list">
+            <input list="cities" placeholder="City" name="city" id="city" class="cities-list" required>
             <datalist id="cities"></datalist>
           </div>
         </div>
         <div class="form-group">
           <label>Phone Number <span>*</span></label>
-          <input type="number" name="phone" placeholder="Phone Number" required value="{{old('phone')}}">
+          <input type="number" name="phone" placeholder="Phone Number" value="{{old('phone')}}" required>
         </div>
       </fieldset>
 
-      <fieldset class="shipping-mthd">
+      <fieldset class="payment-mthd type-selection">
         <legend>Payment Method</legend>
         <div class="form-group">
-          <input type="radio" name="ship_mthd" id="cod-input" value="COD">
-          <label for="ship-mthd">Cash on Delivery</label>
+          <input type="radio" name="pay_mthd" id="cod-input" value="COD">
+          <label for="cod-input">Cash on Delivery</label>
         </div>
         <div class="form-group">
-          <input type="radio" name="ship_mthd" id="op-input" value="OP">
-          <label for="ship-mthd">Online Payment</label>
+          <input type="radio" name="pay_mthd" id="op-input" value="OP">
+          <label for="op-input">Online Payment</label>
         </div>
       </fieldset>
 
-      <fieldset class="op-form">
+      <fieldset class="op-form collapse" id="op-form">
         <legend>Online Payment</legend>
-        <div class="account-details" name="payment_form" id="payment-form">
-          <div class="form-group">
-            <label for="account-name">Account Name</label>
-            <input type="text" id="account-name" class="account-name" name="account_name" placeholder="Account Name" autocomplete="off">
+
+        <div class="form-group">
+          <label for="account-name">Account Name</label>
+          <input type="text" id="account-name" class="account-name" name="account_name" placeholder="Account Name" autocomplete="off">
+        </div>
+
+        <div class="form-group">
+          <label for="account-num">Account Number</label>
+          <input type="tel" id="account-num" class="account-num"  name="account_num"  placeholder="Account Number" onkeypress="cardLen(this, event)" oninput="cardNum(this, event)" autocomplete="off">
+        </div>
+
+        <div class="fl-bl">
+          <div class="form-group cvc">
+            <label for="cvv-cvc">CVV/CVC</label>
+            <input type="password" id="cvv-cvc" class="cvv-cvc" name="cvv_cvc" placeholder="CVV/CVC" pattern="[0-9]{3}" onkeypress="if(this.value.length == 3) return false;" autocomplete="off">
           </div>
 
-          <div class="form-group">
-            <label for="account-num">Account Number</label>
-            <input type="tel" id="account-num" class="account-num"  name="account_num"  placeholder="Account Number" onkeypress="cardLen(this, event)" oninput="cardNum(this, event)" autocomplete="off">
-          </div>
-
-          <div class="fl-bl">
-            <div class="form-group cvc">
-              <label for="cvv-cvc">CVV/CVC</label>
-              <input type="password" id="cvv-cvc" class="cvv-cvc" name="cvv_cvc" placeholder="CVV/CVC" pattern="[0-9]{3}" onkeypress="if(this.value.length == 3) return false;" autocomplete="off">
-            </div>
-
-            <div class='form-group expiry'>
-              <label for="account-expiry">Expiry Month</label>
-              <input type="month" class='account-expiry' id='account-expiry' name="account_expiry" min= "@php echo date('Y-m'); @endphp" placeholder='Expiry Month'>
-            </div>
+          <div class='form-group expiry'>
+            <label for="account-expiry">Expiry Month</label>
+            <input type="month" class='account-expiry' id='account-expiry' name="account_expiry" min= "@php echo date('Y-m'); @endphp" placeholder='Expiry Month'>
           </div>
         </div>
 
-        <div class="single-widget payement">
-          <div class="content">
-            <img src="{{('backend/img/payment-method.png')}}" alt="#">
-          </div>
+        <div class="payment-options">
+          <img src="{{('backend/img/payment-method.png')}}" alt="payment options">
         </div>
-        <!--/ End Payment Method Widget -->
       </fieldset>
+      <input type="submit" class="btn btn-checkout btn-plc" value="Place Order">
     </form>
   </div>
 
@@ -157,7 +176,7 @@
         <h4 class="total"> Grand Total: </h4>
         <p id="grand-total-value">AED {{number_format($total_amount, 2)}}</p>
       </div>
-      <a href="{{route('checkout')}}" class="btn btn-checkout">Place Order</a>
+      <input type="submit" form="order-form" class="btn btn-checkout" value="Place Order">
     </div>
     <div class="cart">
       @php
