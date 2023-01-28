@@ -277,30 +277,9 @@
 
 @endpush
 @push('scripts')
-<script src="/vendor/laravel-filemanager/js/stand-alone-button.js"></script>
-<script src="{{asset('backend/summernote/summernote.min.js')}}"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 
-<script>
-    $('#lfm').filemanager('image');
-
-    $(document).ready(function() {
-      $('#description').summernote({
-        placeholder: "Write detail Description.....",
-          tabsize: 2,
-          height: 150
-      });
-    });
-
-    $(document).ready(function() {
-      $('#benefit').summernote({
-        placeholder: "Write benafit.....",
-          tabsize: 2,
-          height: 150
-      });
-    });
-
-</script>
 
 <script>
   var  child_cat_id='{{$product->child_cat_id}}';

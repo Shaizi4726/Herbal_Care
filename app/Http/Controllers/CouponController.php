@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Coupon;
+use App\User;
 use Illuminate\Http\Request;
 use App\Models\Cart;
 class CouponController extends Controller
@@ -13,7 +14,7 @@ class CouponController extends Controller
      */
     public function index()
     {
-        $coupon=Coupon::orderBy('id','DESC')->paginate('10');
+        $coupon=Coupon::with('products')->orderBy('id','DESC')->paginate('10');
         return view('backend.coupon.index')->with('coupons',$coupon);
     }
 
@@ -74,7 +75,7 @@ class CouponController extends Controller
      */
     public function edit($id)
     {
-        $coupon=Coupon::find($id);
+        $coupon=Coupon::with('products')->with('users')->find($id);
         if($coupon){
             return view('backend.coupon.edit')->with('coupon',$coupon);
         }
@@ -92,8 +93,8 @@ class CouponController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $coupon=Coupon::find($id);
-        //dd($coupon);
+        $coupon=Coupon::with('products')->with('users')->find($id);
+        dd($coupon);
         $this->validate($request,[
             'product_id'=>'numeric|nullable',
             'user_id'=>'numeric|nullable',  

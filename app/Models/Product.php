@@ -32,7 +32,7 @@ class Product extends Model
         return $this->hasMany(ProductsAttribute::class,'product_id','id');
      }
      public function coupon(){
-        return $this->hasMany(Coupon::class,'product_id','id');
+        return $this->belongsTo(Coupon::class,'product_id','id');
      }
      public function productForms(){
         return $this->hasMany(ProductForm::class,'product_id','id');

@@ -20,80 +20,101 @@
             <tr>
               <th>S.N.</th>
               <th>Coupon Code</th>
+              <th>Product Name</th>
+              <th>User Name</th>
               <th>Type</th>
               <th>Value</th>
+              <th>Expiry Date</th>
               <th>Status</th>
               <th>Action</th>
             </tr>
           </thead>
           <tfoot>
             <tr>
-                <th>S.N.</th>
-                <th>Coupon Code</th>
-                <th>Type</th>
-                <th>Value</th>
-                <th>Status</th>
-                <th>Action</th>
+            <th>S.N.</th>
+              <th>Coupon Code</th>
+              <th>Product Name</th>
+              <th>User Name</th>
+              <th>Type</th>
+              <th>Value</th>
+              <th>Expiry Date</th>
+              <th>Status</th>
+              <th>Action</th>
               </tr>
           </tfoot>
-          <tbody>
-            @foreach($coupons as $coupon)   
-                <tr>
-                    <td>{{$coupon->id}}</td>
-                    <td>{{$coupon->code}}</td>
-                    <td>
-                        @if($coupon->type=='fixed')
-                            <span class="badge badge-primary">{{$coupon->type}}</span>
-                        @else
-                            <span class="badge badge-warning">{{$coupon->type}}</span>
-                        @endif
-                    </td>
-                    <td>
-                        @if($coupon->type=='fixed')
-                            ${{number_format($coupon->value,2)}}
-                        @else
-                            {{$coupon->value}}%
-                        @endif</td>
-                    <td>
-                        @if($coupon->status=='active')
-                            <span class="badge badge-success">{{$coupon->status}}</span>
-                        @else
-                            <span class="badge badge-warning">{{$coupon->status}}</span>
-                        @endif
-                    </td>
-                    <td>
-                        <a href="{{route('coupon.edit',$coupon->id)}}" class="btn btn-primary btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>
-                        <form method="POST" action="{{route('coupon.destroy',[$coupon->id])}}">
-                          @csrf 
-                          @method('delete')
-                              <button class="btn btn-danger btn-sm dltBtn" data-id={{$coupon->id}} style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
-                        </form>
-                    </td>
-                    {{-- Delete Modal --}}
-                    {{-- <div class="modal fade" id="delModal{{$user->id}}" tabindex="-1" role="dialog" aria-labelledby="#delModal{{$user->id}}Label" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h5 class="modal-title" id="#delModal{{$user->id}}Label">Delete user</h5>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                            </div>
-                            <div class="modal-body">
-                              <form method="post" action="{{ route('banners.destroy',$user->id) }}">
-                                @csrf 
-                                @method('delete')
-                                <button type="submit" class="btn btn-danger" style="margin:auto; text-align:center">Parmanent delete user</button>
-                              </form>
-                            </div>
-                          </div>
+          <tbody>       
+          @foreach($coupons as $coupon) 
+            
+            <tr>
+              <td>{{$coupon->id}}</td>
+              <td>{{$coupon->code}}</td>
+              @if($coupon->product_id)
+                <td>{{$coupon->products->title}}</td>
+              @else
+                <td>All Product</td>
+              @endif
+              @if($coupon->user_id)                  
+                <td>{{$coupon->users->name}}</td>
+                @else
+                <td>All User</td>
+              @endif 
+              <td>
+                @if($coupon->type=='fixed')
+                    <span class="badge badge-primary">{{$coupon->type}}</span>
+                @else
+                    <span class="badge badge-warning">{{$coupon->type}}</span>
+                @endif
+              </td>
+              <td>
+                @if($coupon->type=='fixed')
+                    ${{number_format($coupon->value,2)}}
+                @else
+                    {{$coupon->value}}%
+                @endif</td>
+              <td>
+                {{$coupon->expiry_date}}
+              </td>
+              <td>
+                @if($coupon->status=='active')
+                    <span class="badge badge-success">{{$coupon->status}}</span>
+                @else
+                    <span class="badge badge-warning">{{$coupon->status}}</span>
+                @endif
+              </td>
+                
+                <td>
+                  <a href="{{route('coupon.edit',$coupon->id)}}" class="btn btn-primary btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>
+                  <form method="POST" action="{{route('coupon.destroy',[$coupon->id])}}">
+                    @csrf 
+                    @method('delete')
+                        <button class="btn btn-danger btn-sm dltBtn" data-id={{$coupon->id}} style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
+                  </form>
+                </td>
+                {{-- Delete Modal --}}
+                {{-- <div class="modal fade" id="delModal{{$user->id}}" tabindex="-1" role="dialog" aria-labelledby="#delModal{{$user->id}}Label" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="#delModal{{$user->id}}Label">Delete user</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
                         </div>
-                    </div> --}}
-                </tr>  
-            @endforeach
-          </tbody>
-        </table>
-        <span style="float:right">{{$coupons->links()}}</span>
+                        <div class="modal-body">
+                          <form method="post" action="{{ route('banners.destroy',$user->id) }}">
+                            @csrf 
+                            @method('delete')
+                            <button type="submit" class="btn btn-danger" style="margin:auto; text-align:center">Parmanent delete user</button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                </div> --}}
+            </tr>  
+          @endforeach
+        </tbody>
+      </table>
+      <span style="float:right">{{$coupons->links()}}</span>
         @else
           <h6 class="text-center">No Coupon found!!! Please create coupon</h6>
         @endif

@@ -93,7 +93,4 @@
 @endpush
 @push('scripts')
 <script src="{{asset('backend/summernote/summernote.min.js')}}"></script>
-<script>
-
-</script>
 @endpush

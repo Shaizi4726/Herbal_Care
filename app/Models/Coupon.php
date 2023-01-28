@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+use App\User;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Permission\Models\Role;
@@ -14,10 +15,10 @@ class Coupon extends Model
 
 
     public function products(){
-        return $this->belongsTo(Product::class,'id','product_id');
+        return $this->hasOne(Product::class,'id','product_id');
      }
      public function users(){
-        return $this->belongsTo(User::class,'id','user_id');
+        return $this->hasOne(User::class,'id','user_id');
      }
      
     public static function findByCode(){

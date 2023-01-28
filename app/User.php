@@ -43,6 +43,6 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Order');
     }
     public function coupon(){
-        return $this->hasMany(Coupon::class,'product_id','id');
+        return $this->belongsTo(Coupon::class,'product_id','id');
      }
 }
