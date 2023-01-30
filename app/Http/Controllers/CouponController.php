@@ -47,6 +47,7 @@ class CouponController extends Controller
             'status'=>'required|in:active,inactive'
         ]);
         $data=$request->all();
+        //dd($data);
         $status=Coupon::create($data);
         if($status){
             request()->session()->flash('success','Coupon Successfully added');
@@ -93,19 +94,20 @@ class CouponController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $coupon=Coupon::with('products')->with('users')->find($id);
-        dd($coupon);
-        $this->validate($request,[
-            'product_id'=>'numeric|nullable',
-            'user_id'=>'numeric|nullable',  
-            'code'=>'string|required',        
-            'type'=>'required|in:fixed,percent',
-            'expiry_date'=>'string|nullable',
-            'value'=>'required|numeric',
-            'status'=>'required|in:active,inactive'
-        ]);
-        $data=$request->all();
         
+        $coupon=Coupon::findOrFail($id);
+        $this->validate($request,[
+            // 'product_id'=>'numeric|nullable',
+            // 'user_id'=>'numeric|nullable',  
+            // 'code'=>'string|required',        
+            // 'type'=>'required|in:fixed,percent',
+            // 'expiry_date'=>'string|nullable',
+            // 'value'=>'required|numeric',
+            // 'status'=>'required|in:active,inactive'
+        ]);
+        //dd($request->all());
+        $data=$request->all();
+        //dd($coupon);
         $status=$coupon->fill($data)->save();
         if($status){
             request()->session()->flash('success','Coupon Successfully updated');
@@ -154,7 +156,7 @@ class CouponController extends Controller
         }
         if($coupon){
             $total_price=Cart::where('user_id',auth()->user()->id)->where('order_id',null)->sum('price');
-            // dd($total_price);
+             dd($total_price);
             session()->put('coupon',[
                 'id'=>$coupon->id,
                 'code'=>$coupon->code,

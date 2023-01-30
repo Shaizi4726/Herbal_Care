@@ -9,9 +9,30 @@
         @csrf 
         @method('PATCH')
         <div class="form-group">
-          <label for="inputTitle" class="col-form-label">Name</label>
-        <input id="inputTitle" type="text" name="name" placeholder="Enter name"  value="{{$user->name}}" class="form-control">
-        @error('name')
+          <label for="inputFname" class="col-form-label">First Name</label>
+        <input id="inputFname" type="text" name="fname" placeholder="Enter first name"  value="{{$user->fname}}" class="form-control">
+        @error('fname')
+        <span class="text-danger">{{$message}}</span>
+        @enderror
+        </div>
+        <div class="form-group">
+          <label for="inputLname" class="col-form-label">Last Name</label>
+        <input id="inputLname" type="text" name="lname" placeholder="Enter last name"  value="{{$user->lname}}" class="form-control">
+        @error('lname')
+        <span class="text-danger">{{$message}}</span>
+        @enderror
+        </div>
+        <div class="form-group">
+          <label for="inputCompany" class="col-form-label">Company Name</label>
+        <input id="inputCompany" type="text" name="company" placeholder="Enter company name"  value="{{$user->company_name}}" class="form-control">
+        @error('company')
+        <span class="text-danger">{{$message}}</span>
+        @enderror
+        </div>
+        <div class="form-group">
+          <label for="inputTrn" class="col-form-label">TRN Number</label>
+        <input id="inputTrn" type="number" name="trn" placeholder="Enter trn number"  value="{{$user->trn_no}}" class="form-control">
+        @error('trn')
         <span class="text-danger">{{$message}}</span>
         @enderror
         </div>
@@ -84,6 +105,7 @@
 @endsection
 
 @push('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 <script src="/vendor/laravel-filemanager/js/stand-alone-button.js"></script>
 <script>
     $('#lfm').filemanager('image');

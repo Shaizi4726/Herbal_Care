@@ -51,12 +51,12 @@
               @if($coupon->product_id)
                 <td>{{$coupon->products->title}}</td>
               @else
-                <td>All Product</td>
+                <td></td>
               @endif
               @if($coupon->user_id)                  
                 <td>{{$coupon->users->name}}</td>
                 @else
-                <td>All User</td>
+                <td></td>
               @endif 
               <td>
                 @if($coupon->type=='fixed')

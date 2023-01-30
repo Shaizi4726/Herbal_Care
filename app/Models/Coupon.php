@@ -11,9 +11,6 @@ class Coupon extends Model
 {
     protected $fillable=['product_id','user_id','code','expiry_date','type','value','status'];
     
-    protected $expiry = ['expiry_date' => 'datetime',];
-
-
     public function products(){
         return $this->hasOne(Product::class,'id','product_id');
      }
