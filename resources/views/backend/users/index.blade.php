@@ -18,6 +18,8 @@
             <tr>
               <th>S.N.</th>
               <th>Name</th>
+              <th>Company Name</th>
+              <th>TRN</th>
               <th>Email</th>
               <th>Photo</th>
               <th>Join Date</th>
@@ -30,6 +32,8 @@
             <tr>
                 <th>S.N.</th>
                 <th>Name</th>
+                <th>Company Name</th>
+                <th>TRN</th>
                 <th>Email</th>
                 <th>Photo</th>
                 <th>Join Date</th>
@@ -42,7 +46,9 @@
             @foreach($users as $user)   
                 <tr>
                     <td>{{$user->id}}</td>
-                    <td>{{$user->name}}</td>
+                    <td>{{$user->fname}}&nbsp;{{$user->lname}}</td>
+                    <td>{{$user->company_name}}</td>
+                    <td>{{$user->trn_no}}</td>
                     <td>{{$user->email}}</td>
                     <td>
                         @if($user->photo)

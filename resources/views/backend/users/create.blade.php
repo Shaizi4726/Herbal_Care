@@ -8,13 +8,33 @@
       <form method="post" action="{{route('users.store')}}">
         {{csrf_field()}}
         <div class="form-group">
-          <label for="inputTitle" class="col-form-label">Name</label>
-        <input id="inputTitle" type="text" name="name" placeholder="Enter name"  value="{{old('name')}}" class="form-control">
-        @error('name')
+          <label for="inputTitle" class="col-form-label">First Name</label>
+        <input id="inputTitle" type="text" name="fname" placeholder="Enter first name"  value="{{old('fname')}}" class="form-control">
+        @error('fname')
         <span class="text-danger">{{$message}}</span>
         @enderror
         </div>
-
+        <div class="form-group">
+          <label for="inputTitle" class="col-form-label">Last Name</label>
+        <input id="inputTitle" type="text" name="lname" placeholder="Enter last name"  value="{{old('lname')}}" class="form-control">
+        @error('lname')
+        <span class="text-danger">{{$message}}</span>
+        @enderror
+        </div>
+        <div class="form-group">
+          <label for="inputTitle" class="col-form-label">Company Name</label>
+        <input id="inputTitle" type="text" name="company" placeholder="Enter company name"  value="{{old('company')}}" class="form-control">
+        @error('company')
+        <span class="text-danger">{{$message}}</span>
+        @enderror
+        </div>
+        <div class="form-group">
+          <label for="inputTitle" class="col-form-label">TRN Number</label>
+        <input id="inputTitle" type="number" name="trn" placeholder="Enter trn number"  value="{{old('trn')}}" class="form-control">
+        @error('trn')
+        <span class="text-danger">{{$message}}</span>
+        @enderror
+        </div>
         <div class="form-group">
             <label for="inputEmail" class="col-form-label">Email</label>
           <input id="inputEmail" type="email" name="email" placeholder="Enter email" class="form-control">

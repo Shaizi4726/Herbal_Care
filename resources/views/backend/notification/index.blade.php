@@ -13,7 +13,7 @@
     <table class="table  table-hover admin-table" id="notification-dataTable">
       <thead>
         <tr>
-          <th scope="col">#</th>
+          <th scope="col">S.N.</th>
           <th scope="col">Time</th>
           <th scope="col">Title</th>
           <th scope="col">Action</th>
@@ -59,48 +59,46 @@
   <script src="{{asset('backend/js/demo/datatables-demo.js')}}"></script>
   <script>
 
-      $('#notification-dataTable').DataTable( {
-            "columnDefs":[
-                {
-                    "orderable":false,
-                    "targets":[3]
-                }
-            ]
-        } );
+$('#notification-dataTable').DataTable( {
+  "columnDefs":[
+    {
+        "orderable":false,
+        "targets":[3]
+    }]
+} );
 
         // Sweet alert
+function deleteData(id){
 
-        function deleteData(id){
-
-        }
-  </script>
-  <script>
-    $(document).ready(function(){
-      $.ajaxSetup({
-          headers: {
-              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-          }
-      });
-        $('.dltBtn').click(function(e){
-          var form=$(this).closest('form');
-            var dataID=$(this).data('id');
-            // alert(dataID);
-            e.preventDefault();
-            swal({
-                  title: "Are you sure?",
-                  text: "Once deleted, you will not be able to recover this data!",
-                  icon: "warning",
-                  buttons: true,
-                  dangerMode: true,
-              })
-              .then((willDelete) => {
-                  if (willDelete) {
-                    form.submit();
-                  } else {
-                      swal("Your data is safe!");
-                  }
-              });
-        })
-    })
-  </script>
+}
+</script>
+<script>
+$(document).ready(function(){
+  $.ajaxSetup({
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+  });
+$('.dltBtn').click(function(e){
+  var form=$(this).closest('form');
+    var dataID=$(this).data('id');
+    // alert(dataID);
+    e.preventDefault();
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this data!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+  })
+  .then((willDelete) => {
+      if (willDelete) {
+        form.submit();
+      } else {
+        swal("Your data is safe!");
+      }
+  });
+  })
+})
+</script>
 @endpush

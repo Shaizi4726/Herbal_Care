@@ -104,7 +104,7 @@
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#cityCollapse" aria-expanded="true" aria-controls="cityCollapse">
           <i class="fas fa-truck"></i>
-          <span>City</span>
+          <span>Shipping</span>
         </a>
         <div id="cityCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
@@ -114,7 +114,20 @@
           </div>
         </div>
     </li>
-
+    <!-- Coupon -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#couponCollapse" aria-expanded="true" aria-controls="couponCollapse">
+            <i class="fas fa-coupons fa-folder"></i>
+            <span>Coupon</span>
+        </a>
+        <div id="couponCollapse" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Coupon Options:</h6>
+            <a class="collapse-item" href="{{route('coupon.index')}}">Coupon</a>
+            <a class="collapse-item" href="{{route('coupon.create')}}">Add Coupon</a>
+            </div>
+        </div>
+    </li>
     <!--Orders -->
     <li class="nav-item">
         <a class="nav-link" href="{{route('order.index')}}">
@@ -122,7 +135,7 @@
             <span>Orders</span>
         </a>
     </li>
-
+      
     <!-- Reviews -->
     <li class="nav-item">
         <a class="nav-link" href="{{route('review.index')}}">
@@ -183,20 +196,8 @@
             </div>
         </div>
     </li>
-    <!-- Coupon -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#couponCollapse" aria-expanded="true" aria-controls="couponCollapse">
-            <i class="fas fa-coupons fa-folder"></i>
-            <span>Coupon</span>
-        </a>
-        <div id="couponCollapse" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Coupon Options:</h6>
-            <a class="collapse-item" href="{{route('coupon.index')}}">Coupon</a>
-            <a class="collapse-item" href="{{route('coupon.create')}}">Add Coupon</a>
-            </div>
-        </div>
-    </li>
+  
+    
  
       <!-- Comments -->
       <li class="nav-item">
@@ -213,11 +214,7 @@
     <div class="sidebar-heading">
         General Settings
     </div>
-    <li class="nav-item">
-      <a class="nav-link" href="{{route('coupon.index')}}">
-          <i class="fas fa-table"></i>
-          <span>Coupon</span></a>
-    </li>
+    
      <!-- Users -->
      <li class="nav-item">
         <a class="nav-link" href="{{route('users.index')}}">

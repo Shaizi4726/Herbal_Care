@@ -44,7 +44,10 @@ class UsersController extends Controller
 
         $this->validate($request,
         [
-            'name'=>'string|required|max:30',
+            'fname'=>'string|required|max:30',
+            'lname'=>'string|required|max:30',
+            'company_name'=>'string|required|max:30',
+            'trn_no'=>'numeric|required|max:30',
             'email'=>'string|required|unique:users',
             'password'=>'string|required',
             'role'=>'required|in:admin,user',
@@ -71,9 +74,6 @@ class UsersController extends Controller
         $user->assignRole($roles);
     
         return redirect()->route('admin.users.index');
-
-        
-
         
     }
 
@@ -85,7 +85,7 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        return view('users.import');
+        // return view('users.import');
     }
 
     /**
@@ -112,17 +112,20 @@ class UsersController extends Controller
         $user=User::findOrFail($id);
         $this->validate($request,
         [
-            'name'=>'string|required|max:30',
-            'email'=>'string|required',
-            'role'=>'required|in:admin,user',
-            'status'=>'required|in:active,inactive',
-            'photo'=>'nullable|string',
+            // 'fname'=>'string|required|max:30',
+            // 'lname'=>'string|required|max:30',
+            // 'company_name'=>'string|required|max:30',
+            // 'trn_no'=>'numeric|required|max:30',
+            // 'email'=>'string|required',
+            // 'role'=>'required|in:admin,user',
+            // 'status'=>'required|in:active,inactive',
+            // 'photo'=>'nullable|string',
         ]);
         // dd($request->all());
         $data=$request->all();
-        // dd($data);
+        //dd($user);
         
-        $status=$user->fill($data)->save();
+        $status=$user->fill($data)->update();
         if($status){
             request()->session()->flash('success','Successfully updated');
         }

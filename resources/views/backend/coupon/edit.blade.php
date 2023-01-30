@@ -1,7 +1,5 @@
 @extends('backend.layouts.master')
-
 @section('main-content')
-
   <div class="card">
     <h5 class="card-header">Edit Coupon</h5>
     <div class="card-body">
@@ -15,13 +13,14 @@
               <span class="text-danger">{{$message}}</span>
             @enderror
           </div>
+          
           @php
             $products = DB::table('products')->where('status', 'active')->get();
             $users= DB::table('users')->where('status', 'active')->get();
           @endphp
           <div class="form-group">
-            <label for="product" class="col-form-label">Product Name </label>
-            <select name="product" class="form-control">
+            <label for="product-title" class="col-form-label">Product Name </label>
+            <select id="product-title" name="product-title" class="form-control" >
               <option value="product-title">---Select Product ---</option>
               @foreach($products as $product)
                 <option value="{{$product->id}}">{{$product->title}}</option>
@@ -33,8 +32,8 @@
           </div>
           <div class="form-group">
             <label for="user" class="col-form-label">User Name </label>
-            <select name="user" class="form-control">
-              <option value="product-user" >---Select User ---</option>
+            <select id="user" name="user" class="form-control">
+              <option value="user">---Select User ---</option>
               @foreach($users as $user)
                 <option value="{{$user->id}}">{{$user->name}}</option>
               @endforeach
@@ -44,13 +43,12 @@
             @enderror
           </div>
           <div class="form-group">
-            <label for="expire-date" class="col-form-label">Expiry Date </label>
-            <input id="expire-date" type="date" name="expiry-date" placeholder="Expiry date"  value="{{$coupon->expiry_date}}" class="form-control">
-            @error('expire_date')
+            <label for="expiry-date" class="col-form-label">Expiry Date </label>
+            <input id="expiry-date" type="date" name="expiry-date" placeholder="Expiry date" value="{{$coupon->expiry_date}}" class="form-control">
+            @error('expiry-date')
               <span class="text-danger">{{$message}}</span>
             @enderror
-          </div>
-  
+          </div>  
           <div class="form-group">
             <label for="type" class="col-form-label">Type <span class="text-danger">*</span></label>
             <select name="type" class="form-control">
