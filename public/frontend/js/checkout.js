@@ -26,7 +26,7 @@ $(function() {
   });
 
   $('[name|=pay_mthd]').on('change', function() {
-    if(this.value == 'OP') {
+    if(this.value == 'op') {
       $('#op-form').toggleClass('collapse');
 
       $('#account-name').attr('required', 'required');

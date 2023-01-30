@@ -130,8 +130,19 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'cust_type' => [
+          'string' => 'Customer selection value must be string.',
+          'required' => 'Customer selection must be selected.'
+        ],
+
+        'fname' => [
+            'string' => 'First Name must be a string.',
+            'required' => 'First Name is missing.'
+        ],
+
+        'lname' => [
+          'alpha' => 'Last Name may only contain letters.',
+          'required' => 'Last Name is missing.'
         ],
     ],
 

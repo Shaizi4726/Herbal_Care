@@ -62,6 +62,13 @@ tfoot tr {
     font-size: 0.8em;
 }
 
+.error {
+  background-color: red;
+  color: white;
+  font-size: 0.7rem;
+  padding: 0.5em;
+}
+
 /*==================== Product Cards ====================*/
 .product-slider {
   cursor: default;

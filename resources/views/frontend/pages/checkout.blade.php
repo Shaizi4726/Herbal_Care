@@ -12,8 +12,9 @@
 
 <section class="shop-checkout checkout-sec">
   <!-- Form -->
+  @auth
   <div class="form-container">
-    <form class="form" id="order-form" method="POST" action="{{route('cart.order')}}">
+    <form class="form" id="order-form" method="POST" action="{{route('cart.order')}}" novalidate>
       @csrf
       <fieldset class="type-selection">
         <legend>Customer</legend>
@@ -21,9 +22,10 @@
           <input type="radio" name="cust_type" id="individual" value="individual" checked>
           <label for="individual">Individual</label>
         </div>
+        
         <div class="form-group">
           <input type="radio" name="cust_type" id="company" value="company">
-          <label for="company">Business</label>
+          <label for="company">Company</label>
         </div>
       </fieldset>
 
@@ -32,7 +34,7 @@
         <div class="fl-bl">
           <div class="form-group" id="first-name">
             <label for="fname">First Name<span>*</span></label>
-            <input type="text" id="fname" name="fname" placeholder="First Name" value="" required="true">
+            <input type="text" id="fname" name="fname" placeholder="First Name" value="{{auth()->user()->name}}">
           </div>
 
           <div class="form-group collapse" id="company-name">
@@ -42,7 +44,7 @@
 
           <div class="form-group" id="last-name">
             <label for="lname">Last Name<span>*</span></label>
-            <input type="text" id="lname" name="lname" placeholder="Last Name" value="" required="true">
+            <input type="text" id="lname" name="lname" placeholder="Last Name" value="">
           </div>
 
           <div class="form-group collapse" id="trn">
@@ -51,14 +53,65 @@
           </div>
         </div>
 
+        @if ($errors->get('fname'))
+          <div class="error">
+            <ul>
+              @foreach ($errors->get('fname') as $error)
+                <li>{{ $error }}</li>
+              @endforeach
+            </ul>
+          </div>
+        @endif
+
+        @if ($errors->get('lname'))
+          <div class="error">
+            <ul>
+              @foreach ($errors->get('lname') as $error)
+                <li>{{ $error }}</li>
+              @endforeach
+            </ul>
+          </div>
+        @endif
+
+        @if ($errors->get('cname'))
+          <div class="error">
+            <ul>
+              @foreach ($errors->get('cname') as $error)
+                <li>{{ $error }}</li>
+              @endforeach
+            </ul>
+          </div>
+        @endif
+
+        @if ($errors->get('trn_number'))
+          <div class="error">
+            <ul>
+              @foreach ($errors->get('trn_number') as $error)
+                <li>{{ $error }}</li>
+              @endforeach
+            </ul>
+          </div>
+        @endif
+
+        <script>console.log(<?= $errors ?>)</script>
         <div class="form-group">
           <label for="email">Email Address<span>*</span></label>
-          <input type="email" name="email" id="email" placeholder="Email Address" value="" required>
+          <input type="email" name="email" id="email" placeholder="Email Address" value="{{auth()->user()->email}}">
         </div>
+
+        @if ($errors->get('email'))
+          <div class="error">
+            <ul>
+              @foreach ($errors->get('email') as $error)
+                <li>{{ $error }}</li>
+              @endforeach
+            </ul>
+          </div>
+        @endif
 
         <div class="form-group">
           <label for="address">Address<span>*</span></label>
-          <input type="text" name="address" id="address" placeholder="Address" value="" required>
+          <input type="text" name="address" id="address" placeholder="Address" value="">
         </div>
 
         <div class="fl-bl">
@@ -69,7 +122,7 @@
 
           <div class="form-group">
             <label for="country">Country<span>*</span></label>
-            <input list="countries" placeholder="Country" name="country" id="country" class="countries-list" required>
+            <input list="countries" placeholder="Country" name="country" id="country" class="countries-list">
             @php
             $countries = DB::table('countries')->where('status', 'active')->get();
             @endphp
@@ -83,29 +136,29 @@
         <div class="fl-bl">
           <div id="state-div" class="form-group">
             <label for="state">State<span>*</span></label>
-            <input list="states" placeholder="State" name="state" id="state" class="states-list" required>
+            <input list="states" placeholder="State" name="state" id="state" class="states-list">
             <datalist id="states"></datalist>
           </div>
           <div id="city-div" class="form-group">
             <label for="city">City<span>*</span></label>
-            <input list="cities" placeholder="City" name="city" id="city" class="cities-list" required>
+            <input list="cities" placeholder="City" name="city" id="city" class="cities-list">
             <datalist id="cities"></datalist>
           </div>
         </div>
         <div class="form-group">
           <label>Phone Number <span>*</span></label>
-          <input type="number" name="phone" placeholder="Phone Number" value="{{old('phone')}}" required>
+          <input type="number" name="phone" placeholder="Phone Number" value="{{old('phone')}}">
         </div>
       </fieldset>
 
       <fieldset class="payment-mthd type-selection">
         <legend>Payment Method</legend>
         <div class="form-group">
-          <input type="radio" name="pay_mthd" id="cod-input" value="COD">
+          <input type="radio" name="pay_mthd" id="cod-input" value="cod">
           <label for="cod-input">Cash on Delivery</label>
         </div>
         <div class="form-group">
-          <input type="radio" name="pay_mthd" id="op-input" value="OP">
+          <input type="radio" name="pay_mthd" id="op-input" value="op">
           <label for="op-input">Online Payment</label>
         </div>
       </fieldset>
@@ -116,11 +169,18 @@
         <div class="form-group">
           <label for="account-name">Account Name</label>
           <input type="text" id="account-name" class="account-name" name="account_name" placeholder="Account Name" autocomplete="off">
+          <div class=error>
+            <ul id="name-error">
+              @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+              @endforeach
+            </ul>
+          </div>
         </div>
 
         <div class="form-group">
           <label for="account-num">Account Number</label>
-          <input type="tel" id="account-num" class="account-num"  name="account_num"  placeholder="Account Number" onkeypress="cardLen(this, event)" oninput="cardNum(this, event)" autocomplete="off">
+          <input type="tel" id="account-num" class="account-num"  name="account_num"  placeholder="Account Number" onkeypress="cardLen(this, event)" oninput="cardNum(this, event)" value="this.value.split(' ').join('')" autocomplete="off">
         </div>
 
         <div class="fl-bl">
@@ -142,6 +202,7 @@
       <input type="submit" class="btn btn-checkout btn-plc" value="Place Order">
     </form>
   </div>
+  @endauth
 
   <div class="order-summary">
     <div class="sums-summary">
