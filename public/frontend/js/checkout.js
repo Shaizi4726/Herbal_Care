@@ -5,11 +5,6 @@ $(function() {
       $('#trn').removeClass('collapse');
       $('#first-name').addClass('collapse');
       $('#last-name').addClass('collapse');
-
-      $('#cname').attr('required', 'required');
-      $('#trn-number').attr('required', 'required');
-      $('#fname').removeAttr('required');
-      $('#lname').removeAttr('required');
     }
 
     else {
@@ -17,11 +12,6 @@ $(function() {
       $('#trn').addClass('collapse');
       $('#first-name').toggleClass('collapse');
       $('#last-name').toggleClass('collapse');
-
-      $('#cname').removeAttr('required');
-      $('#trn-number').removeAttr('required');
-      $('#fname').attr('required', 'required');
-      $('#lname').attr('required', 'required');
     }
   });
 
@@ -58,6 +48,11 @@ $(function() {
     if(this.value.trim() != '') {
       let opSelected = dl.querySelector(`[value="${this.value}"]`);
       let id = opSelected.getAttribute('id');
+      let iso = opSelected.getAttribute('data-iso');
+      let phone = opSelected.getAttribute('data-phone');
+
+      $('#flag-img').attr('src', '/images/flags/' + iso + '.png');
+      $('#call-code').html('+' + phone);
 
       /* AJAX request for adding shopping list items to cart */
       $.ajax({

@@ -31,6 +31,7 @@ hr {
 .btn {
     background-color: transparent;
     border: none;
+    cursor: pointer;
 }
 
 .collapse {
@@ -67,6 +68,27 @@ tfoot tr {
   color: white;
   font-size: 0.7rem;
   padding: 0.5em;
+}
+
+input[type="radio"] {
+  accent-color: #2c542f;
+  cursor: pointer;
+}
+
+.phone-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.phone-div .flag-img {
+  width: 40px;
+  height: 20px;
+}
+
+.phone-div p {
+  margin: 0.2em 1em 0 1em;
 }
 
 /*==================== Product Cards ====================*/

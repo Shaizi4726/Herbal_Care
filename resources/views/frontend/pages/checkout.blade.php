@@ -55,41 +55,33 @@
 
         @if ($errors->get('fname'))
           <div class="error">
-            <ul>
-              @foreach ($errors->get('fname') as $error)
-                <li>{{ $error }}</li>
-              @endforeach
-            </ul>
+            @error('fname')
+              {{$message}}
+            @enderror
           </div>
         @endif
 
         @if ($errors->get('lname'))
           <div class="error">
-            <ul>
-              @foreach ($errors->get('lname') as $error)
-                <li>{{ $error }}</li>
-              @endforeach
-            </ul>
+            @error('lname')
+              {{$message}}
+            @enderror
           </div>
         @endif
 
         @if ($errors->get('cname'))
           <div class="error">
-            <ul>
-              @foreach ($errors->get('cname') as $error)
-                <li>{{ $error }}</li>
-              @endforeach
-            </ul>
+            @error('cname')
+              {{$message}}
+            @enderror
           </div>
         @endif
 
         @if ($errors->get('trn_number'))
           <div class="error">
-            <ul>
-              @foreach ($errors->get('trn_number') as $error)
-                <li>{{ $error }}</li>
-              @endforeach
-            </ul>
+            @error('trn_number')
+              {{$message}}
+            @enderror
           </div>
         @endif
 
@@ -101,11 +93,9 @@
 
         @if ($errors->get('email'))
           <div class="error">
-            <ul>
-              @foreach ($errors->get('email') as $error)
-                <li>{{ $error }}</li>
-              @endforeach
-            </ul>
+            @error('email')
+              {{$message}}
+            @enderror
           </div>
         @endif
 
@@ -113,6 +103,14 @@
           <label for="address">Address<span>*</span></label>
           <input type="text" name="address" id="address" placeholder="Address" value="">
         </div>
+
+        @if ($errors->get('address'))
+          <div class="error">
+            @error('address')
+              {{$message}}
+            @enderror
+          </div>
+        @endif
 
         <div class="fl-bl">
           <div class="form-group">
@@ -128,7 +126,7 @@
             @endphp
             <datalist id="countries">
               @foreach($countries as $country)
-              <option id="{{$country->id}}" value="{{$country->name}}">{{$country->name}}</option>
+                <option id="{{$country->id}}" data-iso="{{$country->iso_code}}" data-phone="{{$country->calling_code}}" value="{{$country->name}}">{{$country->name}}</option>
               @endforeach
             </datalist>
           </div>
@@ -146,8 +144,12 @@
           </div>
         </div>
         <div class="form-group">
-          <label>Phone Number <span>*</span></label>
-          <input type="number" name="phone" placeholder="Phone Number" value="{{old('phone')}}">
+          <label for="phone">Phone Number <span>*</span></label>
+          <div id="phone-div" class="phone-div">
+            <img id="flag-img" class="flag-img" src="{{asset('images/flags/AE.png')}}" alt="Country Flag Image" width="64">
+            <p id="call-code" class="call-code">+971</p>
+            <input type="tel" name="phone" id="phone" placeholder="Phone Number" value="{{old('phone')}}">
+          </div>
         </div>
       </fieldset>
 

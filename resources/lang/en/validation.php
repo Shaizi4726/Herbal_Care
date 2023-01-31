@@ -131,8 +131,8 @@ return [
 
     'custom' => [
         'cust_type' => [
-          'string' => 'Customer selection value must be string.',
-          'required' => 'Customer selection must be selected.'
+          'required' => 'Customer selection must be selected.',
+          'string' => 'Customer selection value must be string.'
         ],
 
         'fname' => [

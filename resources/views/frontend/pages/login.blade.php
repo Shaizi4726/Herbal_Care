@@ -27,20 +27,20 @@
       <img src="{{asset('images/login-herbal.jpg')}}" alt="Login Image" id="login-img" class="signing-img logging-img">
     </div>
     <div class="signing-form-container">
-      <img src="{{asset('images/logo.png')}}" alt="Website Logo" class="signing-web-logo">
-      <h1 class="signing-web-title">The Herb Room</h1>
+      <a href="{{route('home')}}"><img src="{{asset('images/logo.png')}}" alt="Website Logo" class="signing-web-logo"></a>
+      <h1 class="signing-web-title"><a href="{{route('home')}}">The Herb Room</a></h1>
                     <h2>Sign In</h2>
-                    <p>Please login in for checkout</p>
+                   
                     <!-- Form -->
                     <form class="form" method="post" action="{{route('login.submit')}}">
                         @csrf
-                                <div class="form-group">
-                                    <label for="email">Email:<sup>*</sup></label>
-                                    <input type="email" name="email" id="email" placeholder="Enter Email..." value="" required>
-                                    @error('email')
-                                        <span class="invalid-value">{{$message}}</span>
-                                    @enderror
-                                </div>
+                        <div class="form-group">
+                            <label for="email">Email:<sup>*</sup></label>
+                            <input type="email" name="email" id="email" placeholder="Enter Email..." value="" required>
+                            @error('email')
+                                <span class="invalid-value">{{$message}}</span>
+                            @enderror
+                        </div>
                             
                       
                                 <div class="form-group">
@@ -59,9 +59,6 @@
                                 <div class="form-group login-btn">
                                     <button class="btn signing-btn" type="submit">Login</button>
                                     <p>Don't have an account? <a href="{{route('register.form')}}" class="btn">Register</a></p>
-                                    <a href="{{route('login.redirect','facebook')}}" class="btn btn-facebook"><i class="ti-facebook"></i></a>
-                                    <a href="{{route('login.redirect','github')}}" class="btn btn-github"><i class="ti-github"></i></a>
-                                    <a href="{{route('login.redirect','google')}}" class="btn btn-google"><i class="ti-google"></i></a>  
                                 </div>
                                 @if (Route::has('password.request'))
                                     <a class="forgot-pass" href="{{ route('password.reset') }}">

@@ -60,7 +60,7 @@ class OrderController extends Controller
       }
 
       $this->validate($request,[
-        'email' => 'reuired|email:strict,dns',
+        'email' => 'required|email:strict,dns',
         'address'=>'required|string',
         'post_code'=>'nullable|string',
         'country'=>'required|string',

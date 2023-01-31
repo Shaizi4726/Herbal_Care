@@ -9,12 +9,22 @@ body {
   background-color: #faf9f6;
 }
 
+a {
+  text-decoration: none;
+  color: #2c542f;
+}
+
+.collapse {
+  display: none;
+}
+
 .shop-signing {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   width: 80vw;
+  height: 97vh;
   margin: 1em auto;
   padding: 1em;
   border: 1px solid #d7c89d;
@@ -26,7 +36,7 @@ body {
 }
 
 .signing-form-container {
-  color: #443a2e;
+  color: #2c542f;
   text-align: center;
   font-size: 16px;
 }
@@ -46,28 +56,40 @@ body {
   margin: 0.5em 0;
 }
 
-.signing-form-container p {
-  font-size: 12px;
-  margin: 0.5em 0;
+fieldset {
+  width: 94%;
+  padding: 1em;
+  margin: auto;
+}
+
+fieldset legend {
+  color: #2c542f;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 0.5em;
 }
 
 .form-group {
-  margin: 0.5em;
+  width: 50%;
+  margin: 0.5em auto;
   text-align: left;
 }
 
 .form-group input {
   display: block;
-  background-color: aliceblue;
-  width: 90%;
+  background-color: #f2f4e6;
+  width: 100%;
   height: 2em;
-  margin: auto;
+  margin: 0.5em auto;
   padding: 0.2em;
-  border: 1px solid #443a2e;
+  border: 1px solid #2c542f;
 }
 
-.checkbox {
-  text-align: left;
+.fl-bl {
+  display: flex;
+  flex-direction: column;
+  flex: 100%;
+  justify-content: space-between;
 }
 
 .checkbox .checkbox-login {
@@ -76,7 +98,7 @@ body {
 
 .signing-btn {
   font-size: 18px;
-  background-color: #443a2e;
+  background-color: #2c542f;
   padding: 0.3em 0;
   width: 8em;
   color: #faf9f6;
@@ -98,7 +120,12 @@ body {
     display: block;
     flex: 50%;
     overflow: hidden;
-    height: 100vh;
+    height: 100%;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
   }
 
   .signing-form-container {
