@@ -9,29 +9,29 @@
         {{csrf_field()}}
         <div class="form-group">
           <label for="inputTitle" class="col-form-label">First Name</label>
-        <input id="inputTitle" type="text" name="fname" placeholder="Enter first name"  value="{{old('fname')}}" class="form-control">
+          <input id="inputTitle" type="text" name="fname" placeholder="Enter first name"  value="{{old('fname')}}" class="form-control">
         @error('fname')
         <span class="text-danger">{{$message}}</span>
         @enderror
         </div>
         <div class="form-group">
           <label for="inputTitle" class="col-form-label">Last Name</label>
-        <input id="inputTitle" type="text" name="lname" placeholder="Enter last name"  value="{{old('lname')}}" class="form-control">
+          <input id="inputTitle" type="text" name="lname" placeholder="Enter last name"  value="{{old('lname')}}" class="form-control">
         @error('lname')
         <span class="text-danger">{{$message}}</span>
         @enderror
         </div>
         <div class="form-group">
           <label for="inputTitle" class="col-form-label">Company Name</label>
-        <input id="inputTitle" type="text" name="company" placeholder="Enter company name"  value="{{old('company')}}" class="form-control">
-        @error('company')
+          <input id="inputTitle" type="text" name="company" placeholder="Enter company name"  value="{{old('cname')}}" class="form-control">
+        @error('cname')
         <span class="text-danger">{{$message}}</span>
         @enderror
         </div>
         <div class="form-group">
           <label for="inputTitle" class="col-form-label">TRN Number</label>
-        <input id="inputTitle" type="number" name="trn" placeholder="Enter trn number"  value="{{old('trn')}}" class="form-control">
-        @error('trn')
+          <input id="inputTitle" type="number" name="trn" placeholder="Enter trn number"  value="{{old('trn_no')}}" class="form-control">
+        @error('trn_no')
         <span class="text-danger">{{$message}}</span>
         @enderror
         </div>
@@ -66,16 +66,16 @@
           <span class="text-danger">{{$message}}</span>
           @enderror
         </div>
-        @php 
+        <!-- @php 
         $roles=DB::table('users')->select('role')->distinct()->get();
-        @endphp
+        @endphp -->
         <div class="form-group">
             <label for="role" class="col-form-label">Role</label>
-            <select name="role" class="form-control">
-                <option value="">-----Select Role-----</option>
-                @foreach($roles as $role)
-                    <option value="{{$role->role}}">{{$role->role}}</option>
-                @endforeach
+            <select name="role" class="form-control" value="{{old('role')}}">
+              <option value="">-----Select Role-----</option>
+              @foreach($roles as $role)
+                  <option value="{{$role->role}}">{{$role->role}}</option>
+              @endforeach
             </select>
           @error('role')
           <span class="text-danger">{{$message}}</span>

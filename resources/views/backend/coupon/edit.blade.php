@@ -20,32 +20,33 @@
           @endphp
           <div class="form-group">
             <label for="product-title" class="col-form-label">Product Name </label>
-            <select id="product-title" name="product-title" class="form-control" >
-              <option value="product-title">---Select Product ---</option>
+            <select id="product-title" name="product_id" class="form-control" >
+              <option value="">---Select Product ---</option>
               @foreach($products as $product)
-                <option value="{{$product->id}}">{{$product->title}}</option>
+                <option name="product_id" value="{{$product->id}}">{{$product->title}}</option>
               @endforeach
             </select>
-            @error('product')
+            @error('product_id')
               <span class="text-danger">{{$message}}</span>
             @enderror
           </div>
+          
           <div class="form-group">
-            <label for="user" class="col-form-label">User Name </label>
-            <select id="user" name="user" class="form-control">
-              <option value="user">---Select User ---</option>
+            <label for="user-fname" class="col-form-label">User Name </label>
+            <select id="user" name="user_id" class="form-control" >
+              <option value="">---Select User ---</option>
               @foreach($users as $user)
-                <option value="{{$user->id}}">{{$user->name}}</option>
+                <option name="user_id" value="{{$user->id}}">{{$user->fname}}&nbsp;{{$user->lname}}</option>
               @endforeach
             </select>
-            @error('user')
+            @error('user_id')
               <span class="text-danger">{{$message}}</span>
             @enderror
           </div>
           <div class="form-group">
             <label for="expiry-date" class="col-form-label">Expiry Date </label>
-            <input id="expiry-date" type="date" name="expiry-date" placeholder="Expiry date" value="{{$coupon->expiry_date}}" class="form-control">
-            @error('expiry-date')
+            <input id="expiry-date" type="date" name="expiry_date" placeholder="Expiry date" value="{{$coupon->expiry_date}}" class="form-control">
+            @error('expiry_date')
               <span class="text-danger">{{$message}}</span>
             @enderror
           </div>  

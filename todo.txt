@@ -1,4 +1,4 @@
-Checkout Page (finger show button and redio button)
+Checkout Page
 cart submenu design
 Track Order Backend
 Products by product-category table

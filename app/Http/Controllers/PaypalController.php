@@ -28,7 +28,7 @@ class PaypalController extends Controller
             ];
         }, $cart);
         
-        $data['invoice_id'] ='ORD-'.strtoupper(uniqid());
+        $data['invoice_id'] ='HRD-'.strtoupper(uniqid());
         $data['invoice_description'] = "Order #{$data['invoice_id']} Invoice";
         $data['return_url'] = route('payment.success');
         $data['cancel_url'] = route('payment.cancel');

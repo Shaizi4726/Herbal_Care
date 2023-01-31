@@ -44,10 +44,10 @@ class UsersController extends Controller
 
         $this->validate($request,
         [
-            'fname'=>'string|required|max:30',
-            'lname'=>'string|required|max:30',
-            'company_name'=>'string|required|max:30',
-            'trn_no'=>'numeric|required|max:30',
+            'fname'=>'string|max:30',
+            'lname'=>'string|max:30',
+            'cname'=>'string|max:30',
+            'trn_no'=>'numeric|max:30',
             'email'=>'string|required|unique:users',
             'password'=>'string|required',
             'role'=>'required|in:admin,user',
@@ -114,7 +114,7 @@ class UsersController extends Controller
         [
             // 'fname'=>'string|required|max:30',
             // 'lname'=>'string|required|max:30',
-            // 'company_name'=>'string|required|max:30',
+            // 'cname'=>'string|required|max:30',
             // 'trn_no'=>'numeric|required|max:30',
             // 'email'=>'string|required',
             // 'role'=>'required|in:admin,user',
@@ -123,9 +123,7 @@ class UsersController extends Controller
         ]);
         // dd($request->all());
         $data=$request->all();
-        //dd($user);
-        
-        $status=$user->fill($data)->update();
+        $status=$user->fill($data)->save();
         if($status){
             request()->session()->flash('success','Successfully updated');
         }

@@ -15,10 +15,15 @@ class CreateCouponsTable extends Migration
     {
         Schema::create('coupons', function (Blueprint $table) {
             $table->id();
+            
             $table->string('code')->unique();
+            $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('user_id');
             $table->enum('type',['fixed','percent'])->default('fixed');
             $table->decimal('value',20,2);
-            $table->enum('status',['active','inactive'])->default('inactive');
+            $table->enum('status',['active','inactive'])->default('inactive'); 
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('CASCADE');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('CASCADE');         
             $table->timestamps();
         });
     }

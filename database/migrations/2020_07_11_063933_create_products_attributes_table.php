@@ -17,7 +17,6 @@ class CreateProductsAttributesTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('plu');
-            $table->unsignedBigInteger('form_id');
             $table->string('sku')->unique();
             $table->string('size');
             $table->float('price');
@@ -26,7 +25,6 @@ class CreateProductsAttributesTable extends Migration
             $table->boolean('is_featured')->deault(false);
             $table->enum('status',['active','inactive'])->default('active');
             $table->foreign('product_id')->references('id')->on('products')->onDelete('CASCADE');
-            $table->foreign('form_id')->references('id')->on('product_forms')->onDelete('CASCADE');
             $table->timestamps();
         });
     }

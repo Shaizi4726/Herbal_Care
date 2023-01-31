@@ -47,7 +47,7 @@
                 <tr>
                     <td>{{$user->id}}</td>
                     <td>{{$user->fname}}&nbsp;{{$user->lname}}</td>
-                    <td>{{$user->company_name}}</td>
+                    <td>{{$user->cname}}</td>
                     <td>{{$user->trn_no}}</td>
                     <td>{{$user->email}}</td>
                     <td>

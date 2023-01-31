@@ -24,17 +24,17 @@
         </div>
         <div class="form-group">
           <label for="inputCompany" class="col-form-label">Company Name</label>
-        <input id="inputCompany" type="text" name="company" placeholder="Enter company name"  value="{{$user->company_name}}" class="form-control">
-        @error('company')
-        <span class="text-danger">{{$message}}</span>
-        @enderror
+          <input id="inputCompany" type="text" name="cname" placeholder="Enter company name"  value="{{$user->cname}}" class="form-control">
+          @error('cname')
+            <span class="text-danger">{{$message}}</span>
+          @enderror
         </div>
         <div class="form-group">
           <label for="inputTrn" class="col-form-label">TRN Number</label>
-        <input id="inputTrn" type="number" name="trn" placeholder="Enter trn number"  value="{{$user->trn_no}}" class="form-control">
-        @error('trn')
-        <span class="text-danger">{{$message}}</span>
-        @enderror
+          <input id="inputTrn" type="number" name="trn_no" placeholder="Enter trn number"  value="{{$user->trn_no}}" class="form-control">
+          @error('trn_no')
+            <span class="text-danger">{{$message}}</span>
+          @enderror
         </div>
 
         <div class="form-group">
@@ -75,10 +75,10 @@
         <div class="form-group">
             <label for="role" class="col-form-label">Role</label>
             <select name="role" class="form-control">
-                <option value="">-----Select Role-----</option>
+                <option name="role" value="">-----Select Role-----</option>
                 @foreach($roles as $role)
-                    <option value="{{$role->role}}" {{(($role->role=='admin') ? 'selected' : '')}}>Admin</option>
-                    <option value="{{$role->role}}" {{(($role->role=='user') ? 'selected' : '')}}>User</option>
+                    <option  value="admin" {{(($role->role=='admin') ? 'selected' : '')}}>Admin</option>
+                    <option  value="user" {{(($role->role=='user') ? 'selected' : '')}}>User</option>
                 @endforeach
             </select>
           @error('role')

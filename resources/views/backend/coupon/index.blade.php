@@ -54,7 +54,7 @@
                 <td></td>
               @endif
               @if($coupon->user_id)                  
-                <td>{{$coupon->users->name}}</td>
+                <td>{{$coupon->users->fname}}&nbsp;{{$coupon->users->lname}}</td>
                 @else
                 <td></td>
               @endif 
