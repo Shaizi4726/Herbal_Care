@@ -1,6 +1,7 @@
 Checkout Page
 cart submenu design
 Products by product-category table
+wishlist Page
 Search Backend
 Track Order Backend
 Mobile Popup Offers

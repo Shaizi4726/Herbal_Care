@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 31, 2023 at 02:26 PM
+-- Generation Time: Feb 01, 2023 at 07:22 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 7.4.29
 
@@ -151152,8 +151152,8 @@ INSERT INTO `cities` (`id`, `name`, `state_id`, `country_id`, `price`, `created_
 CREATE TABLE `countries` (
   `id` mediumint(8) UNSIGNED NOT NULL,
   `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `iso2` char(2) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `phonecode` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `iso_code` char(2) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `calling_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `capital` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `currency` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `currency_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -151173,7 +151173,7 @@ CREATE TABLE `countries` (
 -- Dumping data for table `countries`
 --
 
-INSERT INTO `countries` (`id`, `name`, `iso2`, `phonecode`, `capital`, `currency`, `currency_name`, `currency_symbol`, `tld`, `region`, `subregion`, `emoji`, `emojiU`, `status`, `created_at`, `updated_at`, `flag`) VALUES
+INSERT INTO `countries` (`id`, `name`, `iso_code`, `calling_code`, `capital`, `currency`, `currency_name`, `currency_symbol`, `tld`, `region`, `subregion`, `emoji`, `emojiU`, `status`, `created_at`, `updated_at`, `flag`) VALUES
 (1, 'Afghanistan', 'AF', '93', 'Kabul', 'AFN', 'Afghan afghani', '؋', '.af', 'Asia', 'Southern Asia', '🇦🇫', 'U+1F1E6 U+1F1EB', 'active', '2018-07-21 03:11:03', '2023-01-23 07:23:49', 1),
 (3, 'Albania', 'AL', '355', 'Tirana', 'ALL', 'Albanian lek', 'Lek', '.al', 'Europe', 'Southern Europe', '🇦🇱', 'U+1F1E6 U+1F1F1', 'active', '2018-07-21 03:11:03', '2023-01-23 07:23:49', 1),
 (4, 'Algeria', 'DZ', '213', 'Algiers', 'DZD', 'Algerian dinar', 'دج', '.dz', 'Africa', 'Northern Africa', '🇩🇿', 'U+1F1E9 U+1F1FF', 'active', '2018-07-21 03:11:03', '2023-01-23 07:23:49', 1),
@@ -151890,8 +151890,8 @@ CREATE TABLE `password_resets` (
 
 INSERT INTO `password_resets` (`email`, `token`, `created_at`) VALUES
 ('Prajapativikas11060@gmail.com', '$2y$10$J7fmLBOTED1siUN8Y/TdnOicd0E8KfmtVvl8llvtrjbG/ChPY5kuC', '2022-12-28 02:34:51'),
-('malikshahzad1644@gmail.com', '$2y$10$.kg59vU/mQC8p9TM.u9bGO0YXSjlK6nI2rFLU7Ugwd4s6x14Yz6hK', '2022-12-28 07:52:09'),
-('admin@gmail.com', '$2y$10$dT4nToRzhtTE8Tpy9iZ46.IYl4pfq8skmLdz/ghIQQ3LjQE6ciWDa', '2023-01-26 06:58:12');
+('admin@gmail.com', '$2y$10$dT4nToRzhtTE8Tpy9iZ46.IYl4pfq8skmLdz/ghIQQ3LjQE6ciWDa', '2023-01-26 06:58:12'),
+('malikshahzad1644@gmail.com', '$2y$10$9/s73B9FXcBRF5xjaCmVAu.kWv2pyHNlkNm9RIUaFEFbuBJ1ZJeLu', '2023-02-01 01:19:19');
 
 -- --------------------------------------------------------
 
@@ -159627,15 +159627,19 @@ INSERT INTO `users` (`id`, `fname`, `lname`, `cname`, `trn_number`, `email`, `em
 CREATE TABLE `wishlists` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `product_id` bigint(20) UNSIGNED NOT NULL,
-  `cart_id` bigint(20) UNSIGNED DEFAULT NULL,
   `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `title` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `plu` bigint(20) UNSIGNED DEFAULT NULL,
-  `price` double(8,2) NOT NULL,
-  `quantity` int(11) NOT NULL,
-  `amount` double(8,2) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `wishlists`
+--
+
+INSERT INTO `wishlists` (`id`, `product_id`, `user_id`, `title`, `plu`, `created_at`, `updated_at`) VALUES
+(17, 289, 1, 'False Black Pepper', NULL, '2023-02-01 02:20:55', '2023-02-01 02:20:55');
 
 --
 -- Indexes for dumped tables
@@ -159883,8 +159887,7 @@ ALTER TABLE `users`
 ALTER TABLE `wishlists`
   ADD PRIMARY KEY (`id`),
   ADD KEY `wishlists_product_id_foreign` (`product_id`),
-  ADD KEY `wishlists_user_id_foreign` (`user_id`),
-  ADD KEY `wishlists_cart_id_foreign` (`cart_id`);
+  ADD KEY `wishlists_user_id_foreign` (`user_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -160050,7 +160053,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `wishlists`
 --
 ALTER TABLE `wishlists`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Constraints for dumped tables
