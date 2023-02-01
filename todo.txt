@@ -2,6 +2,7 @@ Checkout Page
 cart submenu design
 Track Order Backend
 Products by product-category table
+wishlist Page
 Search Backend
 aboutUs Check Email Validation backend
 Mobile Popup Offers
