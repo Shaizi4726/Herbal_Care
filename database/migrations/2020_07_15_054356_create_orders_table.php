@@ -30,7 +30,7 @@ class CreateOrdersTable extends Migration
             $table->string('fname');
             $table->string('lname');
             $table->string('cname');
-            $table->unsignedBigInteger('trn_no');
+            $table->unsignedBigInteger('trn_number');
             $table->string('email');
             $table->string('phone');
             $table->string('country');

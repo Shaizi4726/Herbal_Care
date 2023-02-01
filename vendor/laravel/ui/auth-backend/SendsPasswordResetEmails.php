@@ -16,7 +16,7 @@ trait SendsPasswordResetEmails
      */
     public function showLinkRequestForm()
     {
-        return view('auth.passwords.email');
+      return view('auth.passwords.email');
     }
 
     /**
@@ -60,7 +60,7 @@ trait SendsPasswordResetEmails
      */
     protected function credentials(Request $request)
     {
-        return $request->only('email');
+      return $request->only('email');
     }
 
     /**

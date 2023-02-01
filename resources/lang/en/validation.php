@@ -131,19 +131,43 @@ return [
 
     'custom' => [
         'cust_type' => [
-          'required' => 'Customer selection must be selected.',
-          'string' => 'Customer selection value must be string.'
+          'required' => 'selection is required.',
         ],
 
         'fname' => [
-            'string' => 'First Name must be a string.',
-            'required' => 'First Name is missing.'
+          'required' => 'first name is required.',
+          'alpha' => 'first name must only contain letters.',
+          'min' => 'first name must be at least 2 characters.'
         ],
 
         'lname' => [
-          'alpha' => 'Last Name may only contain letters.',
-          'required' => 'Last Name is missing.'
+          'required' => 'last name is required.',
+          'alpha' => 'last name must only contain letters.',
+          'min' => 'last name must be at least 2 characters.'
         ],
+
+        'cname' => [
+          'required' => 'company name is required.',
+          'alpha-dashed' => 'comapny name mus only contain letter and dashes'
+        ],
+        
+        'trn_number' => [
+          'required' => 'trn number is required.',
+          'numeric' => 'trn number must be numeric.'
+        ],
+
+        'email' => [
+          'required' => 'email is required.',
+          'email' => 'invalid email.',
+          'unique' => 'email already exists.'
+        ],
+
+        'password' => [
+          'regex' => 'password must contain
+          <li>english letters</li>
+          <li>at least 1 digit (0 - 9)</li>
+          <li>at least 1 special character</li>'
+          ]
     ],
 
     /*

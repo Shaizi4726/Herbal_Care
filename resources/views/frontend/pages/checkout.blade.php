@@ -167,34 +167,27 @@
 
       <fieldset class="op-form collapse" id="op-form">
         <legend>Online Payment</legend>
-
+        
         <div class="form-group">
-          <label for="account-name">Account Name</label>
-          <input type="text" id="account-name" class="account-name" name="account_name" placeholder="Account Name" autocomplete="off">
-          <div class=error>
-            <ul id="name-error">
-              @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-              @endforeach
-            </ul>
-          </div>
+          <label for="account-num">Card Number</label>
+          <input type="tel" id="account-num" class="account-num"  name="account_num"  placeholder="Card Number" onkeypress="cardLen(this, event)" oninput="cardNum(this, event)" autocomplete="off">
         </div>
-
+        
         <div class="form-group">
-          <label for="account-num">Account Number</label>
-          <input type="tel" id="account-num" class="account-num"  name="account_num"  placeholder="Account Number" onkeypress="cardLen(this, event)" oninput="cardNum(this, event)" value="this.value.split(' ').join('')" autocomplete="off">
+          <label for="account-name">Full Name</label>
+          <input type="text" id="account-name" class="account-name" name="account_name" placeholder="Full Name (As per Card)" autocomplete="off">
         </div>
 
         <div class="fl-bl">
-          <div class="form-group cvc">
-            <label for="cvv-cvc">CVV/CVC</label>
-            <input type="password" id="cvv-cvc" class="cvv-cvc" name="cvv_cvc" placeholder="CVV/CVC" pattern="[0-9]{3}" onkeypress="if(this.value.length == 3) return false;" autocomplete="off">
-          </div>
-
           <div class='form-group expiry'>
             <label for="account-expiry">Expiry Month</label>
             <input type="month" class='account-expiry' id='account-expiry' name="account_expiry" min= "@php echo date('Y-m'); @endphp" placeholder='Expiry Month'>
           </div>
+        </div>
+        
+        <div class="form-group cvc">
+          <label for="cvv-cvc">CVV/CVC</label>
+          <input type="password" id="cvv-cvc" class="cvv-cvc" name="cvv_cvc" placeholder="CVV/CVC" pattern="[0-9]{3}" onkeypress="if(this.value.length == 3) return false;" autocomplete="off">
         </div>
 
         <div class="payment-options">

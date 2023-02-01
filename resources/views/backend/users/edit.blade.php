@@ -31,8 +31,8 @@
         </div>
         <div class="form-group">
           <label for="inputTrn" class="col-form-label">TRN Number</label>
-          <input id="inputTrn" type="number" name="trn_no" placeholder="Enter trn number"  value="{{$user->trn_no}}" class="form-control">
-          @error('trn_no')
+          <input id="inputTrn" type="number" name="trn_number" placeholder="Enter trn number"  value="{{$user->trn_number}}" class="form-control">
+          @error('trn_number')
             <span class="text-danger">{{$message}}</span>
           @enderror
         </div>

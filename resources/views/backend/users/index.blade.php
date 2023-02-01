@@ -48,7 +48,7 @@
                     <td>{{$user->id}}</td>
                     <td>{{$user->fname}}&nbsp;{{$user->lname}}</td>
                     <td>{{$user->cname}}</td>
-                    <td>{{$user->trn_no}}</td>
+                    <td>{{$user->trn_number}}</td>
                     <td>{{$user->email}}</td>
                     <td>
                         @if($user->photo)

@@ -18,6 +18,7 @@ use DB;
 use Hash;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use SendsPasswordResetEmails;
 
 class FrontendController extends Controller
 {
@@ -453,19 +454,41 @@ class FrontendController extends Controller
     }
 
     public function register(){
-        return view('frontend.pages.register');
+      return view('frontend.pages.register');
     }
+
     public function registerSubmit(Request $request){
-        // return $request->all();
-        $this->validate($request,[
-            'name'=>'string|required|min:2',
-            'email'=>'string|required|unique:users,email',
-            'password'=>'required|min:6|confirmed',
+      $this->validate($request,[
+        'cust_type' => 'required|string',
+      ]);
+
+      if($request['cust_type'] == 'individual') {
+        $this->validate($request, [
+          'fname' => 'required|alpha|min:2',
+          'lname' => 'required|alpha|min:2'
         ]);
-        $data=$request->all();
-        // dd($data);
-        $check=$this->create($data);
-        Session::put('user',$data['email']);
+      } else {
+        $this->validate($request, [
+          'cname' => 'required|alpha_dashed',
+          'trn_number' => 'required|numeric'
+        ]);
+      }
+
+      $this->validate($request, [
+        'email' => 'required|email:strict,dns|unique:users',
+        'password' => 'required|confirmed|min:8|regex:/^.*(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^<>\{\}";:.,~!?@#$%^=&*\[\]\(\)¿§«»ω⊙¤°℃℉€¥£¢¡®©0-9_+]).*$/'
+      ]);
+
+        $check = User::create([
+          'fname' => $request->fname,
+          'lname' => $request->lname,
+          'cname' => $request->cname,
+          'trn_number' => $request->trn_number,
+          'email' => $request->email,
+          'password' => Hash::make($request->password),
+          'status' => 'inactive'
+        ]);
+        
         if($check){
             request()->session()->flash('success','Successfully registered');
             return redirect()->route('home');
@@ -490,7 +513,6 @@ class FrontendController extends Controller
         return view('auth.passwords.old-reset');
     }
     public function PassResetForm(Request $request){
-        //dd($request->all());
         return view('auth.passwords.reset')->with('request',$request);
     }
 

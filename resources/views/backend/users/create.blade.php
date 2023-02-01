@@ -30,8 +30,8 @@
         </div>
         <div class="form-group">
           <label for="inputTitle" class="col-form-label">TRN Number</label>
-          <input id="inputTitle" type="number" name="trn" placeholder="Enter trn number"  value="{{old('trn_no')}}" class="form-control">
-        @error('trn_no')
+          <input id="inputTitle" type="number" name="trn" placeholder="Enter trn number"  value="{{old('trn_number')}}" class="form-control">
+        @error('trn_number')
         <span class="text-danger">{{$message}}</span>
         @enderror
         </div>
