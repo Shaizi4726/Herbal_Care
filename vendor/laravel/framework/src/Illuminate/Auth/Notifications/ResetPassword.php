@@ -99,6 +99,6 @@ class ResetPassword extends Notification
      */
     public static function toMailUsing($callback)
     {
-        static::$toMailCallback = $callback;
+      static::$toMailCallback = $callback;
     }
 }

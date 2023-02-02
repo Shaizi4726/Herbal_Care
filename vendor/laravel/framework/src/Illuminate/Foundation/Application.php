@@ -1259,6 +1259,8 @@ class Application extends Container implements ApplicationContract, CachesConfig
             'mailer'               => [\Illuminate\Mail\Mailer::class, \Illuminate\Contracts\Mail\Mailer::class, \Illuminate\Contracts\Mail\MailQueue::class],
             'auth.password'        => [\Illuminate\Auth\Passwords\PasswordBrokerManager::class, \Illuminate\Contracts\Auth\PasswordBrokerFactory::class],
             'auth.password.broker' => [\Illuminate\Auth\Passwords\PasswordBroker::class, \Illuminate\Contracts\Auth\PasswordBroker::class],
+            'auth.verify'        => [\Illuminate\Auth\Passwords\VerifyBrokerManager::class, \Illuminate\Contracts\Auth\VerifyBrokerFactory::class],
+            'auth.verify.broker' => [\Illuminate\Auth\Passwords\VerifyBroker::class, \Illuminate\Contracts\Auth\VerifyBroker::class],
             'queue'                => [\Illuminate\Queue\QueueManager::class, \Illuminate\Contracts\Queue\Factory::class, \Illuminate\Contracts\Queue\Monitor::class],
             'queue.connection'     => [\Illuminate\Contracts\Queue\Queue::class],
             'queue.failer'         => [\Illuminate\Queue\Failed\FailedJobProviderInterface::class],

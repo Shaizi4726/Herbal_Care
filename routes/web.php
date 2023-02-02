@@ -19,11 +19,14 @@ Route::get('user/login','FrontendController@login')->name('login.form');
 Route::post('user/login','FrontendController@loginSubmit')->name('login.submit');
 Route::get('user/logout','FrontendController@logout')->name('user.logout');
 
-Route::get('user/register','FrontendController@register')->name('register.form');
-Route::post('user/register','FrontendController@registerSubmit')->name('register.submit');
+Route::get('user/register','Auth\RegisterController@register')->name('register.form');
+Route::post('user/register','Auth\RegisterController@registerSubmit')->name('register.submit');
 // Reset password
 Route::get('password-reset', 'FrontendController@showResetForm')->name('password.reset'); 
 Route::get('password-resets', 'FrontendController@PassResetForm')->name('password.resets');
+// Verify Account
+Route::get('account-verify', 'FrontendController@verifyAccount')->name('verify.account'); 
+
 // Socialite 
 Route::get('login/{provider}/', 'Auth\LoginController@redirect')->name('login.redirect');
 Route::get('login/{provider}/callback/', 'Auth\LoginController@Callback')->name('login.callback');

@@ -52,11 +52,11 @@ class PasswordBroker implements PasswordBrokerContract
         $user = $this->getUser($credentials);
 
         if (is_null($user)) {
-            return static::INVALID_USER;
+          return static::INVALID_USER;
         }
 
         if ($this->tokens->recentlyCreatedToken($user)) {
-            return static::RESET_THROTTLED;
+          return static::RESET_THROTTLED;
         }
 
         // Once we have the reset token, we are ready to send the message out to this

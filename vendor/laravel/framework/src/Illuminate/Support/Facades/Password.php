@@ -14,7 +14,7 @@ use Illuminate\Contracts\Auth\PasswordBroker;
  * @method static \Illuminate\Auth\Passwords\TokenRepositoryInterface getRepository()
  *
  * @see \Illuminate\Auth\Passwords\PasswordBroker
- */
+*/
 class Password extends Facade
 {
     /**
@@ -59,6 +59,6 @@ class Password extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'auth.password';
+      return 'auth.password';
     }
 }

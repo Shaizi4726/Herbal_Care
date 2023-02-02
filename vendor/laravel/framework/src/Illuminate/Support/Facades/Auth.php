@@ -41,7 +41,7 @@ class Auth extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'auth';
+      return 'auth';
     }
 
     /**

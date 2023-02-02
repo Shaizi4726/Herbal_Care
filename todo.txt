@@ -5,7 +5,7 @@ wishlist Page
 Search Backend
 Track Order Backend
 Mobile Popup Offers
-Coupan Validation Backend
+Coupon Validation Backend
 FAQ Page
 Terms & Conditions Page
 Privacy Policy Page

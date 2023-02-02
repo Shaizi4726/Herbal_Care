@@ -2,72 +2,107 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\User;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
-use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\VerifiesEmails;
 
 class RegisterController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
+  /*
+  |--------------------------------------------------------------------------
+  | Register Controller
+  |--------------------------------------------------------------------------
+  |
+  | This controller handles the registration of new users as well as their
+  | validation and creation. By default this controller uses a trait to
+  | provide this functionality without requiring any additional code.
+  |
+  */
 
-    use RegistersUsers;
+  use RegistersUsers;
+  use VerifiesEmails;
 
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = RouteServiceProvider::HOME;
+  /**
+   * Where to redirect users after registration.
+   *
+   * @var string
+   */
+  protected $redirectTo = RouteServiceProvider::HOME;
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('guest');
+  /**
+   * Create a new controller instance.
+   *
+   * @return void
+   */
+  public function __construct()
+  {
+    $this->middleware('guest');
+  }
+
+  /**
+   * Register page route.
+   *
+   * @return view
+   */
+  public function register(){
+    return view('frontend.pages.register');
+  }
+
+  /**
+   * Validate user register request.
+   * create user in database.
+   * request email verification.
+   *
+   * @param  \Illuminate\Http\Request $request
+   */
+
+  public function registerSubmit(Request $request){
+    $this->validate($request,[
+      'cust_type' => 'required|string',
+    ]);
+
+    if($request['cust_type'] == 'individual') {
+      $this->validate($request, [
+        'fname' => 'required|alpha|min:2',
+        'lname' => 'required|alpha|min:2'
+      ]);
+    } else {
+      $this->validate($request, [
+        'cname' => 'required|alpha_dashed',
+        'trn_number' => 'required|numeric'
+      ]);
     }
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
+    $this->validate($request, [
+      'email' => 'required|email:strict,dns|unique:users',
+      'password' => 'required|confirmed|min:8|regex:/^.*(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^<>\{\}";:.,~!?@#$%^=&*\[\]\(\)¿§«»ω⊙¤°℃℉€¥£¢¡®©0-9_+]).*$/'
+    ]);
+
+    $check = User::create([
+      'fname' => $request->fname,
+      'lname' => $request->lname,
+      'cname' => $request->cname,
+      'trn_number' => $request->trn_number,
+      'email' => $request->email,
+      'password' => Hash::make($request->password),
+      'status' => 'inactive'
+    ]);
+    
+    if($check){
+      $re = Request::create('/verify/account', 'GET', ['email' => $request->email]);
+      $this->sendVerifyEmailLink($re);
+      request()->session()->flash('success','Successfully registered. Verify your Email to Sign In');
+      return redirect()->route('login.form');
     }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\User
-     */
-    protected function create(array $data)
-    {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
+    else{
+      request()->session()->flash('error','Please try again!');
+      return back();
     }
+  }
 }

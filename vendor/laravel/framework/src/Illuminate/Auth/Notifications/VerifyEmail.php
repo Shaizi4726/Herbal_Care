@@ -26,7 +26,7 @@ class VerifyEmail extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+      return ['mail'];
     }
 
     /**
@@ -60,10 +60,10 @@ class VerifyEmail extends Notification
     {
         return URL::temporarySignedRoute(
             'verification.verify',
-            Carbon::now()->addMinutes(Config::get('auth.verification.expire', 10)),
+            Carbon::now()->addMinutes(Config::get('auth.verification.expire', 20)),
             [
-                'id' => $notifiable->getKey(),
-                'hash' => sha1($notifiable->getEmailForVerification()),
+              'id' => $notifiable->getKey(),
+              'hash' => sha1($notifiable->getEmailForVerification()),
             ]
         );
     }
@@ -76,6 +76,6 @@ class VerifyEmail extends Notification
      */
     public static function toMailUsing($callback)
     {
-        static::$toMailCallback = $callback;
+      static::$toMailCallback = $callback;
     }
 }
