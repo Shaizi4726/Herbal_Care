@@ -147,7 +147,7 @@ class CouponController extends Controller
     public function couponStore(Request $request){
         // return $request->all();
         
-        $coupon=Coupon::where('code',$request->code)->first();
+        $coupon=Coupon::with('products')->where('code',$request->code)->first();
             
         // dd($coupon);
         if(!$coupon){
@@ -155,15 +155,37 @@ class CouponController extends Controller
             return back();
         }
         if($coupon){
-            $total_price=Cart::where('user_id',auth()->user()->id)->where('order_id',null)->sum('price');
-             dd($total_price);
-            session()->put('coupon',[
-                'id'=>$coupon->id,
-                'code'=>$coupon->code,
-                'value'=>$coupon->discount($total_price)
-            ]);
+            if($coupon->user_id == auth()->user()->id){     
+                $total_price=Cart::where('user_id',auth()->user()->id)->where('order_id',null)->sum('price');           
+                session()->put('coupon',[
+                    'id'=>$coupon->id,
+                    'code'=>$coupon->code,
+                    'value'=>$coupon->discount($total_price)
+                ]);
+                
+            }
+            else if($coupon->product_id){
+                if($coupon->product_id == $coupon->products->id)
+                $total_price=Cart::where('user_id',auth()->user()->id)->where('order_id',null)->sum('price');
+                session()->put('coupon',[
+                    'id'=>$coupon->id,
+                    'code'=>$coupon->code,
+                    'value'=>$coupon->discount($total_price)
+                ]);
+                
+            }
+            else if($coupon->expiry_date){
+                
+                $total_price=Cart::where('user_id',auth()->user()->id)->where('order_id',null)->sum('price');
+                session()->put('coupon',[
+                    'id'=>$coupon->id,
+                    'code'=>$coupon->code,
+                    'value'=>$coupon->discount($total_price)
+                ]);
+                
+            }
             request()->session()->flash('success','Coupon successfully applied');
-            return redirect()->back();
+                return redirect()->back();
         }
     }
 }

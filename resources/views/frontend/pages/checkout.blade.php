@@ -202,9 +202,12 @@
   <div class="order-summary">
     <div class="sums-summary">
       @php
-      $subtotal = Helper::CartAmount();
-      $tax = Helper::totalCartTax();
-      $total_amount = Helper::totalCartAmount();
+        $subtotal = Helper::CartAmount();
+        $tax = Helper::totalCartTax();
+        $total_amount = Helper::totalCartAmount();
+        if(session()->has('coupon')){
+          $total_amount=$total_amount-Session::get('coupon')['value'];
+        }
       @endphp
 
       <div class="summary-title-container">
@@ -220,17 +223,37 @@
       </div>
       <div class="cart-totals">
         <div class="cart-total-value">
-          <h4 class="subtotal"> Subtotal: </h4>
+          <h4 class="subtotal" data-price="{{Helper::CartAmount()}}"> Subtotal: </h4>
           <p id="subtotal-value">AED {{number_format($subtotal, 2)}}</p>
         </div>
         <div class="cart-total-value">
           <h4 class="tax"> VAT(5%): </h4>
           <p id="tax-value">AED {{number_format($tax, 2)}}</p>
         </div>
+        <!-- @php
+          $city=DB::table('cities')->limit(1)->first();
+        @endphp
+        @if($city)
+          <div class="shipping-charge">
+            <h4 id="shipping">Shipping:</h4>
+            <p id="shipping-value">AED {{number_format($city->price, 2)}}</p>
+          </div>
+        @endif -->
+        @if(session()->has('coupon'))
+          <div class="cart-coupon-value">
+            <h4 id="coupon" data-price="{{Session::get('coupon')['value']}}"> Discount :</h4>
+            <p id="coupon-value">AED {{number_format(Session::get('coupon')['value'],2)}}</p>
+          </div>
+        @endif
       </div>
+     
       <div class="cart-total-value grand-total">
         <h4 class="total"> Grand Total: </h4>
-        <p id="grand-total-value">AED {{number_format($total_amount, 2)}}</p>
+        @if(session()->has('coupon'))
+          <p id="grand-total-value">AED {{number_format($total_amount, 2)}}</p>
+        @else
+          <p id="grand-total-value">AED {{number_format($total_amount, 2)}}</p>
+        @endif
       </div>
       <input type="submit" form="order-form" class="btn btn-checkout" value="Place Order">
     </div>
