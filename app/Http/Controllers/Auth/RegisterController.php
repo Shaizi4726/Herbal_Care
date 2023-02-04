@@ -3,13 +3,15 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use Redirect;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
-use Illuminate\Foundation\Auth\VerifiesEmails;
 
 class RegisterController extends Controller
 {
@@ -25,7 +27,6 @@ class RegisterController extends Controller
   */
 
   use RegistersUsers;
-  use VerifiesEmails;
 
   /**
    * Where to redirect users after registration.
@@ -83,7 +84,7 @@ class RegisterController extends Controller
       'password' => 'required|confirmed|min:8|regex:/^.*(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^<>\{\}";:.,~!?@#$%^=&*\[\]\(\)¿§«»ω⊙¤°℃℉€¥£¢¡®©0-9_+]).*$/'
     ]);
 
-    $check = User::create([
+    $user = User::create([
       'fname' => $request->fname,
       'lname' => $request->lname,
       'cname' => $request->cname,
@@ -92,10 +93,11 @@ class RegisterController extends Controller
       'password' => Hash::make($request->password),
       'status' => 'inactive'
     ]);
+
     
-    if($check){
-      $re = Request::create('/verify/account', 'GET', ['email' => $request->email]);
-      $this->sendVerifyEmailLink($re);
+    
+    if($user){
+      event(new Registered($user));
       request()->session()->flash('success','Successfully registered. Verify your Email to Sign In');
       return redirect()->route('login.form');
     }

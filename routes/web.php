@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,8 +26,22 @@ Route::post('user/register','Auth\RegisterController@registerSubmit')->name('reg
 // Reset password
 Route::get('password-reset', 'FrontendController@showResetForm')->name('password.reset'); 
 Route::get('password-resets', 'FrontendController@PassResetForm')->name('password.resets');
-// Verify Account
-Route::get('account-verify', 'FrontendController@verifyAccount')->name('verify.account'); 
+
+Route::get('/email/verify', function () {
+  return view('auth.passwords.verify-email');
+})->middleware('auth')->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+  $request->fulfill();
+
+  return redirect('/home');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::post('/email/verification-notification', function (Request $request) {
+  $request->user()->sendEmailVerificationNotification();
+
+  return back()->with('message', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 // Socialite 
 Route::get('login/{provider}/', 'Auth\LoginController@redirect')->name('login.redirect');

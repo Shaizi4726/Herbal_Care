@@ -64,12 +64,13 @@ class DatabaseTokenRepository implements TokenRepositoryInterface
      * @return void
      */
     public function __construct(ConnectionInterface $connection, HasherContract $hasher,
-                                $table, $hashKey, $expires = 10, $throttle = 10)
+                                $table, $hashKey, $expires = 60,
+                                $throttle = 60)
     {
         $this->table = $table;
         $this->hasher = $hasher;
         $this->hashKey = $hashKey;
-        $this->expires = $expires * 10;
+        $this->expires = $expires * 60;
         $this->connection = $connection;
         $this->throttle = $throttle;
     }
@@ -133,8 +134,8 @@ class DatabaseTokenRepository implements TokenRepositoryInterface
         )->first();
 
         return $record &&
-            ! $this->tokenExpired($record['created_at']) &&
-            $this->hasher->check($token, $record['token']);
+               ! $this->tokenExpired($record['created_at']) &&
+                 $this->hasher->check($token, $record['token']);
     }
 
     /**
