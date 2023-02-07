@@ -114,7 +114,7 @@
           @endif
 
           <div class="form-group">
-            <label for="email">Email:<sup>*</sup></label>
+            <label for="email">Email:<span>*</span></label>
             <input type="email" name="email" id="email" placeholder="Enter Email" value="{{ old('email') }}">
             @if ($errors->get('email'))
               <div class="error">
@@ -127,23 +127,23 @@
 
           <div class="fl-bl">
             <div class="form-group">
-              <label for="password">Password:<sup>*</sup></label>
+              <label for="password">Password:<span>*</span></label>
               <input type="password" name="password" id="password" placeholder="Enter Password">
             </div>
 
             <div class="form-group">
-              <label for="password_confirmation">Confirm Password:<sup>*</sup></label>
+              <label for="password_confirmation">Confirm Password:<span>*</span></label>
               <input type="password" name="password_confirmation" id="password_confirmation" placeholder="Confirm Password">
             </div>
-
-            @if ($errors->get('password'))
-              <div class="error">
-                @error('password')
-                  {!! $message !!}
-                @enderror
-              </div>
-            @endif
           </div>
+
+          @if ($errors->get('password'))
+            <div class="error">
+              @error('password')
+                {!! $message !!}
+              @enderror
+            </div>
+          @endif
         </fieldset>
 
         <div class="form-group submit-btn">

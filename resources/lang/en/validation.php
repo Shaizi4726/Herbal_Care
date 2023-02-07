@@ -164,10 +164,10 @@ return [
 
         'password' => [
           'regex' => 'password must contain
-          <li>english letters</li>
-          <li>at least 1 digit (0 - 9)</li>
+          <li>at least 1 letter</li>
+          <li>at least 1 digit</li>
           <li>at least 1 special character</li>'
-          ]
+        ]
     ],
 
     /*

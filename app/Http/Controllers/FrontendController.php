@@ -396,9 +396,14 @@ class FrontendController extends Controller
         return view('frontend.pages.login')->with('checkout', $request->checkout);
     }
     
-    public function loginSubmit(Request $request){
+    public function loginSubmit(Request $request) {
         $data= $request->all();
-        if(Auth::attempt(['email' => $data['email'], 'password' => $data['password'],'status'=>'active'])){
+        if (array_key_exists('remember', $data))
+          $remember = true;
+        else
+          $remember = false;
+
+        if(Auth::attempt(['email' => $data['email'], 'password' => $data['password'],'status'=>'active'], $remember)){
           $cart_items = Session::get('cart');
 
           foreach($cart_items as $item) {
@@ -435,7 +440,7 @@ class FrontendController extends Controller
 
           Session::pull('cart');
           Session::pull('id');
-            Session::put('user',$data['email']);
+            Session::put('user', $data['email']);
             if($request->checkout == 1)
               return redirect()->route('checkout');
             return redirect()->route('home');

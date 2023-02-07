@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,52 +13,45 @@ use Illuminate\Http\Request;
 |
 */
 
-Auth::routes(['register'=>false]);
+// Register User
+Route::get('user/register','Auth\RegisterController@register')->name('register.form');
+Route::get('/register','Auth\RegisterController@register')->name('register.form');
+Route::get('/signup','Auth\RegisterController@register')->name('register.form');
+Route::post('user/register','Auth\RegisterController@registerSubmit')->name('register.submit');
 
+// Verify Email
+Route::get('/email/verify', 'Auth\VerificationController@verify')->middleware('auth')->name('verification.notice');
+Route::get('/email/verify/{id}/{hash}', 'Auth\VerificationController@emailVerification')->middleware(['auth', 'signed'])->name('verification.verify');
+Route::post('/email/verification-notification', 'Auth\VerificationController@resendEmailVerification')->middleware(['auth', 'throttle:6,1'])->name('verification.resend');
+
+Route::get('/login','FrontendController@login')->name('login.form');
+Route::get('/signin','FrontendController@login')->name('login.form');
 Route::get('user/login','FrontendController@login')->name('login.form');
 Route::post('user/login','FrontendController@loginSubmit')->name('login.submit');
 Route::get('user/logout','FrontendController@logout')->name('user.logout');
 
-Route::get('user/register','Auth\RegisterController@register')->name('register.form');
-Route::post('user/register','Auth\RegisterController@registerSubmit')->name('register.submit');
 // Reset password
 Route::get('password-reset', 'FrontendController@showResetForm')->name('password.reset'); 
 Route::get('password-resets', 'FrontendController@PassResetForm')->name('password.resets');
-
-Route::get('/email/verify', function () {
-  return view('auth.passwords.verify-email');
-})->middleware('auth')->name('verification.notice');
-
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-  $request->fulfill();
-
-  return redirect('/home');
-})->middleware(['auth', 'signed'])->name('verification.verify');
-
-Route::post('/email/verification-notification', function (Request $request) {
-  $request->user()->sendEmailVerificationNotification();
-
-  return back()->with('message', 'Verification link sent!');
-})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 // Socialite 
 Route::get('login/{provider}/', 'Auth\LoginController@redirect')->name('login.redirect');
 Route::get('login/{provider}/callback/', 'Auth\LoginController@Callback')->name('login.callback');
 
-Route::get('/','FrontendController@home')->name('home');
+Route::get('/','FrontendController@home')->name('home')->middleware('account.verified');
 
 // Frontend Routes
-Route::get('/home', 'FrontendController@index');
+Route::get('/home', 'FrontendController@home')->middleware('account.verified');
 //Route::get('/home/{slug}', 'FrontendController@index');
-Route::get('/about-us','FrontendController@aboutUs')->name('about-us');
-Route::get('/contact','FrontendController@contact')->name('contact');
-Route::post('/contact/message','MessageController@store')->name('contact.store');
-Route::get('product-detail/{slug}','FrontendController@productDetail')->name('product-detail');
-Route::match(['get','post'],'/product/search','FrontendController@productSearch')->name('product.search');
-Route::match(['get','post'],'product-sort/','FrontendController@productSort')->name('product-sort');
-Route::get('/product-cat/{slug}','FrontendController@productCat')->name('product-cat');
-Route::get('/product-sub-cat/{slug}/{sub_slug}','FrontendController@productSubCat')->name('product-sub-cat');
-Route::get('/product-brand/{slug}','FrontendController@productBrand')->name('product-brand');
+Route::get('/about-us','FrontendController@aboutUs')->name('about-us')->middleware('account.verified');
+Route::get('/contact','FrontendController@contact')->name('contact')->middleware('account.verified');
+Route::post('/contact/message','MessageController@store')->name('contact.store')->middleware('account.verified');
+Route::get('product-detail/{slug}','FrontendController@productDetail')->name('product-detail')->middleware('account.verified');
+Route::match(['get','post'],'/product/search','FrontendController@productSearch')->name('product.search')->middleware('account.verified');
+Route::match(['get','post'],'product-sort/','FrontendController@productSort')->name('product-sort')->middleware('account.verified');
+Route::get('/product-cat/{slug}','FrontendController@productCat')->name('product-cat')->middleware('account.verified');
+Route::get('/product-sub-cat/{slug}/{sub_slug}','FrontendController@productSubCat')->name('product-sub-cat')->middleware('account.verified');
+Route::get('/product-brand/{slug}','FrontendController@productBrand')->name('product-brand')->middleware('account.verified');
 
 // Cart section
 Route::match(['get','post'],'/add-to-cart','CartController@singleAddToCart')->name('single-add-to-cart');

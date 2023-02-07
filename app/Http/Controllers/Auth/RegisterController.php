@@ -6,12 +6,13 @@ use App\User;
 use Redirect;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
-use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Session;
+use Auth;
 
 class RegisterController extends Controller
 {
@@ -33,13 +34,13 @@ class RegisterController extends Controller
    *
    * @var string
    */
-  protected $redirectTo = RouteServiceProvider::HOME;
+  protected $redirectTo = 'email/verify';
 
   /**
    * Create a new controller instance.
    *
    * @return void
-   */
+  */
   public function __construct()
   {
     $this->middleware('guest');
@@ -49,7 +50,7 @@ class RegisterController extends Controller
    * Register page route.
    *
    * @return view
-   */
+  */
   public function register(){
     return view('frontend.pages.register');
   }
@@ -60,13 +61,13 @@ class RegisterController extends Controller
    * request email verification.
    *
    * @param  \Illuminate\Http\Request $request
-   */
+  */
 
   public function registerSubmit(Request $request){
     $this->validate($request,[
       'cust_type' => 'required|string',
     ]);
-
+    
     if($request['cust_type'] == 'individual') {
       $this->validate($request, [
         'fname' => 'required|alpha|min:2',
@@ -78,12 +79,12 @@ class RegisterController extends Controller
         'trn_number' => 'required|numeric'
       ]);
     }
-
+    
     $this->validate($request, [
       'email' => 'required|email:strict,dns|unique:users',
       'password' => 'required|confirmed|min:8|regex:/^.*(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^<>\{\}";:.,~!?@#$%^=&*\[\]\(\)¿§«»ω⊙¤°℃℉€¥£¢¡®©0-9_+]).*$/'
     ]);
-
+    
     $user = User::create([
       'fname' => $request->fname,
       'lname' => $request->lname,
@@ -91,15 +92,15 @@ class RegisterController extends Controller
       'trn_number' => $request->trn_number,
       'email' => $request->email,
       'password' => Hash::make($request->password),
-      'status' => 'inactive'
-    ]);
-
-    
+      'status' => 'active'
+    ]); 
     
     if($user){
+      Session::put('user', $request->email);
+      Auth::attempt(['email' => $request->email, 'password' => $request->password, 'status'=>'active']);
       event(new Registered($user));
       request()->session()->flash('success','Successfully registered. Verify your Email to Sign In');
-      return redirect()->route('login.form');
+      return redirect()->route('verification.notice');
     }
 
     else{
