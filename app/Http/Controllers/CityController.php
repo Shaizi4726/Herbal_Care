@@ -35,25 +35,25 @@ class CityController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    // public function store(Request $request)
-    // {
-    //     $this->validate($request,[
-    //         'name'=>'string|required',
-    //         'state_id'=>'nullable|numeric', 
-    //         'country_id'=>'nullable|numeric',                       
-    //         'price'=>'nullable|numeric'
-    //     ]);
-    //     $data=$request->all();
-    //     // return $data;
-    //     $status=city::create($data);
-    //     if($status){
-    //         request()->session()->flash('success','city successfully created');
-    //     }
-    //     else{
-    //         request()->session()->flash('error','Error, Please try again');
-    //     }
-    //     return redirect()->route('city.index');
-    // }
+    public function store(Request $request)
+    {
+        $this->validate($request,[
+            'name'=>'string|required',
+            'state_id'=>'nullable|numeric', 
+            'country_id'=>'nullable|numeric',                       
+            'price'=>'nullable|numeric'
+        ]);
+        $data=$request->all();
+        // return $data;
+        $status=city::create($data);
+        if($status){
+            request()->session()->flash('success','city successfully created');
+        }
+        else{
+            request()->session()->flash('error','Error, Please try again');
+        }
+        return redirect()->route('city.index');
+    }
 
     /**
      * Display the specified resource.

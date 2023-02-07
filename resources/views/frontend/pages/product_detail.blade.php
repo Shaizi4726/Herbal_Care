@@ -217,7 +217,7 @@
 					@foreach($product_detail['getReview'] as $data)
 						<div class="single-rating">
 							<div class="rating-author"> 
-								@if($data->user_info['photo']) 
+								@if($data->user_info['photo'])
 									<img src="{{$data->user_info['photo']}}" alt="User Photo" width="50" height="50"> 
 								@else 
 									<img src="{{asset('backend/img/avatar.png')}}" alt="Profile Pic" width="50" height="50"> 

@@ -3648,6 +3648,7 @@ return array(
     'Monolog\\Handler\\SocketHandler' => $vendorDir . '/monolog/monolog/src/Monolog/Handler/SocketHandler.php',
     'Monolog\\Handler\\SqsHandler' => $vendorDir . '/monolog/monolog/src/Monolog/Handler/SqsHandler.php',
     'Monolog\\Handler\\StreamHandler' => $vendorDir . '/monolog/monolog/src/Monolog/Handler/StreamHandler.php',
+    'Monolog\\Handler\\SwiftMailerHandler' => $vendorDir . '/monolog/monolog/src/Monolog/Handler/SwiftMailerHandler.php',
     'Monolog\\Handler\\SymfonyMailerHandler' => $vendorDir . '/monolog/monolog/src/Monolog/Handler/SymfonyMailerHandler.php',
     'Monolog\\Handler\\SyslogHandler' => $vendorDir . '/monolog/monolog/src/Monolog/Handler/SyslogHandler.php',
     'Monolog\\Handler\\SyslogUdpHandler' => $vendorDir . '/monolog/monolog/src/Monolog/Handler/SyslogUdpHandler.php',

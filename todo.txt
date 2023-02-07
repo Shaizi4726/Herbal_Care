@@ -1,7 +1,8 @@
-Checkout Page
+Checkout Page(months and years set)
 cart submenu design
 Products by product-category table
 wishlist Page
+after 0 item added (details and quick view page)
 Search Backend
 Track Order Backend
 Mobile Popup Offers

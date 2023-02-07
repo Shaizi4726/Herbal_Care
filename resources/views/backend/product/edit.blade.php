@@ -32,14 +32,14 @@
       </div>
 
       <div class="form-group">
-        <label for="inputTitle" class="col-form-label">Other name </label>
-        <input id="inputTitle" type="text" name="other_name" placeholder="Enter Other Name"  value="{{$product->other_name}}" class="form-control">
-        @error('other name')
+        <label for="other_name" class="col-form-label">Other name </label>
+        <textarea id="other_name" name="other_name" placeholder="Enter Other Name"  value="{{$product->other_name}}" class="form-control">{{$product->other_name}}</textarea>
+        @error('other_name')
         <span class="text-danger">{{$message}}</span>
         @enderror
       </div>
       <div class="form-group">
-      <label for="inputTitle" class="col-form-label">benefit</label>
+      <label for="benefit" class="col-form-label">benefit</label>
         <textarea class="form-control" id="benefit" name="benefit" value="{{$product->benafit}}">{{$product->benafit}}</textarea>
         @error('benefit')
         <span class="text-danger">{{$message}}</span>
@@ -279,9 +279,30 @@
 @push('scripts')
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
-
+<script src="{{asset('backend/summernote/summernote.min.js')}}"></script>
 
 <script>
+  $(document).ready(function() {
+    $('#benefit').summernote({
+      placeholder: "Write benefit.....",
+        tabsize: 2,
+        height: 150
+    });
+  });
+  $(document).ready(function() {
+    $('#other_name').summernote({
+      placeholder: "Write other_name.....",
+      tabsize: 2,
+      height: 150
+    });
+  });
+  $(document).ready(function() {
+    $('#description').summernote({
+      placeholder: "Write detail description.....",
+        tabsize: 2,
+        height: 150
+    });
+  });
   var  child_cat_id='{{$product->child_cat_id}}';
     // alert(child_cat_id);
     $('#cat_id').change(function(){

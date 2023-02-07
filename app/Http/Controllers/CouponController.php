@@ -146,7 +146,7 @@ class CouponController extends Controller
 
     public function couponStore(Request $request){
         // return $request->all();
-        
+        $today = today('Europe/London');
         $coupon=Coupon::with('products')->where('code',$request->code)->first();
             
         // dd($coupon);
@@ -174,7 +174,7 @@ class CouponController extends Controller
                 ]);
                 
             }
-            else if($coupon->expiry_date){
+            else if($today <= $coupon->expiry_date){
                 
                 $total_price=Cart::where('user_id',auth()->user()->id)->where('order_id',null)->sum('price');
                 session()->put('coupon',[
@@ -184,8 +184,9 @@ class CouponController extends Controller
                 ]);
                 
             }
+            
             request()->session()->flash('success','Coupon successfully applied');
-                return redirect()->back();
+            return redirect()->back();
         }
     }
 }

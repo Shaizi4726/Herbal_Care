@@ -25,7 +25,7 @@
   {{-- <link rel="stylesheet" href="{{ asset('/vendor/laravel-filemanager/css/lfm.css') }}"> --}}
 </head>
 <body>
-  <nav class="navbar sticky-top navbar-expand-lg navbar-dark" id="nav">
+  <nav class="navbar sticky-top navbar-expand-lg navbar-dark" style="background-color:#2c542f" id="nav">
     <a class="navbar-brand invisible-lg d-none d-lg-inline" id="to-previous">
       <i class="fas fa-arrow-left fa-fw"></i>
       <span class="d-none d-lg-inline">{{ trans('laravel-filemanager::lfm.nav-back') }}</span>
@@ -119,7 +119,7 @@
             <div class="form-group" id="attachment">
               <div class="controls text-center">
                 <div class="input-group w-100">
-                  <a class="btn btn-primary w-100 text-white" id="upload-button">{{ trans('laravel-filemanager::lfm.message-choose') }}</a>
+                  <a class="btn btn-primary w-100 text-white" style="background-color:#2c542f" id="upload-button">{{ trans('laravel-filemanager::lfm.message-choose') }}</a>
                 </div>
               </div>
             </div>
@@ -215,12 +215,12 @@
         label: lang['menu-download'],
         multiple: true
       },
-      // {
-      //   name: 'preview',
-      //   icon: 'image',
-      //   label: lang['menu-view'],
-      //   multiple: true
-      // },
+      {
+        name: 'preview',
+        icon: 'image',
+        label: lang['menu-view'],
+        multiple: true
+      },
       {
         name: 'move',
         icon: 'paste',
