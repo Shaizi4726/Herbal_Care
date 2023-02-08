@@ -85,7 +85,8 @@
             @endforeach
           </tbody>
         </table>
-        <span style="float:right">{{$orders->links()}}</span>
+        {!! $orders->withQueryString()->links('pagination::bootstrap-5') !!}
+        
         @else
           <h6 class="text-center">No orders found!!! Please order some products</h6>
         @endif

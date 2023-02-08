@@ -39,6 +39,7 @@
         @endforeach
       </tbody>
     </table>
+    {!! $notifications->withQueryString()->links('pagination::bootstrap-5') !!}
     @else
       <h2>Notifications Empty!</h2>
     @endif

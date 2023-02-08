@@ -29,6 +29,7 @@ Route::get('/signin','FrontendController@login')->name('login.form');
 Route::get('user/login','FrontendController@login')->name('login.form');
 Route::post('user/login','FrontendController@loginSubmit')->name('login.submit');
 Route::get('user/logout','FrontendController@logout')->name('user.logout');
+Route::get('logout','FrontendController@logout')->name('logout');
 
 // Reset password
 Route::get('password-reset', 'FrontendController@showResetForm')->name('password.reset'); 
@@ -139,6 +140,8 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     Route::post('/profile/{id}','AdminController@profileUpdate')->name('profile-update');
     // Category
     Route::resource('/category','CategoryController');
+    //Form
+    Route::resource('/form','FormController');
     // Product
     Route::resource('/product','ProductController');
     //import product

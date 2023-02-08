@@ -1,0 +1,135 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use App\Models\ProductForm;
+
+class FormController extends Controller
+{
+        /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $form=ProductForm::orderBy('id','DESC')->paginate(10);
+        return view('backend.form.index')->with('forms',$form);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view('backend.form.create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        // return $request->all();
+        $this->validate($request,[
+            'title'=>'string|required|max:50'
+                                 
+        ]);
+        $data=$request->all();
+        $slug=Str::slug($request->title);
+        $count=ProductForm::where('slug',$slug)->count();
+        if($count>0){
+            $slug=$slug.'-'.date('ymdis').'-'.rand(0,999);
+        }
+        $data['slug']=$slug;
+        // return $slug;
+        $status=ProductForm::create($data);
+        if($status){
+            request()->session()->flash('success','Form successfully added');
+        }
+        else{
+            request()->session()->flash('error','Error occurred while adding form');
+        }
+        return redirect()->route('form.index');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $form=ProductForm::findOrFail($id);
+        return view('backend.form.edit')->with('forms',$form);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $form=ProductForm::findOrFail($id);
+        $this->validate($request,[
+            'title'=>'string|required|max:50',
+        ]);
+        $data=$request->all();
+        // $slug=Str::slug($request->title);
+        // $count=Banner::where('slug',$slug)->count();
+        // if($count>0){
+        //     $slug=$slug.'-'.date('ymdis').'-'.rand(0,999);
+        // }
+        // $data['slug']=$slug;
+        // return $slug;
+        $status=$form->fill($data)->save();
+        if($status){
+            request()->session()->flash('success','Form successfully updated');
+        }
+        else{
+            request()->session()->flash('error','Error occurred while updating form');
+        }
+        return redirect()->route('form.index');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $form=ProductForm::findOrFail($id);
+        $status=$form->delete();
+        if($status){
+            request()->session()->flash('success','Form successfully deleted');
+        }
+        else{
+            request()->session()->flash('error','Error occurred while deleting form');
+        }
+        return redirect()->route('form.index');
+    }
+}

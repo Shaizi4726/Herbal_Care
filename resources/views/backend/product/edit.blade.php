@@ -39,17 +39,23 @@
         @enderror
       </div>
       <div class="form-group">
-      <label for="benefit" class="col-form-label">benefit</label>
-        <textarea class="form-control" id="benefit" name="benefit" value="{{$product->benafit}}">{{$product->benafit}}</textarea>
+        <label for="benefit" class="col-form-label">Benefit</label>
+        <textarea class="form-control" id="benefit" name="benefit" value="{{$product->benefit}}">{{$product->benefit}}</textarea>
         @error('benefit')
         <span class="text-danger">{{$message}}</span>
         @enderror
-      </div>
-        
+      </div>     
       <div class="form-group">
         <label for="description" class="col-form-label">Description</label>
         <textarea class="form-control" id="description" name="description" value="{{$product->description}}">{{$product->description}}</textarea>
         @error('description')
+        <span class="text-danger">{{$message}}</span>
+        @enderror
+      </div>
+      <div class="form-group">
+        <label for="precautions" class="col-form-label">Precautions</label>
+        <textarea class="form-control" id="precautions" name="precautions" value="{{$product->precautions}}">{{$product->precautions}}</textarea>
+        @error('precautions')
         <span class="text-danger">{{$message}}</span>
         @enderror
       </div>
@@ -176,7 +182,7 @@
           <table class="table table-bordered" id="product-dataTable" width="100%" cellspacing="0">
             <thead>
               <tr>
-                <th>Product Id</th>
+                <th>Plu</th>
                 <th>SKU</th>
                 <th>Form</th>
                 <th>Size</th>
@@ -190,7 +196,7 @@
             <body>
               @foreach($product['attributes'] as $attribute)
                 <tr>
-                  <td><input type="hidden" name="idAttr[]" value="{{$attribute->id}}">{{$attribute->id}}</td>
+                  <td><input type="hidden" name="idAttr[]" value="{{$attribute->id}}">{{$attribute->plu}}</td>
                   <td>{{$attribute->sku}}</td>                                        
                   <td>{{$attribute->form}}</td>
                   <td>{{$attribute->size}} </td>
@@ -225,9 +231,9 @@
         {{csrf_field()}}
         <table class="table table-bordered" id="product-dataTable" width="100%" cellspacing="0">
           <thead>
-            <tr>
-              <th>Plu</th>
+            <tr>              
               <th>Product Id</th>
+              <th>Plu</th>
               <th>image</th>                            
               <th>Action</th>
             </tr>
@@ -235,9 +241,9 @@
           <body>
             @foreach($product['images'] as $image)
               <tr>
-                <td><input type="hidden" name="idAttr[]" value="{{$attribute->id}}">{{$attribute->id}}</td>
-                <td>{{$image->plu}}</td>                                        
+                <!-- <td><input type="hidden" name="idAttr[]" value="{{$attribute->id}}">{{$attribute->id}}</td> -->
                 <td>{{$image->product_id}}</td>
+                <td>{{$image->plu}}</td>                                        
                 <td>{{$image->image}} </td>                        
                 <td class="center">
               </form>                                                                                   
@@ -303,6 +309,13 @@
         height: 150
     });
   });
+  $(document).ready(function() {
+      $('#precautions').summernote({
+        placeholder: "Write precautions.....",
+          tabsize: 2,
+          height: 150
+      });
+    });
   var  child_cat_id='{{$product->child_cat_id}}';
     // alert(child_cat_id);
     $('#cat_id').change(function(){
