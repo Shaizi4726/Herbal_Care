@@ -79,6 +79,7 @@ input  {
 }
 
 .form p {
+  font-size: 14px;
   text-align: center;
   margin-top: 1em;
 }
@@ -169,7 +170,7 @@ fieldset legend {
   border-radius: 0.65em;
 }
 
-@media screen and (min-width: 480px) {
+@media screen and (min-width: 480px) and (max-width: 768px), screen and (min-width: 1024px) {
   .error {
     font-size: 1em;
     padding: 0 0.5em;
@@ -256,13 +257,7 @@ fieldset legend {
 }
 
 @media screen and (min-width: 768px) {
-  .error {
-    font-size: 0.8em;
-    padding: 0 0.4em;
-  }
-  
   .shop-signing {
-    margin: 1em auto;
     padding: 0;
   }
 
@@ -281,70 +276,13 @@ fieldset legend {
   }
 
   .signing-form-container {
-    font-size: 14px;
     margin-right: 1em;
     flex: 45%;
-  }
-
-  .signing-web-logo {
-    width: 6em;
-    height: 3em;
-  }
-
-  .signing-web-title {
-    font-size: 1.8em;
-    letter-spacing: 0.05em;
-  }
-
-  .signing-form-container h2 {
-    font-size: 1.3em;
-  }
-
-  .form p {
-    font-size: 14px;
-  }
-
-  fieldset legend {
-    font-size: 16px;
-  }
-
-  .type-selection .form-group label {
-    font-size: 0.8em;
-  }
-
-  .type-selection .form-group input {
-    width: 1em;
-    height: 1em;
-  }
-
-  .form-group input {
-    font-size: 14px;
-    height: 2.5em;
-    padding: 0.4em;
-  }
-
-  .fl-bl {
-    flex-direction: column;
-  }
-
-  .checkbox {
-    margin: 1em 0;
-  }
-
-  .signing-btn {
-    font-size: 1.2em;
-    width: 8em;
   }
 }
 
 @media screen and (min-width: 1024px) {
-  .error {
-    font-size: 1em;
-    padding: 0 0.5em;
-  }
-
   .shop-signing {
-    margin: 1.2em auto;
     padding: 0;
   }
   
@@ -352,31 +290,8 @@ fieldset legend {
     font-size: 18px;
   }
   
-  .signing-web-logo {
-    width: 7em;
-    height: 3.5em;
-  }
-  
-  .signing-web-title {
-    font-size: 2em;
-    letter-spacing: 0.075em;
-  }
-  
-  .signing-form-container h2 {
-    font-size: 1.5em;
-  }
-  
   .form p {
     font-size: 18px;
-    margin-top: 1.2em;
-  }
-
-  fieldset legend {
-    font-size: 18px;
-  }
-
-  .type-selection .form-group label {
-    font-size: 0.9em;
   }
 
   .type-selection .form-group input {
@@ -387,28 +302,6 @@ fieldset legend {
   .form-group input {
     font-size: 18px;
     height: 2em;
-    padding: 0.5em;
-  }
-
-  .fl-bl {
-    flex-direction: row;
-  }
-
-  .fl-bl > .form-group:first-child {
-    margin-right: 0.5em;
-  }
-
-  #company-name {
-    margin-right: 0.5em;
-  }
-
-  .checkbox {
-    margin: 1.2em 0;
-  }
-
-  .signing-btn {
-    font-size: 1.4em;
-    width: 9em;
   }
 }
 

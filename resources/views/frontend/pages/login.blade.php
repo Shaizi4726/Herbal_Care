@@ -60,7 +60,7 @@
                                     <button class="btn signing-btn" type="submit">Login</button>
                                     <p>Don't have an account? <a href="{{route('register.form')}}" class="btn">Register</a></p>
                                 </div>
-                                @if (Route::has('password.request'))
+                                @if (Route::has('password.reset'))
                                     <p><a class="forgot-pass" href="{{ route('password.reset') }}">
                                         Forgot password?
                                     </a></p>

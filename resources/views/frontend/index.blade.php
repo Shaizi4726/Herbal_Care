@@ -217,35 +217,35 @@
     @if($CategoryLists)
       @foreach($CategoryLists as $cat)
         @php
-          $CatProducts = DB::table('products')->where('cat_id', $cat->id)->where('status', 'active')->limit(9)->get();
+          $product_cat = DB::table('product_categories')->where('category_id', $cat->id)->with('products')->limit(9)->get();
         @endphp
 
-        @if(count($CatProducts) != 0)
+        @if(count($product_cat) != 0)
           <div class="products">
             <div class="title-content">                        
               <h2> {{$cat->title}} </h2>
             </div>
           
             <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false }'>
-              @foreach($CatProducts as $product)
+              @foreach($product_cat as $prodcat)
                 @php
-                  $minprice = DB::table('products_attributes')->where('product_id', $product->id)->min('price');
-                  $maxprice = DB::table('products_attributes')->where('product_id', $product->id)->max('price');
-                  $Images = DB::table('images')->where('product_id', $product->id)->pluck('image');
-                  $Forms = DB::table('products_attributes')->where('product_id', $product->id)->distinct()->pluck('form');
+                  $minprice = DB::table('products_attributes')->where('product_id', $prodcat->product_id)->min('price');
+                  $maxprice = DB::table('products_attributes')->where('product_id', $prodcat->product_id)->max('price');
+                  $Images = DB::table('images')->where('product_id', $prodcat->product_id)->pluck('image');
+                  $Forms = DB::table('products_attributes')->where('product_id', $prodcat->product_id)->distinct()->pluck('form');
 
                   if(Auth::user())
-                  $wishlist = DB::table('wishlists')->where('product_id', $product->id)->where('user_id', auth()->user()->id)->get();
+                  $wishlist = DB::table('wishlists')->where('product_id', $prodcat->product_id)->where('user_id', auth()->user()->id)->get();
                   
                   $Sizes = array();
                   foreach ($Forms as $form) {
-                    ${$form . "sizes"} = DB::table('products_attributes')->where('product_id', $product->id)->where('form', $form)->pluck('size');
+                    ${$form . "sizes"} = DB::table('products_attributes')->where('product_id', $prodcat->product_id)->where('form', $form)->pluck('size');
                     $Sizes[$form] =  ${$form . "sizes"};
                   }
                   $Sizes = json_encode($Sizes);
                 @endphp
-                <div class="product-card {{$product->id}}-card carousel-cell">
-                  <img class="product-image" src="{{$product->photo}}" alt="product image">
+                <div class="product-card {{$prodcat->product_id}}-card carousel-cell">
+                  <img class="product-image" src="{{$prodcat->product_id->photo}}" alt="product image">
                   
                   <div class="overlay">
                     <button id="{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, `{{$product->photo}}`, {{$Images}}, `{{$product->title}}`, {{$Forms}}, {{$Sizes}}, {{$minprice}}, {{$maxprice}}, `{{$product->slug}}`, {{$auth}})"> 
