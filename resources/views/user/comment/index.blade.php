@@ -64,7 +64,7 @@
             @endforeach
           </tbody>
         </table>
-        <span style="float:right">{{$comments->links()}}</span>
+        {!! $comments->withQueryString()->links('pagination::bootstrap-5') !!}
         @else
           <h6 class="text-center">No post comments found!!!</h6>
         @endif

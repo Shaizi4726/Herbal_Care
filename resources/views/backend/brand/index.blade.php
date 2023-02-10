@@ -79,7 +79,8 @@
             @endforeach
           </tbody>
         </table>
-        <span style="float:right">{{$brands->links()}}</span>
+        {!! $brands->withQueryString()->links('pagination::bootstrap-5') !!}
+        
         @else
           <h6 class="text-center">No brands found!!! Please create brand</h6>
         @endif

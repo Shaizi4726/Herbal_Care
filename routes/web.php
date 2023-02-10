@@ -140,6 +140,8 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     Route::post('/profile/{id}','AdminController@profileUpdate')->name('profile-update');
     // Category
     Route::resource('/category','CategoryController');
+    //Form
+    Route::resource('/form','FormController');
     // Product
     Route::resource('/product','ProductController');
     //import product

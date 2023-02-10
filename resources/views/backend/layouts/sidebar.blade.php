@@ -68,6 +68,22 @@
           </div>
         </div>
     </li>
+    <!-- Form -->
+    {{-- Forms --}}
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#formCollapse" aria-expanded="true" aria-controls="formCollapse">
+          <i class="fas fa-cubes"></i>
+          <span>Forms</span>
+        </a>
+        <div id="formCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Form Options:</h6>
+            <a class="collapse-item" href="{{route('form.index')}}">Forms</a>
+            <a class="collapse-item" href="{{route('form.create')}}">Add Form</a>
+            
+          </div>
+        </div>
+    </li>
     <!-- Product -->
     {{-- Products --}}
     <li class="nav-item">

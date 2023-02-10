@@ -77,7 +77,7 @@
             @endforeach
           </tbody>
         </table>
-        <span style="float:right">{{$reviews->links()}}</span>
+        {!! $reviews->withQueryString()->links('pagination::bootstrap-5'<span style="float:right">{{$reviews->links()}}</span>
         @else
           <h6 class="text-center">No reviews found!!!</h6>
         @endif

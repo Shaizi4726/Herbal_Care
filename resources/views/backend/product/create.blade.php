@@ -37,7 +37,7 @@
           @enderror
         </div>
         <div class="form-group">
-          <label for="benefit" class="col-form-label">benefit</label>
+          <label for="benefit" class="col-form-label">Benefit</label>
           <textarea class="form-control" id="benefit" name="benefit">{{old('benefit')}}</textarea>
           @error('benefit')
           <span class="text-danger">{{$message}}</span>
@@ -47,6 +47,13 @@
           <label for="description" class="col-form-label">Description</label>
           <textarea class="form-control" id="description" name="description">{{old('description')}}</textarea>
           @error('description')
+          <span class="text-danger">{{$message}}</span>
+          @enderror
+        </div>
+        <div class="form-group">
+          <label for="dprecautions" class="col-form-label">Precautions</label>
+          <textarea class="form-control" id="precautions" name="precautions">{{old('precautions')}}</textarea>
+          @error('precautions')
           <span class="text-danger">{{$message}}</span>
           @enderror
         </div>
@@ -207,6 +214,13 @@
     $(document).ready(function() {
       $('#benefit').summernote({
         placeholder: "Write benefit.....",
+          tabsize: 2,
+          height: 150
+      });
+    });
+    $(document).ready(function() {
+      $('#precautions').summernote({
+        placeholder: "Write precautions.....",
           tabsize: 2,
           height: 150
       });

@@ -90,7 +90,8 @@
             @endforeach
           </tbody>
         </table>
-        <span style="float:right">{{$banners->links()}}</span>
+        {!! $banners->withQueryString()->links('pagination::bootstrap-5') !!}
+        
         @else
           <h6 class="text-center">No banners found!!! Please create banner</h6>
         @endif

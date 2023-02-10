@@ -86,7 +86,8 @@
             @endforeach
           </tbody>
         </table>
-        <span style="float:right">{{$posts->links()}}</span>
+        {!! $posts->withQueryString()->links('pagination::bootstrap-5') !!}
+        
         @else
           <h6 class="text-center">No posts found!!! Please create Post</h6>
         @endif

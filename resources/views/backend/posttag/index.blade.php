@@ -59,6 +59,7 @@
             @endforeach
           </tbody>
         </table>
+        {!! $postTags->withQueryString()->links('pagination::bootstrap-5') !!}
         <span style="float:right">{{$postTags->links()}}</span>
         @else
           <h6 class="text-center">No Post Tag found!!! Please create post tag</h6>

@@ -78,7 +78,8 @@
             @endforeach
           </tbody>
         </table>
-        <span style="float:right">{{$categories->links()}}</span>
+        {!! $categories->withQueryString()->links('pagination::bootstrap-5') !!}
+        
         @else
           <h6 class="text-center">No Categories found!!! Please create Category</h6>
         @endif

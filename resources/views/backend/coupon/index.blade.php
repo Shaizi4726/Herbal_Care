@@ -114,7 +114,8 @@
           @endforeach
         </tbody>
       </table>
-      <span style="float:right">{{$coupons->links()}}</span>
+      {!! $coupons->withQueryString()->links('pagination::bootstrap-5') !!}
+      
         @else
           <h6 class="text-center">No Coupon found!!! Please create coupon</h6>
         @endif

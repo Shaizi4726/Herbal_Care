@@ -73,7 +73,7 @@
             @endforeach
           </tbody>
         </table>
-        <span style="float:right">{{$citys->links()}}</span>
+        {!! $citys->withQueryString()->links('pagination::bootstrap-5') !!}
       
         @else
           <h6 class="text-center">No citys found!!! Please create city</h6>
