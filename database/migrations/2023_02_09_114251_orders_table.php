@@ -14,32 +14,33 @@ return new class extends Migration
   public function up()
   {
     Schema::create('orders', function (Blueprint $table) {
+      $table->charset = 'utf8mb4';
+      $table->collation = 'utf8mb4_unicode_ci';
+      
       $table->id();
-      $table->string('order_number')->unique();
+      $table->string('order_no')->unique();
+      $table->unsignedBigInteger('session_id')->nullable();
+      $table->foreign('session_id')->references('id')->on('shopping_sessions')->onDelete('SET NULL');
       $table->unsignedBigInteger('user_id')->nullable();
       $table->foreign('user_id')->references('id')->on('users')->onDelete('SET NULL');
       $table->string('fname');
       $table->string('lname');
       $table->string('cname');
-      $table->unsignedBigInteger('trn_number');
+      $table->unsignedBigInteger('trn_no');
       $table->string('email');
       $table->string('phone');
       $table->text('address');
       $table->unsignedBigInteger('city_id')->nullable();
       $table->foreign('city_id')->references('id')->on('cities')->onDelete('SET NULL');
-      $table->unsignedBigInteger('state_id')->nullable();
-      $table->foreign('state_id')->references('id')->on('states')->onDelete('SET NULL');
-      $table->unsignedBigInteger('country_id')->nullable();
-      $table->foreign('country_id')->references('id')->on('countries')->onDelete('SET NULL');
       $table->string('post_code')->nullable();
-      $table->enum('status', ['new', 'process', 'delivered', 'cancel'])->default('new');
       $table->enum('payment_method', ['cod', 'op'])->default('cod');
       $table->enum('payment_status',['paid', 'unpaid'])->default('unpaid');
-      $table->float('sub_total', $scale = 2);
+      $table->float('subtotal', $scale = 2);
       $table->float('tax_amount', $scale = 2);
       $table->float('total_amount', $scale = 2);
       $table->unsignedBigInteger('coupon_id')->nullable();
       $table->foreign('coupon_id')->references('id')->on('coupons')->onDelete('SET NULL');
+      $table->enum('status', ['new', 'process', 'delivered', 'cancel'])->default('new');
       $table->timestamps();
     });
   }

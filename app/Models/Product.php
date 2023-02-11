@@ -3,10 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Cart;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-use App\Models\ProductsAttribute;
 use Nicolaslopezj\Searchable\SearchableTrait;
 
 class Product extends Model
@@ -19,80 +17,99 @@ class Product extends Model
   protected $table = 'products';
 
   /**
-   * The primary key associated with the table.
-   *
-   * @var string
-   *
-  protected $primaryKey = 'plu'; */
-
-  /**
    * The attributes that are mass assignable.
    *
    * @var array
    *
    * 
    */
-  protected $fillable=['plu', 'title', 'slug', 'scientific', 'other_name', 'benefit', 'description', 'precautions', 'minprice', 'photo', 'promotion', 'status', 'brand_id'];
+  protected $fillable = ['plu', 'title', 'slug', 'sci_name', 'other_name', 'benefits', 'description', 'precautions', 'photo', 'promotion', 'status', 'minprice', 'coupon_id'];
   
-  public function brand(){
-    return $this->hasOne(Brand::class);
+  /**
+   * Get the cart items for the product.
+   */
+  public function cart_items()
+  {
+    return $this->hasMany(CartItem::class, 'product_id');
   }
 
-  public function cat_info() {
-    return $this->hasMany('App\Models\Category','id','cat_id')->orderBy('id','asc');
+  /**
+   * Get the order items for the product.
+   */
+  public function order_items()
+  {
+    return $this->hasMany(OrderItem::class, 'product_id');
   }
 
-  public function sub_cat_info(){
-    return $this->hasMany('App\Models\Category','id','child_cat_id')->orderBy('id','asc');
-  }
-
-  public static function getAllProduct(){
-    return Product::with(['cat_info','sub_cat_info'])->orderBy('id','ASC')->paginate(10);
-  }
-
-  public function rel_prods(){
-    return $this->hasMany('App\Models\Product','cat_id','cat_id')->where('status','active')->orderBy('id','ASC')->limit(8);
+  /**
+   * Get the product images for the product.
+   */
+  public function prod_images()
+  {
+    return $this->hasMany(ProductImage::class, 'product_id');
   }
   
-  public function getReview(){
-    return $this->hasMany('App\Models\ProductReview','product_id','id')->with('user_info')->where('status','active')->orderBy('id','DESC');
-  }
-  public function attributes(){
-      return $this->hasMany(ProductsAttribute::class,'product_id','id');
-    }
-    public function coupon(){
-      return $this->belongsTo(Coupon::class,'product_id','id');
-    }
-    public function productForms(){
-      return $this->hasMany(ProductForm::class,'product_id','id');
-    }
-  public static function getProductBySlug($slug){
-      return Product::with(['attributes','cat_info','sub_cat_info','getReview'])->where('slug',$slug)->first();
-  }
-  public static function countActiveProduct(){
-      $data=Product::where('status','active')->count();
-      if($data){
-          return $data;
-      }
-      return 0;
+  /**
+   * Get the product attributes for the product.
+   */
+  public function prod_attrs()
+  {
+    return $this->hasMany(ProductAttribute::class, 'product_id');
   }
 
-  public function carts(){
-      return $this->hasMany(Cart::class)->whereNotNull('order_id');
+  /**
+   * Get the product reviews for the product.
+   */
+  public function prod_reviews()
+  {
+    return $this->hasMany(ProductReview::class, 'product_id');
+  }
+  
+  /**
+   * Get the wishlists for the product.
+   */
+  public function wishlists()
+  {
+    return $this->hasMany(Wishlist::class, 'product_id');
   }
 
-  public function wishlists(){
-    return $this->hasMany(Wishlist::class);
+  /**
+   * Get the coupon that owns the product.
+   */
+  public function coupon()
+  {
+    return $this->belongsTo(Coupon::class, 'coupon_id');
   }
 
+  /**
+   * The brands that belong to the product.
+  */
+  public function brands()
+  {
+    return $this->belongsToMany(Brand::class, 'product_brands', 'product_id', 'brand_id');
+  }
+  
+  /**
+   * The categories that belong to the product.
+  */
+  public function categories()
+  {
+    return $this->belongsToMany(Category::class, 'product_categories', 'product_id', 'cat_id');
+  }
 
-  public function images(){
-      return $this->hasMany(Image::class,'product_id','id');
-    }
-  // public function groups(){
-  //     return $this->has(Product::class);
-  // }
-  public function productcategory(){
-      return $this->hasMany(ProductCategory::class,'product_id','id');
-    }
+  /**
+   * The subcategories that belong to the product.
+  */
+  public function subcat()
+  {
+    return $this->belongsToMany(SubCategory::class, 'product_categories', 'product_id', 'subcat_id');
+  }
+
+  /**
+   * The products that belong to the brand.
+  */
+  public function forms()
+  {
+    return $this->belongsToMany(Form::class, 'product_forms', 'product_id', 'form_id');
+  }
 }

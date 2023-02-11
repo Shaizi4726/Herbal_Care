@@ -2,28 +2,27 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 
-class Wishlist extends Model
+class CartItem extends Model
 {
   /**
    * The table associated with the model.
    *
    * @var string
    */
-  protected $table = 'wishlists';
+  protected $table = 'cart_items';
 
   /**
    * The attributes that are mass assignable.
    *
    * @var array
    */
-  protected $fillable = ['session_id', 'user_id', 'product_id'];
+  protected $fillable = ['session_id', 'user_id', 'product_id', 'form', 'size', 'price', 'quantity', 'amount'];
 
   /**
-   * Get the shopping session that owns the wishlist.
+   * Get the shopping session that owns the cart item.
    */
   public function shopping_session()
   {
@@ -31,7 +30,7 @@ class Wishlist extends Model
   }
   
   /**
-   * Get the user that owns the wishlist.
+   * Get the user that owns the cart item.
    */
   public function user()
   {
@@ -39,7 +38,7 @@ class Wishlist extends Model
   }
 
   /**
-   * Get the product that owns the wishlist.
+   * Get the product that owns the cart item.
    */
   public function product()
   {

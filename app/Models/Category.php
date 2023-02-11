@@ -8,60 +8,52 @@ use Spatie\Permission\Models\Permission;
 use App\Models\ProductsAttribute;
 
 class Category extends Model
+
 {
-    protected $fillable=['title','slug','photo','status','is_parent','parent_id','added_by'];
+  /**
+   * The table associated with the model.
+   *
+   * @var string
+   */
+  protected $table = 'categories';
 
-    public function parent_info(){
-        return $this->hasOne('App\Models\Category','id','parent_id');
-    }
-    public static function getAllCategory(){
-        return  Category::orderBy('id','DESC')->with('parent_info')->paginate(10);
-    }
+  /**
+   * The attributes that are mass assignable.
+   *
+   * @var array
+   */
+  protected $fillable = ['name', 'slug', 'status', 'coupon_id'];
 
-    public static function shiftChild($cat_id){
-        return Category::whereIn('id',$cat_id)->update(['is_parent'=>1]);
-    }
-    public static function getChildByParentID($id){
-        return Category::where('parent_id',$id)->orderBy('id','ASC')->pluck('title', 'id');
-    }
+  /**
+   * Get the subcategories for the category.
+   */
+  public function subcat()
+  {
+    return $this->hasMany(SubCategory::class, 'parent_id');
+  }
 
-    public static function getChildByParentSlug($slug){
-      $cat = Category::where(['slug'=>$slug])->pluck('id');
-      return Category::getChildByParentID($cat);
-    }
+  /**
+   * Get the coupon that owns the category.
+   */
+  public function coupon()
+  {
+    return $this->belongsTo(Coupon::class, 'coupon_id');
+  }
 
-    public function child_cat(){
-        return $this->hasMany('App\Models\Category','parent_id','id')->where('status','active');
-    }
+  /**
+   * The products that belong to the category.
+  */
+  public function products()
+  {
+    return $this->belongsToMany(Product::class, 'product_categories', 'cat_id', 'product_id');
+  }
 
-    public static function getAllParentWithChild(){
-        return Category::with('child_cat')->where('is_parent',1)->where('status','active')->orderBy('id','ASC')->get();
-    }
-
-    public function products(){
-        return $this->hasMany('App\Models\Product','cat_id','id')->where('status','active');
-    }
-
-    public function sub_products(){
-        return $this->hasMany('App\Models\Product','child_cat_id','id')->where('status','active');
-    }
-    
-    public static function getProductByCat($slug){
-        return Category::with('products')->where('slug',$slug)->first();
-    }
-
-    public static function getProductBySubCat($slug){
-      return Category::with('sub_products')->where('slug',$slug)->first();
-    }
-
-    public static function countActiveCategory(){
-        $data=Category::where('status','active')->count();
-        if($data){
-            return $data;
-        }
-        return 0;
-    }
-    public function productcategory(){
-        return $this->hasMany(ProductCategory::class,'product_id','id');
-     }
+  /**
+   * The model's default values for attributes.
+   *
+   * @var array
+   */
+  protected $attributes = [
+    'status' => 'active'
+  ];
 }

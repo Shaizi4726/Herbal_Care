@@ -21,7 +21,7 @@ return new class extends Migration
       $table->string('fname', 100)->nullable();
       $table->string('lname', 100)->nullable();
       $table->string('cname', 100)->nullable();
-      $table->bigInteger('trn_number')->unique()->nullable();
+      $table->bigInteger('trn_no')->unique()->nullable();
       $table->string('email', 100)->unique()->nullable();
       $table->string('password');
       $table->binary('photo')->nullable();

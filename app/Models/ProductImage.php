@@ -1,27 +1,33 @@
 <?php
 
 namespace App\Models;
-
+use App\Models\Product;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 
-
-class Banner extends Model
+class ProductImage extends Model
 {
   /**
    * The table associated with the model.
    *
    * @var string
    */
-  protected $table = 'banners';
+  protected $table = 'product_images';
 
   /**
    * The attributes that are mass assignable.
    *
    * @var array
    */
-  protected $fillable = ['name', 'slug', 'photo_mobile', 'photo_tablet', 'photo_desktop', 'status'];
+  protected $fillable = ['name', 'product_id', 'status'];
+  
+  /**
+   * Get the product that owns the image.
+   */
+  public function product()
+  {
+    return $this->belongsTo(Product::class, 'product_id');
+  }
 
   /**
    * The model's default values for attributes.

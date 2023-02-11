@@ -9,32 +9,77 @@ use Spatie\Permission\Models\Permission;
 
 class Order extends Model
 {
-    protected $fillable=['user_id','order_number','sub_total','tax_total','t_total','quantity','form','delivery_charge','status','total_amount','first_name','last_name','country','city','post_code','address1','address2','phone','email','payment_method','payment_status','city_id','coupon'];
+  /**
+   * The table associated with the model.
+   *
+   * @var string
+   */
+  protected $table = 'orders';
 
-    public function cart_info(){
-        return $this->hasMany('App\Models\Cart','order_id','id');
-    }
-    public static function getAllOrder($id){
-        return Order::with('cart_info')->find($id);
-    }
-    public static function countActiveOrder(){
-        $data=Order::count();
-        if($data){
-            return $data;
-        }
-        return 0;
-    }
-    public function cart(){
-        return $this->hasMany(Cart::class);
-    }
+  /**
+   * The attributes that are mass assignable.
+   *
+   * @var array
+   */
+  protected $fillable = ['order_no', 'session_id', 'user_id', 'fname', 'lname', 'cname', 'trn_no', 'email', 'phone', 'address', 'city_id', 'post_code', 'payment_method', 'payment_status', 'subtotal', 'tax_amount', 'total_amount', 'coupon_id', 'status'];
+  
+  /**
+   * Get the payment associated with the order.
+   */
+  public function payment()
+  {
+    return $this->hasOne(Payment::class, 'order_id');
+  }
 
-    public function city(){
-        return $this->belongsTo(city::class,'city_id');
-    }
-    public function user()
-    {
-        return $this->belongsTo('App\User', 'user_id');
-    }
-   
+  /**
+   * Get the order items for the order.
+   */
+  public function order_items()
+  {
+    return $this->hasMany(OrderItem::class, 'order_id');
+  }
 
+  /**
+   * Get the user that owns the order.
+   */
+  public function user()
+  {
+    return $this->belongsTo(User::class, 'user_id');
+  }
+  
+  /**
+   * Get the shopping session that owns the order.
+   */
+  public function session()
+  {
+    return $this->belongsTo(ShoppingSession::class, 'session_id');
+  }
+
+  /**
+   * Get the city that owns the order.
+   */
+  public function city()
+  {
+    return $this->belongsTo(City::class, 'city_id');
+  }
+
+  /**
+   * Get the coupon that owns the order.
+   */
+  public function coupon()
+  {
+    return $this->belongsTo(Coupon::class, 'coupon_id');
+  }
+
+  /**
+   * The model's default values for attributes.
+   *
+   * @var array
+   */
+  protected $attributes = [
+    'status' => 'new',
+    'payment_method' => 'cod',
+    'payment_status' => 'unpaid'
+  ];
 }
+

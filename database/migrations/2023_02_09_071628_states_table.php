@@ -14,9 +14,11 @@ return new class extends Migration
   public function up()
   {
     Schema::create('states', function (Blueprint $table) {
+      $table->charset = 'utf8mb4';
+      $table->collation = 'utf8mb4_unicode_ci';
+      
       $table->id();
       $table->string('name', 100)->unique();
-      $table->integer('state_code')->unique();
       $table->unsignedBigInteger('country_id');
       $table->foreign('country_id')->references('id')->on('countries')->onDelete('CASCADE');
       $table->enum('status', ['active', 'inactive'])->default('inactive');

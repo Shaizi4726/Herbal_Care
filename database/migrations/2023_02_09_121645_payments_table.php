@@ -14,15 +14,16 @@ return new class extends Migration
   public function up()
   {
     Schema::create('payments', function (Blueprint $table) {
+      $table->charset = 'utf8mb4';
+      $table->collation = 'utf8mb4_unicode_ci';
+      
       $table->id();
       $table->unsignedBigInteger('order_id')->nullable();
       $table->foreign('order_id')->references('id')->on('orders')->onDelete('SET NULL');
-      $table->unsignedBigInteger('user_id')->nullable();
-      $table->foreign('user_id')->references('id')->on('users')->onDelete('SET NULL');
       $table->enum('payment_method', ['cod', 'op'])->default('cod');
       $table->unsignedBigInteger('account_no')->nullable();
       $table->enum('payment_status',['paid', 'unpaid'])->default('unpaid');
-      $table->float('sub_total', $scale = 2);
+      $table->float('subtotal', $scale = 2);
       $table->float('tax_amount', $scale = 2);
       $table->float('total_amount', $scale = 2);
       $table->timestamps();

@@ -3,27 +3,28 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Cart;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
-class ProductReview extends Model
+class ProductAttribute extends Model
 {
   /**
    * The table associated with the model.
    *
    * @var string
    */
-  protected $table = 'product_reviews';
+  protected $table = 'product_attributes';
 
   /**
    * The attributes that are mass assignable.
    *
    * @var array
    */
-  protected $fillable = ['user_id', 'product_id', 'rating', 'review', 'status'];
+  protected $fillable = ['flu', 'product_id', 'form_id', 'sku', 'size', 'price', 'discount', 'stock', 'status'];
   
   /**
-   * Get the product that owns the review.
+   * Get the product that owns the attribute.
    */
   public function product()
   {
@@ -31,11 +32,11 @@ class ProductReview extends Model
   }
   
   /**
-   * Get the user that owns the review.
+   * Get the form that owns the attribute.
    */
-  public function user()
+  public function form()
   {
-    return $this->belongsTo(User::class, 'user_id');
+    return $this->belongsTo(Form::class, 'form_id');
   }
 
   /**
@@ -47,3 +48,4 @@ class ProductReview extends Model
     'status' => 'active'
   ];
 }
+

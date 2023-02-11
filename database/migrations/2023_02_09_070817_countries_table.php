@@ -14,9 +14,11 @@ return new class extends Migration
   public function up()
   {
     Schema::create('countries', function (Blueprint $table) {
+      $table->charset = 'utf8mb4';
+      $table->collation = 'utf8mb4_unicode_ci';
+
       $table->id();
       $table->string('name', 100)->unique();
-      $table->integer('country_code')->unique();
       $table->string('capital', 100)->nullable();
       $table->string('iso_code')->nullable();
       $table->string('lang')->nullable();

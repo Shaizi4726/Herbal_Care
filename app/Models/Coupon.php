@@ -9,28 +9,74 @@ use Spatie\Permission\Models\Permission;
 
 class Coupon extends Model
 {
-    protected $fillable=['product_id','user_id','code','expiry_date','type','value','status'];
-    
-    public function products(){
-        return $this->hasOne(Product::class,'id','product_id');
-     }
-     public function users(){
-        return $this->hasOne(User::class,'id','user_id');
-     }
-     
-    public static function findByCode(){
-        return self::where('code',$code)->first();
-    }
-    //public static coupan_check($code)
-    public function discount($total){
-        if($this->type=="fixed"){
-            return $this->value;
-        }
-        elseif($this->type=="percent"){
-            return ($this->value /100)*$total;
-        }
-        else{
-            return 0;
-        }
-    }
+  /**
+   * The table associated with the model.
+   *
+   * @var string
+   */
+  protected $table = 'coupons';
+
+  /**
+   * The attributes that are mass assignable.
+   *
+   * @var array
+   */
+  protected $fillable = ['code', 'type', 'value', 'effect'];
+
+  /**
+   * Get the products for the coupon.
+  */
+  public function products()
+  {
+    return $this->hasMany(Product::class, 'coupon_id');
+  }
+  
+  /**
+   * Get the categories for the coupon.
+  */
+  public function categories()
+  {
+    return $this->hasMany(Category::class, 'coupon_id');
+  }
+
+  /**
+   * Get the subcategories for the coupon.
+  */
+  public function subcat()
+  {
+    return $this->hasMany(SubCategory::class, 'coupon_id');
+  }
+  
+  /**
+   * Get the orders for the coupon.
+  */
+  public function orders()
+  {
+    return $this->hasMany(Order::class, 'coupon_id');
+  }
+  
+  /**
+   * Get the orders for the coupon.
+   */
+  public function coupons()
+  {
+    return $this->hasMany(Order::class, 'coupon_id');
+  }
+  
+  /**
+   * Get the users for the coupon.
+  */
+  public function users()
+  {
+    return $this->hasMany(User::class, 'coupon_id');
+  }
+
+  /**
+   * The model's default values for attributes.
+   *
+   * @var array
+   */
+  protected $attributes = [
+    'status' => 'inactive'
+  ];
 }

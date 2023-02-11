@@ -14,10 +14,15 @@ return new class extends Migration
   public function up()
   {
     Schema::create('categories', function (Blueprint $table) {
+      $table->charset = 'utf8mb4';
+      $table->collation = 'utf8mb4_unicode_ci';
+      
       $table->id();
       $table->string('name');
       $table->string('slug')->unique();
       $table->enum('status',['active','inactive'])->default('inactive');
+      $table->unsignedBigInteger('coupon_id')->nullable();
+      $table->foreign('coupon_id')->references('id')->on('coupons')->onDelete('SET NULL');
       $table->timestamps();
     });
   }

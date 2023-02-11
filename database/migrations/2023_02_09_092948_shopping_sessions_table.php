@@ -14,6 +14,9 @@ return new class extends Migration
   public function up()
   {
     Schema::create('shopping_sessions', function (Blueprint $table) {
+      $table->charset = 'utf8mb4';
+      $table->collation = 'utf8mb4_unicode_ci';
+      
       $table->id();
       $table->string('session')->unique();
       $table->unsignedBigInteger('user_id')->nullable();

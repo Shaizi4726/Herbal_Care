@@ -2,18 +2,17 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 
-class Brand extends Model
+class Form extends Model
 {
   /**
    * The table associated with the model.
    *
    * @var string
    */
-  protected $table = 'brands';
+  protected $table = 'forms';
 
   /**
    * The attributes that are mass assignable.
@@ -27,7 +26,15 @@ class Brand extends Model
   */
   public function products()
   {
-    return $this->belongsToMany(Product::class, 'product_brands', 'brand_id', 'product_id');
+    return $this->belongsToMany(Product::class, 'product_forms', 'form_id', 'product_id');
+  }
+
+  /**
+   * Get the product attributes for the form.
+   */
+  public function prod_attrs()
+  {
+    return $this->hasMany(ProductAttribute::class, 'form_id');
   }
 
   /**
@@ -38,4 +45,4 @@ class Brand extends Model
   protected $attributes = [
     'status' => 'active'
   ];
-}
+}  

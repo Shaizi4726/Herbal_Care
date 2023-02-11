@@ -15,6 +15,7 @@ return new class extends Migration
   {
     Schema::create('product_attributes', function (Blueprint $table) {
       $table->bigIncrements('id');
+      $table->unsignedBigInteger('flu')->unique();
       $table->unsignedBigInteger('product_id');
       $table->foreign('product_id')->references('id')->on('products')->onDelete('CASCADE');
       $table->unsignedBigInteger('form_id');

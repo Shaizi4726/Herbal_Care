@@ -14,9 +14,11 @@ return new class extends Migration
   public function up()
   {
     Schema::create('cities', function (Blueprint $table) {
+      $table->charset = 'utf8mb4';
+      $table->collation = 'utf8mb4_unicode_ci';
+      
       $table->id();
       $table->string('name', 100)->unique();
-      $table->integer('city_code')->unique();
       $table->unsignedBigInteger('state_id');
       $table->foreign('state_id')->references('id')->on('states')->onDelete('CASCADE');
       $table->unsignedBigInteger('country_id');
