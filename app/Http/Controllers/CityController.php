@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\city;
+use App\Models\City;
 use App\Models\Coupon;
 
 class CityController extends Controller
@@ -15,7 +15,7 @@ class CityController extends Controller
      */
     public function index()
     {
-        $city=city::orderBy('id','ASC')->where('country_id','231')->paginate(10);
+        $city=City::orderBy('id','ASC')->paginate(10);
         return view('backend.city.index')->with('citys',$city);
     }
 
@@ -41,11 +41,11 @@ class CityController extends Controller
             'name'=>'string|required',
             'state_id'=>'nullable|numeric', 
             'country_id'=>'nullable|numeric',                       
-            'price'=>'nullable|numeric'
+            'shipping'=>'nullable|numeric'
         ]);
         $data=$request->all();
-        // return $data;
-        $status=city::create($data);
+        //dd($data);
+        $status=City::create($data);
         if($status){
             request()->session()->flash('success','city successfully created');
         }
@@ -123,7 +123,7 @@ class CityController extends Controller
      */
     public function destroy($id)
     {
-        $city=city::find($id);
+        $city=City::find($id);
         if($city){
             $status=$city->delete();
             if($status){

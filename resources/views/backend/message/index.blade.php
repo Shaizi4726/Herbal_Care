@@ -41,7 +41,7 @@
       </tbody>
     </table>
     <nav class="blog-pagination justify-content-center d-flex">
-    {!! $cmessages->withQueryString()->links('pagination::bootstrap-5') !!}
+    {!! $messages->withQueryString()->links('pagination::bootstrap-5') !!}
     </nav>
     @else
       <h2>Messages Empty!</h2>

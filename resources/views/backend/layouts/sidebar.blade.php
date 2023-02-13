@@ -116,10 +116,41 @@
         </div>
     </li>
 
+<!--Country -->
+    {{-- Country --}}
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#countryCollapse" aria-expanded="true" aria-controls="countryCollapse">
+      <i class="fas fa-globe"></i>
+        <span>Country</span>
+      </a>
+      <div id="countryCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+          <h6 class="collapse-header">Country Options:</h6>
+          <a class="collapse-item" href="{{route('country.index')}}">Countries</a>
+          <a class="collapse-item" href="{{route('country.create')}}">Add Countries</a>
+        </div>
+      </div>
+    </li>
+    <!-- City -->
+    {{-- State --}}
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#stateCollapse" aria-expanded="true" aria-controls="stateCollapse">
+        <i class="fas fa-landmark"></i>
+          <span>State</span>
+        </a>
+        <div id="stateCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">State Options:</h6>
+            <a class="collapse-item" href="{{route('state.index')}}">States</a>
+            <a class="collapse-item" href="{{route('state.create')}}">Add States</a>
+          </div>
+        </div>
+    </li>
+    <!-- City -->
     {{-- City --}}
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#cityCollapse" aria-expanded="true" aria-controls="cityCollapse">
-          <i class="fas fa-truck"></i>
+          <i class="fas fa-city"></i>
           <span>Shipping</span>
         </a>
         <div id="cityCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">

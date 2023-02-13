@@ -117,7 +117,7 @@ CREATE TABLE `categories` (
   `slug` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `photo` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `is_parent` tinyint(1) NOT NULL DEFAULT 1,
-  `parent_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `parent_cat` bigint(20) UNSIGNED DEFAULT NULL,
   `added_by` bigint(20) UNSIGNED DEFAULT NULL,
   `status` enum('active','inactive') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'inactive',
   `created_at` timestamp NULL DEFAULT NULL,
@@ -128,7 +128,7 @@ CREATE TABLE `categories` (
 -- Dumping data for table `categories`
 --
 
-INSERT INTO `categories` (`id`, `title`, `slug`, `photo`, `is_parent`, `parent_id`, `added_by`, `status`, `created_at`, `updated_at`) VALUES
+INSERT INTO `categories` (`id`, `title`, `slug`, `photo`, `is_parent`, `parent_cat`, `added_by`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'Botanical Herbs & Extracts', 'botanical-herbs-extracts', '/storage/photos/1/Final Pic/abresham.jpg', 1, NULL, NULL, 'active', '2022-10-26 09:35:01', '2022-12-27 01:15:50'),
 (2, 'Botanical Herbs', 'botanical-herbs', '/storage/photos/1/Final Pic/Anar Chilka.jpg', 0, 1, NULL, 'active', '2022-10-26 09:35:33', '2022-12-07 10:27:11'),
 (3, 'Natural Minerals', 'natural-minerals', '/storage/photos/1/Final Pic/Amla.jpg', 0, 1, NULL, 'active', '2022-10-26 09:36:12', '2022-12-27 01:16:07'),
@@ -151974,7 +151974,7 @@ CREATE TABLE `post_comments` (
   `comment` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` enum('active','inactive') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'active',
   `replied_comment` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `parent_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `parent_cat` bigint(20) UNSIGNED DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -151983,7 +151983,7 @@ CREATE TABLE `post_comments` (
 -- Dumping data for table `post_comments`
 --
 
-INSERT INTO `post_comments` (`id`, `user_id`, `post_id`, `comment`, `status`, `replied_comment`, `parent_id`, `created_at`, `updated_at`) VALUES
+INSERT INTO `post_comments` (`id`, `user_id`, `post_id`, `comment`, `status`, `replied_comment`, `parent_cat`, `created_at`, `updated_at`) VALUES
 (8, 1, 7, 'xsx', 'active', NULL, NULL, '2022-10-13 04:20:38', '2022-10-13 04:20:38');
 
 -- --------------------------------------------------------
@@ -159675,7 +159675,7 @@ ALTER TABLE `carts`
 ALTER TABLE `categories`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `categories_slug_unique` (`slug`),
-  ADD KEY `categories_parent_id_foreign` (`parent_id`),
+  ADD KEY `categories_parent_cat_foreign` (`parent_cat`),
   ADD KEY `categories_added_by_foreign` (`added_by`);
 
 --
@@ -160073,7 +160073,7 @@ ALTER TABLE `carts`
 --
 ALTER TABLE `categories`
   ADD CONSTRAINT `categories_added_by_foreign` FOREIGN KEY (`added_by`) REFERENCES `users` (`id`) ON DELETE SET NULL,
-  ADD CONSTRAINT `categories_parent_id_foreign` FOREIGN KEY (`parent_id`) REFERENCES `categories` (`id`) ON DELETE SET NULL;
+  ADD CONSTRAINT `categories_parent_cat_foreign` FOREIGN KEY (`parent_cat`) REFERENCES `categories` (`id`) ON DELETE SET NULL;
 
 --
 -- Constraints for table `cities`

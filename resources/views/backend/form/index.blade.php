@@ -19,7 +19,7 @@
           <thead>
             <tr>
               <th>S.N.</th>
-              <th>Title</th>
+              <th>Name</th>
               <th>Slug</th>
               <th>Action</th>
               
@@ -28,7 +28,7 @@
           <tfoot>
             <tr>
               <th>S.N.</th>
-              <th>Title</th>
+              <th>Name</th>
               <th>Slug</th>
               <th>Action</th>
               </tr>
@@ -37,7 +37,7 @@
             @foreach($forms as $form)   
                 <tr>
                     <td>{{$form->id}}</td>
-                    <td>{{$form->title}}</td>
+                    <td>{{$form->name}}</td>
                     <td>{{$form->slug}}</td>
                     
                         

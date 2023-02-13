@@ -37,10 +37,10 @@ class BrandController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'title'=>'string|required',
+            'name'=>'string|required',
         ]);
         $data=$request->all();
-        $slug=Str::slug($request->title);
+        $slug=Str::slug($request->name);
         $count=Brand::where('slug',$slug)->count();
         if($count>0){
             $slug=$slug.'-'.date('ymdis').'-'.rand(0,999);
@@ -95,7 +95,7 @@ class BrandController extends Controller
     {
         $brand=Brand::find($id);
         $this->validate($request,[
-            'title'=>'string|required',
+            'name'=>'string|required',
         ]);
         $data=$request->all();
        

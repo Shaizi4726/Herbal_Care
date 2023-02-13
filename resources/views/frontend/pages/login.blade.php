@@ -29,45 +29,43 @@
     <div class="signing-form-container">
       <a href="{{route('home')}}"><img src="{{asset('images/logo_green.png')}}" alt="Website Logo" class="signing-web-logo"></a>
       <h1 class="signing-web-title"><a href="{{route('home')}}">The Herb Room</a></h1>
-                    <h2>Sign In</h2>
-                   
-                    <!-- Form -->
-                    <form class="form" method="post" action="{{route('login.submit')}}">
-                        @csrf
-                        <div class="form-group">
-                            <label for="email">Email:<span>*</span></label>
-                            <input type="email" name="email" id="email" placeholder="Enter Email" value="{{old('email')}}" required>
-                            @error('email')
-                                <span class="invalid-value">{{$message}}</span>
-                            @enderror
-                        </div>
-                            
-                      
-                                <div class="form-group">
-                                    <label for="password">Password:<span>*</span></label>
-                                    <input type="password" name="password" id="password" placeholder="Enter Password" value="{{old('password')}}" required>
-                                    @error('password')
-                                        <span class="invalid-value">{{$message}}</span>
-                                    @enderror
-                                </div>
+      <h2>Sign In</h2>
+      
+      <!-- Form -->
+      <form class="form" method="post" action="{{route('login.submit')}}">
+        @csrf
+        <div class="form-group">
+            <label for="email">Email:<span>*</span></label>
+            <input type="email" name="email" id="email" placeholder="Enter Email" value="{{old('email')}}" required>
+            @error('email')
+                <span class="invalid-value">{{$message}}</span>
+            @enderror
+        </div>
+            
+      
+        <div class="form-group">
+          <label for="password">Password:<span>*</span></label>
+          <input type="password" name="password" id="password" placeholder="Enter Password" value="{{old('password')}}" required>
+          @error('password')
+            <span class="invalid-value">{{$message}}</span>
+          @enderror
+        </div>
 
-                                <div class="checkbox type-selection">
-                                  <input type="checkbox" name="remember" id="checkbox-login">
-                                  <label class="checkbox-login" for="checkbox-login">Remember me</label>
-                                </div>
-                            
-                                <div class="form-group submit-btn">
-                                    <button class="btn signing-btn" type="submit">Login</button>
-                                    <p>Don't have an account? <a href="{{route('register.form')}}" class="btn">Register</a></p>
-                                </div>
-                                @if (Route::has('password.reset'))
-                                    <p><a class="forgot-pass" href="{{ route('password.reset') }}">
-                                        Forgot password?
-                                    </a></p>
-                                @endif
-                           
-                    </form>
-                    <!--/ End Form -->
+        <div class="checkbox type-selection">
+          <input type="checkbox" name="remember" id="checkbox-login">
+          <label class="checkbox-login" for="checkbox-login">Remember me</label>
+        </div>
+    
+        <div class="form-group submit-btn">
+          <button class="btn signing-btn" type="submit">Login</button>
+          <p>Don't have an account? <a href="{{route('register.form')}}" class="btn">Register</a></p>
+        </div>
+        @if (Route::has('password.request'))
+          <p><a class="forgot-pass" href="{{ route('password.reset') }}">
+              Forgot password?
+          </a></p>
+        @endif        
+      </form>    
     </div>
   </section>
 </body>

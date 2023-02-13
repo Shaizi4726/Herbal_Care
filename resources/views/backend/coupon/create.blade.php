@@ -35,7 +35,7 @@
         <select name="user" class="form-control">
         <option value="product-user">---Select User ---</option>
           @foreach($users as $user)
-            <option value="{{$user->id}}">{{$user->name}}</option>
+            <option value="{{$user->id}}">{{$user->fname}}</option>
           @endforeach
         </select>
         @error('user')

@@ -1,7 +1,7 @@
 @foreach($comments as $comment)
 {{-- {{dd($comments)}} --}}
 @php $dep = $depth-1; @endphp
-<div class="display-comment"   @if($comment->parent_id != null) style="margin-left:40px;" @endif>
+<div class="display-comment"   @if($comment->parent_cat != null) style="margin-left:40px;" @endif>
     <div class="comment-list">
         <div class="single-comment">
             @if($comment->user_info['photo'])

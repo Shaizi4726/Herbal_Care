@@ -10,9 +10,9 @@
       <form method="post" action="{{route('form.store')}}">
         {{csrf_field()}}
         <div class="form-group">
-          <label for="inputTitle" class="col-form-label">Title <span class="text-danger">*</span></label>
-        <input id="inputTitle" type="text" name="title" placeholder="Enter title"  value="{{old('title')}}" class="form-control">
-        @error('title')
+          <label for="inputName" class="col-form-label">Name <span class="text-danger">*</span></label>
+        <input id="inputName" type="text" name="name" placeholder="Enter name"  value="{{old('name')}}" class="form-control">
+        @error('name')
         <span class="text-danger">{{$message}}</span>
         @enderror
         </div>

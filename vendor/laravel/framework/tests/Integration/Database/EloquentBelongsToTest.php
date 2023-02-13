@@ -15,12 +15,12 @@ class EloquentBelongsToTest extends DatabaseTestCase
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
             $table->string('slug')->nullable();
-            $table->unsignedInteger('parent_id')->nullable();
+            $table->unsignedInteger('parent_cat')->nullable();
             $table->string('parent_slug')->nullable();
         });
 
         $user = User::create(['slug' => Str::random()]);
-        User::create(['parent_id' => $user->id, 'parent_slug' => $user->slug]);
+        User::create(['parent_cat' => $user->id, 'parent_slug' => $user->slug]);
     }
 
     public function testHasSelf()
@@ -44,7 +44,7 @@ class EloquentBelongsToTest extends DatabaseTestCase
 
         $parent->parent()->associate($child);
 
-        $this->assertEquals($child->id, $parent->parent_id);
+        $this->assertEquals($child->id, $parent->parent_cat);
         $this->assertEquals($child->id, $parent->parent->id);
     }
 
@@ -55,7 +55,7 @@ class EloquentBelongsToTest extends DatabaseTestCase
 
         $parent->parent()->associate($child->id);
 
-        $this->assertEquals($child->id, $parent->parent_id);
+        $this->assertEquals($child->id, $parent->parent_cat);
         $this->assertEquals($child->id, $parent->parent->id);
     }
 
@@ -66,7 +66,7 @@ class EloquentBelongsToTest extends DatabaseTestCase
         // Overwrite the (loaded) parent relation
         $child->parent()->associate($child->id);
 
-        $this->assertEquals($child->id, $child->parent_id);
+        $this->assertEquals($child->id, $child->parent_cat);
         $this->assertFalse($child->relationLoaded('parent'));
     }
 
@@ -136,7 +136,7 @@ class User extends Model
 
     public function parent()
     {
-        return $this->belongsTo(self::class, 'parent_id');
+        return $this->belongsTo(self::class, 'parent_cat');
     }
 
     public function parentBySlug()

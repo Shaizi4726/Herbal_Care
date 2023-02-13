@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\ChildCategory;
 use Illuminate\Support\Str;
 
 class CategoryController extends Controller
@@ -39,24 +40,50 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+            
         // return $request->all();
-        $this->validate($request,[
-            'title'=>'string|required',
-            'photo'=>'string|nullable',
-            'status'=>'required|in:active,inactive',
-            'is_parent'=>'sometimes|in:1',
-            'parent_id'=>'nullable|exists:categories,id',
-        ]);
-        $data= $request->all();
-        $slug=Str::slug($request->title);
-        $count=Category::where('slug',$slug)->count();
-        if($count>0){
-            $slug=$slug.'-'.date('ymdis').'-'.rand(0,999);
+        if($request->is_parent==1){
+            $this->validate($request,[
+                'title'=>'string|required',
+                'photo'=>'string|nullable',
+                'status'=>'required|in:active,inactive',
+                'is_parent'=>'sometimes|in:1',
+                'parent_cat'=>'nullable|exists:categories,id',
+            ]);
+           
+            $data= $request->all();
+            $slug=Str::slug($request->title);
+            $count=Category::where('slug',$slug)->count();
+            if($count>0){
+                $slug=$slug.'-'.date('ymdis').'-'.rand(0,999);
+            }
+            $data['slug']=$slug;
+            $data['is_parent']=$request->input('is_parent',0);
+            // return $data;  
+            
+            $status=Category::create($data);
         }
-        $data['slug']=$slug;
-        $data['is_parent']=$request->input('is_parent',0);
-        // return $data;   
-        $status=Category::create($data);
+        else{
+            $this->validate($request,[
+                'title'=>'string|required',
+                'photo'=>'string|nullable',
+                'status'=>'required|in:active,inactive',
+                'is_parent'=>'sometimes|in:0',
+                'parent_cat'=>'nullable|exists:categories,parent_cat',
+            ]);
+           
+            $data= $request->all();
+            $slug=Str::slug($request->title);
+            $count=ChildCategory::where('slug',$slug)->count();
+            if($count>0){
+                $slug=$slug.'-'.date('ymdis').'-'.rand(0,999);
+            }
+            $data['slug']=$slug;
+            // return $data;  
+           
+            $status=ChildCategory::create($data);
+            //dd($request->all());
+        }
         if($status){
             request()->session()->flash('success','Category successfully added');
         }
@@ -109,7 +136,7 @@ class CategoryController extends Controller
             'photo'=>'string|nullable',
             'status'=>'required|in:active,inactive',
             'is_parent'=>'sometimes|in:1',
-            'parent_id'=>'nullable|exists:categories,id',
+            'parent_cat'=>'nullable|exists:categories,id',
         ]);
         $data= $request->all();
         $data['is_parent']=$request->input('is_parent',0);
@@ -133,7 +160,7 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         $category=Category::findOrFail($id);
-        $child_cat_id=Category::where('parent_id',$id)->pluck('id');
+        $child_cat_id=Category::where('parent_cat',$id)->pluck('id');
         // return $child_cat_id;
         $status=$category->delete();
         
