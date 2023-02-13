@@ -48,7 +48,7 @@ class DatabaseEloquentIntegrationWithTablePrefixTest extends TestCase
         $this->schema('default')->create('posts', function ($table) {
             $table->increments('id');
             $table->integer('user_id');
-            $table->integer('parent_id')->nullable();
+            $table->integer('parent_cat')->nullable();
             $table->string('name');
             $table->timestamps();
         });

@@ -19,7 +19,7 @@
           <thead>
             <tr>
               <th>S.N.</th>
-              <th>Title</th>
+              <th>Name</th>
               <th>Slug</th>
               <th>Status</th>
               <th>Action</th>
@@ -28,7 +28,7 @@
           <tfoot>
             <tr>
               <th>S.N.</th>
-              <th>Title</th>
+              <th>Name</th>
               <th>Slug</th>
               <th>Status</th>
               <th>Action</th>
@@ -38,7 +38,7 @@
             @foreach($brands as $brand)   
                 <tr>
                     <td>{{$brand->id}}</td>
-                    <td>{{$brand->title}}</td>
+                    <td>{{$brand->name}}</td>
                     <td>{{$brand->slug}}</td>
                     <td>
                         @if($brand->status=='active')

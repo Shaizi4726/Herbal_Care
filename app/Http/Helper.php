@@ -1,8 +1,6 @@
 <?php
 use App\Models\Message;
 use App\Models\Category;
-use App\Models\PostTag;
-use App\Models\PostCategory;
 use App\Models\Order;
 use App\Models\Wishlist;
 use App\Models\city;
@@ -75,22 +73,6 @@ class Helper
       return Category::orderBy('id', 'ASC')->get();
     }
     return Category::has('products')->orderBy('id', 'ASC')->get();
-  }
-
-  public static function postTagList($option = 'all')
-  {
-    if ($option = 'all') {
-      return PostTag::orderBy('id', 'desc')->get();
-    }
-    return PostTag::has('posts')->orderBy('id', 'desc')->get();
-  }
-
-  public static function postCategoryList($option = "all")
-  {
-    if ($option = 'all') {
-      return PostCategory::orderBy('id', 'DESC')->get();
-    }
-    return PostCategory::has('posts')->orderBy('id', 'DESC')->get();
   }
 
   // Cart Count

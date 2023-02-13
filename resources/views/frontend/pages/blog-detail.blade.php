@@ -89,7 +89,7 @@
                                                         <label>Your Message<span>*</span></label>
                                                         <textarea name="comment" id="comment" rows="10" placeholder=""></textarea>
                                                         <input type="hidden" name="post_id" value="{{ $post->id }}" />
-                                                        <input type="hidden" name="parent_id" id="parent_id" value="" />
+                                                        <input type="hidden" name="parent_cat" id="parent_cat" value="" />
                                                     </div>
                                                 </div>
                                                 <div class="col-12">
@@ -223,9 +223,9 @@ $(document).ready(function(){
             $('.btn-reply.cancel').hide();
             $(this).siblings('.btn-reply.cancel').show();
 
-            var parent_id = $(this).data('id');
+            var parent_cat = $(this).data('id');
             var html = $('#commentForm');
-            $( html).find('#parent_id').val(parent_id);
+            $( html).find('#parent_cat').val(parent_cat);
             $('#commentFormContainer').hide();
             $(this).parents('.comment-list').append(html).fadeIn('slow').addClass('appended');
           });
@@ -240,7 +240,7 @@ $(document).ready(function(){
 
             $('#commentFormContainer').show();
             var html = $('#commentForm');
-            $( html).find('#parent_id').val('');
+            $( html).find('#parent_cat').val('');
 
             $('#commentFormContainer').append(html);
         });

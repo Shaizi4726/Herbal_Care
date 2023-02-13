@@ -29,7 +29,7 @@
           <tfoot>
             <tr>
               <th>S.N.</th>
-              <th>Title</th>
+              <th>name</th>
               <th>Slug</th>
               <th>Photo</th>
               <th>Status</th>
@@ -40,11 +40,11 @@
             @foreach($banners as $banner)   
                 <tr>
                     <td>{{$banner->id}}</td>
-                    <td>{{$banner->title}}</td>
+                    <td>{{$banner->name}}</td>
                     <td>{{$banner->slug}}</td>
                     <td>
-                        @if($banner->photo)
-                            <img src="{{$banner->photo}} " class="img-fluid zoom" style="max-width:80px" alt="{{$banner->photo}}">
+                        @if($banner->photo_desktop)
+                            <img src="{{$banner->photo_desktop}} " class="img-fluid zoom" style="max-width:80px" alt="{{$banner->photo}}">
                             <img src="{{$banner->photo_tablet}} " class="img-fluid zoom" style="max-width:80px" alt="{{$banner->photo}}">
                             <img src="{{$banner->photo_mobile}} " class="img-fluid zoom" style="max-width:80px" alt="{{$banner->photo}}">
                         @else

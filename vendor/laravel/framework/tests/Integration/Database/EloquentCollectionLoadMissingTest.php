@@ -23,7 +23,7 @@ class EloquentCollectionLoadMissingTest extends DatabaseTestCase
 
         Schema::create('comments', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('parent_id')->nullable();
+            $table->unsignedInteger('parent_cat')->nullable();
             $table->unsignedInteger('post_id');
         });
 
@@ -51,9 +51,9 @@ class EloquentCollectionLoadMissingTest extends DatabaseTestCase
 
         Post::create(['user_id' => 1]);
 
-        Comment::create(['parent_id' => null, 'post_id' => 1]);
-        Comment::create(['parent_id' => 1, 'post_id' => 1]);
-        Comment::create(['parent_id' => 2, 'post_id' => 1]);
+        Comment::create(['parent_cat' => null, 'post_id' => 1]);
+        Comment::create(['parent_cat' => 1, 'post_id' => 1]);
+        Comment::create(['parent_cat' => 2, 'post_id' => 1]);
 
         Revision::create(['comment_id' => 1]);
 

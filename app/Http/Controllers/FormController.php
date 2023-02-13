@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use App\Models\ProductForm;
+use App\Models\Form;
 
 class FormController extends Controller
 {
@@ -15,7 +15,7 @@ class FormController extends Controller
      */
     public function index()
     {
-        $form=ProductForm::orderBy('id','DESC')->paginate(10);
+        $form=Form::orderBy('id','DESC')->paginate(10);
         return view('backend.form.index')->with('forms',$form);
     }
 
@@ -39,18 +39,18 @@ class FormController extends Controller
     {
         // return $request->all();
         $this->validate($request,[
-            'title'=>'string|required|max:50'
+            'name'=>'string|required|max:50'
                                  
         ]);
         $data=$request->all();
-        $slug=Str::slug($request->title);
-        $count=ProductForm::where('slug',$slug)->count();
+        $slug=Str::slug($request->name);
+        $count=Form::where('slug',$slug)->count();
         if($count>0){
             $slug=$slug.'-'.date('ymdis').'-'.rand(0,999);
         }
         $data['slug']=$slug;
         // return $slug;
-        $status=ProductForm::create($data);
+        $status=Form::create($data);
         if($status){
             request()->session()->flash('success','Form successfully added');
         }
@@ -79,7 +79,7 @@ class FormController extends Controller
      */
     public function edit($id)
     {
-        $form=ProductForm::findOrFail($id);
+        $form=Form::findOrFail($id);
         return view('backend.form.edit')->with('forms',$form);
     }
 
@@ -92,9 +92,9 @@ class FormController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $form=ProductForm::findOrFail($id);
+        $form=Form::findOrFail($id);
         $this->validate($request,[
-            'title'=>'string|required|max:50',
+            'name'=>'string|required|max:50',
         ]);
         $data=$request->all();
         // $slug=Str::slug($request->title);
@@ -122,7 +122,7 @@ class FormController extends Controller
      */
     public function destroy($id)
     {
-        $form=ProductForm::findOrFail($id);
+        $form=Form::findOrFail($id);
         $status=$form->delete();
         if($status){
             request()->session()->flash('success','Form successfully deleted');

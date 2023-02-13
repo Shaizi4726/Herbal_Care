@@ -10,33 +10,25 @@
       <form method="post" action="{{route('banner.store')}}">
         {{csrf_field()}}
         <div class="form-group">
-          <label for="inputTitle" class="col-form-label">Title <span class="text-danger">*</span></label>
-        <input id="inputTitle" type="text" name="title" placeholder="Enter title"  value="{{old('title')}}" class="form-control">
-        @error('title')
+          <label for="inputName" class="col-form-label">Name <span class="text-danger">*</span></label>
+        <input id="inputName" type="text" name="name" placeholder="Enter name"  value="{{old('name')}}" class="form-control">
+        @error('name')
         <span class="text-danger">{{$message}}</span>
         @enderror
         </div>
 
         <div class="form-group">
-          <label for="inputDesc" class="col-form-label">Description</label>
-          <textarea class="form-control" id="description" name="description">{{old('description')}}</textarea>
-          @error('description')
-          <span class="text-danger">{{$message}}</span>
-          @enderror
-        </div>
-
-        <div class="form-group">
-          <label for="inputPhoto" class="col-form-label">Photo <span class="text-danger">*</span></label>
+          <label for="inputPhoto" class="col-form-label">Photo Desktop <span class="text-danger">*</span></label>
           <div class="input-group">
             <span class="input-group-btn">
-                <a id="lfm" data-input="thumbnail" data-preview="holder" class="btn btn-primary lfm">
+                <a id="lfm" data-input="thumbnail" data-preview="holder_desktop" class="btn btn-primary lfm">
                 <i class="fa fa-picture-o"></i> Choose
                 </a>
             </span>
-          <input id="thumbnail" class="form-control" type="text" name="photo" value="{{old('photo')}}">
+          <input id="thumbnail" class="form-control" type="text" name="photo_desktop" value="{{old('photo_desktop')}}">
         </div>
-        <div id="holder" style="margin-top:15px;max-height:100px;"></div>
-          @error('photo')
+        <div id="holder_desktop" style="margin-top:15px;max-height:100px;"></div>
+          @error('photo_desktop')
           <span class="text-danger">{{$message}}</span>
           @enderror
         </div>

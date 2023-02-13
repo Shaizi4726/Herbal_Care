@@ -131,8 +131,6 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     Route::resource('banner','BannerController');
     //Gift
     Route::resource('gift','GiftController');
-    //Form 
-    Route::resource('form','FormController');
     // Brand
     Route::resource('brand','BrandController');
     // Profile
@@ -140,6 +138,10 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     Route::post('/profile/{id}','AdminController@profileUpdate')->name('profile-update');
     // Category
     Route::resource('/category','CategoryController');
+    //Country
+    Route::resource('/country','CountryController');
+    //State
+    Route::resource('/state','StateController');
     //Form
     Route::resource('/form','FormController');
     // Product

@@ -1125,18 +1125,18 @@ class DatabaseEloquentBuilderTest extends TestCase
     {
         $related = new EloquentBuilderTestWhereBelongsToStub([
             'id' => 1,
-            'parent_id' => 2,
+            'parent_cat' => 2,
         ]);
 
         $parent = new EloquentBuilderTestWhereBelongsToStub([
             'id' => 2,
-            'parent_id' => 1,
+            'parent_cat' => 1,
         ]);
 
         $builder = $this->getBuilder();
         $builder->shouldReceive('from')->with('eloquent_builder_test_where_belongs_to_stubs');
         $builder->setModel($related);
-        $builder->getQuery()->shouldReceive('whereIn')->once()->with('eloquent_builder_test_where_belongs_to_stubs.parent_id', [2], 'and');
+        $builder->getQuery()->shouldReceive('whereIn')->once()->with('eloquent_builder_test_where_belongs_to_stubs.parent_cat', [2], 'and');
 
         $result = $builder->whereBelongsTo($parent);
         $this->assertEquals($result, $builder);
@@ -1144,23 +1144,23 @@ class DatabaseEloquentBuilderTest extends TestCase
         $builder = $this->getBuilder();
         $builder->shouldReceive('from')->with('eloquent_builder_test_where_belongs_to_stubs');
         $builder->setModel($related);
-        $builder->getQuery()->shouldReceive('whereIn')->once()->with('eloquent_builder_test_where_belongs_to_stubs.parent_id', [2], 'and');
+        $builder->getQuery()->shouldReceive('whereIn')->once()->with('eloquent_builder_test_where_belongs_to_stubs.parent_cat', [2], 'and');
 
         $result = $builder->whereBelongsTo($parent, 'parent');
         $this->assertEquals($result, $builder);
 
         $parents = new Collection([new EloquentBuilderTestWhereBelongsToStub([
             'id' => 2,
-            'parent_id' => 1,
+            'parent_cat' => 1,
         ]), new EloquentBuilderTestWhereBelongsToStub([
             'id' => 3,
-            'parent_id' => 1,
+            'parent_cat' => 1,
         ])]);
 
         $builder = $this->getBuilder();
         $builder->shouldReceive('from')->with('eloquent_builder_test_where_belongs_to_stubs');
         $builder->setModel($related);
-        $builder->getQuery()->shouldReceive('whereIn')->once()->with('eloquent_builder_test_where_belongs_to_stubs.parent_id', [2, 3], 'and');
+        $builder->getQuery()->shouldReceive('whereIn')->once()->with('eloquent_builder_test_where_belongs_to_stubs.parent_cat', [2, 3], 'and');
 
         $result = $builder->whereBelongsTo($parents);
         $this->assertEquals($result, $builder);
@@ -1168,7 +1168,7 @@ class DatabaseEloquentBuilderTest extends TestCase
         $builder = $this->getBuilder();
         $builder->shouldReceive('from')->with('eloquent_builder_test_where_belongs_to_stubs');
         $builder->setModel($related);
-        $builder->getQuery()->shouldReceive('whereIn')->once()->with('eloquent_builder_test_where_belongs_to_stubs.parent_id', [2, 3], 'and');
+        $builder->getQuery()->shouldReceive('whereIn')->once()->with('eloquent_builder_test_where_belongs_to_stubs.parent_cat', [2, 3], 'and');
 
         $result = $builder->whereBelongsTo($parents, 'parent');
         $this->assertEquals($result, $builder);
@@ -1271,7 +1271,7 @@ class DatabaseEloquentBuilderTest extends TestCase
 
         $sql = preg_replace($aliasRegex, $alias, $sql);
 
-        $this->assertSame('select "self_related_stubs".*, (select min("self_alias_hash"."created_at") from "self_related_stubs" as "self_alias_hash" where "self_related_stubs"."id" = "self_alias_hash"."parent_id") as "child_foos_min_created_at" from "self_related_stubs"', $sql);
+        $this->assertSame('select "self_related_stubs".*, (select min("self_alias_hash"."created_at") from "self_related_stubs" as "self_alias_hash" where "self_related_stubs"."id" = "self_alias_hash"."parent_cat") as "child_foos_min_created_at" from "self_related_stubs"', $sql);
     }
 
     public function testWithCountAndConstraintsAndHaving()
@@ -1308,7 +1308,7 @@ class DatabaseEloquentBuilderTest extends TestCase
     public function testWithAggregateAndSelfRelationConstrain()
     {
         EloquentBuilderTestStub::resolveRelationUsing('children', function ($model) {
-            return $model->hasMany(EloquentBuilderTestStub::class, 'parent_id', 'id')->where('enum_value', new stdClass);
+            return $model->hasMany(EloquentBuilderTestStub::class, 'parent_cat', 'id')->where('enum_value', new stdClass);
         });
 
         $model = new EloquentBuilderTestStub;
@@ -1317,7 +1317,7 @@ class DatabaseEloquentBuilderTest extends TestCase
 
         $builder = $model->withCount('children');
 
-        $this->assertSame(vsprintf('select "table".*, (select count(*) from "table" as "%s" where "table"."id" = "%s"."parent_id" and "enum_value" = ?) as "children_count" from "table"', [$relationHash, $relationHash]), $builder->toSql());
+        $this->assertSame(vsprintf('select "table".*, (select count(*) from "table" as "%s" where "table"."id" = "%s"."parent_cat" and "enum_value" = ?) as "children_count" from "table"', [$relationHash, $relationHash]), $builder->toSql());
     }
 
     public function testWithExists()
@@ -1388,7 +1388,7 @@ class DatabaseEloquentBuilderTest extends TestCase
 
         $sql = preg_replace($aliasRegex, $alias, $sql);
 
-        $this->assertSame('select "self_related_stubs".*, exists(select * from "self_related_stubs" as "self_alias_hash" where "self_related_stubs"."id" = "self_alias_hash"."parent_id") as "child_foos_exists" from "self_related_stubs"', $sql);
+        $this->assertSame('select "self_related_stubs".*, exists(select * from "self_related_stubs" as "self_alias_hash" where "self_related_stubs"."id" = "self_alias_hash"."parent_cat") as "child_foos_exists" from "self_related_stubs"', $sql);
     }
 
     public function testWithExistsAndRename()
@@ -1568,7 +1568,7 @@ class DatabaseEloquentBuilderTest extends TestCase
 
         $sql = preg_replace($aliasRegex, $alias, $sql);
 
-        $this->assertStringContainsString('"self_alias_hash"."id" = "self_related_stubs"."parent_id"', $sql);
+        $this->assertStringContainsString('"self_alias_hash"."id" = "self_related_stubs"."parent_cat"', $sql);
     }
 
     public function testDoesntHave()
@@ -2352,27 +2352,27 @@ class EloquentBuilderTestModelSelfRelatedStub extends Model
 
     public function parentFoo()
     {
-        return $this->belongsTo(self::class, 'parent_id', 'id', 'parent');
+        return $this->belongsTo(self::class, 'parent_cat', 'id', 'parent');
     }
 
     public function childFoo()
     {
-        return $this->hasOne(self::class, 'parent_id', 'id');
+        return $this->hasOne(self::class, 'parent_cat', 'id');
     }
 
     public function childFoos()
     {
-        return $this->hasMany(self::class, 'parent_id', 'id', 'children');
+        return $this->hasMany(self::class, 'parent_cat', 'id', 'children');
     }
 
     public function parentBars()
     {
-        return $this->belongsToMany(self::class, 'self_pivot', 'child_id', 'parent_id', 'parent_bars');
+        return $this->belongsToMany(self::class, 'self_pivot', 'child_id', 'parent_cat', 'parent_bars');
     }
 
     public function childBars()
     {
-        return $this->belongsToMany(self::class, 'self_pivot', 'parent_id', 'child_id', 'child_bars');
+        return $this->belongsToMany(self::class, 'self_pivot', 'parent_cat', 'child_id', 'child_bars');
     }
 
     public function bazes()
@@ -2401,16 +2401,16 @@ class EloquentBuilderTestWhereBelongsToStub extends Model
 {
     protected $fillable = [
         'id',
-        'parent_id',
+        'parent_cat',
     ];
 
     public function eloquentBuilderTestWhereBelongsToStub()
     {
-        return $this->belongsTo(self::class, 'parent_id', 'id', 'parent');
+        return $this->belongsTo(self::class, 'parent_cat', 'id', 'parent');
     }
 
     public function parent()
     {
-        return $this->belongsTo(self::class, 'parent_id', 'id', 'parent');
+        return $this->belongsTo(self::class, 'parent_cat', 'id', 'parent');
     }
 }

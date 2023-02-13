@@ -28,7 +28,7 @@ class EloquentHasManyThroughTest extends DatabaseTestCase
 
         Schema::create('categories', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('parent_id')->nullable();
+            $table->integer('parent_cat')->nullable();
             $table->softDeletes();
         });
 
@@ -109,8 +109,8 @@ class EloquentHasManyThroughTest extends DatabaseTestCase
     {
         Category::create();
         Category::create();
-        Category::create(['parent_id' => 1]);
-        Category::create(['parent_id' => 2])->delete();
+        Category::create(['parent_cat' => 1]);
+        Category::create(['parent_cat' => 2])->delete();
 
         Product::create(['category_id' => 3]);
         Product::create(['category_id' => 4]);
@@ -175,7 +175,7 @@ class Category extends Model
 
     public function subProducts()
     {
-        return $this->hasManyThrough(Product::class, self::class, 'parent_id');
+        return $this->hasManyThrough(Product::class, self::class, 'parent_cat');
     }
 }
 
