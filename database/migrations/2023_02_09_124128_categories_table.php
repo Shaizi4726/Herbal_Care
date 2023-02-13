@@ -20,7 +20,7 @@ return new class extends Migration
       $table->id();
       $table->string('name');
       $table->string('slug')->unique();
-      $table->enum('status',['active','inactive'])->default('inactive');
+      $table->enum('status',['active','inactive'])->default('active');
       $table->unsignedBigInteger('coupon_id')->nullable();
       $table->foreign('coupon_id')->references('id')->on('coupons')->onDelete('SET NULL');
       $table->timestamps();

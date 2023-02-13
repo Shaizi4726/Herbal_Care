@@ -41,6 +41,7 @@
       <div id="header-logo" class="header-logo">
         @php
           $settings=DB::table('settings')->get();
+          $categories = Helper::getAllCategories();
         @endphp                    
         <a href="{{route('home')}}"><img src="@foreach($settings as $data) {{$data->logo}} @endforeach" alt="logo" width="50" height="50"></a>
       </div>
@@ -72,7 +73,31 @@
         <li id = "shop">
           <a href="#" class="nav-link desktop-nav dropdown-toggle">Shop</a>
           <ul class="collapse cat-menu" id="desktop-cat-menu">
-            {{Helper::getHeaderCategory()}}
+            @foreach ($categories as $cat)
+
+            @php
+              $subcat = $cat->subcat()->get();
+            @endphp
+
+            @if ($subcat->count() > 0)
+            <li class="submenu-dropdown">
+              <a href="{{route('product-cat', $cat->slug)}}" class="dropdown-item"> {{$cat->name}}</a>
+          
+              <ul class="collapse cat-submenu">
+                @foreach ($subcat as $sub_menu)
+                <li>
+                  <a href="{{route('product-sub-cat', [$cat->slug, $sub_menu->slug])}}" class="dropdown-item"> {{$sub_menu->name}}</a>
+                </li>
+                @endforeach
+              </ul>
+            </li>
+
+            @else
+            <li>
+              <a href="{{route('product-cat', $cat->slug)}}" class="dropdown-item"> {{$cat->name}} </a>
+            </li>
+            @endif
+            @endforeach
           </ul>
         </li>
       </ul>
@@ -140,7 +165,31 @@
       <li>
         <a onclick="menu()" class="nav-link mob-nav dropdown-toggle">Shop</a>
         <ul class="collapse cat-menu" id="mob-cat-menu">
-          {{Helper::getHeaderCategory()}}
+          @foreach ($categories as $cat)
+
+          @php
+            $subcat = $cat->subcat()->get();
+          @endphp
+
+          @if ($subcat->count() > 0)
+          <li class="submenu-dropdown">
+            <a href="{{route('product-cat', $cat->slug)}}" class="dropdown-item"> {{$cat->name}}</a>
+
+            <ul class="collapse cat-submenu">
+              @foreach ($subcat as $sub_menu)
+              <li>
+                <a href="{{route('product-sub-cat', [$cat->slug, $sub_menu->slug])}}" class="dropdown-item"> {{$sub_menu->name}}</a>
+              </li>
+              @endforeach
+            </ul>
+          </li>
+
+          @else
+          <li>
+            <a href="{{route('product-cat', $cat->slug)}}" class="dropdown-item"> {{$cat->name}} </a>
+          </li>
+          @endif
+          @endforeach
         </ul>
       </li>
     </ul>

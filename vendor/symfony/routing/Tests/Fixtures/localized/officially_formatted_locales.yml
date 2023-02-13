@@ -1,6 +1,6 @@
 ---
 official:
-    controller: HomeController::someAction
+    controller: UserDashboardController::someAction
     path:
         fr.UTF-8: /omelette-au-fromage
         pt-PT: /eu-não-sou-espanhol

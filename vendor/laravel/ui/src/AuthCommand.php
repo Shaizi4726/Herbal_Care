@@ -113,10 +113,10 @@ class AuthCommand extends Command
     {
         $this->callSilent('ui:controllers');
 
-        $controller = app_path('Http/Controllers/HomeController.php');
+        $controller = app_path('Http/Controllers/UserDashboardController.php');
 
         if (file_exists($controller) && ! $this->option('force')) {
-            if ($this->components->confirm("The [HomeController.php] file already exists. Do you want to replace it?")) {
+            if ($this->components->confirm("The [UserDashboardController.php] file already exists. Do you want to replace it?")) {
                 file_put_contents($controller, $this->compileControllerStub());
             }
         } else {
@@ -136,7 +136,7 @@ class AuthCommand extends Command
     }
 
     /**
-     * Compiles the "HomeController" stub.
+     * Compiles the "UserDashboardController" stub.
      *
      * @return string
      */
@@ -145,7 +145,7 @@ class AuthCommand extends Command
         return str_replace(
             '{{namespace}}',
             $this->laravel->getNamespace(),
-            file_get_contents(__DIR__.'/Auth/stubs/controllers/HomeController.stub')
+            file_get_contents(__DIR__.'/Auth/stubs/controllers/UserDashboardController.stub')
         );
     }
 

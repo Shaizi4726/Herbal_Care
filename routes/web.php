@@ -25,7 +25,7 @@ Route::get('/email/verify/{id}/{hash}', 'Auth\VerificationController@emailVerifi
 Route::post('/email/verification-notification', 'Auth\VerificationController@resendEmailVerification')->middleware(['auth', 'throttle:6,1'])->name('verification.resend');
 
 Route::get('/login','FrontendController@login')->name('login.form');
-Route::get('/signin','FrontendController@login')->name('login.form');
+Route::get('/signin','FrontendController@login')->name('signin.form');
 Route::get('user/login','FrontendController@login')->name('login.form');
 Route::post('user/login','FrontendController@loginSubmit')->name('login.submit');
 Route::get('user/logout','FrontendController@logout')->name('user.logout');
@@ -35,15 +35,9 @@ Route::get('logout','FrontendController@logout')->name('logout');
 Route::get('password-reset', 'FrontendController@showResetForm')->name('password.reset'); 
 Route::get('password-resets', 'FrontendController@PassResetForm')->name('password.resets');
 
-// Socialite 
-Route::get('login/{provider}/', 'Auth\LoginController@redirect')->name('login.redirect');
-Route::get('login/{provider}/callback/', 'Auth\LoginController@Callback')->name('login.callback');
-
+// Frontend Main Pages
 Route::get('/','FrontendController@home')->name('home')->middleware('account.verified');
-
-// Frontend Routes
 Route::get('/home', 'FrontendController@home')->middleware('account.verified');
-//Route::get('/home/{slug}', 'FrontendController@index');
 Route::get('/about-us','FrontendController@aboutUs')->name('about-us')->middleware('account.verified');
 Route::get('/contact','FrontendController@contact')->name('contact')->middleware('account.verified');
 Route::post('/contact/message','MessageController@store')->name('contact.store')->middleware('account.verified');
@@ -182,29 +176,29 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
 
 // User section start
 Route::group(['prefix'=>'/user','middleware'=>['user']],function(){
-    Route::get('/','HomeController@index')->name('user');
+    Route::get('/','UserDashboardController@index')->name('user');
      // Profile
-     Route::get('/profile','HomeController@profile')->name('user-profile');
-     Route::post('/profile/{id}','HomeController@profileUpdate')->name('user-profile-update');
+     Route::get('/profile','UserDashboardController@profile')->name('user-profile');
+     Route::post('/profile/{id}','UserDashboardController@profileUpdate')->name('user-profile-update');
     //  Order
-    Route::get('/order',"HomeController@orderIndex")->name('user.order.index');
-    Route::get('/order/show/{id}',"HomeController@orderShow")->name('user.order.show');
-    Route::delete('/order/delete/{id}','HomeController@userOrderDelete')->name('user.order.delete');
+    Route::get('/order',"UserDashboardController@orderIndex")->name('user.order.index');
+    Route::get('/order/show/{id}',"UserDashboardController@orderShow")->name('user.order.show');
+    Route::delete('/order/delete/{id}','UserDashboardController@userOrderDelete')->name('user.order.delete');
     // Product Review
-    Route::get('/user-review','HomeController@productReviewIndex')->name('user.productreview.index');
-    Route::delete('/user-review/delete/{id}','HomeController@productReviewDelete')->name('user.productreview.delete');
-    Route::get('/user-review/edit/{id}','HomeController@productReviewEdit')->name('user.productreview.edit');
-    Route::patch('/user-review/update/{id}','HomeController@productReviewUpdate')->name('user.productreview.update');
+    Route::get('/user-review','UserDashboardController@productReviewIndex')->name('user.productreview.index');
+    Route::delete('/user-review/delete/{id}','UserDashboardController@productReviewDelete')->name('user.productreview.delete');
+    Route::get('/user-review/edit/{id}','UserDashboardController@productReviewEdit')->name('user.productreview.edit');
+    Route::patch('/user-review/update/{id}','UserDashboardController@productReviewUpdate')->name('user.productreview.update');
     
     // Post comment
-    Route::get('user-post/comment','HomeController@userComment')->name('user.post-comment.index');
-    Route::delete('user-post/comment/delete/{id}','HomeController@userCommentDelete')->name('user.post-comment.delete');
-    Route::get('user-post/comment/edit/{id}','HomeController@userCommentEdit')->name('user.post-comment.edit');
-    Route::patch('user-post/comment/udpate/{id}','HomeController@userCommentUpdate')->name('user.post-comment.update');
+    Route::get('user-post/comment','UserDashboardController@userComment')->name('user.post-comment.index');
+    Route::delete('user-post/comment/delete/{id}','UserDashboardController@userCommentDelete')->name('user.post-comment.delete');
+    Route::get('user-post/comment/edit/{id}','UserDashboardController@userCommentEdit')->name('user.post-comment.edit');
+    Route::patch('user-post/comment/udpate/{id}','UserDashboardController@userCommentUpdate')->name('user.post-comment.update');
     
     // Password Change
-    Route::get('change-password', 'HomeController@changePassword')->name('user.change.password.form');
-    Route::post('change-password', 'HomeController@changPasswordStore')->name('change.password');
+    Route::get('change-password', 'UserDashboardController@changePassword')->name('user.change.password.form');
+    Route::post('change-password', 'UserDashboardController@changPasswordStore')->name('change.password');
 
 });
 

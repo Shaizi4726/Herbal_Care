@@ -15,7 +15,7 @@
         @foreach($banners as $key=>$banner)                                    
           <li>
             <picture>
-              <source media="(min-width: 768px)" srcset="{{$banner->photo}}">
+              <source media="(min-width: 768px)" srcset="{{$banner->photo_desktop}}">
               <source media="(min-width: 420px)" srcset="{{$banner->photo_tablet}}">
               <img class="slide-img" src="{{$banner->photo_mobile}}" alt="Slider Image">
             </picture>
@@ -30,32 +30,28 @@
 
   <section class="products-catalog">
     @php
-      $CategoryLists=DB::table('categories')->where('status','active')->where('is_parent','1')->get();
-      $PopProducts = DB::table('products')->where('promotion', 'popular')->where('status', 'active')->limit(9)->get();
-      $TrnProducts = DB::table('products')->where('promotion', 'trending')->where('status', 'active')->limit(9)->get();
-      $NewProducts = DB::table('products')->where('promotion', 'new')->where('status', 'active')->limit(9)->get();
       $auth = Auth::check();
     @endphp
 
-    @if(count($PopProducts) != 0)
+    @if(count($pop_products) != 0)
       <div class="products">
         <div class="title-content">                        
           <h2> Popular Items </h2>
         </div>
       
         <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false, "autoPlay": 1500}'>
-          @foreach($PopProducts as $product)
+          @foreach($pop_products as $product)
             @php
-              $minprice = DB::table('products_attributes')->where('product_id', $product->id)->min('price');
-              $maxprice = DB::table('products_attributes')->where('product_id', $product->id)->max('price');
-              $Images = DB::table('images')->where('product_id', $product->id)->pluck('image');
-              $Forms = DB::table('products_attributes')->where('product_id', $product->id)->distinct()->pluck('form');
+              $minprice = DB::table('product_attributes')->where('product_id', $product->id)->min('price');
+              $maxprice = DB::table('product_attributes')->where('product_id', $product->id)->max('price');
+              $Images = DB::table('product_images')->where('product_id', $product->id)->pluck('id');
+              $Forms = $product->forms()->pluck('id');
               if(Auth::user())
-              $wishlist = DB::table('wishlists')->where('product_id', $product->id)->where('user_id', auth()->user()->id)->get();
+                $wishlist = DB::table('wishlists')->where('product_id', $product->id)->where('user_id', auth()->user()->id)->get();
               
               $Sizes = array();
               foreach ($Forms as $form) {
-                ${$form . "sizes"} = DB::table('products_attributes')->where('product_id', $product->id)->where('form', $form)->pluck('size');
+                ${$form . "sizes"} = DB::table('product_attributes')->where('product_id', $product->id)->where('form', $form)->pluck('size');
                 $Sizes[$form] =  ${$form . "sizes"};
               }
               $Sizes = json_encode($Sizes);
@@ -64,14 +60,14 @@
               <img class="product-image" src="{{$product->photo}}" alt="product image">
               
               <div class="overlay">
-                <button id="{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, `{{$product->photo}}`, {{$Images}}, `{{$product->title}}`, {{$Forms}}, {{$Sizes}}, {{$minprice}}, {{$maxprice}}, `{{$product->slug}}`, {{$auth}})"> 
+                <button id="{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, `{{$product->photo}}`, {{$Images}}, `{{$product->name}}`, {{$Forms}}, {{$Sizes}}, {{$minprice}}, {{$maxprice}}, `{{$product->slug}}`, {{$auth}})"> 
                   <i class="fa-regular fa-eye"></i>
                   <p>Quick View</p>
                 </button>
               </div>
 
               <div class="meta-detail">
-                <h3 class="product-title">{{$product->title}}</h3>
+                <h3 class="product-title">{{$product->name}}</h3>
               @if($minprice==$maxprice)
                 <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span></p>
               @else
@@ -96,25 +92,25 @@
       </div>
     @endif
 
-    @if(count($TrnProducts) != null)
+    @if(count($trn_products) != null)
       <div class="products">
         <div class="title-content">                        
           <h2> Trending Items </h2>
         </div>
       
         <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false, "autoPlay": 1500}'>
-          @foreach($TrnProducts as $product)
+          @foreach($trn_products as $product)
             @php
-              $minprice = DB::table('products_attributes')->where('product_id', $product->id)->min('price');
-              $maxprice = DB::table('products_attributes')->where('product_id', $product->id)->max('price');
-              $Images = DB::table('images')->where('product_id', $product->id)->pluck('image');
-              $Forms = DB::table('products_attributes')->where('product_id', $product->id)->distinct()->pluck('form');
+              $minprice = DB::table('product_attributes')->where('product_id', $product->id)->min('price');
+              $maxprice = DB::table('product_attributes')->where('product_id', $product->id)->max('price');
+              $Images = DB::table('product_images')->where('product_id', $product->id)->pluck('id');
+              $Forms = $product->forms()->pluck('id');
               if(Auth::user())
               $wishlist = DB::table('wishlists')->where('product_id', $product->id)->where('user_id', auth()->user()->id)->get();
               
               $Sizes = array();
               foreach ($Forms as $form) {
-                ${$form . "sizes"} = DB::table('products_attributes')->where('product_id', $product->id)->where('form', $form)->pluck('size');
+                ${$form . "sizes"} = DB::table('product_attributes')->where('product_id', $product->id)->where('form', $form)->pluck('size');
                 $Sizes[$form] =  ${$form . "sizes"};
               }
               $Sizes = json_encode($Sizes);
@@ -124,14 +120,14 @@
               <img class="product-image" src="{{$product->photo}}" alt="product image">
               
               <div class="overlay">
-                <button id="{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, `{{$product->photo}}`, {{$Images}}, `{{$product->title}}`, {{$Forms}}, {{$Sizes}}, {{$minprice}}, {{$maxprice}}, `{{$product->slug}}`, {{$auth}})"> 
+                <button id="{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, `{{$product->photo}}`, {{$Images}}, `{{$product->name}}`, {{$Forms}}, {{$Sizes}}, {{$minprice}}, {{$maxprice}}, `{{$product->slug}}`, {{$auth}})"> 
                   <i class="fa-regular fa-eye"></i>
                   <p>Quick View</p>
                 </button>
               </div>
 
               <div class="meta-detail">
-                <h3 class="product-title">{{$product->title}}</h3>
+                <h3 class="product-title">{{$product->name}}</h3>
               @if($minprice==$maxprice)
                 <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span></p>
               @else
@@ -155,27 +151,27 @@
         </div>
       </div>
     @endif
-    @if(count($NewProducts) != 0)
+    @if(count($new_products) != 0)
       <div class="products">
         <div class="title-content">                        
           <h2> New Items </h2>
         </div>
       
         <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false, "autoPlay": 1500}'>
-          @foreach($NewProducts as $product)
+          @foreach($new_products as $product)
             @php
-              $minprice = DB::table('products_attributes')->where('product_id', $product->id)->min('price');
-              $maxprice = DB::table('products_attributes')->where('product_id', $product->id)->max('price');
-              $Images = DB::table('images')->where('product_id', $product->id)->pluck('image');
-              $Forms = DB::table('products_attributes')->where('product_id', $product->id)->distinct()->pluck('form');
+              $minprice = DB::table('product_attributes')->where('product_id', $product->id)->min('price');
+              $maxprice = DB::table('product_attributes')->where('product_id', $product->id)->max('price');
+              $Images = DB::table('product_images')->where('product_id', $product->id)->pluck('name');
+              $Forms = $product->forms()->get();
 
               if(Auth::user())
               $wishlist = DB::table('wishlists')->where('product_id', $product->id)->where('user_id', auth()->user()->id)->get();
-              
+          
               $Sizes = array();
               foreach ($Forms as $form) {
-                ${$form . "sizes"} = DB::table('products_attributes')->where('product_id', $product->id)->where('form', $form)->pluck('size');
-                $Sizes[$form] =  ${$form . "sizes"};
+                ${$form . "sizes"} = DB::table('product_attributes')->where('product_id', $product->id)->where('form_id', $form->id)->pluck('size');
+                $Sizes[$form->name] =  ${$form . "sizes"};
               }
               $Sizes = json_encode($Sizes);
             @endphp
@@ -183,14 +179,14 @@
               <img class="product-image" src="{{$product->photo}}" alt="product image">
               
               <div class="overlay">
-                <button id="{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, `{{$product->photo}}`, {{$Images}}, `{{$product->title}}`, {{$Forms}}, {{$Sizes}}, {{$minprice}}, {{$maxprice}}, `{{$product->slug}}`, {{$auth}})"> 
+                <button id="{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, `{{$product->photo}}`, {{$Images}}, `{{$product->name}}`, {{$Forms}}, {{$Sizes}}, {{$minprice}}, {{$maxprice}}, `{{$product->slug}}`, {{$auth}})"> 
                   <i class="fa-regular fa-eye"></i>
                   <p>Quick View</p>
                 </button>
               </div>
 
               <div class="meta-detail">
-                <h3 class="product-title">{{$product->title}}</h3>
+                <h3 class="product-title">{{$product->name}}</h3>
               @if($minprice==$maxprice)
                 <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span></p>
               @else
@@ -214,48 +210,48 @@
       </div>
     @endif
 
-    @if($CategoryLists)
-      @foreach($CategoryLists as $cat)
+    @if($categories)
+      @foreach($categories as $cat)
         @php
-          $product_cat = DB::table('product_categories')->where('category_id', $cat->id)->with('products')->limit(9)->get();
+          $product_cat = $cat->products()->limit(9)->get();
         @endphp
 
         @if(count($product_cat) != 0)
           <div class="products">
             <div class="title-content">                        
-              <h2> {{$cat->title}} </h2>
+              <h2> {{$cat->name}} </h2>
             </div>
           
             <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false }'>
-              @foreach($product_cat as $prodcat)
+              @foreach($product_cat as $product)
                 @php
-                  $minprice = DB::table('products_attributes')->where('product_id', $prodcat->product_id)->min('price');
-                  $maxprice = DB::table('products_attributes')->where('product_id', $prodcat->product_id)->max('price');
-                  $Images = DB::table('images')->where('product_id', $prodcat->product_id)->pluck('image');
-                  $Forms = DB::table('products_attributes')->where('product_id', $prodcat->product_id)->distinct()->pluck('form');
+                  $minprice = DB::table('product_attributes')->where('product_id', $product->id)->min('price');
+                  $maxprice = DB::table('product_attributes')->where('product_id', $product->id)->max('price');
+                  $Images = DB::table('product_images')->where('product_id', $product->id)->pluck('id');
+                  $Forms = $product->forms()->get();
 
                   if(Auth::user())
-                  $wishlist = DB::table('wishlists')->where('product_id', $prodcat->product_id)->where('user_id', auth()->user()->id)->get();
-                  
+                  $wishlist = DB::table('wishlists')->where('product_id', $product->id)->where('user_id', auth()->user()->id)->get();
+              
                   $Sizes = array();
                   foreach ($Forms as $form) {
-                    ${$form . "sizes"} = DB::table('products_attributes')->where('product_id', $prodcat->product_id)->where('form', $form)->pluck('size');
-                    $Sizes[$form] =  ${$form . "sizes"};
+                    ${$form . "sizes"} = DB::table('product_attributes')->where('product_id', $product->id)->where('form_id', $form->id)->pluck('size');
+                    $Sizes[$form->name] =  ${$form . "sizes"};
                   }
                   $Sizes = json_encode($Sizes);
                 @endphp
-                <div class="product-card {{$prodcat->product_id}}-card carousel-cell">
-                  <img class="product-image" src="{{$prodcat->product_id->photo}}" alt="product image">
+                <div class="product-card {{$product->id}}-card carousel-cell">
+                  <img class="product-image" src="{{$product->photo}}" alt="product image">
                   
                   <div class="overlay">
-                    <button id="{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, `{{$product->photo}}`, {{$Images}}, `{{$product->title}}`, {{$Forms}}, {{$Sizes}}, {{$minprice}}, {{$maxprice}}, `{{$product->slug}}`, {{$auth}})"> 
+                    <button id="{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, `{{$product->photo}}`, {{$Images}}, `{{$product->name}}`, {{$Forms}}, {{$Sizes}}, {{$minprice}}, {{$maxprice}}, `{{$product->slug}}`, {{$auth}})"> 
                       <i class="fa-regular fa-eye"></i>
                       <p>Quick View</p>
                     </button>
                   </div>
 
                   <div class="meta-detail">
-                    <h3 class="product-title">{{$product->title}}</h3>
+                    <h3 class="product-title">{{$product->name}}</h3>
                   @if($minprice==$maxprice)
                     <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span></p>
                   @else

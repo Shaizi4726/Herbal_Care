@@ -19,17 +19,17 @@ return new class extends Migration
       
       $table->id();
       $table->unsignedBigInteger('plu')->unique();
-      $table->string('title', 100);
+      $table->string('name', 100);
       $table->string('slug', 100)->unique();
       $table->string('sci_name', 100)->nullable();
       $table->longText('other_name')->nullable();
       $table->longText('benefits')->nullable();
       $table->longText('description')->nullable();
       $table->longText('precautions')->nullable();
-      $table->binary('photo');
+      $table->string('photo')->nullable();
       $table->enum('promotion', ['popular', 'new', 'trending'])->default('new');
       $table->enum('status', ['active', 'inactive'])->default('active');
-      $table->float('minprice', $scale = 2);
+      $table->float('minprice');
       $table->unsignedBigInteger('coupon_id')->nullable();
       $table->foreign('coupon_id')->references('id')->on('coupons')->onDelete('SET NULL');
       $table->timestamps();

@@ -3,12 +3,9 @@ namespace App\Http\Controllers;
 use App\Models\Banner;
 use App\Models\Product;
 use App\Models\ProductForm;
-use App\Models\ProductsAttribute;
+use App\Models\ProductAttribute;
 use App\Models\Category;
-use App\Models\PostTag;
-use App\Models\PostCategory;
-use App\Models\Post;
-use App\Models\Cart;
+use App\Models\CartItem;
 use App\Models\Brand;
 use App\User;
 use Auth;
@@ -22,35 +19,22 @@ use SendsPasswordResetEmails;
 
 class FrontendController extends Controller
 {
-
-    public function index(Request $request)
-    {
-        return view('frontend.pages.login')->with('checkout', $request->checkout);
-    }
+  public function index(Request $request)
+  {
+    return view('frontend.pages.login')->with('checkout', $request->checkout);
+  }
     
 
-    public function home()
-    {
-        $featured = Product::where('status', 'active')->where('is_featured', 1)
-            ->orderBy('id', 'DESC')
-            ->limit(2)
-            ->get();
-        $posts = Post::where('status', 'active')->orderBy('id', 'DESC')
-            ->limit(3)
-            ->get();
-        $banners = Banner::where('status', 'active')->limit(3)
-            ->orderBy('id', 'DESC')
-            ->get();
-        $products = Product::where('status', 'active')->orderBy('id', 'DESC')
-            ->get();
-        $product_detail = ProductsAttribute::where('status', 'active')->get();
-        $category = Category::where('status', 'active')->where('is_parent', 1)
-            ->orderBy('title', 'ASC')
-            ->get();
-
-        return view('frontend.index')
-            ->with('featured', $featured)->with('posts', $posts)->with('banners', $banners)->with('product_lists', $products)->with('category_lists', $category)->with('product_detail', $product_detail);
-    }
+  public function home()
+  {
+    $banners = Banner::where('status', 'active')->orderBy('id', 'DESC')->limit(3)->get();
+    $categories = Category::where('status', 'active')->get();
+    $pop_products = Product::where('promotion', 'popular')->where('status', 'active')->orderBy('id', 'DESC')->get();
+    $new_products = Product::where('promotion', 'new')->where('status', 'active')->orderBy('id', 'DESC')->get();
+    $trn_products = Product::where('promotion', 'trending')->where('status', 'active')->orderBy('id', 'DESC')->get();
+      
+    return view('frontend.index')->with('banners', $banners)->with('categories', $categories)->with('pop_products', $pop_products)->with('new_products', $new_products)->with('trn_products', $trn_products);
+  }
 
     public function aboutUs()
     {
@@ -82,8 +66,7 @@ class FrontendController extends Controller
         if (!empty($_GET['brand']))
         {
             $slugs = explode(',', $_GET['brand']);
-            $brand_ids = Brand::select('id')->whereIn('slug', $slugs)->pluck('id')
-                ->toArray();
+            $brand_ids = Brand::select('id')->whereIn('slug', $slugs)->pluck('id')->toArray();
             return $brand_ids;
             $products->whereIn('brand_id', $brand_ids);
         }

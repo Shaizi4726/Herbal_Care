@@ -32,7 +32,7 @@ return array(
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
     'App\\Http\\Controllers\\CouponController' => $baseDir . '/app/Http/Controllers/CouponController.php',
     'App\\Http\\Controllers\\FrontendController' => $baseDir . '/app/Http/Controllers/FrontendController.php',
-    'App\\Http\\Controllers\\HomeController' => $baseDir . '/app/Http/Controllers/HomeController.php',
+    'App\\Http\\Controllers\\UserDashboardController' => $baseDir . '/app/Http/Controllers/UserDashboardController.php',
     'App\\Http\\Controllers\\MessageController' => $baseDir . '/app/Http/Controllers/MessageController.php',
     'App\\Http\\Controllers\\NotificationController' => $baseDir . '/app/Http/Controllers/NotificationController.php',
     'App\\Http\\Controllers\\OrderController' => $baseDir . '/app/Http/Controllers/OrderController.php',

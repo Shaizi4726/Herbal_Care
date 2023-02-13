@@ -20,10 +20,10 @@ return new class extends Migration
       $table->id();
       $table->unsignedBigInteger('product_id');
       $table->foreign('product_id')->references('id')->on('products')->onDelete('CASCADE');
-      $table->unsignedBigInteger('cat_id');
+      $table->unsignedBigInteger('cat_id')->nullable()->default('NULL');
       $table->foreign('cat_id')->references('id')->on('categories')->onDelete('CASCADE');
-      $table->unsignedBigInteger('subcat_id');
-      $table->foreign('subcat_id')->references('id')->on('sub_categories')->onDelete('CASCADE');
+      $table->unsignedBigInteger('subcat_id')->nullable()->default('NULL');
+      $table->foreign('subcat_id')->references('id')->on('sub_categories')->onDelete('SET NULL');
       $table->timestamps();
     });
   }

@@ -5,5 +5,5 @@ home:
         en: /en
 
 not_localized:
-    controller: HomeController::otherAction
+    controller: UserDashboardController::otherAction
     path: /here

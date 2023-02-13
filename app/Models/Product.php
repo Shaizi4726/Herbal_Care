@@ -23,7 +23,7 @@ class Product extends Model
    *
    * 
    */
-  protected $fillable = ['plu', 'title', 'slug', 'sci_name', 'other_name', 'benefits', 'description', 'precautions', 'photo', 'promotion', 'status', 'minprice', 'coupon_id'];
+  protected $fillable = ['plu', 'name', 'slug', 'sci_name', 'other_name', 'benefits', 'description', 'precautions', 'photo', 'promotion', 'status', 'minprice', 'coupon_id'];
   
   /**
    * Get the cart items for the product.
@@ -44,7 +44,7 @@ class Product extends Model
   /**
    * Get the product images for the product.
    */
-  public function prod_images()
+  public function images()
   {
     return $this->hasMany(ProductImage::class, 'product_id');
   }
@@ -52,7 +52,7 @@ class Product extends Model
   /**
    * Get the product attributes for the product.
    */
-  public function prod_attrs()
+  public function attrs()
   {
     return $this->hasMany(ProductAttribute::class, 'product_id');
   }

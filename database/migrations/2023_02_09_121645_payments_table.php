@@ -23,9 +23,9 @@ return new class extends Migration
       $table->enum('payment_method', ['cod', 'op'])->default('cod');
       $table->unsignedBigInteger('account_no')->nullable();
       $table->enum('payment_status',['paid', 'unpaid'])->default('unpaid');
-      $table->float('subtotal', $scale = 2);
-      $table->float('tax_amount', $scale = 2);
-      $table->float('total_amount', $scale = 2);
+      $table->float('subtotal');
+      $table->float('tax_amount');
+      $table->float('total_amount');
       $table->timestamps();
     });
   }

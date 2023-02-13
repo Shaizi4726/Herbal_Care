@@ -105,14 +105,14 @@
 
             @foreach($products as $product)
               @php
-              $sub_cat_info=DB::table('categories')->select('title')->where('id',$product->child_cat_id)->get();
+              $sub_cat_info=DB::table('categories')->select('name')->where('id',$product->child_cat_id)->get();
               // dd($sub_cat_info);
-              $brands=DB::table('brands')->select('title')->where('id',$product->brand_id)->get();
+              $brands=DB::table('brands')->select('name')->where('id',$product->brand_id)->get();
               @endphp
                 <tr>
                     <td>{{$product->id}}</td>
                     <td>{{$product->plu}}</td>
-                    <td>{{$product->title}}</td>                    
+                    <td>{{$product->name}}</td>                    
                     <td>{{(($product->is_featured==1)? 'Yes': 'No')}}</td>
                     <td>{{$product->promotion}}</td>                    
                     <td>

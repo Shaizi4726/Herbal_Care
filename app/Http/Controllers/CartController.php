@@ -6,7 +6,7 @@ use Auth;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Wishlist;
-use App\Models\Cart;
+use App\Models\CartItem;
 use App\Models\ProductsAttribute;
 use Illuminate\Support\Str;
 use Helper;

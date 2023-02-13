@@ -20,7 +20,7 @@ return new class extends Migration
       $table->string('photo_mobile')->nullable();
       $table->string('photo_tablet')->nullable();
       $table->string('photo_desktop');
-      $table->enum('status',['active','inactive'])->default('inactive');
+      $table->enum('status',['active','inactive'])->default('active');
       $table->timestamps();
     });
   }

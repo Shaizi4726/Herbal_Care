@@ -749,7 +749,7 @@ class ComposerStaticInit5c062d17d05507dfac2bd1a73d332e51
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\CouponController' => __DIR__ . '/../..' . '/app/Http/Controllers/CouponController.php',
         'App\\Http\\Controllers\\FrontendController' => __DIR__ . '/../..' . '/app/Http/Controllers/FrontendController.php',
-        'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
+        'App\\Http\\Controllers\\UserDashboardController' => __DIR__ . '/../..' . '/app/Http/Controllers/UserDashboardController.php',
         'App\\Http\\Controllers\\MessageController' => __DIR__ . '/../..' . '/app/Http/Controllers/MessageController.php',
         'App\\Http\\Controllers\\NotificationController' => __DIR__ . '/../..' . '/app/Http/Controllers/NotificationController.php',
         'App\\Http\\Controllers\\OrderController' => __DIR__ . '/../..' . '/app/Http/Controllers/OrderController.php',

@@ -10,7 +10,7 @@ use App\Models\PostComment;
 use App\Rules\MatchOldPassword;
 use Hash;
 
-class HomeController extends Controller
+class UserDashboardController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -19,7 +19,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+      $this->middleware('auth');
     }
 
     /**

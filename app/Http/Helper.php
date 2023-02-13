@@ -7,23 +7,16 @@ use App\Models\Order;
 use App\Models\Wishlist;
 use App\Models\city;
 use App\Models\Product;
-use App\Models\Cart;
+use App\Models\CartItem as Cart;
 
 // use Auth;
 
 class Helper
 {
-  public static function messageList()
+  public static function getAllCategories()
   {
-    return Message::whereNull('read_at')->orderBy('created_at', 'desc')->get();
-  }
-
-  public static function getAllCategory()
-  {
-    $category = new Category();
-    $menu = $category->getAllParentWithChild();
-    return $menu;
-    // return Category::orderBy('id','asc')->get();
+    $categories = Category::orderBy('id', 'ASC')->get();
+    return $categories;
   }
 
   public static function getHeaderCategory()
@@ -77,27 +70,11 @@ class Helper
     return Category::has('products')->orderBy('id', 'ASC')->get();
   }
 
-  public static function postTagList($option = 'all')
-  {
-    if ($option = 'all') {
-      return PostTag::orderBy('id', 'desc')->get();
-    }
-    return PostTag::has('posts')->orderBy('id', 'desc')->get();
-  }
-
-  public static function postCategoryList($option = "all")
-  {
-    if ($option = 'all') {
-      return PostCategory::orderBy('id', 'DESC')->get();
-    }
-    return PostCategory::has('posts')->orderBy('id', 'DESC')->get();
-  }
-
   // Cart Count
   public static function cartCount() {
     if(Auth::check()) {
       $user_id=auth()->user()->id;
-      return Cart::where('user_id',$user_id)->where('order_id',null)->count('product_id');
+      return Cart::where('session_id',$user_id)->count('product_id');
     }
     else {
       return 0;
@@ -125,7 +102,7 @@ class Helper
   {
     if (Auth::check()) {
       $user_id = auth()->user()->id;
-      return Cart::with('product')->where('user_id', $user_id)->get();
+      return Cart::with('product')->where('session_id', $user_id)->get();
     } else {
       $cart = Session::get('cart');
       return $cart;
@@ -137,7 +114,7 @@ class Helper
   {
     if (Auth::check()) {
       $user_id = auth()->user()->id;
-      return Cart::where('user_id', $user_id)->sum('t_amount');
+      return Cart::where('session_id', $user_id)->sum('amount');
     } else {
       $cart_items = Session::get('cart');
       $sum = 0;

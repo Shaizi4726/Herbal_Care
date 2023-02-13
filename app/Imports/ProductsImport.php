@@ -1,120 +1,117 @@
 <?php
 
 namespace App\Imports;
+
 use App\Models\Product;
-use App\Models\Image;
-use App\Models\ProductCategory;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Models\SubCategory;
+use App\Notifications\ImportHasFailedNotification;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Hash;
-use Maatwebsite\Excel\Concerns\Importable;
-use Maatwebsite\Excel\Concerns\RegistersEventListeners;
-use Maatwebsite\Excel\Concerns\SkipsErrors;
-use Maatwebsite\Excel\Concerns\SkipsFailures;
-use Maatwebsite\Excel\Concerns\SkipsOnError;
-use Maatwebsite\Excel\Concerns\SkipsOnFailure;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\ToCollection;
-use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithBatchInserts;
-use Maatwebsite\Excel\Concerns\WithChunkReading;
-use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithValidation;
-use Maatwebsite\Excel\Events\AfterImport;
-use Maatwebsite\Excel\Validators\Failure;
-use Throwable;
 
-class ProductsImport implements
-    ToCollection,
-    WithHeadingRow,
-    SkipsOnError,
-    WithValidation,
-    SkipsOnFailure,
-    WithChunkReading,
-    ShouldQueue,
-    WithEvents
+class ProductsImport implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue, WithValidation
 {
-    use Importable, SkipsErrors, SkipsFailures, RegistersEventListeners;
+  use Importable;
 
+  /**
+  * @param Illuminate\Support\Collection $row
+  *
+  * @return null
+  */
+  public function collection(Collection $rows)
+  {
+    foreach ($rows as $row) {
+      $cats = explode(',', $row['cat_id']);
+      $subcats = explode(',', $row['subcat_id']);
+      $brands = explode(',', $row['brand_id']);
+      $images = explode(',', $row['image']);
+      $forms = explode(',', $row['form']);
+      $sizes = explode(',', $row['size']);
+      $prices = explode(',', $row['price']);
+      $discounts = explode(',', $row['discount']);
+      $stocks = explode(',', $row['stock']);
+      $forms_len = count($forms);
+      $sizes_len =   count($sizes);
 
-    public function collection(Collection $rows)
-    {
-        foreach ($rows as $row) {
-            $product_cat_list = explode(',', $row['cat_id']);
-            $images = explode(',', $row['image']);
-            $forms = explode(',', $row['form']);
-            $sizes = explode(',', $row['size']);
-            $prices = explode(',', $row['price']);
-            $discounts = explode(',', $row['discount']);
-            $stocks = explode(',', $row['stock']);
-            $forms_len = count($forms);
-            $sizes_len =   count($sizes);
+      $product = Product::create([
+        'plu' => $row['plu'],
+        'name' => $row['name'],
+        'slug'=>$row['name'],
+        'sci_name' => $row['sci_name'],
+        'other_name' => $row['other_name'],
+        'benefits' => $row['benefits'],
+        'description' => $row['description'],
+        'precautions' => $row['precautions'],
+        'photo' => $row['photo'],
+        'promotion' => $row['promotion'],                               
+        'status' => $row['status'],
+        'minprice' => $row['minprice']
+      ]);
 
-            $product = Product::create([
-                'plu' => $row['plu'],
-                'title' => $row['title'],
-                'scientific' => $row['scientific'],
-                'slug'=>$row['title'],
-                'other_name' => $row['other_name'],
-                'benefit' => $row['benefit'],
-                'description' => $row['description'],
-                'photo' => $row['photo'],
-                'minprice' => $row['minprice'],
-                'cat_id' => $product_cat_list[0],
-                // 'child_cat_id' => $row['child_cat_id'],
-                'brand_id' => $row['brand_id'],
-                'is_featured' => $row['is_featured'],
-                'status' => $row['status'],
-                'promotion' => $row['promotion']                               
+      if($cats[0] !== "")
+        foreach ($cats as $cat)
+          $product->categories()->sync($cat, false);
+
+      if($subcats[0] !== "")
+        foreach ($subcats as $subcat) {
+          $cat = SubCategory::find($subcat)->category()->pluck('id');
+          $product->categories()->sync($cat, false);
+          $product->subcat()->sync($subcat, false);
+        }
+
+      if($brands[0] !== "")
+        foreach ($brands as $brand)
+          $product->brands()->sync($brand, false);
+
+      if($images[0] !== "")
+        foreach ($images as $img) {
+          $product->images()->create([
+            'name' => $img,
+            'status' => 'active'
+          ]);
+        }
+
+      if($forms[0] !== "")
+        $i = 0;
+        foreach ($forms as $form) {
+          $product->forms()->sync($form, false);
+
+          for ($j=0; $j<$sizes_len; $j++) {
+            $product->attrs()->create([
+              'form_id' => $form,
+              'size' => $sizes[$j],
+              'price' => $prices[$j + ($sizes_len * $i)],
+              'sku' => $row['plu']."_".$forms[$i]."_".$sizes[$j],
+              'discount' => $discounts[$j + ($sizes_len * $i)],
+              'stock' => $stocks[$j + ($sizes_len * $i)],
+              'status' => $row['status']         
             ]);
-           
-            foreach ($product_cat_list as $product_cat)
-            $product->productcategory()->create([
-                'category_id' => $product_cat
-            ]);
-            foreach ($images as $image)
-            $product->images()->create([
-                'plu' => $row['plu'],
-                'image' => $image               
-            ]);
+          }
 
-            for ($i=0; $i<$forms_len; $i++) {
-                for ($j=0; $j<$sizes_len; $j++) {
-                    $product->attributes()->create([
-                        'plu' => $row['plu'],
-                        'form' => $forms[$i],
-                        'size' => $sizes[$j],
-                        'price' => $prices[$j + ($sizes_len * $i)],
-                        'sku' => $row['plu']."_".$forms[$i]."_".$sizes[$j],
-                        'discount' => $discounts[$j + ($sizes_len * $i)],
-                        'stock' => $stocks[$j + ($sizes_len * $i)],
-                        'is_featured' => $row['is_featured'],
-                        'status' => $row['status']         
-                    ]);
-                }
-            } 
-            
+          $i++;
         }
     }
+  }
 
-    public function rules(): array
-    {
-        return [
-            '*.id' => ['id', 'unique:product,id']
-        ];
-    }
+  public function rules(): array
+  {
+    return [
+      '*.id' => ['id', 'unique:product,id']
+    ];
+  }
 
-
-    public function chunkSize(): int
-    {
-        return 1000;
-    }
-
-    public static function afterImport(AfterImport $event)
-    {
-    }
-
-    public function onFailure(Failure ...$failure)
-    {
-    }
+  /**
+  * Import data in small chunks
+  *
+  * @return int
+  */
+  public function chunkSize(): int
+  {
+    return 500;
+  }
 }

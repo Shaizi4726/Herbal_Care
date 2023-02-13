@@ -15,16 +15,16 @@ return new class extends Migration
   {
     Schema::create('product_attributes', function (Blueprint $table) {
       $table->bigIncrements('id');
-      $table->unsignedBigInteger('flu')->unique();
+      $table->unsignedBigInteger('flu')->unique()->nullable()->default('NULL');
       $table->unsignedBigInteger('product_id');
       $table->foreign('product_id')->references('id')->on('products')->onDelete('CASCADE');
       $table->unsignedBigInteger('form_id');
       $table->foreign('form_id')->references('id')->on('forms')->onDelete('CASCADE');
       $table->string('sku')->unique();
       $table->string('size');
-      $table->float('price', $scale = 2);
-      $table->float('discount', $scale = 2);
-      $table->unsignedBigInteger('stock');
+      $table->float('price');
+      $table->float('discount');
+      $table->string('stock');
       $table->enum('status', ['active', 'inactive'])->default('active');
       $table->timestamps();
     });
