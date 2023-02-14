@@ -14,41 +14,6 @@
           <span class="text-danger">{{$message}}</span>
         @enderror
       </div>
-      @php
-        $products = DB::table('products')->where('status', 'active')->get();
-        $users= DB::table('users')->where('status', 'active')->get();
-      @endphp
-      <div class="form-group">
-        <label for="product" class="col-form-label">Product Name </label>
-        <select name="product" class="form-control">
-        <option value="product-title">---Select Product ---</option>
-          @foreach($products as $product)
-            <option value="{{$product->id}}">{{$product->title}}</option>
-          @endforeach
-        </select>
-        @error('product')
-        <span class="text-danger">{{$message}}</span>
-        @enderror
-      </div>
-      <div class="form-group">
-        <label for="user" class="col-form-label">User Name </label>
-        <select name="user" class="form-control">
-        <option value="product-user">---Select User ---</option>
-          @foreach($users as $user)
-            <option value="{{$user->id}}">{{$user->fname}}</option>
-          @endforeach
-        </select>
-        @error('user')
-        <span class="text-danger">{{$message}}</span>
-        @enderror
-      </div>
-      <div class="form-group">
-        <label for="expiry-date" class="col-form-label">Expiry Date </label>
-        <input id="expiry-date" type="date" name="expiry_date" placeholder="Expiry date"  value="{{old('expire_date')}}" class="form-control">
-        @error('expire_date')
-          <span class="text-danger">{{$message}}</span>
-        @enderror
-      </div>
       <div class="form-group">
         <label for="type" class="col-form-label">Type <span class="text-danger">*</span></label>
         <select name="type" class="form-control">
@@ -67,17 +32,19 @@
           <span class="text-danger">{{$message}}</span>
         @enderror
       </div>
-      
       <div class="form-group">
-        <label for="status" class="col-form-label">Status <span class="text-danger">*</span></label>
-        <select name="status" class="form-control">
-          <option value="active">Active</option>
-          <option value="inactive">Inactive</option>
+        <label for="effect" class="col-form-label">Effect </label>
+        <select name="effect" class="form-control">
+          <option value="product">Product</option>
+          <option value="category">Category</option>
+          <option value="subcategory">Subcategory</option>
+          <option value="user">User</option>
         </select>
-        @error('status')
-          <span class="text-danger">{{$message}}</span>
+        @error('type')
+        <span class="text-danger">{{$message}}</span>
         @enderror
       </div>
+      
       <div class="form-group mb-3">
         <button type="reset" class="btn btn-warning">Reset</button>
         <button class="btn btn-success" type="submit">Submit</button>

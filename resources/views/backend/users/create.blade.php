@@ -49,38 +49,31 @@
           @error('password')
           <span class="text-danger">{{$message}}</span>
           @enderror
-        </div>
-
-        <div class="form-group">
-        <label for="inputPhoto" class="col-form-label">Photo</label>
-        <div class="input-group">
-            <span class="input-group-btn">
-                <a id="lfm" data-input="thumbnail" data-preview="holder" class="btn btn-primary">
-                <i class="fa fa-picture-o"></i> Choose
-                </a>
-            </span>
-            <input id="thumbnail" class="form-control" type="text" name="photo" value="{{old('photo')}}">
-        </div>
-        <img id="holder" style="margin-top:15px;max-height:100px;">
-          @error('photo')
-          <span class="text-danger">{{$message}}</span>
-          @enderror
-        </div>
-        <!-- @php 
-        $roles=DB::table('users')->select('role')->distinct()->get();
-        @endphp -->
+        </div>       
+        
         <div class="form-group">
             <label for="role" class="col-form-label">Role</label>
             <select name="role" class="form-control" value="{{old('role')}}">
-              <option value="">-----Select Role-----</option>
-              @foreach($roles as $role)
-                  <option value="{{$role->role}}">{{$role->role}}</option>
-              @endforeach
+                <option value="user">User</option>
+                <option value="admin">Admin</option> 
+                <option value="manager">Manager</option>       
             </select>
           @error('role')
           <span class="text-danger">{{$message}}</span>
           @enderror
           </div>
+          @php
+            $coupons = DB::table('coupons')->get();
+          @endphp
+            <div class="form-group" id='coupon_id'>
+              <label for="coupon_id">Coupon</label>
+              <select name="coupon_id" class="form-control">
+                  <option value="">--Select any Coupon--</option>
+                  @foreach($coupons as $key=>$coupon)
+                    <option value='{{$coupon->id}}'>{{$coupon->code}}</option>
+                  @endforeach
+              </select>
+            </div>
           <div class="form-group">
             <label for="status" class="col-form-label">Status</label>
             <select name="status" class="form-control">

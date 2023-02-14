@@ -17,7 +17,7 @@ class ProductReviewController extends Controller
      */
     public function index()
     {
-        $reviews=ProductReview::getAllReview();
+        $reviews=ProductReview::with('user_info')->paginate(10);
         
         return view('backend.review.index')->with('reviews',$reviews);
     }

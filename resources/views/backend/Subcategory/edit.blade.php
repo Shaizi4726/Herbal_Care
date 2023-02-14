@@ -3,22 +3,34 @@
 @section('main-content')
 
 <div class="card">
-    <h5 class="card-header">Edit Category</h5>
+    <h5 class="card-header">Edit Subcategory</h5>
     <div class="card-body">
-      <form method="post" action="{{route('category.update',$category->id)}}">
+      <form method="post" action="{{route('subcategory.update',$subcategory->id)}}">
         @csrf 
         @method('PATCH')
         <div class="form-group">
           <label for="inputName" class="col-form-label">Name <span class="text-danger">*</span></label>
-          <input id="inputName" type="text" name="name" placeholder="Enter title"  value="{{$category->name}}" class="form-control">
+          <input id="inputName" type="text" name="name" placeholder="Enter title"  value="{{$subcategory->name}}" class="form-control">
           @error('name')
           <span class="text-danger">{{$message}}</span>
           @enderror
         </div>
         @php
+            $categories = DB::table('categories')->orderBy('id','DESC')->get();
+        @endphp
+        <div class="form-group" id='parent_id'>
+          <label for="parent_id">Category</label>
+          <select name="parent_id" class="form-control">parent
+            <option value="{{$subcategory->parent_id}}">{{$subcategory->category->name}}</option>
+            @foreach($categories as $key=>$category)
+              <option value='{{$category->id}}'>{{$category->name}}</option>
+            @endforeach
+          </select>
+        </div> 
+        @php
             $coupons = DB::table('coupons')->orderBy('id','DESC')->get();
         @endphp
-        <div class="form-group" id='coupon_id'>
+        <div class="form-group" id='ccoupon_id'>
           <label for="coupon_id">Coupon</label>
           <select name="coupon_id" class="form-control">
             <option value="">--Select any coupon--</option>

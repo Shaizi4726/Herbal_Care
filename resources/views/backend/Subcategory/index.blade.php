@@ -8,19 +8,19 @@
       </div>
     </div>
     <div class="card-header py-3">
-      <h6 class="m-0 font-weight-bold text-primary float-left">Category Lists</h6>
-      <a href="{{route('category.create')}}" class="btn btn-primary btn-sm float-right" data-toggle="tooltip" data-placement="bottom" title="Add User"><i class="fas fa-plus"></i> Add Category</a>
+      <h6 class="m-0 font-weight-bold text-primary float-left">Subcategory Lists</h6>
+      <a href="{{route('subcategory.create')}}" class="btn btn-primary btn-sm float-right" data-toggle="tooltip" data-placement="bottom" title="Add User"><i class="fas fa-plus"></i> Add Subcategory</a>
     </div>
     <div class="card-body">
       <div class="table-responsive">
-        @if(count($categories)>0)
+        @if(count($subcategories)>0)
           <table class="table table-bordered" id="banner-dataTable" width="100%" cellspacing="0">
             <thead>
               <tr>
                 <th>S.N.</th>
                 <th>Name</th>
                 <th>Slug</th>
-              
+                <th>Category</th>
                 <th>Status</th>
                 <th>Action</th>
               </tr>
@@ -30,39 +30,39 @@
               <th>S.N.</th>
                 <th>Name</th>
                 <th>Slug</th>
-                
+                <th>Category</th>
                 <th>Status</th>
                 <th>Action</th>
               </tr>
             </tfoot>
             <tbody>
 
-              @foreach($categories as $category)
+              @foreach($subcategories as $subcategory)
                 <tr>
-                  <td>{{$category->id}}</td>
-                  <td>{{$category->name}}</td>
-                  <td>{{$category->slug}}</td>
-                  
+                  <td>{{$subcategory->id}}</td>
+                  <td>{{$subcategory->name}}</td>
+                  <td>{{$subcategory->slug}}</td>
+                  <td>{{$subcategory->category->name}}</td>
                   <td>
-                    @if($category->status=='active')
-                      <span class="badge badge-success">{{$category->status}}</span>
+                    @if($subcategory->status=='active')
+                      <span class="badge badge-success">{{$subcategory->status}}</span>
                     @else
-                      <span class="badge badge-warning">{{$category->status}}</span>
+                      <span class="badge badge-warning">{{$subcategory->status}}</span>
                     @endif
                     </td>
                     <td>
-                      <a href="{{route('category.edit',$category->id)}}" class="btn btn-primary btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>
-                    <form method="POST" action="{{route('category.destroy',[$category->id])}}">
+                      <a href="{{route('subcategory.edit',$subcategory->id)}}" class="btn btn-primary btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>
+                    <form method="POST" action="{{route('subcategory.destroy',[$subcategory->id])}}">
                       @csrf
                       @method('delete')
-                      <button class="btn btn-danger btn-sm dltBtn" data-id="{{$category->id}}" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
+                      <button class="btn btn-danger btn-sm dltBtn" data-id="{{$subcategory->id}}" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
                     </form>
                   </td>
                 </tr>
               @endforeach
             </tbody>
           </table>
-          {!! $categories->withQueryString()->links('pagination::bootstrap-5') !!}
+          {!! $subcategories->withQueryString()->links('pagination::bootstrap-5') !!}
           
         @else
           <h6 class="text-center">No Categories found!!! Please create Category</h6>

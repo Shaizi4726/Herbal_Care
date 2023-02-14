@@ -53,23 +53,8 @@
           @enderror
         </div> --}}
 
-        <div class="form-group">
-        <label for="inputPhoto" class="col-form-label">Photo</label>
-        <div class="input-group">
-            <span class="input-group-btn">
-                <a id="lfm" data-input="thumbnail" data-preview="holder" class="btn btn-primary">
-                <i class="fa fa-picture-o"></i> Choose
-                </a>
-            </span>
-            <input id="thumbnail" class="form-control" type="text" name="photo" value="{{$user->photo}}">
-        </div>
-        <img id="holder" style="margin-top:15px;max-height:100px;">
-          @error('photo')
-          <span class="text-danger">{{$message}}</span>
-          @enderror
-        </div>
         @php 
-        $roles=DB::table('users')->select('role')->where('id',$user->id)->get();
+          $roles=DB::table('users')->select('role')->where('id',$user->id)->get();
         // dd($roles);
         @endphp
         <div class="form-group">
@@ -77,8 +62,9 @@
             <select name="role" class="form-control">
                 <option name="role" value="">-----Select Role-----</option>
                 @foreach($roles as $role)
-                    <option  value="admin" {{(($role->role=='admin') ? 'selected' : '')}}>Admin</option>
-                    <option  value="user" {{(($role->role=='user') ? 'selected' : '')}}>User</option>
+                  <option  value="user" {{(($role->role=='user') ? 'selected' : '')}}>User</option>
+                  <option  value="admin" {{(($role->role=='admin') ? 'selected' : '')}}>Admin</option>
+                  <option  value="manager" {{(($role->role=='manager') ? 'selected' : '')}}>Manager</option>
                 @endforeach
             </select>
           @error('role')
@@ -88,8 +74,8 @@
           <div class="form-group">
             <label for="status" class="col-form-label">Status</label>
             <select name="status" class="form-control">
-                <option value="active" {{(($user->status=='active') ? 'selected' : '')}}>Active</option>
-                <option value="inactive" {{(($user->status=='inactive') ? 'selected' : '')}}>Inactive</option>
+              <option value="active" {{(($user->status=='active') ? 'selected' : '')}}>Active</option>
+              <option value="inactive" {{(($user->status=='inactive') ? 'selected' : '')}}>Inactive</option>
             </select>
           @error('status')
           <span class="text-danger">{{$message}}</span>

@@ -13,43 +13,7 @@
               <span class="text-danger">{{$message}}</span>
             @enderror
           </div>
-          
-          @php
-            $products = DB::table('products')->where('status', 'active')->get();
-            $users= DB::table('users')->where('status', 'active')->get();
-          @endphp
-          <div class="form-group">
-            <label for="product-title" class="col-form-label">Product Name </label>
-            <select id="product-title" name="product_id" class="form-control" >
-              <option value="">---Select Product ---</option>
-              @foreach($products as $product)
-                <option name="product_id" value="{{$product->id}}">{{$product->title}}</option>
-              @endforeach
-            </select>
-            @error('product_id')
-              <span class="text-danger">{{$message}}</span>
-            @enderror
-          </div>
-          
-          <div class="form-group">
-            <label for="user-fname" class="col-form-label">User Name </label>
-            <select id="user" name="user_id" class="form-control" >
-              <option value="">---Select User ---</option>
-              @foreach($users as $user)
-                <option name="user_id" value="{{$user->id}}">{{$user->fname}}&nbsp;{{$user->lname}}</option>
-              @endforeach
-            </select>
-            @error('user_id')
-              <span class="text-danger">{{$message}}</span>
-            @enderror
-          </div>
-          <div class="form-group">
-            <label for="expiry-date" class="col-form-label">Expiry Date </label>
-            <input id="expiry-date" type="date" name="expiry_date" placeholder="Expiry date" value="{{$coupon->expiry_date}}" class="form-control">
-            @error('expiry_date')
-              <span class="text-danger">{{$message}}</span>
-            @enderror
-          </div>  
+           
           <div class="form-group">
             <label for="type" class="col-form-label">Type <span class="text-danger">*</span></label>
             <select name="type" class="form-control">
@@ -68,17 +32,19 @@
               <span class="text-danger">{{$message}}</span>
             @enderror
           </div>
-          
           <div class="form-group">
-            <label for="status" class="col-form-label">Status <span class="text-danger">*</span></label>
-            <select name="status" class="form-control">
-              <option value="active" {{(($coupon->status=='active') ? 'selected' : '')}}>Active</option>
-              <option value="inactive" {{(($coupon->status=='inactive') ? 'selected' : '')}}>Inactive</option>
+            <label for="effect" class="col-form-label">Effect <span class="text-danger">*</span></label>
+            <select name="effect" class="form-control">
+              <option value="product" {{(($coupon->effect=='product') ? 'selected' : '')}}>Product</option>
+              <option value="category" {{(($coupon->effect=='category') ? 'selected' : '')}}>Category</option>
+              <option value="subcategory" {{(($coupon->effect=='subcategory') ? 'selected' : '')}}>Subcategory</option>
+              <option value="user" {{(($coupon->effect=='user') ? 'selected' : '')}}>User</option>
             </select>
-            @error('status')
-            <span class="text-danger">{{$message}}</span>
+            @error('type')
+              <span class="text-danger">{{$message}}</span>
             @enderror
           </div>
+          
           <div class="form-group mb-3">
             <button class="btn btn-success" type="submit">Update</button>
           </div>

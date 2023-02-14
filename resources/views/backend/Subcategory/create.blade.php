@@ -3,7 +3,7 @@
 @section('main-content')
 
 <div class="card">
-    <h5 class="card-header">Add Category</h5>
+    <h5 class="card-header">Add Subcategory</h5>
     <div class="card-body">
       <form method="post" action="{{route('subcategory.store')}}">
         {{csrf_field()}}
@@ -14,7 +14,18 @@
           <span class="text-danger">{{$message}}</span>
           @enderror
         </div>
-         
+        @php
+          $categories = DB::table('categories')->orderBy('id','DESC')->get();
+        @endphp
+        <div class="form-group" id='parent_id'>
+            <label for="parent_id">Category</label>
+            <select name="parent_id" class="form-control">
+                <option value="">--Select any Category--</option>
+                @foreach($categories as $key=>$category)
+                    <option value='{{$category->id}}'>{{$category->name}}</option>
+                @endforeach
+            </select>
+        </div>  
         @php
           $coupons = DB::table('coupons')->orderBy('id','DESC')->get();
         @endphp
@@ -51,9 +62,7 @@
 <link rel="stylesheet" href="{{asset('backend/summernote/summernote.min.css')}}">
 @endpush
 @push('scripts')
-<script src="/vendor/laravel-filemanager/js/stand-alone-button.js"></script>
+
 <script src="{{asset('backend/summernote/summernote.min.js')}}"></script>
-
-
 
 @endpush

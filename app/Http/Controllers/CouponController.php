@@ -38,16 +38,14 @@ class CouponController extends Controller
     {
         // return $request->all();
         $this->validate($request,[
-            'product_id'=>'numeric|nullable',
-            'user_id'=>'numeric|nullable',  
             'code'=>'string|required',        
             'type'=>'required|in:fixed,percent',
-            'expiry_date'=>'string|nullable',
             'value'=>'required|numeric',
-            'status'=>'required|in:active,inactive'
+            'effect'=>'required|in:product,category,subcategory,user',
+            
         ]);
         $data=$request->all();
-        //dd($data);
+        //dd($request->all());
         $status=Coupon::create($data);
         if($status){
             request()->session()->flash('success','Coupon Successfully added');
@@ -97,13 +95,7 @@ class CouponController extends Controller
         
         $coupon=Coupon::findOrFail($id);
         $this->validate($request,[
-            // 'product_id'=>'numeric|nullable',
-            // 'user_id'=>'numeric|nullable',  
-            // 'code'=>'string|required',        
-            // 'type'=>'required|in:fixed,percent',
-            // 'expiry_date'=>'string|nullable',
-            // 'value'=>'required|numeric',
-            // 'status'=>'required|in:active,inactive'
+           
         ]);
         //dd($request->all());
         $data=$request->all();

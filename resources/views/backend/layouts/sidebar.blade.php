@@ -56,17 +56,31 @@
 
     <!-- Categories -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#categoryCollapse" aria-expanded="true" aria-controls="categoryCollapse">
-          <i class="fas fa-sitemap"></i>
-          <span>Category</span>
-        </a>
-        <div id="categoryCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Category Options:</h6>
-            <a class="collapse-item" href="{{route('category.index')}}">Category</a>
-            <a class="collapse-item" href="{{route('category.create')}}">Add Category</a>
-          </div>
+      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#categoryCollapse" aria-expanded="true" aria-controls="categoryCollapse">
+        <i class="fas fa-sitemap"></i>
+        <span>Category</span>
+      </a>
+      <div id="categoryCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+          <h6 class="collapse-header">Category Options:</h6>
+          <a class="collapse-item" href="{{route('category.index')}}">Category</a>
+          <a class="collapse-item" href="{{route('category.create')}}">Add Category</a>
         </div>
+      </div>
+    </li>
+    <!-- SubCategories -->
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#subcategoryCollapse" aria-expanded="true" aria-controls="subcategoryCollapse">
+        <i class="fas fa-sitemap"></i>
+        <span>Subcategory</span>
+      </a>
+      <div id="subcategoryCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+          <h6 class="collapse-header">Subcategory Options:</h6>
+          <a class="collapse-item" href="{{route('subcategory.index')}}">Subcategory</a>
+          <a class="collapse-item" href="{{route('subcategory.create')}}">Add Subcategory</a>
+        </div>
+      </div>
     </li>
     <!-- Form -->
     {{-- Forms --}}

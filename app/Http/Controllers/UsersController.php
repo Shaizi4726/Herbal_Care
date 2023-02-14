@@ -52,7 +52,6 @@ class UsersController extends Controller
             'password'=>'string|required',
             'role'=>'required|in:admin,user',
             'status'=>'required|in:active,inactive',
-            'photo'=>'nullable|string',
         ]);
 
         // dd($request->all());
@@ -119,7 +118,6 @@ class UsersController extends Controller
             // 'email'=>'string|required',
             // 'role'=>'required|in:admin,user',
             // 'status'=>'required|in:active,inactive',
-            // 'photo'=>'nullable|string',
         ]);
         // dd($request->all());
         $data=$request->all();
@@ -142,14 +140,21 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        $delete=User::findorFail($id);
-        $status=$delete->delete();
-        if($status){
-            request()->session()->flash('success','User Successfully deleted');
+        $user=User::find($id);
+        if($user){
+            $status=$user->delete();
+            if($status){
+                request()->session()->flash('success','user successfully deleted');
+            }
+            else{
+                request()->session()->flash('error','Error, Please try again');
+            }
+            return redirect()->route('users.index');
         }
         else{
-            request()->session()->flash('error','There is an error while deleting users');
+            request()->session()->flash('error','user not found');
+            return redirect()->back();
         }
-        return redirect()->route('users.index');
     }
+
 }

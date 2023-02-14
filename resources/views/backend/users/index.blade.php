@@ -21,7 +21,6 @@
               <th>Company Name</th>
               <th>TRN</th>
               <th>Email</th>
-              <th>Photo</th>
               <th>Join Date</th>
               <th>Role</th>
               <th>Status</th>
@@ -35,7 +34,6 @@
                 <th>Company Name</th>
                 <th>TRN</th>
                 <th>Email</th>
-                <th>Photo</th>
                 <th>Join Date</th>
                 <th>Role</th>
                 <th>Status</th>
@@ -50,13 +48,6 @@
                     <td>{{$user->cname}}</td>
                     <td>{{$user->trn_number}}</td>
                     <td>{{$user->email}}</td>
-                    <td>
-                        @if($user->photo)
-                            <img src="{{$user->photo}}" class="img-fluid rounded-circle" style="max-width:50px" alt="{{$user->photo}}">
-                        @else
-                            <img src="{{asset('backend/img/avatar.png')}}" class="img-fluid rounded-circle" style="max-width:50px" alt="avatar.png">
-                        @endif
-                    </td>
                     <td>{{(($user->created_at)? $user->created_at->diffForHumans() : '')}}</td>
                     <td>{{$user->role}}</td>
                     <td>

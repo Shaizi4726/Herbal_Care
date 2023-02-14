@@ -20,25 +20,19 @@
             <tr>
               <th>S.N.</th>
               <th>Coupon Code</th>
-              <th>Product Name</th>
-              <th>User Name</th>
               <th>Type</th>
               <th>Value</th>
-              <th>Expiry Date</th>
-              <th>Status</th>
+              <th>Effect</th>             
               <th>Action</th>
             </tr>
           </thead>
           <tfoot>
             <tr>
-            <th>S.N.</th>
+              <th>S.N.</th>
               <th>Coupon Code</th>
-              <th>Product Name</th>
-              <th>User Name</th>
               <th>Type</th>
               <th>Value</th>
-              <th>Expiry Date</th>
-              <th>Status</th>
+              <th>Effect</th>             
               <th>Action</th>
               </tr>
           </tfoot>
@@ -48,16 +42,6 @@
             <tr>
               <td>{{$coupon->id}}</td>
               <td>{{$coupon->code}}</td>
-              @if($coupon->product_id)
-                <td>{{$coupon->products->title}}</td>
-              @else
-                <td></td>
-              @endif
-              @if($coupon->user_id)                  
-                <td>{{$coupon->users->fname}}&nbsp;{{$coupon->users->lname}}</td>
-                @else
-                <td></td>
-              @endif 
               <td>
                 @if($coupon->type=='fixed')
                     <span class="badge badge-primary">{{$coupon->type}}</span>
@@ -72,14 +56,7 @@
                     {{$coupon->value}}%
                 @endif</td>
               <td>
-                {{$coupon->expiry_date}}
-              </td>
-              <td>
-                @if($coupon->status=='active')
-                    <span class="badge badge-success">{{$coupon->status}}</span>
-                @else
-                    <span class="badge badge-warning">{{$coupon->status}}</span>
-                @endif
+                {{$coupon->effect}}
               </td>
                 
                 <td>

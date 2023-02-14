@@ -97,7 +97,7 @@ class StateController extends Controller
         if($state){
             $status=$state->delete();
             if($status){
-                request()->session()->flash('success','cstate successfully deleted');
+                request()->session()->flash('success','state successfully deleted');
             }
             else{
                 request()->session()->flash('error','Error, Please try again');

@@ -8,6 +8,7 @@ use App\Models\ProductsAttribute;
 use App\Models\ProductCategory;
 use App\Models\ProductForm;
 use App\Models\Category;
+use App\Models\SubCategory;
 use App\Models\Brand;
 use App\Models\Image;
 use App\Imports\ProductsImport;
@@ -24,7 +25,7 @@ class ProductController extends Controller
    */
   public function index()
   {
-    $products = Product::get();
+    $products = Product::paginate(10);
     return view('backend.product.index')->with('products',$products);
   }
 
@@ -36,9 +37,13 @@ class ProductController extends Controller
   public function create()
   {
       $brand=Brand::get();
-      $category=Category::where('is_parent',1)->get();
+      $category=Category::get();
+      $subcategory=SubCategory::get();
+      $product_category=ProductCategory::get();
+     
       // return $category;
-      return view('backend.product.create')->with('categories',$category)->with('brands',$brand);
+      return view('backend.product.create')->with('product_categories',$product_category)
+      ->with('categories',$category)->with('brands',$brand)->with('subcategories',$subcategory);
   }
 
   /**
@@ -51,26 +56,25 @@ class ProductController extends Controller
   {                    
       $this->validate($request,[
           'plu'=>'required|numeric',
-          'title'=>'string|required',
-          'scientific'=>'string|nullable',
+          'name'=>'string|required',
+          'slug'=>'string|required',
+          'sci_name'=>'string|nullable',
           'other_name'=>'string|nullable',
-          'benefit'=>'string|nullable',
-          'description'=>'string|nullable',            
+          'benefits'=>'string|nullable',
+          'description'=>'string|nullable', 
+          'dprecautions'=>'string|nullable',                 
           'photo'=>'required',
+          'promotion'=>'required|in:default,new,trending',
           'minprice'=>'numeric|nullable',
           'photo.*'=>'image|mimes:jpg,jpeg,png,gif|max:1024|required',
-          // 'cat_id'=>'required|exists:categories,id',
-          // 'child_cat_id'=>'nullable|exists:categories,id',
-          'brand_id'=>'nullable|exists:brands,id',            
-          'is_featured'=>'sometimes|in:1',
-          'status'=>'required|in:active,inactive',
-          'promotion'=>'required|in:default,new,trending'            
+          'coupon_id'=>'nullable|exists:coupons,id',            
+          'status'=>'required|in:active,inactive'
+          
       ]);
       $data=$request->all();        
-      $slug=Str::slug($request->title);
+      $slug=Str::slug($request->name);
       $count=Product::where('slug',$slug)->count();        
       $data['slug']=$slug;
-      $data['is_featured']=$request->input('is_featured',0);
       $status=Product::create($data);
           $categories = [];
           $categories[] = $request->cat_id;
@@ -105,7 +109,6 @@ class ProductController extends Controller
               $attribute['price']=$request->price[$i];
               $attribute['discount']=$request->discount[$i];
               $attribute['stock']=$request->stock[$i];
-              $attribute['is_featured']=$request->is_featured; 
               //dd($request->all());
               $attribute->save();                             
           }
@@ -141,7 +144,7 @@ class ProductController extends Controller
   {
       $brand=Brand::get();
       $product=Product::findOrFail($id);
-      $category=Category::where('is_parent',1)->get();
+      $category=Category::get();
       $items=Product::where('id',$id)->get();
       $attribute=ProductsAttribute::where('id',$id)->get();
       $image=Image::where('id',$id);

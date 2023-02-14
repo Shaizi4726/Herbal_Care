@@ -24,14 +24,14 @@
         </div>
         <div class="form-group">
           <label for="inputTitle" class="col-form-label">Scientific Name</label>
-          <input id="inputTitle" type="text" name="scientific" placeholder="Enter Scientific Name"  value="{{old('scientific')}}" class="form-control">
-          @error('scientific')
+          <input id="inputTitle" type="text" name="sci_name" placeholder="Enter Scientific Name"  value="{{old('sci_name')}}" class="form-control">
+          @error('sci_name')
           <span class="text-danger">{{$message}}</span>
           @enderror
         </div>
         <div class="form-group">
           <label for="other_name" class="col-form-label">Other Name </label>
-          <textarea class="form-control" id="other_name" name="other_name">{{old('summary')}}</textarea>
+          <textarea class="form-control" id="other_name" name="other_name">{{old('other_name')}}</textarea>
           @error('other_name')
           <span class="text-danger">{{$message}}</span>
           @enderror
@@ -58,43 +58,22 @@
           @enderror
         </div>
         <div class="form-group">
-          <label for="is_featured">Is Featured</label><br>
-          <input type="checkbox" name='is_featured' id='is_featured' value='1' checked> Yes                        
-        </div>
-        <div class="AddCategory">
-            {{-- {{$categories}} --}}
-          @php
-            $categories = DB::table('categories')->get();
-          @endphp
-          <div class="form-group">
-            <label for="cat_id">Category <span class="text-danger">*</span></label>
-            <select name="cat_id" id="cat_id" class="control-group">
-              <option value="">--Select any category--</option>
-              @foreach($categories as $key=>$cat_data)
-                  <option value='{{$cat_data->id}}'>{{$cat_data->title}}</option>
-              @endforeach
-            </select>
-          
-          <a href="javascript:void(0);" class="add_button" title="Add field">Add</a><br>
-          <input type="hidden" id="cat_count" name="cat_count" value="">
-        </div>
-      </div>
-        <!-- <div class="form-group d-none" id="child_cat_div">
-          <label for="child_cat_id">Sub Category</label>
-          <select name="child_cat_id" id="child_cat_id" class="form-control">
-              <option value="">--Select any category--</option>
-              {{-- @foreach($parent_cats as $key=>$parent_cat)
-                  <option value='{{$parent_cat->id}}'>{{$parent_cat->title}}</option>
-              @endforeach --}}
+          <label for="category_id">Category</label>
+          {{-- {{$categories}} --}}
+          <select name="category_id" class="form-control">
+              <option value="">--Select category--</option>
+             @foreach($categories as $category)
+              <option value="{{$category->id}}">{{$category->name}}</option>
+             @endforeach
           </select>
-        </div>        -->
+        </div>      
         <div class="form-group">
           <label for="brand_id">Brand</label>
           {{-- {{$brands}} --}}
           <select name="brand_id" class="form-control">
               <option value="">--Select Brand--</option>
              @foreach($brands as $brand)
-              <option value="{{$brand->id}}">{{$brand->title}}</option>
+              <option value="{{$brand->id}}">{{$brand->name}}</option>
              @endforeach
           </select>
         </div>
@@ -102,7 +81,7 @@
           <label for="promotion">Promotion</label>
           <select name="promotion" class="form-control">
               <option value="">--Select Promotion--</option>
-              <option value="default">Default</option>
+              <option value="popular">Popular</option>
               <option value="new">New</option>
               <option value="trending">Trending</option>
           </select>
@@ -131,7 +110,6 @@
                 <input type="float"  name="price[]" id="price" placeholder="price" style="width:120px;"required/>
                 <input id="discount" type="numberfloat" name="discount[]" min="0" max="100" placeholder="Enter discount" style="width:120px;"required/>
                 <input type="float" name="stock[]" id="stock" placeholder="stock" style="width:120px;"required/>
-            IsFeature    <input type="checkbox" name="is_featured" id="is_featured" placeholder="Is Feature" value="1" checked> Yes
                 <a href="javascript:void(0);" class="add_button1" title="Add field">Add</a><br>
               </div>
             </div>
@@ -229,87 +207,20 @@
 
 </script>
 
-<!-- <script>
-  $('#cat_id').change(function(){
-    var cat_id=$(this).val();
-    // alert(cat_id);
-    if(cat_id !=null){
-      // Ajax call
-      $.ajax({
-        url:"/admin/category/"+cat_id+"/child",
-        data:{
-          _token:"{{csrf_token()}}",
-          id:cat_id
-        },
-        type:"POST",
-        success:function(response){
-          if(typeof(response) !='object'){
-            response=$.parseJSON(response)
-          }
-          // console.log(response);
-          var html_option="<option value=''>----Select sub category----</option>"
-          if(response.status){
-            var data=response.data;
-            // alert(data);
-            if(response.data){
-              $('#child_cat_div').removeClass('d-none');
-              $.each(data,function(id,title){
-                html_option +="<option value='"+id+"'>"+title+"</option>"
-              });
-            }
-            else{
-            }
-          }
-          else{
-            $('#child_cat_div').addClass('d-none');
-          }
-          $('#child_cat_id').html(html_option);
-        }
-      });
-    }
-    else{
-    }
-  })
-</script> -->
+
 
 <script type="text/javascript">
-    $(document).ready(function() {
-      $(".btn-success").click(function(){ 
-          var html = $(".clone").html();
-          $(".increment").after(html);
-      });
-      $("body").on("click",".btn-danger",function(){ 
-          $(this).parents(".control-group").remove();
-      });
+  $(document).ready(function() {
+    $(".btn-success").click(function(){ 
+        var html = $(".clone").html();
+        $(".increment").after(html);
     });
-
-
-    $(document).ready(function() {
-    var max_fields = 10;
-    var wrapper = $(".AddCategory");
-    var add_button = $(".add_button");
-
-    var x = 1;
-    $(add_button).click(function(e) {
-        e.preventDefault();
-        if (x < max_fields) {
-            x++;
-            $(wrapper).append(`<div><div class="control-group"><label for="cat_id${x}">Category <span class="text-danger">*</span></label><select name="cat_id${x}" id="cat_id${x}" class="control-group"><option value="">--Select any category--</option>@foreach($categories as $key=>$cat_data)<option value="{{$cat_data->id}}">{{$cat_data->title}}</option>@endforeach</select><a href="#" class="delete">Delete</a></div></div>`); //add input box
-            $("#cat_count").val(x);
-          } 
-          else {
-            alert('You Reached the limits')
-        }
+    $("body").on("click",".btn-danger",function(){ 
+        $(this).parents(".control-group").remove();
     });
+  });
 
-    $(wrapper).on("click", ".delete", function(e) {
-        e.preventDefault();
-        $(this).parent('div').remove();
-        x--;
-    })
-});
-
-$(document).ready(function() {
+  $(document).ready(function() {
     var max_fields = 15;
     var wrapper = $(".abc");
     var add_button = $(".add_button1");
@@ -319,7 +230,7 @@ $(document).ready(function() {
         e.preventDefault();
         if (x < max_fields) {
             x++;
-            $(wrapper).append('<div><input type="select" class="title" name="form[]" id="form" placeholder="form" style="width:120px;"/><input type="text" name="sku[]" id="sku" placeholder="sku" style="width:120px; margin-right:5px; margin-top:5px;" required /><input type="text" name="size[]" id="size" placeholder="size" style="width:120px; margin-right:5px" required/><input type="text" name="price[]" id="price" placeholder="price" style="width:120px; margin-right:4px" required/><input id="discount" type="number" name="discount[]" min="0" max="100" placeholder="Enter discount" style="width:120px;"required/><input type="text" name="stock[]" id="stock" placeholder="stock" style="width:120px; margin-right:4px" required/>IsFeature    <input type="checkbox" name="is_featured" id="is_featured" placeholder="Is Feature" value="1" checked> Yes <a href="#" class="delete">Delete</a></div>');//add input box
+            $(wrapper).append('<div><input type="select" class="title" name="form[]" id="form" placeholder="form" style="width:120px;"/><input type="text" name="sku[]" id="sku" placeholder="sku" style="width:120px; margin-right:5px; margin-top:5px;" required /><input type="text" name="size[]" id="size" placeholder="size" style="width:120px; margin-right:5px" required/><input type="text" name="price[]" id="price" placeholder="price" style="width:120px; margin-right:4px" required/><input id="discount" type="number" name="discount[]" min="0" max="100" placeholder="Enter discount" style="width:120px;"required/><input type="text" name="stock[]" id="stock" placeholder="stock" style="width:120px; margin-right:4px" required/><a href="#" class="delete">Delete</a></div>');//add input box
            
         } else {
             alert('You Reached the limits')
@@ -327,11 +238,11 @@ $(document).ready(function() {
     });
 
     $(wrapper).on("click", ".delete", function(e) {
-        e.preventDefault();
-        $(this).parent('div').remove();
-        x--;
+      e.preventDefault();
+      $(this).parent('div').remove();
+      x--;
     })
-});
+  });
 
 
 </script>

@@ -71,12 +71,5 @@ class Coupon extends Model
     return $this->hasMany(User::class, 'coupon_id');
   }
 
-  /**
-   * The model's default values for attributes.
-   *
-   * @var array
-   */
-  protected $attributes = [
-    'status' => 'inactive'
-  ];
+
 }

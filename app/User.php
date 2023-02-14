@@ -26,7 +26,7 @@ class User extends Authenticatable implements MustVerifyEmail
    *
    * 
    */
-  protected $fillable = ['fname', 'lname', 'cname', 'trn_no', 'email', 'password', 'photo', 'role', 'status', 'coupon_id'];
+  protected $fillable = ['fname', 'lname', 'cname', 'trn_no', 'email', 'password','role', 'status', 'coupon_id'];
   
   /**
    * Get the cart items for the user.
