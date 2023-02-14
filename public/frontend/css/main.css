@@ -11,7 +11,7 @@ body {
     overflow-x: hidden;
 }
 
-.title, h1, h2, h3 {
+.title, h1, h2 {
     font-family: Vollkorn, 'Times New Roman', Times, serif;
 }
 
@@ -341,28 +341,28 @@ input[type="radio"] {
 }
 
 .modal-radio input[type="radio"]:hover + label {
-  color: #2c542f;
+  color: #f2f4e6;
+  background-color: #2c542f;
   font-weight: bold;
-  background-color: #f2f4e6;
 }
 
 .modal-radio input[type="radio"]:checked + label {
-    color: #2c542f;
-    font-weight: bold;
-    background-color: #f2f4e6;
-    border: 1px solid #2c542f;
+  color: #f2f4e6;
+  background-color: #2c542f;
+  font-weight: bold;
 }
 
 .modal-radio label {
-    text-align: center;
-    color: #faf9f6;
-    list-style-type: none;
-    background-color: #2c542f;
-    display: inline-block;
-    width: 5em;
-    border-radius: 5px;
-    position: relative;
-    margin: 0 0.5em 0.5em 0;
+  text-align: center;
+  color: #2c542f;
+  background-color: #faf9f6;
+  list-style-type: none;
+  display: inline-block;
+  width: 5em;
+  border: 1px solid #2c542f;
+  border-radius: 5px;
+  position: relative;
+  margin: 0 0.5em 0.5em 0;
 }
 
 .sizes-list, .forms-list {

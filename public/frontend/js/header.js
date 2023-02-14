@@ -28,8 +28,8 @@ var header = document.getElementById("desktop-menu");
 var mobHeader = document.getElementById("search");
 var desCatMenu = document.getElementById("desktop-cat-menu");
 var mobCartButton = document.getElementById("mob-cart-btn");
-var mobFavButton = document.getElementById("mob-fav-button");
-var menuButton = document.getElementById("menu-button");
+var mobFavButton = document.getElementById("mob-fav-btn");
+var menuButton = document.getElementById("menu-btn");
 var sticky = header.offsetTop;
 
 function myFunction() {

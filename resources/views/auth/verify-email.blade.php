@@ -23,7 +23,7 @@
   </head>
 
   <body>
-    <header class="header shop-header" id="header">
+    <header class="header web-header" id="header">
       <div class="header-content">
         <a href="{{route('home')}}" class="header-logo">
           <img src="{{asset('images/logo.png')}}" alt="Website Logo" class="signing-web-logo">

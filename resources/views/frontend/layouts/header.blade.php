@@ -1,28 +1,32 @@
-<header class="header shop-header" id="header">
+<header class="header web-header" id="header">
   <!-- Topbar -->
   <div class="topbar" id="mob-header">
-    <div class="header-content">
-      <div id="header-logo-title">
-        @php $settings=DB::table('settings')->get(); @endphp
-        <a href="{{route('home')}}" class="header-logo">
-          <img src="@foreach($settings as $data) {{$data->logo}} @endforeach" alt="logo">
-        </a>
-        <h2 class="header-title">HerbalCare</h2>
-      </div>
+    <div class="header-content header-logo-title">
+      @php 
+        $data = DB::table('settings')->first(); 
+      @endphp
+
+      <a href="{{route('home')}}" class="header-logo">
+        <img src="{{$data->logo}}" alt="logo">
+      </a>
+
+      <h2 class="header-title">HerbalCare</h2>
     </div>
-    <div class="search-bar" id= "search"> 
-      <button id="menu-button" class="btn header-icon" onclick="showMenu()"><i class="fa-solid fa-bars icon" id="bars-icon"></i></button>                                       
+
+    <div class="search-bar" id= "search">
+      <button id="menu-btn" class="btn header-icon" onclick="showMenu()"><i class="fa-solid fa-bars icon" id="bars-icon"></i></button>                                       
       <form method="post" action="{{route('product.search')}}" class="search-form">
         @csrf
         <input type="search" name="search" class="form-controller search-term" placeholder="Search Products...">                                                                
-        <button type="submit" class="btn search-button" value="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
+        <button type="submit" class="btn search-btn" value="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
       </form>
-      <button id="mob-fav-button" class="btn fav-button header-icon">
+      <button id="mob-fav-btn" class="btn fav-btn header-icon">
         <a href="{{route('wishlist')}}">
         <i class="fa-solid fa-heart" id="fav-icon"></i>
         <div class="items-count"><span class="fav-qty">{{Helper::favCount()}}</span></div></a>
       </button>
-      <button id="mob-cart-btn" class="btn header-icon items-menu-button">
+
+      <button id="mob-cart-btn" class="btn header-icon items-menu-btn">
         <a href="{{route('cart')}}">
         <i class="fa-solid fa-cart-shopping" id="cart-icon"></i>
 
@@ -31,7 +35,6 @@
         @else
           <div class="items-count"><span>{{count(Helper::getAllProductFromCart())}}</span></div></a>
         @endauth
-
       </button>
     </div>      
   </div>      
@@ -106,17 +109,17 @@
         <form method="post" action="{{route('product.search')}}" class="search-form">
           @csrf
           <input type="search" name="search" class="form-controller search-term" placeholder="Search Products...">                                                                
-          <button type="submit" class="btn search-button" value="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
+          <button type="submit" class="btn search-btn" value="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
         </form>
       </div>
 
-      <button class="btn header-icon items-menu-button">
+      <button class="btn header-icon items-menu-btn">
         <a href="{{route('wishlist')}}" class="header-icon">
         <i class="fa-solid fa-heart" id="fav-icon"></i>
         <div class="items-count"><span class="fav-qty" style="position: relative;top: 0.14em;">{{Helper::favCount()}}</span></div></a>
       </button> 
 
-      <button class="btn header-icon items-menu-button">
+      <button class="btn header-icon items-menu-btn">
         <a href="{{route('cart')}}" class="header-icon">
         <i class="fa-solid fa-cart-shopping" id="cart-icon"></i>
         <div class="items-count"><span style="position: relative;top: 0.14em;">{{count(Helper::getAllProductFromCart())}}</span></div></a>
