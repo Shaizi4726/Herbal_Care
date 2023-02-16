@@ -53,75 +53,88 @@ class ProductController extends Controller
    * @return \Illuminate\Http\Response
    */
   public function store(Request $request)
-  {                    
+  {  dd($request->all());                  
       $this->validate($request,[
-          'plu'=>'required|numeric',
-          'name'=>'string|required',
-          'slug'=>'string|required',
-          'sci_name'=>'string|nullable',
-          'other_name'=>'string|nullable',
-          'benefits'=>'string|nullable',
-          'description'=>'string|nullable', 
-          'dprecautions'=>'string|nullable',                 
-          'photo'=>'required',
-          'promotion'=>'required|in:default,new,trending',
-          'minprice'=>'numeric|nullable',
-          'photo.*'=>'image|mimes:jpg,jpeg,png,gif|max:1024|required',
-          'coupon_id'=>'nullable|exists:coupons,id',            
-          'status'=>'required|in:active,inactive'
+        'plu'=>'required|numeric',
+        'name'=>'string|required',
+        'slug'=>'string|required',
+        'sci_name'=>'string|nullable',
+        'other_name'=>'string|nullable',
+        'benefits'=>'string|nullable',
+        'description'=>'string|nullable', 
+        'dprecautions'=>'string|nullable',                 
+        'photo'=>'required',
+        'promotion'=>'required|in:default,new,trending',
+        'minprice'=>'numeric|nullable',
+        'photo.*'=>'image|mimes:jpg,jpeg,png,gif|max:1024|required',
+        'coupon_id'=>'nullable|exists:coupons,id',            
+        'status'=>'required|in:active,inactive'
           
-      ]);
-      $data=$request->all();        
-      $slug=Str::slug($request->name);
-      $count=Product::where('slug',$slug)->count();        
-      $data['slug']=$slug;
-      $status=Product::create($data);
-          $categories = [];
-          $categories[] = $request->cat_id;
-          for($i=2; $i<=$request->cat_count; $i++){
-              $cat= 'cat_id'.$i;
-              $categories[] = $request->$cat;
-          }
-          foreach ($categories as $product_cat) {
-              $category = new ProductCategory;
-              $category['product_id']=$status->id;           
-              $category['category_id']=$product_cat;
-              $category->save();
-          }        
-          if($request->hasFile("images")){
-              $files=$request->file("images");
-              foreach($files as $file){
-                  $imageName=time().'_'.$file->getClientOriginalName();
-                  $request['product_id']=$status->id;
-                  $request['plu']=$status->plu;
-                  $request['image']=$imageName;
-                  $file->move(\public_path("/images"),$imageName);
-                  Image::create($request->all());
-              }
-          }            
-          for($i=0; $i<count($request->form); $i++){
-              $attribute = new ProductsAttribute;
-              $attribute['product_id']=$status->id;           
-              $attribute['plu']=$request->plu;
-              $attribute['sku']= $request->sku[$i];
-              $attribute['form']=$request->form[$i];
-              $attribute['size']=$request->size[$i];
-              $attribute['price']=$request->price[$i];
-              $attribute['discount']=$request->discount[$i];
-              $attribute['stock']=$request->stock[$i];
-              //dd($request->all());
-              $attribute->save();                             
-          }
-          if($status){
-              request()->session()->flash('success','Product Successfully added');
-          }
-          else{
-              request()->session()->flash('error','Please try again!!');
-          }
-          return redirect()->route('product.index');
+    ]);
+    
+    $data=$request->all();        
+    $slug=Str::slug($request->name);
+    $count=Product::where('slug',$slug)->count();        
+    $data['slug']=$slug;
+    $status=Product::create($data);
+    $brands = [];
+    $brands[] =$request->brand_id;
+    for($i=2; $i<=$request->brands_count; $i++){
+        $brand= 'brand_id'.$i;
+        $brands[] = $request->$brand;
+    }
+    foreach ($brands as $product_brand) {
+        $brand = new ProductBrand;
+        $brand['product_id']=$status->id;           
+        $brand['brand_id']=$product_brand;
+        $brand->save();
+    }   
+    $categories = [];
+    $categories[] = $request->cat_id;
+    for($i=2; $i<=$request->cat_count; $i++){
+        $cat= 'cat_id'.$i;
+        $categories[] = $request->$cat;
+    }
+    foreach ($categories as $product_cat) {
+        $category = new ProductCategory;
+        $category['product_id']=$status->id;           
+        $category['category_id']=$product_cat;
+        $category->save();
+    }        
+    if($request->hasFile("images")){
+        $files=$request->file("images");
+        foreach($files as $file){
+            $imageName=time().'_'.$file->getClientOriginalName();
+            $request['product_id']=$status->id;
+            $request['plu']=$status->plu;
+            $request['image']=$imageName;
+            $file->move(\public_path("/images"),$imageName);
+            Image::create($request->all());
+        }
+    }            
+    for($i=0; $i<count($request->form); $i++){
+        $attribute = new ProductsAttribute;
+        $attribute['product_id']=$status->id;           
+        $attribute['plu']=$request->plu;
+        $attribute['sku']= $request->sku[$i];
+        $attribute['form']=$request->form[$i];
+        $attribute['size']=$request->size[$i];
+        $attribute['price']=$request->price[$i];
+        $attribute['discount']=$request->discount[$i];
+        $attribute['stock']=$request->stock[$i];
+        //dd($request->all());
+        $attribute->save();                             
+    }
+    if($status){
+        request()->session()->flash('success','Product Successfully added');
+    }
+    else{
+        request()->session()->flash('error','Please try again!!');
+    }
+    return redirect()->route('product.index');
 
-  
-      }
+
+    }
 
   /**
    * Display the specified resource.
@@ -221,8 +234,7 @@ class ProductController extends Controller
               $attribute['price']=$request->price[$i];
               $attribute['discount']=$request->discount[$i];
               $attribute['stock']=$request->stock[$i];
-              $attribute['is_featured']=$request->is_featured; 
-              
+             
               $attribute->save();                             
           }  
 
@@ -272,9 +284,7 @@ class ProductController extends Controller
                   $file->move(\public_path("/images"),$imageName);
                   Image::create($request->all());
   
-              }
-      
-
+            }      
           return redirect('/admin/product/add-images/'.$id)->with('success','Product Attributes has been added successfully!');        
   }
           return view('backend.product.image')->with(compact('productDetails'));

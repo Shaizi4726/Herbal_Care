@@ -139,7 +139,7 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     //import product
     Route::resource('/productImport','ProductImportController');
     // Ajax for sub category
-    Route::post('/category/{id}/child','CategoryController@getChildByParent');
+    Route::get('/category/{id}/child','CategoryController@getChildByParent');
     // POST category
     Route::resource('/post-category','PostCategoryController');
     // Post tag

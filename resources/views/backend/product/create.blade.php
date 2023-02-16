@@ -58,24 +58,43 @@
           @enderror
         </div>
         <div class="form-group">
-          <label for="category_id">Category</label>
-          {{-- {{$categories}} --}}
-          <select name="category_id" class="form-control">
+          <div class="category">
+            <label for="category_id">Category</label>
+            {{-- {{$categories}} --}}
+            <select name="category_id" id="category_id" class="form-control category_id">
               <option value="">--Select category--</option>
-             @foreach($categories as $category)
+              @foreach($categories as $category)
               <option value="{{$category->id}}">{{$category->name}}</option>
-             @endforeach
-          </select>
-        </div>      
+              @endforeach
+            </select>
+          
+            <div class="form-group d-none child_cat_div" id="child_cat_div">
+              <label for="child_cat_id">Sub Category</label>
+              <select name="child_cat_id" id="child_cat_id" class="form-control child_cat_id">
+                <option value="">--Select any category--</option>
+                {{-- @foreach($subcategories as $key=>$subcategory)
+                  <option value='{{$subcategory->id}}'>{{$subcategory->name}}</option>
+                @endforeach --}}
+              </select>  
+            </div>
+            <a href="javascript:void(0);" class="category_button" title="Add field">Add</a><br> 
+          </div>
+                 
+        </div>
+        
         <div class="form-group">
           <label for="brand_id">Brand</label>
           {{-- {{$brands}} --}}
-          <select name="brand_id" class="form-control">
+          <div class="barand">
+            <select name="brand_id" id="brand_id" class="form-control">
               <option value="">--Select Brand--</option>
-             @foreach($brands as $brand)
+              @foreach($brands as $brand)
               <option value="{{$brand->id}}">{{$brand->name}}</option>
-             @endforeach
-          </select>
+              @endforeach
+            </select>
+            <a href="javascript:void(0);" class="brand_button" title="Add field">Add</a><br>
+          </div>         
+          <input type="hidden" id="brand_count" name="brand_count" value="">
         </div>
         <div class="form-group">
           <label for="promotion">Promotion</label>
@@ -104,7 +123,7 @@
             
             <div class="field_wrapper">
               <div class="abc">
-                <input type="select" class="title" name="form[]" id="form" placeholder="form" style="width:120px;"/>
+                <input type="select" class="name" name="form[]" id="form" placeholder="form" style="width:120px;"/>
                 <input type="text" name="sku[]" id="sku" placeholder="sku" style="width:120px;" required/>                                    
                 <input type="text" name="size[]" id="size" placeholder="size" style="width:120px;"required/>
                 <input type="float"  name="price[]" id="price" placeholder="price" style="width:120px;"required/>
@@ -171,43 +190,41 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 
 <script>
-    $('#lfm').filemanager('image');
+  $('#lfm').filemanager('image');
 
-    $(document).ready(function() {
-      $('#other_name').summernote({
-        placeholder: "Write other_name.....",
-          tabsize: 2,
-          height: 150
-      });
+  $(document).ready(function() {
+    $('#other_name').summernote({
+      placeholder: "Write other_name.....",
+        tabsize: 2,
+        height: 100
     });
+  });
 
-    $(document).ready(function() {
-      $('#description').summernote({
-        placeholder: "Write detail description.....",
-          tabsize: 2,
-          height: 150
-      });
+  $(document).ready(function() {
+    $('#description').summernote({
+      placeholder: "Write detail description.....",
+        tabsize: 2,
+        height: 100
     });
+  });
 
-    $(document).ready(function() {
-      $('#benefit').summernote({
-        placeholder: "Write benefit.....",
-          tabsize: 2,
-          height: 150
-      });
+  $(document).ready(function() {
+    $('#benefit').summernote({
+      placeholder: "Write benefit.....",
+        tabsize: 2,
+        height: 100
     });
-    $(document).ready(function() {
-      $('#precautions').summernote({
-        placeholder: "Write precautions.....",
-          tabsize: 2,
-          height: 150
-      });
+  });
+  $(document).ready(function() {
+    $('#precautions').summernote({
+      placeholder: "Write precautions.....",
+        tabsize: 2,
+        height: 100
     });
-    // $('select').selectpicker();
-
+  });
+  // $('select').selectpicker();
+  
 </script>
-
-
 
 <script type="text/javascript">
   $(document).ready(function() {
@@ -220,6 +237,116 @@
     });
   });
 
+
+  $(document).ready(function() {
+    var max_fields = 15;
+    var wrapper = $(".barand");
+    var add_button = $(".brand_button");
+
+    var x = 1;
+    $(add_button).click(function(e) {
+        e.preventDefault();
+        if (x < max_fields) {
+          x++;
+          $(wrapper).append(`<div><br><select name="brand_id${x}" id="brand_id${x}" class="form-control">
+          <option value="">--Select Brand--</option>@foreach($brands as $brand)
+          <option value="{{$brand->id}}">{{$brand->name}}</option>@endforeach</select>
+          <a href="#" class="delete">Delete</a></div>`);//add input box
+          $("#brand_count").val(x);
+        } else {
+          alert('You Reached the limits')
+        }
+    });
+
+    $(wrapper).on("click", ".delete", function(e) {
+      e.preventDefault();
+      $(this).parent('div').remove();
+      x--;
+    })
+  });
+
+  $(document).ready(function() {
+    var max_fields = 15;
+    var wrapper = $(".category");
+    var add_button = $(".category_button");
+    var x = 1;
+    $(add_button).click(function(e) {
+        e.preventDefault();
+        if (x < max_fields) {
+          x++;
+          $(wrapper).append(`<div><br><label for="category_id${x}">Category</label>
+          <select name="category_id${x}" id="category_id${x}" class="form-control category_id">
+            <option value="">--Select category--</option>
+            @foreach($categories as $category)
+            <option value="{{$category->id}}">{{$category->name}}</option>
+            @endforeach
+          </select>
+          
+          <div class="form-group d-none child_cat_div${x}" id="child_cat_div${x}">
+            <label for="child_cat_id">Sub Category</label>
+            <select name="child_cat_id${x}" id="child_cat_id${x}" class="form-control child_cat_id${x}">
+              <option value="">--Select any category--</option>
+              {{-- @foreach($subcategories as $key=>$subcategory)
+                <option value='{{$subcategory->id}}'>{{$subcategory->name}}</option>
+              @endforeach --}}
+            </select>
+          </div> <a href="#" class="delete">Delete</a></div>`);
+          $("#category_count").val(x);
+        } else {
+          alert('You Reached the limits')
+        }
+    });
+    $(wrapper).on("click", ".delete", function(e) {
+      e.preventDefault();
+      $(this).parent('div').remove();
+      x--;
+    })
+  });
+ 
+  $('.category_id').change(function (){
+    var category_id=$(this).val();
+    alert(category_id)
+    if(category_id !=null){
+      // Ajax call
+      $.ajax({        
+        url:"/admin/category/"+category_id+"/child",
+        data:{
+          _token:"{{csrf_token()}}",
+          id:category_id
+        },
+        type:"GET",
+        success:function(response){
+         
+          if(typeof(response) !='object'){
+            response=$.parseJSON(response)
+            
+          }
+          var html_option="<option value=''>----Select sub category----</option>"
+          if(response.status){
+            var data=response.data;
+            if(response.data){
+              $('.child_cat_div').removeClass('d-none');
+              $.each(data,function(id,name){
+                html_option +="<option value='"+id+"'>"+name+"</option>"
+              });
+            }
+            else{ 
+            }
+          }
+          else{
+            
+            $('.child_cat_div').addClass('d-none');
+          }
+          $('.child_cat_id').html(html_option);
+        }
+      });
+    }
+    else{
+    }
+    
+  })
+
+
   $(document).ready(function() {
     var max_fields = 15;
     var wrapper = $(".abc");
@@ -230,7 +357,14 @@
         e.preventDefault();
         if (x < max_fields) {
             x++;
-            $(wrapper).append('<div><input type="select" class="title" name="form[]" id="form" placeholder="form" style="width:120px;"/><input type="text" name="sku[]" id="sku" placeholder="sku" style="width:120px; margin-right:5px; margin-top:5px;" required /><input type="text" name="size[]" id="size" placeholder="size" style="width:120px; margin-right:5px" required/><input type="text" name="price[]" id="price" placeholder="price" style="width:120px; margin-right:4px" required/><input id="discount" type="number" name="discount[]" min="0" max="100" placeholder="Enter discount" style="width:120px;"required/><input type="text" name="stock[]" id="stock" placeholder="stock" style="width:120px; margin-right:4px" required/><a href="#" class="delete">Delete</a></div>');//add input box
+            $(wrapper).append(`<div><input type="select" class="title" name="form[]" id="form" 
+            placeholder="form" style="width:120px;"/><input type="text" name="sku[]" id="sku" 
+            placeholder="sku" style="width:120px; margin-right:5px; margin-top:5px;" required />
+            <input type="text" name="size[]" id="size" placeholder="size" style="width:120px; margin-right:5px" required/>
+            <input type="text" name="price[]" id="price" placeholder="price" style="width:120px; margin-right:4px" required/>
+            <input id="discount" type="number" name="discount[]" min="0" max="100" placeholder="Enter discount" style="width:120px;"required/>
+            <input type="text" name="stock[]" id="stock" placeholder="stock" style="width:120px; margin-right:4px" required/>
+            <a href="#" class="delete">Delete</a></div>`);//add input box
            
         } else {
             alert('You Reached the limits')
@@ -244,6 +378,6 @@
     })
   });
 
-
+  
 </script>
 @endpush

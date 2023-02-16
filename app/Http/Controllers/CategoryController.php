@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\SubCategory;
 use Illuminate\Support\Str;
 
 class CategoryController extends Controller
@@ -116,5 +117,17 @@ class CategoryController extends Controller
         }
         return redirect()->route('category.index');
     }
+    public function getChildByParent(Request $request){
+        //dd($request->all());
+        $category=Category::findOrFail($request->id);
+        $child_cat=SubCategory::getChildByParentID($request->id);
+        // return $child_cat;
+        if(count($child_cat)<=0){
+            return response()->json(['status'=>false,'msg'=>'','data'=>null]);
+        }
+        else{
+            return response()->json(['status'=>true,'msg'=>'','data'=>$child_cat]);
+        }
+    }    
 
 }
