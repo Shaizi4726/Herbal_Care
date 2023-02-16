@@ -41,7 +41,7 @@
 
 			<div class="footer-loc">
 				<div>
-				<h3>Get In Touch</h3></div>
+				<h3></h3></div>
 				<hr>
 				<div>
 				<ul>

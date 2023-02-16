@@ -45,6 +45,10 @@ class SubCategory extends Model
     return $this->belongsToMany(Product::class, 'product_categories', 'subcat_id', 'product_id');
   }  
 
+  public static function getChildByParentID($id){
+    return SubCategory::where('parent_id',$id)->orderBy('id','ASC')->pluck('name', 'id');
+}
+
   /**
    * The model's default values for attributes.
    *

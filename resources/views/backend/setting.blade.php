@@ -59,22 +59,22 @@
         </div>
 
         <div class="form-group">
-          <label for="address" class="col-form-label">Address <span class="text-danger">*</span></label>
-          <input type="text" class="form-control" name="address" required value="{{$data->address}}">
+          <label for="address" class="col-form-label">Address </label>
+          <input type="text" class="form-control" name="address" value="{{$data->address}}">
           @error('address')
           <span class="text-danger">{{$message}}</span>
           @enderror
         </div>
         <div class="form-group">
-          <label for="email" class="col-form-label">Email <span class="text-danger">*</span></label>
-          <input type="email" class="form-control" name="email" required value="{{$data->email}}">
+          <label for="email" class="col-form-label">Email </label>
+          <input type="email" class="form-control" name="email" value="{{$data->email}}">
           @error('email')
           <span class="text-danger">{{$message}}</span>
           @enderror
         </div>
         <div class="form-group">
-          <label for="phone" class="col-form-label">Phone Number <span class="text-danger">*</span></label>
-          <input type="text" class="form-control" name="phone" required value="{{$data->phone}}">
+          <label for="phone" class="col-form-label">Phone Number </label>
+          <input type="text" class="form-control" name="phone" value="{{$data->phone}}">
           @error('phone')
           <span class="text-danger">{{$message}}</span>
           @enderror

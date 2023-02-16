@@ -17,7 +17,7 @@
          <li><a href="" class="active text-primary">Profile Page</a></li>
      </ul>
    </div>
-   <div class="card-body">
+    <div class="card-body">
         <div class="row">
             <div class="col-md-4">
                 <div class="card">
@@ -33,7 +33,7 @@
                       <p class="card-text text-left"><small><i class="fas fa-envelope"></i> {{$profile->email}}</small></p>
                       <p class="card-text text-left"><small class="text-muted"><i class="fas fa-hammer"></i> {{$profile->role}}</small></p>
                     </div>
-                  </div>
+                </div>
             </div>
             <div class="col-md-8">
                 <form class="border px-4 pt-2 pb-3" method="POST" action="{{route('user-profile-update',$profile->id)}}">
@@ -61,11 +61,11 @@
                     @enderror
                     </div>
                     <button type="submit" class="btn btn-success btn-sm">Update</button>
-                </form>
+
+                </div>
             </div>
         </div>
-   </div>
-</div>
+    </div>
 
 @endsection
 
