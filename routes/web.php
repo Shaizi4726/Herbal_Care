@@ -41,11 +41,11 @@ Route::get('/home', 'FrontendController@home')->middleware('account.verified');
 Route::get('/about-us','FrontendController@aboutUs')->name('about-us')->middleware('account.verified');
 Route::get('/contact','FrontendController@contact')->name('contact')->middleware('account.verified');
 Route::post('/contact/message','MessageController@store')->name('contact.store')->middleware('account.verified');
-Route::get('product-detail/{slug}','FrontendController@productDetail')->name('product-detail')->middleware('account.verified');
+Route::get('product-detail/{slug}','FrontendController@product_detail')->name('product-detail')->middleware('account.verified');
 Route::match(['get','post'],'/product/search','FrontendController@productSearch')->name('product.search')->middleware('account.verified');
 Route::match(['get','post'],'product-sort/','FrontendController@productSort')->name('product-sort')->middleware('account.verified');
 Route::get('/product-cat/{slug}','FrontendController@productCat')->name('product-cat')->middleware('account.verified');
-Route::get('/product-sub-cat/{slug}/{sub_slug}','FrontendController@productSubCat')->name('product-sub-cat')->middleware('account.verified');
+Route::get('/product-cat/{slug}/{sub_slug}','FrontendController@productSubCat')->name('product-subcat')->middleware('account.verified');
 Route::get('/product-brand/{slug}','FrontendController@productBrand')->name('product-brand')->middleware('account.verified');
 
 // Cart section

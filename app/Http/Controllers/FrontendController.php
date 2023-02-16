@@ -5,6 +5,7 @@ use App\Models\Product;
 use App\Models\ProductForm;
 use App\Models\ProductAttribute;
 use App\Models\Category;
+use App\Models\SubCategory;
 use App\Models\CartItem;
 use App\Models\Brand;
 use App\User;
@@ -13,6 +14,7 @@ use Session;
 use Newsletter;
 use DB;
 use Hash;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use SendsPasswordResetEmails;
@@ -46,11 +48,20 @@ class FrontendController extends Controller
         return view('frontend.pages.contact');
     }
 
-    public function productDetail($slug)
+    public function product_detail($slug)
     {
-        $product_detail = Product::getProductBySlug($slug);
-       
-        return view('frontend.pages.product_detail')->with('product_detail', $product_detail);
+      $product = Product::with('categories')->where('slug', $slug)->first();
+
+      $category_ids = $product->categories->pluck('id');
+      
+      $relcats = Category::with('products')->whereIn('id', $category_ids)->get();
+      
+      $relproducts = collect();
+
+      foreach($relcats as $cat)
+        $relproducts = $relproducts->concat($cat->products)->unique();
+
+      return view('frontend.pages.product-detail')->with('product', $product)->with('relproducts', $relproducts);
     }
 
     public function productGrids()
@@ -125,11 +136,6 @@ class FrontendController extends Controller
       }
 
       $sort_by = $request->sorting;
-
-      if ($request->sub_cat) {
-        $products = $products->where('child_cat_id', $request->sub_cat);
-      }
-
         
       if ($request->promotion) {
         $products = $products->where('promotion', $request->promotion);
@@ -258,24 +264,23 @@ class FrontendController extends Controller
 
     }
     public function productCat(Request $request){
-        $products=Category::getProductByCat($request->slug);
-        $sub_cat = Category::getChildByParentSlug($request->slug);
-        $recent_products=Product::where('status','active')->orderBy('id','DESC')->limit(3)->get();
+        $category = Category::with('products')->where('slug', $request->slug)->get();
+        
+        $products = $category->pluck('products');
+        foreach($products as $product)
+          $products = $product;
+        
+        $categories = Category::get();
 
-        return view('frontend.pages.product-grids')->with('products',$products->products)->with('recent_products',$recent_products)->with('sub_cat', $sub_cat)->with('query', $request->slug)->with('search', 0);
+        return view('frontend.pages.product-grids')->with('products', $products)->with('cats', $categories)->with('query', $request->slug)->with('search', 0);
     }
 
     public function productSubCat(Request $request){
-        $products=Category::getProductBySubCat($request->sub_slug);
-        $recent_products=Product::where('status','active')->orderBy('id','DESC')->limit(3)->get();
+      $subcat=SubCategory::with('products')->where('slug', $request->sub_slug)->get();
+      $products=$subcat[0]->products()->get();
+      $categories = Category::get();
 
-        if(request()->is('e-shop.loc/product-grids')){
-            return view('frontend.pages.product-lists')->with('products',$products->sub_products)->with('recent_products',$recent_products);
-        }
-        else{
-            return view('frontend.pages.product-grids')->with('products',$products->sub_products)->with('recent_products',$recent_products);
-        }
-
+      return view('frontend.pages.product-grids')->with('products', $products)->with('cats', $categories)->with('query', $request->slug)->with('search', 0);
     }
 
 

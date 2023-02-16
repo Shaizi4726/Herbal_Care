@@ -1,25 +1,21 @@
 Products by product-category table
-form undefined should process adding to cart
-color reversals button selections
-prices font normal
-product form with flu
-modals
 filters
-subcategories
-Checkout Page(months and years set)
-after verification verify page cant be accessed
-cart submenu design
 wishlist Page
-after 0 item added (details and quick view page)
-Search Backend
-Track Order Backend
+form undefined should process adding to cart
+product form with flu
+cart submenu design
+Checkout Page(months and years set)
+Coupon Validation Backend
+modals
 Mobile Popup Offers
-Coupan Validation Backend
+after 0 item added (details and quick view page)
+Track Order Backend
+Search Backend
+after verification verify page cant be accessed
 FAQ Page
 Terms & Conditions Page
 Privacy Policy Page
-shipping Terms & Conditions Page
-Payment Methods Page
+Payment Methods, Social Media Links
 zoom cart image on hover
 add to cart data in url
 Forgot Password Page

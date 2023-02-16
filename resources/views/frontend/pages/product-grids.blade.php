@@ -8,15 +8,6 @@
 
 @section('main-content')
   <div class="filters product-filters" id="product-filters">
-    @if(count($sub_cat) !== 0)
-      <select name="sub-category" id="sub-category-filter" class="filter">
-        <option selected disabled>Sub Category</option>
-        @foreach($sub_cat as $id=>$cat)
-          <option value="{{$id}}">{{$cat}}</option>
-        @endforeach
-      </select>
-      @endif
-
       <select name="promotion" id="promotion-filter" class="filter">
         <option selected disabled><span>Promotion</span></option>
         <option value="popular"><li>Popular</li></option>
@@ -34,18 +25,28 @@
   </div>
 
   <section class="products-catalog">
-    @php
-        $menu=App\Models\Category::getAllParentWithChild();
-    @endphp
       <!-- Side Menu -->
-      @if($menu)
+      @if($cats)
       <div class="products-sidebar">
           <div class="categories-menu">
               <h3 class="title">Categories</h3>
               <ul class="cat-list">
-                      @foreach($menu as $cat_info)
-                        <li><a href="{{route('product-cat',$cat_info->slug)}}">{{$cat_info->title}}</a></li>
+                @foreach($cats as $cat)
+                  @php
+                    $subcats = $cat->subcat()->get();
+                  @endphp
+                  
+                  @if(count($subcats) != 0)
+                    <li class="dropdown-toggle"><a href="{{route('product-cat', $cat->slug)}}">{{$cat->name}}</a></li>
+                    <ul class="subcat-menu">
+                      @foreach($subcats as $subcat)
+                        <li><a href="{{route('product-subcat', [$cat->slug, $subcat->slug])}}">{{$subcat->name}}</li>
                       @endforeach
+                    </ul>
+                  @else
+                    <li><a href="{{route('product-cat', $cat->slug)}}">{{$cat->name}}</a>
+                  @endif
+                @endforeach
               </ul>
           </div>
       </div>
@@ -53,60 +54,60 @@
       <!-- End Sidebar -->
   
       <div id="products-catalog" class="products catalog">
-          @if(count($products)>0)
-              @foreach($products as $product)
-                  @php
-                      $minprice = DB::table('products_attributes')->where('product_id', $product->id)->min('price');
-                      $maxprice = DB::table('products_attributes')->where('product_id', $product->id)->max('price');
-                      $Images = DB::table('images')->where('product_id', $product->id)->pluck('image');
-                      $Forms = DB::table('products_attributes')->where('product_id', $product->id)->distinct()->pluck('form');
+        @if($products->count() > 0)
+            @foreach($products as $product)
+              @php
+                $sessionId = Session::getId();
+                $minprice = $product->attrs()->min('price');
+                $maxprice = $product->attrs()->max('price');
+                $Images = $product->images()->pluck('name');
+                $forms = $product->forms()->get();
+                $form_names = $product->forms()->pluck('name');
+                $wishlist = $product->wishlists()->where('session_id', $sessionId)->get();
 
-                      if(Auth::user())
-                        $wishlist = DB::table('wishlists')->where('product_id', $product->id)->where('user_id', auth()->user()->id)->get();
-              
-                      $Sizes = array();
-                      foreach ($Forms as $form) {
-                          ${$form . "sizes"} = DB::table('products_attributes')->where('product_id', $product->id)->where('form', $form)->pluck('size');
-                          $Sizes[$form] =  ${$form . "sizes"};
-                      }
-                      $Sizes = json_encode($Sizes);
-                  @endphp
+                $Sizes = array();
+                foreach ($forms as $form) {
+                  ${$form->name . "sizes"} = $product->attrs()->where('form_id', $form->id)->pluck('size');
+                  $Sizes[$form->name] =  ${$form->name . "sizes"};
+                }
+                $Sizes = json_encode($Sizes);
+              @endphp
 
-                  <div class="product-card {{$product->id}}-card carousel-cell">
-                  <img class="product-image" src="{{$product->photo}}" alt="product image">
-                  
-                  <div class="overlay">
-                    <button id="{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, `{{$product->photo}}`, {{$Images}}, `{{$product->title}}`, {{$Forms}}, {{$Sizes}}, {{$minprice}}, {{$maxprice}}, `{{$product->slug}}`, {{Auth::check()}})"> 
-                      <i class="fa-regular fa-eye"></i>
-                      <p>Quick View</p>
-                    </button>
-                  </div>
+                <div class="product-card {{$product->id}}-card carousel-cell">
+                <img class="product-image" src="{{$product->photo}}" alt="product image">
+                
+                <div class="overlay">
+                  <button id="{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, `{{$product->photo}}`, {{$Images}}, `{{$product->title}}`, {{$form_names}}, {{$Sizes}}, {{$minprice}}, {{$maxprice}}, `{{$product->slug}}`, {{Auth::check()}})"> 
+                    <i class="fa-regular fa-eye"></i>
+                    <p>Quick View</p>
+                  </button>
+                </div>
 
-                  <div class="meta-detail">
-                    <h3 class="product-title">{{$product->title}}</h3>
-                    @if($minprice==$maxprice)
-                      <p class="price">AED <span class="value">{{number_format($product->minprice,2)}}</span></p>
-                    @else
-                      <p class="price">AED <span class="value">{{number_format($product->minprice,2)}}</span> - AED <span class="value">{{number_format($maxprice,2)}}</span></p>
-                    @endif                  
-                  </div>
-                  <div class="prod-detail-link">
-                      <a href="{{route('product-detail', $product->slug)}}" class="btn btn-submit detail-link"> Product Details </a>
-                      @auth
-                  @if(count($wishlist) != 0)
-                    <button class="btn favbtn" onclick="fav(this, {{$product->id}})"><i class="fa-solid fa-heart fav"></i></button>
+                <div class="meta-detail">
+                  <h3 class="product-title">{{$product->title}}</h3>
+                  @if($minprice==$maxprice)
+                    <p class="price">AED <span class="value">{{number_format($product->minprice,2)}}</span></p>
                   @else
-                    <button class="btn favbtn" onclick="fav(this, {{$product->id}})"><i class="fa-regular fa-heart fav"></i></button>
-                  @endif
+                    <p class="price">AED <span class="value">{{number_format($product->minprice,2)}}</span> - AED <span class="value">{{number_format($maxprice,2)}}</span></p>
+                  @endif                  
+                </div>
+                <div class="prod-detail-link">
+                    <a href="{{route('product-detail', $product->slug)}}" class="btn btn-submit detail-link"> Product Details </a>
+                    @auth
+                @if(count($wishlist) != 0)
+                  <button class="btn favbtn" onclick="fav(this, {{$product->id}})"><i class="fa-solid fa-heart fav"></i></button>
                 @else
-                  <button class="btn favbtn" onclick="window.location.href = '/user/login';"><i class="fa-regular fa-heart fav"></i></button>
-                @endauth
-                  </div>
-                  </div>
-              @endforeach
-          @else
-              <p class="no-product">There is no product in this category.</p>
-          @endif
+                  <button class="btn favbtn" onclick="fav(this, {{$product->id}})"><i class="fa-regular fa-heart fav"></i></button>
+                @endif
+              @else
+                <button class="btn favbtn" onclick="window.location.href = '/user/login';"><i class="fa-regular fa-heart fav"></i></button>
+              @endauth
+                </div>
+                </div>
+            @endforeach
+        @else
+          <p class="no-product">There is no product in this category.</p>
+        @endif
       </div>
       <div class="modal-container" id="modal-container"></div>
   </section>

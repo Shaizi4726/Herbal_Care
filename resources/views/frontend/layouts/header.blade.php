@@ -53,20 +53,26 @@
         <h2 class="header-title">HerbalCare</h2>
       </div>
       
-      <ul class="list-main">
-        <li><i class="fa-solid fa-location-dot d-user-icon"></i><a class="user-nav rb" href="{{route('order.track')}}">Track Order</a></li>
-        @auth 
-          @if(Auth::user()->role=='admin')
-            <li><i class="fa-solid fa-user-tie d-user-icon"></i><a class="user-nav rb" href="{{route('admin')}}"  target="_blank">@if(Auth::user()->fname){{Auth::user()->fname}}@else{{Auth::user()->company_name}}@endif</a></li>
-          @else 
-            <li><i class="fa-solid fa-user d-user-icon"></i><a class="user-nav rb" href="{{route('user')}}"  target="_blank">@if(Auth::user()->fname){{Auth::user()->fname}}@else{{Auth::user()->company_name}}@endif</a></li>
-          @endif
-            <li><i class="fa-solid fa-right-from-bracket d-user-icon"></i><a class="user-nav" href="{{route('user.logout')}}">Logout</a></li>
-        @else
-          <li><i class="fa-solid fa-right-to-bracket d-user-icon"></i><a class="user-nav rb" href="{{route('login.form')}}">Login</a></li>
-          <li><i class="fa-solid fa-user-plus d-user-icon"></i><a class="user-nav" href="{{route('register.form')}}">Register</a></li>
-        @endauth
-      </ul>                    
+      <div class="user-menu">
+        <i class="fa-solid fa-user"></i>
+      </div>
+
+      <div class="list-main-container collapse">
+        <ul id="desktop-user-menu" class="list-main">
+          <li><i class="fa-solid fa-location-dot d-user-icon"></i><a class="user-nav" href="{{route('order.track')}}">Track Order</a></li>
+          @auth
+            @if(Auth::user()->role=='admin')
+              <li><i class="fa-solid fa-user-tie d-user-icon"></i><a class="user-nav" href="{{route('admin')}}"  target="_blank">@if(Auth::user()->fname){{Auth::user()->fname}} {{Auth::user()->lname}}@else{{Auth::user()->company_name}}@endif</a></li>
+            @else 
+              <li><i class="fa-solid fa-user d-user-icon"></i><a class="user-nav" href="{{route('user')}}"  target="_blank">@if(Auth::user()->fname){{Auth::user()->fname}} {{Auth::user()->lname}}@else{{Auth::user()->company_name}}@endif</a></li>
+            @endif
+              <li><i class="fa-solid fa-right-from-bracket d-user-icon"></i><a class="user-nav" href="{{route('user.logout')}}">Logout</a></li>
+          @else
+            <li><i class="fa-solid fa-right-to-bracket d-user-icon"></i><a class="user-nav" href="{{route('login.form')}}">Login</a></li>
+            <li><i class="fa-solid fa-user-plus d-user-icon"></i><a class="user-nav" href="{{route('register.form')}}">Register</a></li>
+          @endauth
+        </ul>
+      </div>
     </div>
     
     <nav class="menu-bar" id="desktop-menu">
@@ -89,7 +95,7 @@
               <ul class="collapse cat-submenu">
                 @foreach ($subcat as $sub_menu)
                 <li>
-                  <a href="{{route('product-sub-cat', [$cat->slug, $sub_menu->slug])}}" class="dropdown-item"> {{$sub_menu->name}}</a>
+                  <a href="{{route('product-subcat', [$cat->slug, $sub_menu->slug])}}" class="dropdown-item"> {{$sub_menu->name}}</a>
                 </li>
                 @endforeach
               </ul>
@@ -181,7 +187,7 @@
             <ul class="collapse cat-submenu">
               @foreach ($subcat as $sub_menu)
               <li>
-                <a href="{{route('product-sub-cat', [$cat->slug, $sub_menu->slug])}}" class="dropdown-item"> {{$sub_menu->name}}</a>
+                <a href="{{route('product-subcat', [$cat->slug, $sub_menu->slug])}}" class="dropdown-item"> {{$sub_menu->name}}</a>
               </li>
               @endforeach
             </ul>

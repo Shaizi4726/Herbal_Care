@@ -59,8 +59,8 @@
 }
 
 .items-count {
-  height: 1.1em;
-  width: 1.1em;
+  height: 1.2em;
+  width: 1.2em;
   display: inline-block;
   background-color: #f2f4e6;
   border-radius: 50%;
@@ -69,6 +69,11 @@
   right: 1.4em;
   color: #2c542f;
   font-size: 0.4em;
+}
+
+.items-count span {
+  position: relative;
+  bottom: 0.02em;
 }
 
 /*========== Search Bar ==========*/
@@ -122,7 +127,53 @@
 }
 
 .fav-btn .items-count {
-  bottom: 2em;
+  bottom: 1.9em;
+}
+
+/*========== Sticky Mobile Menu ==========*/
+#search.sticky {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.sticky .search-form {
+  flex: 40%;
+}
+
+.sticky .search-term {
+  margin-bottom: 0;
+}
+
+.sticky .search-btn {
+  margin-bottom: 0;
+}
+
+.sticky #mob-fav-btn {
+  position: relative;
+  left: 0.8em;
+  top: 0.05em;
+}
+
+.mob-sticky {
+  position: static;
+  font-size: 1.1em;
+  flex: 10%;
+}
+
+.mob-sticky .items-count {
+  height: 5em;
+  width: 5em;
+  position: relative;
+  bottom: 9.5em;
+  right: 5em;
+  color: #2c542f;
+  font-size: 0.1em;
+}  
+
+.mob-sticky .items-count span {
+  position: relative;
+  top: 0.5em;
 }
 
 /*========== Mobile Menu Overlay ==========*/
@@ -202,45 +253,74 @@
   color: #2c542f;
 }
 
-/*========== Sticky Mobile Menu ==========*/
-#search.sticky {
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-}
+@media only screen and (min-width: 480px) {
+  .header-logo img {
+    margin-top: 0.75em;
+    width: 4em;
+    height: 2em;
+  }
 
-.sticky .search-form {
-  flex: 40%;
-}
+  .header-title {
+    letter-spacing: 0.15em;
+  }
 
-.sticky .search-term {
-  margin-bottom: 0;
-}
+  .header-icon {
+    font-size: 1.75em;
+    height: 1.5em;
+  }
 
-.sticky .search-btn {
-  margin-bottom: 0;
-}
+  #menu-btn {
+    top: 1em;
+    left: 1em;
+  }
+  
+  #mob-cart-btn {
+    top: 1em;
+    right: 1em;
+  }
+  
+  .items-count {
+    height: 1.2em;
+    width: 1.2em;
+    font-size: 0.4em;
+  }
+  
+  /*========== Search Bar ==========*/
+  .search-term {
+    padding: 0.4em;
+    height: 3em;
+    font-size: 0.8em;
+  }
+  
+  .search-btn {
+    height: 3em;
+    font-size: 0.8em;
+  }
+  
+  .fav-btn {
+    font-size: 1.75em;
+    right: 1em;
+  }
+  
+  .fav-btn .items-count {
+    bottom: 2em;
+  }
 
-.mob-sticky {
-  position: static;
-  font-size: 1.1em;
-  flex: 10%;
-}
+  /*========== Sticky Mobile Menu ==========*/
+  .mob-sticky .items-count {
+    height: 1.5em;
+    width: 1.5em;
+    bottom: 2.8em;
+    right: 2em;
+    color: #2c542f;
+    font-size: 0.3em;
+  }
 
-.mob-sticky .items-count {
-  height: 5em;
-  width: 5em;
-  position: relative;
-  bottom: 9.5em;
-  right: 5em;
-  color: #2c542f;
-  font-size: 0.1em;
+  .mob-sticky .items-count span {
+    position: relative;
+    top: 0.1em;
+  }
 }  
-
-.mob-sticky span {
-  top: 0.2em;
-  font-size: 1vw;
-}
 
 @media only screen and (min-width: 768px) {
   /*==================== Desktop Header ====================*/
@@ -258,29 +338,24 @@
   }
 
   /*========== Topbar ==========*/
-  .topbar {
-    background-color: #f2f4e6;
-  }
-
   #desktop-header {
     display: flex;
     flex-direction: column;
   }
 
+  .topbar {
+    background-color: #f2f4e6;
+  }
+
   .header-content {
+    flex-direction: row;
     background-color: #2c542f;
-    justify-content: center;
+    justify-content: space-between;
     margin-bottom: 10px;
   }
 
   #header-logo {
-    position: absolute;
-    left: 0.6em;
-  }
-
-  .header-title-div {
-    position: relative;
-    right: 2em;
+    margin-left: 1em;
   }
 
   .header-title {
@@ -288,30 +363,55 @@
     letter-spacing: 0.1em;
   }
 
-  /*========== User Navbar ==========*/
-  .list-main {
-    display: flex;
-    position: absolute;
-    right: 0.6em;
+  .user-menu {
+    font-size: 30px;
+    margin-right: 1em;
+    position: relative;
+    z-index: 20;
   }
 
-  .list-main a {
-    color: #f2f4e6;
-    font-size: 12px;
-    font-weight: normal;
-    padding: 5px;
+  .user-menu:hover + .list-main-container, .list-main-container:hover {
+    display: block;
+    padding: 20px;
+    background-color: transparent;
+  }
+
+  /*========== User Navbar ==========*/
+  .list-main-container {
+    position: absolute;
+    top: 0.5em;
+    right: 0em;
+    z-index: 10;
+  }
+
+  .list-main {
+    color: #2c542f;
+    background-color: #f2f4e6;
+    margin: 1em;
+    padding: 0.3em 0;
+    border-radius: 5px;
   }
 
   .list-main li {
     padding: 5px;
+    margin: 0.5em 0;
+  }
+
+  .list-main a {
+    color: #2c542f;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 5px;
+    margin-left: 5px;
+  }
+
+  .list-main li:hover, .list-main li:hover a {
+    color: #f2f4e6;
+    background-color: #2c542f;
   }
 
   .d-user-icon {
     font-size: small;
-  } 
-
-  .rb {
-    border-right: 2px solid #f2f4e6;
   }
 
   /*========== Menubar ==========*/

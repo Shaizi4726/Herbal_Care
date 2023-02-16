@@ -10,8 +10,8 @@
   <div class="shazoom" id="shazoom">
     <div class="img-box">
       <ul class="img-ul">
-        <li><img src="{{$product_detail->photo}}" alt="product-photo"></li>
-        @foreach($product_detail->images as $image)
+        <li><img src="{{$product->photo}}" alt="product-photo"></li>
+        @foreach($product->images as $image)
 						<li><img src="{{('/images/'.$image->image)}}"/></li>	
 					@endforeach										
 				</ul>
@@ -25,13 +25,13 @@
 		</div>
 		<div class="modal-details-container">
       <div class="product-modal-detail">
-        <h1 class="title">{{$product_detail->title}}</h1>
-        @if($product_detail->scientific)
-        <h4 class="subtitle">Scientific Name: {{$product_detail->scientific}}</h4>
+        <h1 class="title">{{$product->name}}</h1>
+        @if($product->sci_name)
+        <h4 class="subtitle">Scientific Name: {{$product->sci_name}}</h4>
         @endif
         
 				@php
-        $rate=ceil($product_detail->getReview->avg('rate'))
+          $rate=ceil($product->reviews->avg('rate'))
 				@endphp
         
 				@for($i=1; $i<=5; $i++)
@@ -42,23 +42,24 @@
 					@endif
           @endfor
           
-          <a href="#" class="total-review">({{$product_detail['getReview']->count()}}) Review</a>
+          <a href="#" class="total-review">({{$product->reviews->count()}}) Review</a>
           
           <form id="modal-form">
             @php
-            $forms = DB::table('products_attributes')->where('product_id', $product_detail->id)->distinct()->pluck('form');
-            
-            $Sizes = array();
-            foreach ($forms as $form) {
-              ${$form . "sizes"} = DB::table('products_attributes')->where('product_id', $product_detail->id)->where('form', $form)->pluck('size');
-              $Sizes[$form] =  ${$form . "sizes"};
-            }
-            $Sizes = json_encode($Sizes);
-            
-            $minprice = DB::table('products_attributes')->where('product_id', $product_detail->id)->min('price');
-            $maxprice = DB::table('products_attributes')->where('product_id', $product_detail->id)->max('price');
+              $minprice = $product->attrs()->min('price');
+              $maxprice = $product->attrs()->max('price');
+              $images = $product->images()->pluck('name');
+              $forms = $product->forms()->get();
+              $form_names = $product->forms()->pluck('name');
+
+              $Sizes = array();
+              foreach ($forms as $form) {
+                ${$form->name . "sizes"} = $product->attrs()->where('form_id', $form->id)->pluck('size');
+                $Sizes[$form->name] =  ${$form->name . "sizes"};
+              }
+              $Sizes = json_encode($Sizes);
 						@endphp
-            <input type="hidden" name="product-id" value="{{$product_detail->id}}">
+            <input type="hidden" name="product-id" value="{{$product->id}}">
             <div class="forms modal-radio" id="forms"></div>
             <div class="prices" id="price">
             @if($minprice==$maxprice)
@@ -86,7 +87,7 @@
             </div>
           </form>
           
-          <form action="/add-to-cart" data="{{$product_detail->id}}" id="modal-cart-form"></form>
+          <form action="/add-to-cart" data="{{$product->id}}" id="modal-cart-form"></form>
         </div>
         
         <section class="popup-section" id="ch-popup-sec">
@@ -94,9 +95,9 @@
             <button id="page-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="location.reload()">Stay on Page</button>
             <button id="shop-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="location.href = `<?= route('home')?>`">Continue Shopping</button>
             @auth
-            <button id="chkt-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="location.href = `<?= route('checkout')?>`">Checkout</button>
+              <button id="chkt-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="location.href = `<?= route('checkout')?>`">Checkout</button>
             @else
-            <button id="chkt-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="chOptions()">Checkout</button>
+              <button id="chkt-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="chOptions()">Checkout</button>
             @endauth
             <button id="guest-chkt-btn" class="btn btn-submit popup-btn chkt-btn collapse" onclick="location.href = `<?= route('checkout')?>`">Checkout as Guest</button>
             <button id="login-chkt-btn" class="btn btn-submit popup-btn chkt-btn collapse" onclick="location.href = `<?= route('login.form')?>?checkout=1`">Login to Checkout</button>
@@ -130,7 +131,7 @@
   
 	<section class="details reviews">
 		@php
-			$benefits = explode('@', $product_detail->benefit);
+			$benefits = explode('@', $product->benefit);
 		@endphp
 		
 		<div class="details-review-div">
@@ -151,11 +152,11 @@
 						@endforeach
 					</ul>
 				@endif
-				@if ($product_detail->description)
+				@if ($product->description)
 					<h3>
 						Description:
 					</h3>
-					<p class="desc-para">{{$product_detail->description}}</p>
+					<p class="desc-para">{{$product->description}}</p>
 				@endif
 				<h3>
 					Precautions:
@@ -180,7 +181,7 @@
 					<h4>Your Rating</h4>
 
 					@auth 
-						<form class="form" method="post" action="{{route('review.store',$product_detail->slug)}}"> 
+						<form class="form" method="post" action="{{route('review.store',$product->slug)}}"> 
 							@csrf 
 							<div class="rate">
 								<input type="radio" id="star5" name="rate" value="5" />
@@ -214,7 +215,7 @@
 					<div class="prev-reviews">
 						<h3>Reviews</h3>
 					</div>
-					@foreach($product_detail['getReview'] as $data)
+					@foreach($product->reviews as $data)
 						<div class="single-rating">
 							<div class="rating-author"> 
 								@if($data->user_info['photo'])
@@ -257,19 +258,19 @@
 
 		<div class="products">
 			<div class="product-slider carousel hero-slider"  data-flickity='{ "autoPlay": 1000, "contain": true, "pageDots": false, "initialIndex": 2 }'>
-				@foreach($product_detail->rel_prods as $product)
-					@if($product->id !== $product_detail->id)
+				@foreach($relproducts as $relproduct)
+					@if($relproduct->id !== $product->id)
 						@php
-								$minprice = DB::table('products_attributes')->where('product_id', $product->id)->min('price');
-								$maxprice = DB::table('products_attributes')->where('product_id', $product->id)->max('price');
-                if(Auth::user())
-                  $wishlist = DB::table('wishlists')->where('product_id', $product->id)->where('user_id', auth()->user()->id)->get();
+              $sessionId = Session::getId();
+              $minprice = $relproduct->attrs->min('price');
+              $maxprice = $relproduct->attrs->max('price');
+              $wishlist = $relproduct->wishlists()->where('session_id', $sessionId)->get();
 						@endphp
-						<div class="product-card {{$product->id}}-card carousel-cell">
-							<img class="product-image" src="{{$product->photo}}" alt="product image">
+						<div class="product-card {{$relproduct->id}}-card carousel-cell">
+							<img class="product-image" src="{{$relproduct->photo}}" alt="product image">
 
 							<div class="meta-detail">
-								<h3 class="product-title">{{$product->title}}</h3>
+								<h3 class="product-title">{{$relproduct->name}}</h3>
                 @if($minprice==$maxprice)
                   <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span></p>
                 @else
@@ -300,10 +301,10 @@
 @push('scripts')
 	<script src="{{asset('frontend/js/product-detail.js')}}"></script>
 	<script>
-		var form = "<?= $forms[0] ?>";
-		createForms(<?= $forms ?>);
+		var form = "<?= $form_names[0] ?>";
+		createForms(<?= $form_names ?>);
 		createSizes(form, <?= $Sizes ?>);
-		Price(<?= $product_detail->id ?>);
+		Price(<?= $product->id ?>);
 
 		window.onload = function() {
   		$(function() {
@@ -322,7 +323,7 @@
 						$("input.qty").prop('disabled', true)
 						$('.minus').prop('disabled', true);
 					}
-					Price(<?= $product_detail->id ?>);
+					Price(<?= $product->id ?>);
 				})
 
 				/* Enable minus button when value of input quantity is greater than 1 and vice versa */

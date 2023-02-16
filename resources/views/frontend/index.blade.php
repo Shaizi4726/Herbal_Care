@@ -46,12 +46,12 @@
               $minprice = $product->attrs()->min('price');
               $maxprice = $product->attrs()->max('price');
               $Images = $product->images()->pluck('name');
-              $Forms = $product->forms()->get();
+              $forms = $product->forms()->get();
               $form_names = $product->forms()->pluck('name');
               $wishlist = $product->wishlists()->where('session_id', $sessionId)->get();
 
               $Sizes = array();
-              foreach ($Forms as $form) {
+              foreach ($forms as $form) {
                 ${$form->name . "sizes"} = $product->attrs()->where('form_id', $form->id)->pluck('size');
                 $Sizes[$form->name] =  ${$form->name . "sizes"};
               }
@@ -105,12 +105,12 @@
               $minprice = $product->attrs()->min('price');
               $maxprice = $product->attrs()->max('price');
               $Images = $product->images()->pluck('name');
-              $Forms = $product->forms()->get();
+              $forms = $product->forms()->get();
               $form_names = $product->forms()->pluck('name');
               $wishlist = $product->wishlists()->where('session_id', $sessionId)->get();
 
               $Sizes = array();
-              foreach ($Forms as $form) {
+              foreach ($forms as $form) {
                 ${$form->name . "sizes"} = $product->attrs()->where('form_id', $form->id)->pluck('size');
                 $Sizes[$form->name] =  ${$form->name . "sizes"};
               }
@@ -164,12 +164,12 @@
               $minprice = $product->attrs()->min('price');
               $maxprice = $product->attrs()->max('price');
               $Images = $product->images()->pluck('name');
-              $Forms = $product->forms()->get();
+              $forms = $product->forms()->get();
               $form_names = $product->forms()->pluck('name');
               $wishlist = $product->wishlists()->where('session_id', $sessionId)->get();
 
               $Sizes = array();
-              foreach ($Forms as $form) {
+              foreach ($forms as $form) {
                 ${$form->name . "sizes"} = $product->attrs()->where('form_id', $form->id)->pluck('size');
                 $Sizes[$form->name] =  ${$form->name . "sizes"};
               }
@@ -228,12 +228,12 @@
                   $minprice = $product->attrs()->min('price');
                   $maxprice = $product->attrs()->max('price');
                   $Images = $product->images()->pluck('name');
-                  $Forms = $product->forms()->get();
+                  $forms = $product->forms()->get();
                   $form_names = $product->forms()->pluck('name');
                   $wishlist = $product->wishlists()->where('session_id', $sessionId)->get();
 
                   $Sizes = array();
-                  foreach ($Forms as $form) {
+                  foreach ($forms as $form) {
                     ${$form->name . "sizes"} = $product->attrs()->where('form_id', $form->id)->pluck('size');
                     $Sizes[$form->name] =  ${$form->name . "sizes"};
                   }
