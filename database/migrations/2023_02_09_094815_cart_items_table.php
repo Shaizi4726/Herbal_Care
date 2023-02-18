@@ -18,15 +18,19 @@ return new class extends Migration
       $table->collation = 'utf8mb4_unicode_ci';
       
       $table->id();
-      $table->unsignedBigInteger('session_id')->nullable();
-      $table->foreign('session_id')->references('id')->on('shopping_sessions')->onDelete('CASCADE');
+      $table->unsignedBigInteger('user_id');
+      $table->foreign('user_id')->references('id')->on('users')->onDelete('CASCADE');
       $table->unsignedBigInteger('product_id');
       $table->foreign('product_id')->references('id')->on('products')->onDelete('CASCADE');
-      $table->string('form');
+      $table->unsignedBigInteger('atrr_id');
+      $table->foreign('attr_id')->references('id')->on('product_attributes')->onDelete('CASCADE');
+      $table->string('form')->nullable();
       $table->string('size');
       $table->float('price');
       $table->integer('quantity');
-      $table->float('amount');
+      $table->float('subtotal');
+      $table->float('tax');
+      $table->float('total');
       $table->timestamps();
     });
   }

@@ -64,18 +64,21 @@ function Price(id) {
 
 /*========== Product Forms Creation ==========*/
 function createForms(forms) {
+  if(forms[0] == undefined)
+    return;
+
   var formsMenu = document.createElement('div');
   formsMenu.setAttribute('class', 'forms-list');
   formsMenu.setAttribute('id', 'forms-menu');
   var formsInput;
   forms.map((item, key) => {
     if (key == 0) {
-      formsInput = `<input type="radio" id="${item}" name="product-form" value="${item}" checked>
-      <label for="${item}">${item}</label>`;
+      formsInput = `<input type="radio" id="${item['name']}" name="product-form" value="${item['form_id']}" checked>
+      <label for="${item['name']}">${item['name']}</label>`;
     }
     else
-      formsInput += `<input type="radio" id="${item}" name="product-form" value="${item}">
-     <label for="${item}">${item}</label>`;
+      formsInput += `<input type="radio" id="${item['name']}" name="product-form" value="${item['form_id']}">
+     <label for="${item['name']}">${item['name']}</label>`;
   });
   formsMenu.innerHTML = formsInput;
   document.getElementById('forms').appendChild(formsMenu);
@@ -83,16 +86,28 @@ function createForms(forms) {
 
 /*========== Product Sizes Creation ==========*/
 function createSizes(form, sizes) {
-  if (document.getElementById("sizes-menu"))
-    document.getElementById("sizes-menu").remove();
-  var sizeMenu = document.createElement('div');
-  sizeMenu.setAttribute('class', form + '-sizes sizes-list');
-  sizeMenu.setAttribute('id', 'sizes-menu');
-  var sizesInput = ``;
-  sizes[form].map(size => {
-    sizesInput += `<input type="radio" id="${form}${size}" name="product-size" class="product-size" value="${size}">
-        <label for="${form}${size}">${size}</label>`;
-  });
+  if(form) {
+    if (document.getElementById("sizes-menu"))
+      document.getElementById("sizes-menu").remove();
+    var sizeMenu = document.createElement('div');
+    sizeMenu.setAttribute('class', form + '-sizes sizes-list');
+    sizeMenu.setAttribute('id', 'sizes-menu');
+    var sizesInput = ``;
+    sizes[form].map(size => {
+      sizesInput += `<input type="radio" id="${form}${size}" name="product-size" class="product-size" value="${size}">
+          <label for="${form}${size}">${size}</label>`;
+    });
+  } else {
+    var sizeMenu = document.createElement('div');
+    sizeMenu.setAttribute('class', 'sizes-list');
+    sizeMenu.setAttribute('id', 'sizes-menu');
+    var sizesInput = ``;
+    sizes.map(size => {
+      sizesInput += `<input type="radio" id="${size}" name="product-size" class="product-size" value="${size}">
+        <label for="${size}">${size}</label>`;
+    });
+  }
+
   sizeMenu.innerHTML = sizesInput;
   document.getElementById("sizes").appendChild(sizeMenu);
 };
@@ -101,28 +116,49 @@ function createSizes(form, sizes) {
 var totalAmount = 0;
 
 function shopList() {
-  let form = $("[name='product-form']:checked").val();
+  let form = $("[name='product-form']:checked")[0];
   let price = $("[name='price-input']").val();
   let size = $("[name='product-size']:checked").val();
   let quant = $("[name='quantity']").val();
   let amount = price * quant;
-
-  let row = document.getElementById(`${form}-${size}-quant`);
-
-  tableRow: {
-    if (row !== null) {
-      let quantity = Number(row.innerHTML) + Number(quant);
-      row.innerHTML = quantity;
-      document.getElementById(`${form}-${size}-amnt`).innerHTML = `AED ${(price * quantity).toFixed(2)}`;
+  
+  if(form) {
+    form = form.getAttribute('id');
+    let row = document.getElementById(`${form}-${size}-quant`);
+  
+    tableRow: {
+      if (row !== null) {
+        let quantity = Number(row.innerHTML) + Number(quant);
+        row.innerHTML = quantity;
+        document.getElementById(`${form}-${size}-amnt`).innerHTML = `AED ${(price * quantity).toFixed(2)}`;
+        totalAmount += amount;
+        break tableRow;
+      }
+      $('#shopping-list-table > tbody').append(`<tr><td>${form}</td>
+      <td>${size}</td>
+      <td id = "${form}-${size}-quant">${quant}</td>
+      <td>${price}</td>
+      <td id = "${form}-${size}-amnt">AED ${amount.toFixed(2)}</td></tr>`);
       totalAmount += amount;
-      break tableRow;
     }
-    $('#shopping-list-table > tbody').append(`<tr><td>${form}</td>
-    <td>${size}</td>
-    <td id = "${form}-${size}-quant">${quant}</td>
-    <td>${price}</td>
-    <td id = "${form}-${size}-amnt">AED ${amount.toFixed(2)}</td></tr>`);
-    totalAmount += amount;
+  } else {
+    let row = document.getElementById(`${size}-quant`);
+
+    tableRow: {
+      if (row !== null) {
+        let quantity = Number(row.innerHTML) + Number(quant);
+        row.innerHTML = quantity;
+        document.getElementById(`${size}-amnt`).innerHTML = `AED ${(price * quantity).toFixed(2)}`;
+        totalAmount += amount;
+        break tableRow;
+      }
+      $('#shopping-list-table > tbody').append(`<tr><td></td>
+      <td>${size}</td>
+      <td id = "${size}-quant">${quant}</td>
+      <td>${price}</td>
+      <td id = "${size}-amnt">AED ${amount.toFixed(2)}</td></tr>`);
+      totalAmount += amount;
+    }
   }
 
   $("#list-total").html(`AED ${totalAmount.toFixed(2)}`);

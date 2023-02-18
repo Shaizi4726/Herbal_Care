@@ -12,7 +12,7 @@
   <section class="cart-section">
     <div class="cart-page-items">
       @php
-          $cart_products = Helper::getAllProductFromCart();
+        $cart_products = Helper::getAllProductFromCart();
       @endphp
       
       @if($cart_products)

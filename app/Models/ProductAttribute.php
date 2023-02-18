@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Cart;
+use App\Models\CartItem;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
@@ -45,7 +45,8 @@ class ProductAttribute extends Model
    * @var array
    */
   protected $attributes = [
-    'status' => 'active'
+    'status' => 'active', 
+    'form_id' => 'NULL'
   ];
 }
 

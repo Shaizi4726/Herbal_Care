@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 use Srmklive\PayPal\Services\ExpressCheckout;
 use Illuminate\Http\Request;
 use NunoMaduro\Collision\Provider;
-use App\Models\Cart;
+use App\Models\CartItem;
 use App\Models\Product;
 use DB;
 class PaypalController extends Controller
 {
     public function payment()
     {
-        $cart = Cart::where('user_id',auth()->user()->id)->where('order_id',null)->get()->toArray();
+        $cart = CartItem::where('user_id',auth()->user()->id)->where('order_id',null)->get()->toArray();
       //  \Stripe\Stripe::setApiKey('sk_test_51LjzKRJe1uNOXrEYe7FfdpR4FroSl4AU0pUQZhvAmgkCYVkXn9adzZKCHUXwkxfLECcEcowI8oHhhTigQpwN3nva00HjVkJmVV');
         $data = [];
         
@@ -42,7 +42,7 @@ class PaypalController extends Controller
         if(session('coupon')){
             $data['city_discount'] = session('coupon')['value'];
         }
-        Cart::where('user_id', auth()->user()->id)->where('order_id', null)->update(['order_id' => session()->get('id')]);
+        CartItem::where('user_id', auth()->user()->id)->where('order_id', null)->update(['order_id' => session()->get('id')]);
 
         // return session()->get('id');
         $provider = new ExpressCheckout;

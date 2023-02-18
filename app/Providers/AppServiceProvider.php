@@ -25,10 +25,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Schema::defaultStringLength(191);
+      Schema::defaultStringLength(191);
 
-        Session::put('cart', []);
-        Session::put('id', 0);
+      Session::put('cart', []);
+      Session::put('id', 0);
     }
     
 }

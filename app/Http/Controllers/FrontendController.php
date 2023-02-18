@@ -300,7 +300,7 @@ class FrontendController extends Controller
           $cart_items = Session::get('cart');
 
           foreach($cart_items as $item) {
-            $already_cart = Cart::where('user_id', auth()->user()->id)->where('product_id', $item->product_id)->where('product_atrr_id', $item->product_atrr_id)->first();
+            $already_cart = CartItem::where('user_id', auth()->user()->id)->where('product_id', $item->product_id)->where('product_atrr_id', $item->product_atrr_id)->first();
 
             if ($already_cart) {
               $quantity = $item->quantity;
@@ -315,7 +315,7 @@ class FrontendController extends Controller
     
             } else {
     
-              $cart = new Cart;
+              $cart = new CartItem;
               $cart->user_id = auth()->user()->id;
               $cart->product_id = $item->product_id;
               $cart->plu = $item->plu;
@@ -434,12 +434,11 @@ class FrontendController extends Controller
 
 
     public function getProductPrice(Request $request){
-        $data = $request->all();
-        $id = $data['id'];
-        $size = $data['size'];
-        $form = $data['form'];
-        $proAttr = DB::table('products_attributes')->where('product_id', $id)->where('size', $size)->where('form', $form)->first();   
-        return $proAttr->price;
+      if($request->from == null)
+        $proAttr = DB::table('product_attributes')->where('product_id', $request->id)->where('size', $request->size)->first();   
+      else
+        $proAttr = DB::table('product_attributes')->where('product_id', $request->id)->where('size', $request->size)->where('form_id', $request->form)->first();   
+      return $proAttr->price;
     }
 
     public function getStates(Request $request) {

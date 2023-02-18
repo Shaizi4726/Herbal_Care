@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Cart;
+use App\Models\CartItem;
 use App\Models\Order;
 use App\Models\city;
 use App\User;
@@ -78,7 +78,7 @@ class OrderController extends Controller
         ]);
       }
 
-        if(empty(Cart::where('user_id', auth()->user()->id)->first())){
+        if(empty(CartItem::where('user_id', auth()->user()->id)->first())){
           return back();
         }
   
@@ -141,7 +141,7 @@ class OrderController extends Controller
             session()->forget('cart');
             session()->forget('coupon');
         }
-        Cart::where('user_id', auth()->user()->id)->where('order_id', null)->update(['order_id' => $order->id]);
+        CartItem::where('user_id', auth()->user()->id)->where('order_id', null)->update(['order_id' => $order->id]);
 
         // dd($users);        
         request()->session()->flash('success','Your product successfully placed in order');

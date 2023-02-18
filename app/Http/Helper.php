@@ -5,7 +5,7 @@ use App\Models\Order;
 use App\Models\Wishlist;
 use App\Models\city;
 use App\Models\Product;
-use App\Models\CartItem as Cart;
+use App\Models\CartItem;
 
 // use Auth;
 
@@ -72,7 +72,7 @@ class Helper
   public static function cartCount() {
     if(Auth::check()) {
       $user_id=auth()->user()->id;
-      return Cart::where('session_id',$user_id)->count('product_id');
+      return CartItem::where('user_id',$user_id)->count('product_id');
     }
     else {
       return 0;
@@ -100,7 +100,7 @@ class Helper
   {
     if (Auth::check()) {
       $user_id = auth()->user()->id;
-      return Cart::with('product')->where('session_id', $user_id)->get();
+      return CartItem::with('product')->where('user_id', $user_id)->get();
     } else {
       $cart = Session::get('cart');
       return $cart;
@@ -112,7 +112,7 @@ class Helper
   {
     if (Auth::check()) {
       $user_id = auth()->user()->id;
-      return Cart::where('session_id', $user_id)->sum('amount');
+      return CartItem::where('user_id', $user_id)->sum('total');
     } else {
       $cart_items = Session::get('cart');
       $sum = 0;
@@ -130,7 +130,7 @@ class Helper
   {
     if (Auth::check()) {
       $user_id = auth()->user()->id;
-      return Cart::where('user_id', $user_id)->where('order_id', null)->sum('amount');
+      return CartItem::where('user_id', $user_id)->sum('subtotal');
     } else {
       $cart_items = Session::get('cart');
       $sum = 0;
@@ -148,7 +148,7 @@ class Helper
   {
     if (Auth::check()) {
       $user_id = auth()->user()->id;
-      return Cart::where('user_id', $user_id)->sum('tax_amount');
+      return CartItem::where('user_id', $user_id)->sum('tax');
     } else {
       $cart_items = Session::get('cart');
       $sum = 0;

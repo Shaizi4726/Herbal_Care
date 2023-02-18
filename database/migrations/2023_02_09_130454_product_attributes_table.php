@@ -15,10 +15,10 @@ return new class extends Migration
   {
     Schema::create('product_attributes', function (Blueprint $table) {
       $table->bigIncrements('id');
-      $table->unsignedBigInteger('flu')->unique()->nullable()->default('NULL');
+      $table->unsignedBigInteger('flu')->unique()->nullable();
       $table->unsignedBigInteger('product_id');
       $table->foreign('product_id')->references('id')->on('products')->onDelete('CASCADE');
-      $table->unsignedBigInteger('form_id');
+      $table->unsignedBigInteger('form_id')->nullable();
       $table->foreign('form_id')->references('id')->on('forms')->onDelete('CASCADE');
       $table->string('sku')->unique();
       $table->string('size');

@@ -21,7 +21,7 @@ class Order extends Model
    *
    * @var array
    */
-  protected $fillable = ['order_no', 'session_id', 'user_id', 'fname', 'lname', 'cname', 'trn_no', 'email', 'phone', 'address', 'city_id', 'post_code', 'payment_method', 'payment_status', 'subtotal', 'tax_amount', 'total_amount', 'coupon_id', 'status'];
+  protected $fillable = ['order_no', 'user_id', 'fname', 'lname', 'cname', 'trn_no', 'email', 'phone', 'address', 'city_id', 'post_code', 'payment_method', 'payment_status', 'subtotal', 'tax_amount', 'shipping', 'total_amount', 'coupon_id', 'status'];
   
   /**
    * Get the payment associated with the order.
@@ -47,14 +47,6 @@ class Order extends Model
     return $this->belongsTo(User::class, 'user_id');
   }
   
-  /**
-   * Get the shopping session that owns the order.
-   */
-  public function session()
-  {
-    return $this->belongsTo(ShoppingSession::class, 'session_id');
-  }
-
   /**
    * Get the city that owns the order.
    */

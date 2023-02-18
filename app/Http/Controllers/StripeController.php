@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Cart;
+use App\Models\CartItem;
 use App\Models\Product;
 use App\Models\Order;
 use DB;
@@ -16,7 +16,7 @@ class StripeController extends Controller
 	
     public function payment(Request $req)
     {
-		$cart = Cart::where('user_id',auth()->user()->id)->where('order_id',null)->get()->toArray();
+		$cart = CartItem::where('user_id',auth()->user()->id)->where('order_id',null)->get()->toArray();
     //    Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
         $data = [];
     //    dd($cart);
@@ -45,7 +45,7 @@ class StripeController extends Controller
         // if(session('coupon')){
         //     $data['city_discount'] = session('coupon')['value'];
         // }
-        Cart::where('user_id', auth()->user()->id)->where('order_id', null)->update(['order_id' => session()->get('id')]);
+        CartItem::where('user_id', auth()->user()->id)->where('order_id', null)->update(['order_id' => session()->get('id')]);
 
         // return session()->get('id');
         // $provider = new ExpressCheckout;

@@ -15,8 +15,6 @@ return new class extends Migration
   {
     Schema::create('wishlists', function (Blueprint $table) {
       $table->id();
-      $table->unsignedBigInteger('session_id')->nullable();
-      $table->foreign('session_id')->references('id')->on('shopping_sessions')->onDelete('CASCADE');
       $table->unsignedBigInteger('user_id')->nullable();
       $table->foreign('user_id')->references('id')->on('users')->onDelete('CASCADE');
       $table->unsignedBigInteger('product_id');

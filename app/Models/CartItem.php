@@ -19,16 +19,8 @@ class CartItem extends Model
    *
    * @var array
    */
-  protected $fillable = ['session_id', 'user_id', 'product_id', 'form', 'size', 'price', 'quantity', 'amount'];
+  protected $fillable = ['user_id', 'product_id', 'attr_id', 'form', 'size', 'price', 'quantity', 'subtotal', 'tax', 'total'];
 
-  /**
-   * Get the shopping session that owns the cart item.
-   */
-  public function shopping_session()
-  {
-    return $this->belongsTo(ShoppingSession::class, 'session_id');
-  }
-  
   /**
    * Get the user that owns the cart item.
    */
@@ -43,5 +35,13 @@ class CartItem extends Model
   public function product()
   {
     return $this->belongsTo(Product::class, 'product_id');
+  }
+
+  /**
+   * Get the attribute that owns the cart item.
+   */
+  public function attr()
+  {
+    return $this->belongsTo(ProductAttribute::class, 'attr_id');
   }
 }

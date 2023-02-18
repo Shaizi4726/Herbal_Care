@@ -19,8 +19,6 @@ return new class extends Migration
       
       $table->id();
       $table->string('order_no')->unique();
-      $table->unsignedBigInteger('session_id')->nullable();
-      $table->foreign('session_id')->references('id')->on('shopping_sessions')->onDelete('SET NULL');
       $table->unsignedBigInteger('user_id')->nullable();
       $table->foreign('user_id')->references('id')->on('users')->onDelete('SET NULL');
       $table->string('fname');
@@ -37,6 +35,7 @@ return new class extends Migration
       $table->enum('payment_status',['paid', 'unpaid'])->default('unpaid');
       $table->float('subtotal');
       $table->float('tax_amount');
+      $table->float('shipping')->nullable();
       $table->float('total_amount');
       $table->unsignedBigInteger('coupon_id')->nullable();
       $table->foreign('coupon_id')->references('id')->on('coupons')->onDelete('SET NULL');

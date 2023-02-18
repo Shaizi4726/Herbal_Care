@@ -20,15 +20,7 @@ class Wishlist extends Model
    *
    * @var array
    */
-  protected $fillable = ['session_id', 'user_id', 'product_id'];
-
-  /**
-   * Get the shopping session that owns the wishlist.
-   */
-  public function shopping_session()
-  {
-    return $this->belongsTo(ShoppingSession::class, 'session_id');
-  }
+  protected $fillable = ['user_id', 'product_id'];
   
   /**
    * Get the user that owns the wishlist.

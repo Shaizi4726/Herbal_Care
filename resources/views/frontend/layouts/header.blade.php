@@ -43,7 +43,7 @@
     <div class="header-content">
       <div id="header-logo" class="header-logo">
         @php
-          $settings=DB::table('settings')->get();
+          $settings= DB::table('settings')->get();
           $categories = Helper::getAllCategories();
         @endphp                    
         <a href="{{route('home')}}"><img src="@foreach($settings as $data) {{$data->logo}} @endforeach" alt="logo" width="50" height="50"></a>
@@ -125,7 +125,7 @@
         <div class="items-count"><span class="fav-qty" style="position: relative;top: 0.14em;">{{Helper::favCount()}}</span></div></a>
       </button> 
 
-      <button class="btn header-icon items-menu-btn">
+      <button id="desktop-cart-btn" class="btn header-icon items-menu-btn">
         <a href="{{route('cart')}}" class="header-icon">
         <i class="fa-solid fa-cart-shopping" id="cart-icon"></i>
         <div class="items-count"><span style="position: relative;top: 0.14em;">{{count(Helper::getAllProductFromCart())}}</span></div></a>
@@ -171,7 +171,7 @@
     <ul class="menu">
       <li><a href="{{route('home')}}" class="nav-link mob-nav">Home</a></li>
       <li><a href="{{route('about-us')}}" class="nav-link mob-nav">About</a></li>
-      <li>
+      <li id="shop">
         <a onclick="menu()" class="nav-link mob-nav dropdown-toggle">Shop</a>
         <ul class="collapse cat-menu" id="mob-cat-menu">
           @foreach ($categories as $cat)

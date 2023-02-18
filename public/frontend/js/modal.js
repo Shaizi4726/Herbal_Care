@@ -1,29 +1,32 @@
 /*==================== Product Modal Window ====================*/
 var el = document.getElementById('modal-container');
 var modal;
-var form;
 
-function showModal(...args) {
-  form = args[4][0];
-  document.getElementById(args[0]).disabled = true;
-  args[6] = args[6].toFixed(2);
-  args[7] = args[7].toFixed(2);
+function showModal(id, product, sizes, images, forms, minprice, maxprice, auth) {
+  let form;
+  if(forms[0])
+    form = forms[0]['name'];
+
+  document.getElementById(id).disabled = true;
+  console.log();
+  minprice = minprice.toFixed(2);
+  maxprice = maxprice.toFixed(2);
 
   /*========== Modal Creation ==========*/
   var createModal = () => {
     modal = document.createElement('div');
     modal.setAttribute('class', 'modal');
-    modal.setAttribute('id', 'modal' + args[0]);
+    modal.setAttribute('id', 'modal' + product['id']);
 
     modal.innerHTML = `
-      <button type="button" class="btn close" id="close-btn" onclick="closeModal(${args[0]})"><i class="fa-solid fa-xmark"></i></button>
+      <button type="button" class="btn close" id="close-btn" onclick="closeModal(${id})"><i class="fa-solid fa-xmark"></i></button>
       <div class="modal-content">
         <div class="shazoom" id="shazoom">
           <div class="img-box">
             <ul class="img-ul">
-              <li><img src="${args[1]}" alt="product-photo"></li>
+              <li><img src="${product['photo']}" alt="product-photo"></li>
               ${
-                args[2].map(item =>
+                images.map(item =>
                 `<li><img src="images${item}" alt=""></li>`
               ).join('')}
             </ul>
@@ -37,18 +40,17 @@ function showModal(...args) {
         </div>
         <div class="modal-details-container">
           <div class="product-modal-detail">
-            <h1 class="title">${args[3]}</h1>
+            <h1 class="title">${product['name']}</h1>
 
             <form id="modal-form">
-              <input type="hidden" name="id" value="${args[0]}">
-              <div class="forms modal-radio" id="forms">
-              </div>
+              <input type="hidden" name="id" value="${product['id']}">
+              <div class="forms modal-radio" id="forms"></div>
               <div class="prices" id="price">
                 ${(() => {
-                  if (args[6] == args[7]) {
-                    return `<h3>AED ${args[6]}</h3>`
+                  if (minprice == maxprice) {
+                    return `<h3>AED ${minprice}</h3>`
                   } else {
-                    return `<h3>AED ${args[6]} - AED ${args[7]}</h3>`
+                    return `<h3>AED ${minprice} - AED ${maxprice}</h3>`
                   }
                 })()}
               </div>
@@ -71,9 +73,9 @@ function showModal(...args) {
               </div>
             </form>
 
-            <form "  action="/add-to-cart" data="${args[0]}" id="modal-cart-form"></form>
+            <form "  action="/add-to-cart" data="${product['id']}" id="modal-cart-form"></form>
             
-            <a href="/product-detail/${args[8]}" class="modal-view-link btn" id="modal-view-link"><i class="fa-solid fa-circle-info" id="product-details-icon"></i>VIEW PRODUCT DETAILS</a>
+            <a href="/product-detail/${product['slug']}" class="modal-view-link btn" id="modal-view-link"><i class="fa-solid fa-circle-info" id="product-details-icon"></i>VIEW PRODUCT DETAILS</a>
           </div>
 
           <section class="popup-section" id="ch-popup-sec">
@@ -81,8 +83,7 @@ function showModal(...args) {
               <button id="page-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="remInnerModal()">Stay on Page</button>
               <button id="shop-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="location.href = '/home'">Continue Shopping</button>
               ${(() => {
-                if (args[9]) {
-                  console.log(args[9]);
+                if (auth) {
                   return `<button id="chkt-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="location.href = '/checkout'">Checkout</button>`
                 } else {
                   return `<button id="chkt-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="chOptions()">Checkout</button>`
@@ -123,7 +124,7 @@ function showModal(...args) {
 
     $(body).on('keydown', function(event) {
       if(event.key == "Escape")
-        closeModal(args[0]);
+        closeModal(id);
     });
   };
   createModal();
@@ -138,13 +139,13 @@ function showModal(...args) {
   shazoom();
 
   /* Hide exzoom navbar and nav buttons when only 1 image */
-  if (args[2].length == 0) {
+  if (images.length == 0) {
     $(".zoom-btn").hide();
     $(".zoom-nav").hide();
   }
 
-  createForms(args[4]);
-  createSizes(form, args[5]);
+  createForms(forms);
+  createSizes(form, sizes);
 
   /* Actions when size is not checked */
   if($("[name|='product-size']:checked").val() == undefined) {
@@ -153,22 +154,23 @@ function showModal(...args) {
     $("input.qty").prop('disabled', true);
   }
 
-  Price(args[0]);
+  Price(product['id']);
 
   $(function() {
     /* Actions when form is changed */
     $("[name|='product-form']").on('change', () => {
-      var form = $("[name|='product-form']:checked").val();
-      createSizes(form, args[5]);
+      var form = $("[name|='product-form']:checked")[0];
+      form = form.getAttribute('id');
+      createSizes(form, sizes);
       if($("[name|='product-size']:checked").val() == undefined) {
-        $("#price").html(`<h3>AED ${args[6]} - AED ${args[7]}</h3>`);
+        $("#price").html(`<h3>AED ${minprice} - AED ${maxprice}</h3>`);
         $(".plus").prop('disabled', true);
         $('.add-list').hide();
         $("input.qty").val('1');
         $("input.qty").prop('disabled', true)
         $('.minus').prop('disabled', true);
       }
-      Price(args[0]);
+      Price(product['id']);
     })
 
     /* Enable minus button when value of input quantity is greater than 1 and vice versa */
@@ -209,7 +211,7 @@ function showModal(...args) {
 
 /*==================== Remove modal from DOM ====================*/
 function closeModal(a) {
-  document.getElementById(a).disabled = false;
+  a.disabled = false;
   body.style.height = "auto";
   body.style.overflow = "auto";
   el.style.transform = "scale(0)";

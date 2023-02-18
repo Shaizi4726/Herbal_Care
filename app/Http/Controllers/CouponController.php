@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Coupon;
 use App\User;
 use Illuminate\Http\Request;
-use App\Models\Cart;
+use App\Models\CartItem;
 class CouponController extends Controller
 {
     /**
@@ -148,7 +148,7 @@ class CouponController extends Controller
         }
         if($coupon){
             if($coupon->user_id == auth()->user()->id){     
-                $total_price=Cart::where('user_id',auth()->user()->id)->where('order_id',null)->sum('price');           
+                $total_price=CartItem::where('user_id',auth()->user()->id)->where('order_id',null)->sum('price');           
                 session()->put('coupon',[
                     'id'=>$coupon->id,
                     'code'=>$coupon->code,
@@ -158,7 +158,7 @@ class CouponController extends Controller
             }
             else if($coupon->product_id){
                 if($coupon->product_id == $coupon->products->id)
-                $total_price=Cart::where('user_id',auth()->user()->id)->where('order_id',null)->sum('price');
+                $total_price=CartItem::where('user_id',auth()->user()->id)->where('order_id',null)->sum('price');
                 session()->put('coupon',[
                     'id'=>$coupon->id,
                     'code'=>$coupon->code,
@@ -168,7 +168,7 @@ class CouponController extends Controller
             }
             else if($today <= $coupon->expiry_date){
                 
-                $total_price=Cart::where('user_id',auth()->user()->id)->where('order_id',null)->sum('price');
+                $total_price=CartItem::where('user_id',auth()->user()->id)->where('order_id',null)->sum('price');
                 session()->put('coupon',[
                     'id'=>$coupon->id,
                     'code'=>$coupon->code,
