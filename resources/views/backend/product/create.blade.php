@@ -284,7 +284,7 @@
           
           <div class="form-group d-none child_cat_div${x}" id="child_cat_div${x}">
             <label for="child_cat_id">Sub Category</label>
-            <select name="child_cat_id${x}" id="child_cat_id${x}" class="form-control child_cat_id${x}">
+            <select name="child_cat_id${x}" id="child_cat_id${x}" class="form-control child_cat_id">
               <option value="">--Select any category--</option>
               {{-- @foreach($subcategories as $key=>$subcategory)
                 <option value='{{$subcategory->id}}'>{{$subcategory->name}}</option>
@@ -303,10 +303,11 @@
     })
   });
  
-  $('.category_id').change(function (){
+  $('.category_id').change(function (){     
     var category_id=$(this).val();
-    alert(category_id)
+   
     if(category_id !=null){
+      alert(category_id);
       // Ajax call
       $.ajax({        
         url:"/admin/category/"+category_id+"/child",
@@ -315,11 +316,9 @@
           id:category_id
         },
         type:"GET",
-        success:function(response){
-         
+        success:function(response){       
           if(typeof(response) !='object'){
-            response=$.parseJSON(response)
-            
+            response=$.parseJSON(response)            
           }
           var html_option="<option value=''>----Select sub category----</option>"
           if(response.status){

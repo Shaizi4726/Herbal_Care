@@ -28,7 +28,7 @@
           </select>
         </div> 
         @php
-            $coupons = DB::table('coupons')->orderBy('id','DESC')->get();
+            $coupons = DB::table('coupons')->where('effect','subcategory')->orderBy('id','DESC')->get();
         @endphp
         <div class="form-group" id='ccoupon_id'>
           <label for="coupon_id">Coupon</label>

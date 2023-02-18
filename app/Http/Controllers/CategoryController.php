@@ -120,7 +120,7 @@ class CategoryController extends Controller
     public function getChildByParent(Request $request){
         //dd($request->all());
         $category=Category::findOrFail($request->id);
-        $child_cat=SubCategory::getChildByParentID($request->id);
+        $child_cat=SubCategory::where('parent_id',$request->id)->orderBy('id','ASC')->pluck('name', 'id');
         // return $child_cat;
         if(count($child_cat)<=0){
             return response()->json(['status'=>false,'msg'=>'','data'=>null]);

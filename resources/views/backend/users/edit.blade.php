@@ -71,6 +71,18 @@
           <span class="text-danger">{{$message}}</span>
           @enderror
           </div>
+          @php
+            $coupons = DB::table('coupons')->where('effect','user')->orderBy('id','DESC')->get();
+          @endphp
+            <div class="form-group" id='coupon_id'>
+              <label for="coupon_id">Coupon</label>
+              <select name="coupon_id" class="form-control">
+                  <option value="">--Select any Coupon--</option>
+                  @foreach($coupons as $key=>$coupon)
+                    <option value='{{$coupon->id}}'>{{$coupon->code}}</option>
+                  @endforeach
+              </select>
+            </div>
           <div class="form-group">
             <label for="status" class="col-form-label">Status</label>
             <select name="status" class="form-control">

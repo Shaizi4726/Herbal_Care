@@ -16,14 +16,14 @@
           @enderror
         </div>
         @php
-            $coupons = DB::table('coupons')->orderBy('id','DESC')->get();
+            $coupons = DB::table('coupons')->where('effect','category')->orderBy('id','DESC')->get();
         @endphp
         <div class="form-group" id='coupon_id'>
           <label for="coupon_id">Coupon</label>
           <select name="coupon_id" class="form-control">
             <option value="">--Select any coupon--</option>
-            @foreach($coupons as $key=>$coupon)
-              <option value='{{$coupon->id}}'>{{$coupon->code}}</option>
+            @foreach($coupons as $key=>$coupon)             
+              <option value='{{$coupon->id}}'>{{$coupon->code}}</option>              
             @endforeach
           </select>
         </div>  

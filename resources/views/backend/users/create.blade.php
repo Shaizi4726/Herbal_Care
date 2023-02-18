@@ -63,7 +63,7 @@
           @enderror
           </div>
           @php
-            $coupons = DB::table('coupons')->get();
+            $coupons = DB::table('coupons')->where('effect','user')->orderBy('id','DESC')->get();
           @endphp
             <div class="form-group" id='coupon_id'>
               <label for="coupon_id">Coupon</label>

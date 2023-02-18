@@ -29,7 +29,7 @@
           <div class="input-group">
               <span class="input-group-btn">
                   <a id="lfm1" data-input="thumbnail1" data-preview="holder1" class="btn btn-primary">
-                  <i class="fa fa-picture-o"></i> Choose
+                    <i class="fa fa-picture-o"></i> Choose
                   </a>
               </span>
           <input id="thumbnail1" class="form-control" type="text" name="logo" value="{{$data->logo}}">
