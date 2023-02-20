@@ -73,7 +73,7 @@ Route::get('/income','OrderController@incomeChart')->name('product.order.income'
 // Route::get('/user/chart','AdminController@userPieChart')->name('user.piechart');
 Route::get('/product-grids','FrontendController@productGrids')->name('product-grids');
 Route::get('/product-lists','FrontendController@productLists')->name('product-lists');
-Route::match(['get','post'],'/filter','FrontendController@productFilter')->name('shop.filter');
+Route::match(['get','post'],'/sort','FrontendController@productSort')->name('shop.filter');
 // Order Track
 Route::get('/product/track','OrderController@orderTrack')->name('order.track');
 Route::post('product/track/order','OrderController@productTrackOrder')->name('product.track.order');

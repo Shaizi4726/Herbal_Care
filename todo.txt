@@ -1,14 +1,11 @@
-Products by product-category table
 filters
 wishlist Page
-form undefined should process adding to cart
 product form with flu
 cart submenu design
 Checkout Page(months and years set)
 Coupon Validation Backend
 modals
 Mobile Popup Offers
-after 0 item added (details and quick view page)
 Track Order Backend
 Search Backend
 after verification verify page cant be accessed
@@ -20,3 +17,7 @@ zoom cart image on hover
 add to cart data in url
 Forgot Password Page
 aboutUs Check Email Validation backend
+scrolbar wit order summary
+shipping address 
+username and password with verify email
+link address with google map

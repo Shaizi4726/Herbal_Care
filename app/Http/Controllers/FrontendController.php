@@ -125,22 +125,19 @@ class FrontendController extends Controller
         
     }
 
-    public function productFilter(Request $request) {
+    public function productSort(Request $request) {
       if($request->search) {
         $products=Product::orwhere('title','like','%'.$request->que.'%')->orwhere('slug','like','%'.$request->que.'%')->orwhere('description','like','%'.$request->que.'%')->orwhere('summary','like','%'.$request->que.'%')->orderBy('id','DESC')->paginate('9');
       }
 
       else {
-        $products = Category::getProductByCat($request->que);
-        $products = $products->products;
-      }
-
-      $sort_by = $request->sorting;
+        $category = Category::with('products')->where('slug', $request->slug)->get();
         
-      if ($request->promotion) {
-        $products = $products->where('promotion', $request->promotion);
+        $products = $category->pluck('products');
       }
 
+      $sort_by = $request->value;
+        
       if ($sort_by) {
         if($sort_by == 'a-z')
           $products = $products->sortBy('title');
@@ -272,7 +269,7 @@ class FrontendController extends Controller
         
         $categories = Category::get();
 
-        return view('frontend.pages.product-grids')->with('products', $products)->with('cats', $categories)->with('query', $request->slug)->with('search', 0);
+        return view('frontend.pages.product-grids')->with('products', $products)->with('cats', $categories)->with('slug', $request->slug)->with('search', 0);
     }
 
     public function productSubCat(Request $request){
@@ -280,7 +277,7 @@ class FrontendController extends Controller
       $products=$subcat[0]->products()->get();
       $categories = Category::get();
 
-      return view('frontend.pages.product-grids')->with('products', $products)->with('cats', $categories)->with('query', $request->slug)->with('search', 0);
+      return view('frontend.pages.product-grids')->with('products', $products)->with('cats', $categories)->with('subslug', $request->sub_slug)->with('search', 0);
     }
 
 
@@ -300,17 +297,17 @@ class FrontendController extends Controller
           $cart_items = Session::get('cart');
 
           foreach($cart_items as $item) {
-            $already_cart = CartItem::where('user_id', auth()->user()->id)->where('product_id', $item->product_id)->where('product_atrr_id', $item->product_atrr_id)->first();
+            $already_cart = CartItem::where('user_id', auth()->user()->id)->where('product_id', $item->product_id)->where('attr_id', $item->attr_id)->first();
 
             if ($already_cart) {
               $quantity = $item->quantity;
-              $t_amount = $item->t_amount;
-              $amount = $item->amount;
-              $tax_amount = $item->tax_amount;
+              $total = $item->total;
+              $subtotal = $item->subtotal;
+              $tax = $item->tax;
               $already_cart->quantity += $quantity;
-              $already_cart->t_amount += $t_amount;
-              $already_cart->amount += $amount;
-              $already_cart->tax_amount += $tax_amount;
+              $already_cart->total += $total;
+              $already_cart->subtotal += $subtotal;
+              $already_cart->tax += $tax;
               $already_cart->save();
     
             } else {
@@ -318,15 +315,14 @@ class FrontendController extends Controller
               $cart = new CartItem;
               $cart->user_id = auth()->user()->id;
               $cart->product_id = $item->product_id;
-              $cart->plu = $item->plu;
-              $cart->product_atrr_id = $item->product_atrr_id;
+              $cart->attr_id = $item->attr_id;
               $cart->form = $item->form;
               $cart->price = $item->price;
               $cart->size = $item->size;
               $cart->quantity = $item->quantity;
-              $cart->t_amount = $item->t_amount;
-              $cart->amount = $item->amount;
-              $cart->tax_amount = $item->tax_amount;
+              $cart->total = $item->total;
+              $cart->subtotal = $item->subtotal;
+              $cart->tax = $item->tax;
               $cart->save();
             }
           }
@@ -433,8 +429,8 @@ class FrontendController extends Controller
     }
 
 
-    public function getProductPrice(Request $request){
-      if($request->from == null)
+    public function getProductPrice(Request $request) {
+      if($request->form == null)
         $proAttr = DB::table('product_attributes')->where('product_id', $request->id)->where('size', $request->size)->first();   
       else
         $proAttr = DB::table('product_attributes')->where('product_id', $request->id)->where('size', $request->size)->where('form_id', $request->form)->first();   

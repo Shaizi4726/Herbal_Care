@@ -45,20 +45,27 @@
           <a href="#" class="total-review">({{$product->reviews->count()}}) Review</a>
           
           <form id="modal-form">
-            @php
+          @php
               $minprice = $product->attrs()->min('price');
               $maxprice = $product->attrs()->max('price');
               $images = $product->images()->pluck('name');
-              $forms = $product->forms()->get();
-              $form_names = $product->forms()->pluck('name');
+              $forms = $product->forms()->get(['form_id', 'name']);
+              $prod = $product->where('id', $product->id)->first(['id', 'name', 'photo']);
 
-              $Sizes = array();
+              $sizes = array();
               foreach ($forms as $form) {
-                ${$form->name . "sizes"} = $product->attrs()->where('form_id', $form->id)->pluck('size');
-                $Sizes[$form->name] =  ${$form->name . "sizes"};
+                ${$form->name . "sizes"} = $product->attrs()->where('form_id', $form->form_id)->pluck('size');
+                $sizes[$form->name] =  ${$form->name . "sizes"};
               }
-              $Sizes = json_encode($Sizes);
-						@endphp
+              
+              if(count($forms) == 0)
+                $sizes = $product->attrs()->pluck('size');
+              
+              $sizes = json_encode($sizes);
+
+              if(Auth::check())
+                $wishlist = $product->wishlists()->where('user_id', Auth::user()->id)->get();
+            @endphp
             <input type="hidden" name="product-id" value="{{$product->id}}">
             <div class="forms modal-radio" id="forms"></div>
             <div class="prices" id="price">
@@ -261,10 +268,10 @@
 				@foreach($relproducts as $relproduct)
 					@if($relproduct->id !== $product->id)
 						@php
-              $sessionId = Session::getId();
-              $minprice = $relproduct->attrs->min('price');
-              $maxprice = $relproduct->attrs->max('price');
-              $wishlist = $relproduct->wishlists()->where('session_id', $sessionId)->get();
+              $min_price = $relproduct->attrs->min('price');
+              $max_price = $relproduct->attrs->max('price');
+              if(Auth::check())
+                $wishlist = $relproduct->wishlists()->where('user_id', Auth()->user()->id)->get();
 						@endphp
 						<div class="product-card {{$relproduct->id}}-card carousel-cell">
 							<img class="product-image" src="{{$relproduct->photo}}" alt="product image">
@@ -272,18 +279,18 @@
 							<div class="meta-detail">
 								<h3 class="product-title">{{$relproduct->name}}</h3>
                 @if($minprice==$maxprice)
-                  <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span></p>
+                  <p class="price">AED <span class="value">{{number_format($min_price,2)}}</span></p>
                 @else
-                  <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span> - AED <span class="value">{{number_format($maxprice,2)}}</span></p>
+                  <p class="price">AED <span class="value">{{number_format($min_price,2)}}</span> - AED <span class="value">{{number_format($maxprice,2)}}</span></p>
                 @endif							
               </div>
 							<div class="prod-detail-link">
-								<a href="{{route('product-detail', $product->slug)}}" class="btn btn-submit detail-link"> Product Details </a>
+								<a href="{{route('product-detail', $relproduct->slug)}}" class="btn btn-submit detail-link"> Product Details </a>
 								@auth
                   @if(count($wishlist) != 0)
-                    <button class="btn favbtn" onclick="fav(this, {{$product->id}})"><i class="fa-solid fa-heart fav"></i></button>
+                    <button class="btn favbtn" onclick="fav(this, {{$relproduct->id}})"><i class="fa-solid fa-heart fav"></i></button>
                   @else
-                    <button class="btn favbtn" onclick="fav(this, {{$product->id}})"><i class="fa-regular fa-heart fav"></i></button>
+                    <button class="btn favbtn" onclick="fav(this, {{$relproduct->id}})"><i class="fa-regular fa-heart fav"></i></button>
                   @endif
                 @else
                   <button class="btn favbtn" onclick="window.location.href = '/user/login';"><i class="fa-regular fa-heart fav"></i></button>
@@ -301,9 +308,14 @@
 @push('scripts')
 	<script src="{{asset('frontend/js/product-detail.js')}}"></script>
 	<script>
-		var form = "<?= $form_names[0] ?>";
-		createForms(<?= $form_names ?>);
-		createSizes(form, <?= $Sizes ?>);
+    let form;
+    forms = <?= $forms ?>;
+
+    if(forms[0])
+      form = forms[0]['name'];
+
+		createForms(forms);
+		createSizes(form, <?= $sizes ?>);
 		Price(<?= $product->id ?>);
 
 		window.onload = function() {
@@ -313,8 +325,9 @@
 				$('.add-list').hide();
 				/* Actions when form is changed */
 				$("[name|='product-form']").change(() => {
-					var form = $("[name|='product-form']:checked").val();
-					createSizes(form, <?= $Sizes ?>);
+					var form = $("[name|='product-form']:checked")[0];
+          form = form.getAttribute('id');
+          createSizes(form, <?= $sizes ?>);
 					if($("[name|='product-size']:checked").val() == undefined) {
 						$("#price").html('<p class="price">AED <span class="value">' + @php echo number_format($minprice,2) @endphp + '</span> - AED <span class="value">' + @php echo number_format($maxprice,2) @endphp + '</span></p>');
 						$(".plus").prop('disabled', true);

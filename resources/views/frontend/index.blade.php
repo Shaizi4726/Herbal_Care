@@ -53,9 +53,14 @@
                 ${$form->name . "sizes"} = $product->attrs()->where('form_id', $form->form_id)->pluck('size');
                 $sizes[$form->name] =  ${$form->name . "sizes"};
               }
+              
+              if(count($forms) == 0)
+                $sizes = $product->attrs()->pluck('size');
+              
               $sizes = json_encode($sizes);
 
-              $wishlist = $product->wishlists()->where('user_id', Auth::user()->id)->get();
+              if($auth)
+                $wishlist = $product->wishlists()->where('user_id', Auth::user()->id)->get();
             @endphp
             <div class="product-card {{$product->id}}-card carousel-cell">
               <img class="product-image" src="{{$product->photo}}" alt="product image">
@@ -101,7 +106,7 @@
       
         <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false, "autoPlay": 1500}'>
           @foreach($trn_products as $product)
-          @php
+            @php
               $minprice = $product->attrs()->min('price');
               $maxprice = $product->attrs()->max('price');
               $images = $product->images()->pluck('name');
@@ -113,9 +118,14 @@
                 ${$form->name . "sizes"} = $product->attrs()->where('form_id', $form->form_id)->pluck('size');
                 $sizes[$form->name] =  ${$form->name . "sizes"};
               }
+              
+              if(count($forms) == 0)
+                $sizes = $product->attrs()->pluck('size');
+              
               $sizes = json_encode($sizes);
 
-              $wishlist = $product->wishlists()->where('user_id', Auth::user()->id)->get();
+              if($auth)
+                $wishlist = $product->wishlists()->where('user_id', Auth::user()->id)->get();
             @endphp
             <div class="product-card {{$product->id}}-card carousel-cell">
               <img class="product-image" src="{{$product->photo}}" alt="product image">
@@ -160,7 +170,7 @@
       
         <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false, "autoPlay": 1500}'>
           @foreach($new_products as $product)
-          @php
+            @php
               $minprice = $product->attrs()->min('price');
               $maxprice = $product->attrs()->max('price');
               $images = $product->images()->pluck('name');
@@ -172,9 +182,14 @@
                 ${$form->name . "sizes"} = $product->attrs()->where('form_id', $form->form_id)->pluck('size');
                 $sizes[$form->name] =  ${$form->name . "sizes"};
               }
+              
+              if(count($forms) == 0)
+                $sizes = $product->attrs()->pluck('size');
+              
               $sizes = json_encode($sizes);
 
-              $wishlist = $product->wishlists()->where('user_id', Auth::user()->id)->get();
+              if($auth)
+                $wishlist = $product->wishlists()->where('user_id', Auth::user()->id)->get();
             @endphp
             <div class="product-card {{$product->id}}-card carousel-cell">
               <img class="product-image" src="{{$product->photo}}" alt="product image">
@@ -243,7 +258,8 @@
               
               $sizes = json_encode($sizes);
 
-              $wishlist = $product->wishlists()->where('user_id', Auth::user()->id)->get();
+              if($auth)
+                $wishlist = $product->wishlists()->where('user_id', Auth::user()->id)->get();
             @endphp
             <div class="product-card {{$product->id}}-card carousel-cell">
               <img class="product-image" src="{{$product->photo}}" alt="product image">

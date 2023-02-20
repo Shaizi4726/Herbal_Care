@@ -7,21 +7,19 @@
 @endpush
 
 @section('main-content')
-  <div class="filters product-filters" id="product-filters">
-      <select name="promotion" id="promotion-filter" class="filter">
-        <option selected disabled><span>Promotion</span></option>
-        <option value="popular"><li>Popular</li></option>
-        <option value="trending"><li>Trending</li></option>
-        <option value="new"><li>New</li></option>
-      </select>
-
-      <select name="sort" id="sorting-filter" class="filter">
-        <option selected disabled>Sort By</option>
-        <option value="a-z">A to Z</option>
-        <option value="z-a">Z to A</option>
-        <option value="low-prc">Low Price</option>
-        <option value="hgh-prc">High Price</option>
-      </select>
+  <div class="sorts product-sorts" id="product-sorts">
+    <span>Sort by: </span>
+    <span id="selected-sort" class="selected-sort dropdown-toggle">Random</span>
+    <ul id="sorting-list" class="sorting-list collapse">
+      <li class="selected sort-list-item" data="rand" onclick="sort(this, {{$query}})">Random</li>
+      <li class="sort-list-item" data="z-a" onclick="sort(this, {{$query}})">Z to A</li>
+      <li class="sort-list-item" data="a-z" onclick="sort(this, {{$query}})">A to Z</li>
+      <li class="sort-list-item" data="low-prc" onclick="sort(this, {{$query}})">Low Price</li>
+      <li class="sort-list-item" data="hgh-prc" onclick="sort(this, {{$query}})">High Price</li>
+      <li class="sort-list-item" data="new" onclick="sort(this, {{$query}})">New</li>
+      <li class="sort-list-item" data="popular" onclick="sort(this, {{$query}})">Popular</li>
+      <li class="sort-list-item" data="trending" onclick="sort(this, {{$query}})">Trending</li>
+    </ul>
   </div>
 
   <section class="products-catalog">
@@ -33,6 +31,7 @@
               <ul class="cat-list">
                 @foreach($cats as $cat)
                   @php
+                  $auth = Auth::check();
                     $subcats = $cat->subcat()->get();
                   @endphp
                   
@@ -56,35 +55,40 @@
       <div id="products-catalog" class="products catalog">
         @if($products->count() > 0)
             @foreach($products as $product)
-              @php
-                $sessionId = Session::getId();
-                $minprice = $product->attrs()->min('price');
-                $maxprice = $product->attrs()->max('price');
-                $Images = $product->images()->pluck('name');
-                $forms = $product->forms()->get();
-                $form_names = $product->forms()->pluck('name');
-                $wishlist = $product->wishlists()->where('session_id', $sessionId)->get();
+            @php
+              $minprice = $product->attrs()->min('price');
+              $maxprice = $product->attrs()->max('price');
+              $images = $product->images()->pluck('name');
+              $forms = $product->forms()->get(['form_id', 'name']);
+              $prod = $product->where('id', $product->id)->first(['id', 'name', 'photo']);
 
-                $Sizes = array();
-                foreach ($forms as $form) {
-                  ${$form->name . "sizes"} = $product->attrs()->where('form_id', $form->id)->pluck('size');
-                  $Sizes[$form->name] =  ${$form->name . "sizes"};
-                }
-                $Sizes = json_encode($Sizes);
-              @endphp
+              $sizes = array();
+              foreach ($forms as $form) {
+                ${$form->name . "sizes"} = $product->attrs()->where('form_id', $form->form_id)->pluck('size');
+                $sizes[$form->name] =  ${$form->name . "sizes"};
+              }
+              
+              if(count($forms) == 0)
+                $sizes = $product->attrs()->pluck('size');
+              
+              $sizes = json_encode($sizes);
+
+              if($auth)
+                $wishlist = $product->wishlists()->where('user_id', Auth::user()->id)->get();
+            @endphp
 
                 <div class="product-card {{$product->id}}-card carousel-cell">
                 <img class="product-image" src="{{$product->photo}}" alt="product image">
                 
                 <div class="overlay">
-                  <button id="{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, `{{$product->photo}}`, {{$Images}}, `{{$product->title}}`, {{$form_names}}, {{$Sizes}}, {{$minprice}}, {{$maxprice}}, `{{$product->slug}}`, {{Auth::check()}})"> 
+                  <button id="trn{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, {{$prod}}, {{$sizes}}, {{$images}}, {{$forms}}, {{$minprice}}, {{$maxprice}}, {{$auth}})"> 
                     <i class="fa-regular fa-eye"></i>
                     <p>Quick View</p>
                   </button>
                 </div>
 
                 <div class="meta-detail">
-                  <h3 class="product-title">{{$product->title}}</h3>
+                  <h3 class="product-title">{{$product->name}}</h3>
                   @if($minprice==$maxprice)
                     <p class="price">AED <span class="value">{{number_format($product->minprice,2)}}</span></p>
                   @else
@@ -118,20 +122,25 @@
   <script src="{{asset('frontend/js/modal.js')}}"></script>
   <script>
     $(function() {
-    $('#product-filters').change(() => {
-      let subCat = $('#sub-category-filter').val(),
-      promotion = $('#promotion-filter').val();
-      sortBy = $('#sorting-filter').val();
+      $('#product-filters').change(() => {
+        let subCat = $('#sub-category-filter').val(),
+        promotion = $('#promotion-filter').val();
+        sortBy = $('#sorting-filter').val();
 
-      filterQuery('<?=$query?>', subCat, promotion, sortBy, <?=$search?>);
-    });
+        filterQuery('<?=$query?>', subCat, promotion, sortBy, <?=$search?>);
+      });
 
-    urlString = location.href;
-    var childCatId = new URL(urlString).searchParams.get('subCat');
-    if(childCatId) {
-      $('#sub-category-filter').val(childCatId);
-      filterQuery('<?=$query?>', childCatId, undefined, undefined, 0);
-    }
-})
+      urlString = location.href;
+      var childCatId = new URL(urlString).searchParams.get('subCat');
+      if(childCatId) {
+        $('#sub-category-filter').val(childCatId);
+        filterQuery('<?=$query?>', childCatId, undefined, undefined, 0);
+      }
+
+      /* Show sorting menu*/
+      $('#selected-sort').click(() => {
+        $('#sorting-list').toggleClass('collapse');
+      })
+    })
   </script>
 @endpush
