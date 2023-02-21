@@ -11,14 +11,14 @@
     <span>Sort by: </span>
     <span id="selected-sort" class="selected-sort dropdown-toggle">Random</span>
     <ul id="sorting-list" class="sorting-list collapse">
-      <li class="selected sort-list-item" data="rand" onclick="sort(this, {{$query}})">Random</li>
-      <li class="sort-list-item" data="z-a" onclick="sort(this, {{$query}})">Z to A</li>
-      <li class="sort-list-item" data="a-z" onclick="sort(this, {{$query}})">A to Z</li>
-      <li class="sort-list-item" data="low-prc" onclick="sort(this, {{$query}})">Low Price</li>
-      <li class="sort-list-item" data="hgh-prc" onclick="sort(this, {{$query}})">High Price</li>
-      <li class="sort-list-item" data="new" onclick="sort(this, {{$query}})">New</li>
-      <li class="sort-list-item" data="popular" onclick="sort(this, {{$query}})">Popular</li>
-      <li class="sort-list-item" data="trending" onclick="sort(this, {{$query}})">Trending</li>
+      <li class="selected sort-list-item" data="rand" onclick="sort(this, '{{$slug}}', '{{$subslug}}')">Random</li>
+      <li class="sort-list-item" data="a-z" onclick="sort(this, '{{$slug}}', '{{$subslug}}')">A to Z</li>
+      <li class="sort-list-item" data="z-a" onclick="sort(this, '{{$slug}}', '{{$subslug}}')">Z to A</li>
+      <li class="sort-list-item" data="low-prc" onclick="sort(this, '{{$slug}}', '{{$subslug}}')">Low Price</li>
+      <li class="sort-list-item" data="hgh-prc" onclick="sort(this, '{{$slug}}', '{{$subslug}}')">High Price</li>
+      <li class="sort-list-item" data="new" onclick="sort(this, '{{$slug}}')">New</li>
+      <li class="sort-list-item" data="popular" onclick="sort(this, '{{$slug}}', '{{$subslug}}')">Popular</li>
+      <li class="sort-list-item" data="trending" onclick="sort(this, '{{$slug}}', '{{$subslug}}')">Trending</li>
     </ul>
   </div>
 
@@ -81,7 +81,7 @@
                 <img class="product-image" src="{{$product->photo}}" alt="product image">
                 
                 <div class="overlay">
-                  <button id="trn{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, {{$prod}}, {{$sizes}}, {{$images}}, {{$forms}}, {{$minprice}}, {{$maxprice}}, {{$auth}})"> 
+                  <button id="product{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, {{$prod}}, {{$sizes}}, {{$images}}, {{$forms}}, {{$minprice}}, {{$maxprice}}, {{$auth}})"> 
                     <i class="fa-regular fa-eye"></i>
                     <p>Quick View</p>
                   </button>
@@ -122,21 +122,6 @@
   <script src="{{asset('frontend/js/modal.js')}}"></script>
   <script>
     $(function() {
-      $('#product-filters').change(() => {
-        let subCat = $('#sub-category-filter').val(),
-        promotion = $('#promotion-filter').val();
-        sortBy = $('#sorting-filter').val();
-
-        filterQuery('<?=$query?>', subCat, promotion, sortBy, <?=$search?>);
-      });
-
-      urlString = location.href;
-      var childCatId = new URL(urlString).searchParams.get('subCat');
-      if(childCatId) {
-        $('#sub-category-filter').val(childCatId);
-        filterQuery('<?=$query?>', childCatId, undefined, undefined, 0);
-      }
-
       /* Show sorting menu*/
       $('#selected-sort').click(() => {
         $('#sorting-list').toggleClass('collapse');

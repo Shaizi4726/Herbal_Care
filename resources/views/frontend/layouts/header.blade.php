@@ -139,9 +139,9 @@
                 @foreach(Helper::getAllProductFromCart() as $data)
                   <li>
                     <div class="product-det">
-                      <h4><a class="prod-name" href="{{route('product-detail',$data->product['slug'])}}" target="_blank">{{$data->product['title']}}</a></h4>
-                      <p class="total-cal font">{{$data->form}} - <span class="total-cal font">{{($data->size)}}</span></p>
-                      <p class="total-cal font">{{$data->quantity}} x <span class="amount">{{number_format($data->price,2)}} AED</span></p>
+                      <h4><a class="prod-name" href="{{route('product-detail',$data->product['slug'])}}" target="_blank">{{$data->product['name']}}</a></h4>
+                      <p class="font">@if($data->form) {{$data->form}} - @endif {{($data->size)}}</p>
+                      <p class="font">{{$data->quantity}} x {{number_format($data->price,2)}} AED</p>
                       <a href="{{route('cart-delete', $data->id)}}" class="remove font" title="Remove"><i class="fa-regular fa-trash-can"></i> Remove Item</a>
                     </div>
                     <a class="cart-img" href="#"><img src="{{$data->product['photo']}}" alt="product photo"></a>

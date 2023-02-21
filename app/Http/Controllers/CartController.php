@@ -138,7 +138,7 @@ class CartController extends Controller
     }
   }
 
-  public function cartUpdate(Request $request)
+  public function cart_update(Request $request)
   {
     $total;
     if (Auth::check()) {
@@ -169,10 +169,10 @@ class CartController extends Controller
       Session::put('cart', $cart_items);
     }
 
-    $subtotal = Helper::Cartsubtotal();
+    $subtotal = Helper::CartAmount();
     $tax = Helper::totalCartTax();
-    $total_subtotal = Helper::totalCartsubtotal();
-    return [$total, $subtotal, $tax, $total_subtotal];
+    $total_amount = Helper::totalCartAmount();
+    return [$total, $subtotal, $tax, $total_amount];
   }
 
   public function checkout(Request $request)

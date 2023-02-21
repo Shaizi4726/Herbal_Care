@@ -1,13 +1,10 @@
-filters
-wishlist Page
-product form with flu
-cart submenu design
 Checkout Page(months and years set)
 Coupon Validation Backend
 modals
 Mobile Popup Offers
 Track Order Backend
 Search Backend
+product form with flu
 after verification verify page cant be accessed
 FAQ Page
 Terms & Conditions Page

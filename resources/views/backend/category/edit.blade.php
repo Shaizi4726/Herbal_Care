@@ -10,7 +10,7 @@
         @method('PATCH')
         <div class="form-group">
           <label for="inputName" class="col-form-label">Name <span class="text-danger">*</span></label>
-          <input id="inputName" type="text" name="name" placeholder="Enter title"  value="{{$category->name}}" class="form-control">
+          <input id="inputName" type="text" name="name" placeholder="Enter Name"  value="{{$category->name}}" class="form-control">
           @error('name')
           <span class="text-danger">{{$message}}</span>
           @enderror

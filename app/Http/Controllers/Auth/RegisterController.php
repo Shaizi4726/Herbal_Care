@@ -47,15 +47,6 @@ class RegisterController extends Controller
   }
 
   /**
-   * Register page route.
-   *
-   * @return view
-  */
-  public function register(){
-    return view('frontend.pages.register');
-  }
-
-  /**
    * Validate user register request.
    * create user in database.
    * request email verification.

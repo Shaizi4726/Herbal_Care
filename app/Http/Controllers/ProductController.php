@@ -182,7 +182,7 @@ class ProductController extends Controller
       //dd($request->all());
       $product=Product::findOrFail($id);
       // $this->validate($request,[
-      //     'title'=>'string|required',
+      //     'name'=>'string|required',
       //     'scientific'=>'string|nullable',
       //     'other_name'=>'string|nullable',
       //     'benafit'=>'string|nullable',
@@ -347,17 +347,4 @@ class ProductController extends Controller
               return redirect()->back()->with('flash_message_success','Products Attributes has been update successfully');
           }
       }
-
-      public function getProductForm(Request $request){
-          $data = $request->all();
-          $proFrr = explode("-",$data['idTitle']);
-          $proFor = ProductForm::where(['id' => $proFrr[0], 'title' => $proFrr[1]])->first();  
-          // echo "<pre>"; print_r($proFrr);die;      
-          return $proFor->title;        
-          //return back();
-          
-  
-      }
-      
-
 }

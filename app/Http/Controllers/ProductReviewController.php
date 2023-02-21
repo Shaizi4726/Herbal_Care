@@ -60,7 +60,7 @@ class ProductReviewController extends Controller
             $status=ProductReview::create($data);
             $user=User::where('role','admin')->get();
             $details=[
-                'title'=>'New Product Rating!',
+                'name'=>'New Product Rating!',
                 'actionURL'=>route('product-detail',$product_info->slug),
                 'fas'=>'fa-star'
             ];
@@ -124,7 +124,7 @@ class ProductReviewController extends Controller
             // $user=User::where('role','admin')->get();
             // return $user;
             // $details=[
-            //     'title'=>'Update Product Rating!',
+            //     'name'=>'Update Product Rating!',
             //     'actionURL'=>route('product-detail',$product_info->id),
             //     'fas'=>'fa-star'
             // ];

@@ -120,12 +120,12 @@
       <tbody>
       @foreach($order->cart_info as $cart)
       @php 
-        $product=DB::table('products')->select('title')->where('id',$cart->product_id)->get();
+        $product=DB::table('products')->select('name')->where('id',$cart->product_id)->get();
       @endphp
         <tr>
           <td><span>
               @foreach($product as $pro)
-                {{$pro->title}}
+                {{$pro->name}}
               @endforeach
             </span></td>
           <td>x{{$cart->quantity}}</td>

@@ -21,7 +21,7 @@
           <div class="cart-page-item">
             <img src="{{$cart->product['photo']}}" alt="product photo" class="cart-product-img zoom-img">
             <div class="cart-page-item-meta">
-              <h2 class="cart-page-item-name">{{$cart->product['title']}}</h2>
+              <h2 class="cart-page-item-name">{{$cart->product['name']}}</h2>
               <div class="cart-page-item-price">
                 <h4>Price: </h4>
                 <p>AED {{number_format($cart->price, 2)}}</p>
@@ -43,7 +43,7 @@
             </div>
             <div class="cart-page-item-data">
               <h4>Total: </h4> 
-              <p id="{{$cart->id}}-total">AED {{number_format($cart->t_amount, 2)}}</p>
+              <p id="{{$cart->id}}-total">AED {{number_format($cart->total, 2)}}</p>
             </div>
               <button class="remove-btn btn"><a href="{{route('cart-delete', $cart->id)}}"> Remove </a></button>
           </div>

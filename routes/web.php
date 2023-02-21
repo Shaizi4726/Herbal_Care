@@ -14,19 +14,21 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Register User
-Route::get('user/register','Auth\RegisterController@register')->name('register.form');
-Route::get('/register','Auth\RegisterController@register')->name('register.form');
-Route::get('/signup','Auth\RegisterController@register')->name('register.form');
+Route::view('user/register', 'frontend.pages.register')->name('user.register.form');
+Route::view('/register', 'frontend.pages.register')->name('register.form');
+Route::view('/signup', 'frontend.pages.register')->name('signup.form');
 Route::post('user/register','Auth\RegisterController@registerSubmit')->name('register.submit');
 
 // Verify Email
-Route::get('/email/verify', 'Auth\VerificationController@verify')->middleware('auth')->name('verification.notice');
+Route::view('/email/verify', 'auth.verify-email')->middleware('auth')->name('verification.notice');
+Route::view('/verify/email', 'auth.verify-email')->middleware('auth')->name('verify.email');
 Route::get('/email/verify/{id}/{hash}', 'Auth\VerificationController@emailVerification')->middleware(['auth', 'signed'])->name('verification.verify');
 Route::post('/email/verification-notification', 'Auth\VerificationController@resendEmailVerification')->middleware(['auth', 'throttle:6,1'])->name('verification.resend');
 
+// Login User
 Route::get('/login','FrontendController@login')->name('login.form');
 Route::get('/signin','FrontendController@login')->name('signin.form');
-Route::get('user/login','FrontendController@login')->name('login.form');
+Route::get('user/login','FrontendController@login')->name('user.login.form');
 Route::post('user/login','FrontendController@loginSubmit')->name('login.submit');
 Route::get('user/logout','FrontendController@logout')->name('user.logout');
 Route::get('logout','FrontendController@logout')->name('logout');
@@ -40,18 +42,17 @@ Route::get('/','FrontendController@home')->name('home')->middleware('account.ver
 Route::get('/home', 'FrontendController@home')->middleware('account.verified');
 Route::get('/about-us','FrontendController@aboutUs')->name('about-us')->middleware('account.verified');
 Route::get('/contact','FrontendController@contact')->name('contact')->middleware('account.verified');
-Route::post('/contact/message','MessageController@store')->name('contact.store')->middleware('account.verified');
 Route::get('product-detail/{slug}','FrontendController@product_detail')->name('product-detail')->middleware('account.verified');
 Route::match(['get','post'],'/product/search','FrontendController@productSearch')->name('product.search')->middleware('account.verified');
 Route::match(['get','post'],'product-sort/','FrontendController@productSort')->name('product-sort')->middleware('account.verified');
 Route::get('/product-cat/{slug}','FrontendController@productCat')->name('product-cat')->middleware('account.verified');
-Route::get('/product-cat/{slug}/{sub_slug}','FrontendController@productSubCat')->name('product-subcat')->middleware('account.verified');
+Route::get('/product-cat/{slug}/{subslug}','FrontendController@productSubCat')->name('product-subcat')->middleware('account.verified');
 Route::get('/product-brand/{slug}','FrontendController@productBrand')->name('product-brand')->middleware('account.verified');
 
 // Cart section
 Route::match(['get','post'],'/add-to-cart','CartController@singleAddToCart')->name('single-add-to-cart');
 Route::get('cart-delete/{id}','CartController@cartDelete')->name('cart-delete');
-Route::get('cart-update','CartController@cartUpdate')->name('cart.update');
+Route::get('cart-update','CartController@cart_update')->name('cart.update');
 
 Route::get('/cart', function(){
     return view('frontend.pages.cart');
@@ -62,9 +63,7 @@ Route::get('/cities', 'FrontendController@getCities');
 
 Route::get('/checkout','CartController@checkout')->name('checkout');
 // Wishlist
-Route::get('/wishlist',function(){
-    return view('frontend.pages.wishlist');
-})->name('wishlist');
+Route::get('/wishlist', 'WishlistController@wishlist')->name('wishlist');
 Route::get('wishlist-add/','WishlistController@wishlist_add')->name('add-to-wishlist')->middleware('user');
 Route::get('wishlist-delete/','WishlistController@wishlist_delete')->name('wishlist-delete');
 Route::post('cart/order','OrderController@store')->name('cart.order');
@@ -83,9 +82,6 @@ Route::post('/subscribe','FrontendController@subscribe')->name('subscribe');
 // Product Review
 Route::resource('/review','ProductReviewController');
 Route::post('product/{slug}/review','ProductReviewController@store')->name('review.store');
-// Post Comment 
-Route::post('post/{slug}/comment','PostCommentController@store')->name('post-comment.store');
-Route::resource('/comment','PostCommentController');
 // Coupon
 Route::post('/coupon-store','CouponController@couponStore')->name('coupon-store');
 // Payment
@@ -117,8 +113,6 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     Route::resource('users','UsersController');
     // Banner
     Route::resource('banner','BannerController');
-    //Gift
-    Route::resource('gift','GiftController');
     // Brand
     Route::resource('brand','BrandController');
     // Profile
@@ -140,15 +134,6 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     Route::resource('/productImport','ProductImportController');
     // Ajax for sub category
     Route::get('/category/{id}/child','CategoryController@getChildByParent');
-    // POST category
-    Route::resource('/post-category','PostCategoryController');
-    // Post tag
-    Route::resource('/post-tag','PostTagController');
-    // Post
-    Route::resource('/post','PostController');
-    // Message
-    Route::resource('/message','MessageController');
-    Route::get('/message/five','MessageController@messageFive')->name('messages.five');
 
     // Order
     Route::resource('/order','OrderController');

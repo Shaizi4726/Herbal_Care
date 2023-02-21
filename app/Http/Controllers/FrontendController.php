@@ -51,9 +51,7 @@ class FrontendController extends Controller
     public function product_detail($slug)
     {
       $product = Product::with('categories')->where('slug', $slug)->first();
-
       $category_ids = $product->categories->pluck('id');
-      
       $relcats = Category::with('products')->whereIn('id', $category_ids)->get();
       
       $relproducts = collect();
@@ -64,110 +62,64 @@ class FrontendController extends Controller
       return view('frontend.pages.product-detail')->with('product', $product)->with('relproducts', $relproducts);
     }
 
-    public function productGrids()
-    {
-        $products = Product::query();
-
-        if (!empty($_GET['category']))
-        {
-            $slug = explode($_GET['category']);
-            $cat_ids = Category::select('id')->whereIn('slug', $slug)->pluck('id')->toArray();
-            $products->whereIn('cat_id', $cat_ids);
-        }
-        if (!empty($_GET['brand']))
-        {
-            $slugs = explode(',', $_GET['brand']);
-            $brand_ids = Brand::select('id')->whereIn('slug', $slugs)->pluck('id')->toArray();
-            return $brand_ids;
-            $products->whereIn('brand_id', $brand_ids);
-        }
-        if (!empty($_GET['sortBy']))
-        {
-            if ($_GET['sortBy'] == 'title')
-            {
-                $products = $products->where('status', 'active')
-                    ->orderBy('title', 'ASC');
-
-            }
-            if ($_GET['sortBy'] == 'price')
-            {
-                $products = $products->orderBy('price', 'ASC');
-
-            }
-        }
-
-        if (!empty($_GET['price']))
-        {
-            $price = explode('-', $_GET['price']);
-
-            $products->whereBetween('price', $price);
-        }
-
-        $recent_products = Product::where('status', 'active')->orderBy('id', 'DESC')
-            ->limit(3)
-            ->get();
-        // Sort by number
-        if (!empty($_GET['show']))
-        {
-            $products = $products->where('status', 'active')
-                ->paginate($_GET['show']);
-        }
-        else
-        {
-            $products = $products->where('status', 'active')
-                ->paginate(9);
-
-        }
-        // Sort by name , price, category
-
-        return view('frontend.pages.product-grids')
-            ->with('products', $products)->with('recent_products', $recent_products); //->with('groups', $groups);
-        
-    }
-
     public function productSort(Request $request) {
       if($request->search) {
-        $products=Product::orwhere('title','like','%'.$request->que.'%')->orwhere('slug','like','%'.$request->que.'%')->orwhere('description','like','%'.$request->que.'%')->orwhere('summary','like','%'.$request->que.'%')->orderBy('id','DESC')->paginate('9');
+        $products=Product::orwhere('name','like','%'.$request->que.'%')->orwhere('slug','like','%'.$request->que.'%')->orwhere('description','like','%'.$request->que.'%')->orwhere('summary','like','%'.$request->que.'%')->orderBy('id','DESC')->paginate('9');
+      }
+
+      else if ($request->subslug) {
+        $subcat=SubCategory::with('products')->where('slug', $request->subslug)->get();
+        $products=$subcat[0]->products()->get();
       }
 
       else {
         $category = Category::with('products')->where('slug', $request->slug)->get();
         
-        $products = $category->pluck('products');
+        $products = $category->pluck('products')[0];
       }
 
       $sort_by = $request->value;
         
       if ($sort_by) {
         if($sort_by == 'a-z')
-          $products = $products->sortBy('title');
+          $products = $products->sortBy('name');
         else if($sort_by == 'z-a')
-          $products = $products->sortByDesc('title');
+          $products = $products->sortByDesc('name');
         else if($sort_by == 'low-prc')
           $products = $products->sortBy('minprice');
         else if($sort_by == 'hgh-prc')
           $products = $products->sortByDesc('minprice');
+        else if($sort_by == 'new')
+          $products = $products->where('promotion', 'new')->all();
+        else if($sort_by == 'popular')
+          $products = $products->where('promotion', 'popular')->all();
+        else if($sort_by == 'trending')
+          $products = $products->where('promotion', 'trending')->all();
       }
 
       if (count($products) !== 0) {
         $content = '';
 
         foreach ($products as $product) {
-          $maxprice = DB::table('products_attributes')->where('product_id', $product->id)->max('price');
-          $Forms = DB::table('products_attributes')->where('product_id', $product->id)->distinct()->pluck('form');
-          $Images = DB::table('images')->where('product_id', $product->id)->pluck('image');
+          $maxprice = $product->attrs()->max('price');;
+          $images = $product->images()->pluck('name');
+          $forms = $product->forms()->get(['form_id', 'name']);
+          $prod = $product->where('id', $product->id)->first(['id', 'name', 'photo']);
 
-          if(Auth::user())
-            $wishlist = DB::table('wishlists')->where('product_id', $product->id)->where('user_id', auth()->user()->id)->get();
-
-          $Sizes = array();
-          
-          foreach ($Forms as $form) {
-            ${$form . "sizes"} = DB::table('products_attributes')->where('product_id', $product->id)->where('form', $form)->pluck('size');
-            $Sizes[$form] = ${$form . "sizes"};
+          $sizes = array();
+          foreach ($forms as $form) {
+            ${$form->name . "sizes"} = $product->attrs()->where('form_id', $form->form_id)->pluck('size');
+            $sizes[$form->name] =  ${$form->name . "sizes"};
           }
+          
+          if(count($forms) == 0)
+            $sizes = $product->attrs()->pluck('size');
+          
+          $sizes = json_encode($sizes);
 
-          $Sizes = json_encode($Sizes);
+          if(Auth::check())
+              $wishlist = $product->wishlists()->where('user_id', Auth::user()->id)->get();
+
           $minPrice = number_format($product->minprice, 2);
           $maxPrice = number_format($maxprice, 2);
 
@@ -176,17 +128,17 @@ class FrontendController extends Controller
             <img class="product-image" src="{$product->photo}" alt="product image">
             
             <div class="overlay">
-              <button id="{$product->id}" class="btn btn-quick-view" title="Quick View" onclick='showModal(id, `{$product->photo}`, {$Images}, `{$product->title}`, {$Forms}, {$Sizes}, {$product->price}, {$maxprice}, `{$product->slug}`, Auth::check())'> 
+              <button id="product{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, {{$prod}}, {{$sizes}}, {{$images}}, {{$forms}}, {{$product->minprice}}, {{$maxprice}}, {{Auth::check()}}"> 
                 <i class="fa-regular fa-eye"></i>
                 <p>Quick View</p>
               </button>
             </div>
 
             <div class="meta-detail">
-              <h3 class="product-title">{$product->title}</h3>
+              <h3 class="product-title">{$product->name}</h3>
           EOD;
 
-          if($product->price == $maxprice) {
+          if($product->minprice == $maxprice) {
             $content .= <<<EOD
               <p class="price">AED <span class="value">{$minPrice}</span></p>
             EOD;
@@ -238,7 +190,7 @@ class FrontendController extends Controller
 
     public function productSearch(Request $request){
         $recent_products=Product::where('status','active')->orderBy('id','DESC')->limit(3)->get();
-        $products=Product::orwhere('title','like','%'.$request->search.'%')
+        $products=Product::orwhere('name','like','%'.$request->search.'%')
             ->orwhere('slug','like','%'.$request->search.'%')
             ->orwhere('description','like','%'.$request->search.'%')
             ->orwhere('other_name','like','%'.$request->search.'%')
@@ -246,8 +198,6 @@ class FrontendController extends Controller
             ->paginate('9');
         return view('frontend.pages.product-grids')->with('products',$products)->with('recent_products',$recent_products)->with('sub_cat', [])->with('query', $request->search)->with('search', 1);
     }
-    
-
 
     public function productBrand(Request $request){
         $products=Brand::getProductByBrand($request->slug);
@@ -260,30 +210,31 @@ class FrontendController extends Controller
         }
 
     }
-    public function productCat(Request $request){
-        $category = Category::with('products')->where('slug', $request->slug)->get();
-        
-        $products = $category->pluck('products');
-        foreach($products as $product)
-          $products = $product;
-        
-        $categories = Category::get();
 
-        return view('frontend.pages.product-grids')->with('products', $products)->with('cats', $categories)->with('slug', $request->slug)->with('search', 0);
+    public function productCat(Request $request) {
+      $category = Category::with('products')->where('slug', $request->slug)->get();
+      
+      $products = $category->pluck('products');
+      foreach($products as $product)
+        $products = $product;
+      
+      $categories = Category::get();
+
+      return view('frontend.pages.product-grids')->with(['products' => $products, 'cats' => $categories, 'slug' => $request->slug, 'subslug' => $request->subslug, 'search' => 0]);
     }
 
     public function productSubCat(Request $request){
-      $subcat=SubCategory::with('products')->where('slug', $request->sub_slug)->get();
+      $subcat=SubCategory::with('products')->where('slug', $request->subslug)->get();
       $products=$subcat[0]->products()->get();
       $categories = Category::get();
 
-      return view('frontend.pages.product-grids')->with('products', $products)->with('cats', $categories)->with('subslug', $request->sub_slug)->with('search', 0);
+      return view('frontend.pages.product-grids')->with(['products' => $products, 'cats' => $categories, 'slug' => $request->slug, 'subslug' => $request->subslug, 'search' => 0]);
     }
 
 
     // Login
     public function login(Request $request){
-        return view('frontend.pages.login')->with('checkout', $request->checkout);
+      return view('frontend.pages.login')->with('checkout', $request->checkout);
     }
     
     public function loginSubmit(Request $request) {
@@ -341,65 +292,10 @@ class FrontendController extends Controller
     }
 
     public function logout(){
-        Session::forget('user');
-        Auth::logout();
-        request()->session()->flash('success','Logout successfully');
-        return back();
-    }
-
-    public function register(){
-      return view('frontend.pages.register');
-    }
-
-    public function registerSubmit(Request $request){
-      $this->validate($request,[
-        'cust_type' => 'required|string',
-      ]);
-
-      if($request['cust_type'] == 'individual') {
-        $this->validate($request, [
-          'fname' => 'required|alpha|min:2',
-          'lname' => 'required|alpha|min:2'
-        ]);
-      } else {
-        $this->validate($request, [
-          'cname' => 'required|alpha_dashed',
-          'trn_number' => 'required|numeric'
-        ]);
-      }
-
-      $this->validate($request, [
-        'email' => 'required|email:strict,dns|unique:users',
-        'password' => 'required|confirmed|min:8|regex:/^.*(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^<>\{\}";:.,~!?@#$%^=&*\[\]\(\)¿§«»ω⊙¤°℃℉€¥£¢¡®©0-9_+]).*$/'
-      ]);
-
-        $check = User::create([
-          'fname' => $request->fname,
-          'lname' => $request->lname,
-          'cname' => $request->cname,
-          'trn_number' => $request->trn_number,
-          'email' => $request->email,
-          'password' => Hash::make($request->password),
-          'status' => 'inactive'
-        ]);
-        
-        if($check){
-            request()->session()->flash('success','Successfully registered');
-            return redirect()->route('home');
-        }
-        else{
-            request()->session()->flash('error','Please try again!');
-            return back();
-        }
-    }
-
-    public function create(array $data){
-        return User::create([
-            'name'=>$data['name'],
-            'email'=>$data['email'],
-            'password'=>Hash::make($data['password']),
-            'status'=>'active'
-            ]);
+      Session::forget('user');
+      Auth::logout();
+      request()->session()->flash('success','Logout successfully');
+      return back();
     }
 
     // Reset password

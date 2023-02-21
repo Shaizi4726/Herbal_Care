@@ -140,17 +140,17 @@
         <tr>
           <td><span>
               @foreach($product as $pro)
-                {{$pro->title}}
+                {{$pro->name}}
               @endforeach
             </span></td>
           <td>{{$cart->form}}</td>
           <td>x{{$cart->quantity}}</td>
           <td><span>${{number_format($cart->price,2)}}</span></td>
           <td>{{$cart->size}}</td>
-         <td><span>${{number_format($cart->tax_amount,2)}}</span></td>
+         <td><span>${{number_format($cart->tax,2)}}</span></td>
           <td><span>5%</span></td>
-          <td><span>${{number_format($cart->t_amount,2)}}</span></td>
-          <td><span>${{number_format($cart->amount,2)}}</span></td>
+          <td><span>${{number_format($cart->total,2)}}</span></td>
+          <td><span>${{number_format($cart->subtotal,2)}}</span></td>
         </tr>
       @endforeach
       </tbody>

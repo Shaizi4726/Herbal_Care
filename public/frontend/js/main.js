@@ -236,6 +236,7 @@ function fav(ico, id) {
       url: '/wishlist-add/',
       data: {id: id},
       success: function(response) {
+        console.log(response);
         $('.fav-qty').html(response);
       },
       error: function() {

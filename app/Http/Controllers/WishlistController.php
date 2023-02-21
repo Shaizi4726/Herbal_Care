@@ -1,11 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Auth;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Wishlist;
-use App\Models\ProductsAttribute;
+use App\Models\ProductAttribute;
 class WishlistController extends Controller
 {
     protected $product = null;
@@ -13,35 +14,33 @@ class WishlistController extends Controller
         $this->product = $product;
     }
 
+    public function wishlist() {
+      if(Auth::check()) {
+        $wishlists = Wishlist::with('product')->where('user_id', Auth::user()->id)->get();
+        $products = $wishlists->pluck('product');
+      }
+      return view('frontend.pages.wishlist')->with('products', $products);
+    }
+
     public function wishlist_add (Request $request) {
       $request->validate([
-          'id'      =>  'required',
+        'id' => 'required',
       ]);
 
-        $product = Product::where('id', $request->id)->first();
-        $user_id = auth()->user()->id;
+      $product = Product::where('id', $request->id)->first();
+      $user_id = auth()->user()->id;
 
-        // $already_wishlist = Wishlist::where('user_id', auth()->user()->id)->where('product_id', $request->id)->first();
-        // if($already_wishlist ) {
-        //     request()->session()->flash('error','You already placed in wishlist');
-        //     return back();
-        // }else{
-            
+        
             $wishlist = new Wishlist;
             $wishlist->user_id = $user_id;
-            $wishlist->product_id = $product->id;
-            $wishlist->title = $product->title;
-            $wishlist->plu = $product->plu;
+            $wishlist->product_id = $request->id;
 
             $wishlist->save();
 
-            $products = Product::with('wishlists')->where('id', $product->id)->get();
-
             $fav_counts = Wishlist::where('user_id', $user_id)->count('product_id');
-
-            return $fav_counts;
-            
+      
             request()->session()->flash('success','Product successfully added to wishlist');  
+            return $fav_counts;
           }  
           
           public function wishlist_delete(Request $request){

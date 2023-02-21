@@ -43,15 +43,6 @@ class VerificationController extends Controller
   }
 
   /**
-   * Verify page route.
-   *
-   * @return view
-  */
-  public function verify(){
-    return view('auth.verify-email');
-  }
-
-  /**
    * Email Verification Handler.
    *
    *

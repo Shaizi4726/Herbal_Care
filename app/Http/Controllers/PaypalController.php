@@ -17,7 +17,7 @@ class PaypalController extends Controller
         
         // return $cart;
         $data['items'] = array_map(function ($item) use($cart) {
-            $name=Product::where('id',$item['product_id'])->pluck('title');
+            $name=Product::where('id',$item['product_id'])->pluck('name');
             return [
                 // 'paypalToken' => $paypalToken,
                 'name' =>$name ,

@@ -1,4 +1,4 @@
-function sort(el, slug) {
+function sort(el, slug, subslug) {
   let content = $(el).html();
   let value = $(el).attr('data');
 
@@ -13,13 +13,14 @@ function sort(el, slug) {
     url: '/sort',
     data: {
       slug: slug,
+      subslug: subslug,
       value: value
     },
     success: function(response) {
       $('#products-catalog').html(response);
     },
     error: function(error) {
-      alert("An error occured while applying filter");
+      $('#products-catalog').html("An error occured while sorting");
     }                
   }); 
 }

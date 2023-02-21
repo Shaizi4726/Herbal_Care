@@ -30,26 +30,26 @@
       </fieldset>
 
       <fieldset class="details">
-        <legend>Details</legend>
+        <legend>Invoice Details</legend>
         <div class="fl-bl">
           <div class="form-group" id="first-name">
             <label for="fname">First Name<span>*</span></label>
-            <input type="text" id="fname" name="fname" placeholder="First Name" value="{{auth()->user()->name}}">
+            <input type="text" id="fname" name="fname" placeholder="First Name" value="{{auth()->user()->fname}}">
           </div>
 
           <div class="form-group collapse" id="company-name">
             <label for="cname">Company Name<span>*</span></label>
-            <input type="text" id="cname" name="cname" placeholder="Company Name" value="">
+            <input type="text" id="cname" name="cname" placeholder="Company Name" value="{{auth()->user()->cname}}">
           </div>
 
           <div class="form-group" id="last-name">
             <label for="lname">Last Name<span>*</span></label>
-            <input type="text" id="lname" name="lname" placeholder="Last Name" value="">
+            <input type="text" id="lname" name="lname" placeholder="Last Name" value="{{auth()->user()->lname}}">
           </div>
 
           <div class="form-group collapse" id="trn">
             <label for="trn-number">TRN<span>*</span></label>
-            <input type="number" id="trn-number" name="trn_number" placeholder="TRN Number" value="">
+            <input type="number" id="trn-number" name="trn_number" placeholder="TRN Number" value="{{auth()->user()->trn_no}}">
           </div>
         </div>
 
@@ -85,7 +85,6 @@
           </div>
         @endif
 
-        <script>console.log(<?= $errors ?>)</script>
         <div class="form-group">
           <label for="email">Email Address<span>*</span></label>
           <input type="email" name="email" id="email" placeholder="Email Address" value="{{auth()->user()->email}}">
@@ -101,7 +100,7 @@
 
         <div class="form-group">
           <label for="address">Address<span>*</span></label>
-          <input type="text" name="address" id="address" placeholder="Address" value="">
+          <input type="text" name="address" id="address" placeholder="Address" value="{{old('address')}}">
         </div>
 
         @if ($errors->get('address'))
@@ -115,7 +114,7 @@
         <div class="fl-bl">
           <div class="form-group">
             <label for=post-code>Postal Code</label>
-            <input type="text" name="post_code" id="post-code" placeholder="Postal Code" value="">
+            <input type="text" name="post_code" id="post-code" placeholder="Postal Code" value="{{old('post_code')}}">
           </div>
 
           <div class="form-group">
@@ -148,7 +147,101 @@
           <div id="phone-div" class="phone-div">
             <img id="flag-img" class="flag-img" src="{{asset('images/flags/AE.png')}}" alt="Country Flag Image" width="64">
             <p id="call-code" class="call-code">+971</p>
-            <input type="tel" name="phone" id="phone" placeholder="Phone Number" value="{{old('phone')}}">
+            <input type="tel" name="phone" id="phone" placeholder="50 123 4567" value="{{old('phone')}}">
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="details">
+        <legend>Shipping Details</legend>
+        <div class="fl-bl">
+          <div class="form-group" id="shipping-first-name">
+            <label for="shipping-fname">First Name<span>*</span></label>
+            <input type="text" id="shipping-fname" name="shipping-fname" placeholder="First Name" value="{{old('shipping-fname')}}">
+          </div>
+
+          <div class="form-group" id="shipping-last-name">
+            <label for="shipping-lname">Last Name<span>*</span></label>
+            <input type="text" id="shipping-lname" name="shipping-lname" placeholder="Last Name" value="{{old('shipping-lname')}}">
+          </div>
+        </div>
+
+        @if ($errors->get('shipping-fname'))
+          <div class="error">
+            @error('shipping-fname')
+              {{$message}}
+            @enderror
+          </div>
+        @endif
+
+        @if ($errors->get('shipping-lname'))
+          <div class="error">
+            @error('shipping-lname')
+              {{$message}}
+            @enderror
+          </div>
+        @endif
+
+        <div class="form-group">
+          <label for="shipping-address">Address<span>*</span></label>
+          <input type="text" name="shipping-address" id="shipping-address" placeholder="Shipping Address" value="{{old('shipping-address')}}">
+        </div>
+
+        @if ($errors->get('shipping-address'))
+          <div class="error">
+            @error('shipping-address')
+              {{$message}}
+            @enderror
+          </div>
+        @endif
+
+        <div class="fl-bl">
+          <div class="form-group">
+            <label for=landmark>Nearby Landmark</label>
+            <input type="text" name="landmark" id="landmark" placeholder="Nearby Landmark" value="{{old('landmark')}}">
+          </div>
+
+          <div class="form-group">
+            <label for="shipping-country">Country<span>*</span></label>
+            <input list="countries" placeholder="Shipping Country" name="shipping-country" id="shipping-country" class="countries-list">
+            @php
+            $countries = DB::table('countries')->where('status', 'active')->get();
+            @endphp
+            <datalist id="shipping-countries">
+              @foreach($countries as $country)
+                <option id="{{$country->id}}" data-iso="{{$country->iso_code}}" data-phone="{{$country->calling_code}}" value="{{$country->name}}">{{$country->name}}</option>
+              @endforeach
+            </datalist>
+          </div>
+        </div>
+        <div class="fl-bl">
+          <div id="state-div" class="form-group">
+            <label for="shipping-state">State<span>*</span></label>
+            <input list="states" placeholder="Shipping State" name="shipping-state" id="shipping-state" class="states-list">
+            <datalist id="shipping-states"></datalist>
+          </div>
+          <div id="city-div" class="form-group">
+            <label for="shipping-city">City<span>*</span></label>
+            <input list="cities" placeholder="Shipping City" name="shipping-city" id="shipping-city" class="cities-list">
+            <datalist id="shipping-cities"></datalist>
+          </div>
+        </div>
+        <div class="fl-bl">
+          <div class="form-group">
+            <label for="shipping-phone">Phone Number <span>*</span></label>
+            <div id="phone-div" class="phone-div">
+              <img id="flag-img" class="flag-img" src="{{asset('images/flags/AE.png')}}" alt="Country Flag Image" width="64">
+              <p id="call-code" class="call-code">+971</p>
+              <input type="tel" name="shipping-phone" id="shipping-phone" placeholder="50 123 4567" value="{{old('shipping-phone')}}">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="altphone">Phone Number <span>(Optional)</span></label>
+            <div id="phone-div" class="phone-div">
+              <img id="flag-img" class="flag-img" src="{{asset('images/flags/AE.png')}}" alt="Country Flag Image" width="64">
+              <p id="call-code" class="call-code">+971</p>
+              <input type="tel" name="altphone" id="altphone" placeholder="50 123 4567" value="{{old('altphone')}}">
+            </div>
           </div>
         </div>
       </fieldset>
@@ -267,7 +360,7 @@
       <div class="cart-item">
         <img src="{{$cart->product['photo']}}" alt="product photo" class="cart-product-img zoom-img">
         <div class="cart-item-meta">
-          <h2 class="cart-page-item-name">{{$cart->product['title']}}</h2>
+          <h2 class="cart-page-item-name">{{$cart->product['name']}}</h2>
           <div class="cart-item-stats">
             <div class="cart-page-item-price">
               <h4>Price: </h4>
@@ -287,7 +380,7 @@
             </div>
             <div class="cart-page-item-total">
               <h4>Total: </h4>
-              <p id="{{$cart->id}}-total">AED {{number_format($cart->t_amount, 2)}}</p>
+              <p id="{{$cart->id}}-total">AED {{number_format($cart->total, 2)}}</p>
             </div>
           </div>
         </div>

@@ -43,7 +43,7 @@ class StatusNotification extends Notification
     //     return (new MailMessage)
     //                 ->subject('Status Notification')
     //                 ->from(env('MAIL_USERNAME','test@gmail.com'),'HerbalCare')
-    //                 ->line($this->details['title'])
+    //                 ->line($this->details['name'])
     //                 ->action('View Order', $this->details['actionURL'])
     //                 ->line('Thank you!');
     // }
@@ -57,7 +57,7 @@ class StatusNotification extends Notification
     // public function toArray($notifiable)
     // {
     //     return [
-    //         'title'=>$this->details['title'],
+    //         'name'=>$this->details['name'],
     //         'actionURL'=>$this->details['actionURL'],
     //         'fas'=>$this->details['fas']
     //     ];
@@ -65,7 +65,7 @@ class StatusNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'title'=>$this->details['title'],
+            'name'=>$this->details['name'],
             'actionURL'=>$this->details['actionURL'],
             'fas'=>$this->details['fas']
         ];
@@ -82,7 +82,7 @@ class StatusNotification extends Notification
     public function toBroadcast($notifiable)
     {
         return new BroadcastMessage([
-            'title' => $this->details['title'],
+            'name' => $this->details['name'],
             'actionURL' => $this->details['actionURL'],
             'url' => route('admin.notification', $this->id),
             'fas' => $this->details['fas'],

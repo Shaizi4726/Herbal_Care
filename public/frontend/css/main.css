@@ -75,6 +75,10 @@ input[type="radio"] {
   cursor: pointer;
 }
 
+input[type="button"] {
+  cursor: pointer;
+}
+
 .phone-div {
   display: flex;
   flex-direction: row;
