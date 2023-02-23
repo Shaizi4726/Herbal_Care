@@ -228,7 +228,7 @@
 								@if($data->user_info['photo'])
 									<img src="{{$data->user_info['photo']}}" alt="User Photo" width="50" height="50"> 
 								@else 
-									<img src="{{asset('backend/img/avatar.png')}}" alt="Profile Pic" width="50" height="50"> 
+									<img src="{{asset('admin_panel/img/avatar.png')}}" alt="Profile Pic" width="50" height="50"> 
 								@endif 
 								<h4>{{$data->user_info['name']}}</h4>
 							</div>

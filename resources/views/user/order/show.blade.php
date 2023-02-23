@@ -28,7 +28,7 @@
       <tbody>
         <tr>
             <td>{{$order->id}}</td>
-            <td>{{$order->order_number}}</td>
+            <td>{{$order->order_no}}</td>
             <td>{{$order->first_name}} {{$order->last_name}}</td>
             <td>{{$order->email}}</td>
             <td>{{$order->quantity}}</td>
@@ -66,7 +66,7 @@
               <table class="table">
                     <tr class="">
                         <td>Order Number</td>
-                        <td> : {{$order->order_number}}</td>
+                        <td> : {{$order->order_no}}</td>
                     </tr>
                     <tr>
                         <td>Order Date</td>
@@ -128,7 +128,7 @@
                     </tr>
                     <tr>
                         <td>Post Code</td>
-                        <td> : {{$order->post_code}}</td>
+                        <td> : {{$order->landmark}}</td>
                     </tr>
               </table>
             </div>

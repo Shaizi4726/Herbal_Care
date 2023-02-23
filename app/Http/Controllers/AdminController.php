@@ -23,13 +23,13 @@ class AdminController extends Controller
        $array[++$key] = [$value->day_name, $value->count];
      }
     //  return $data;
-     return view('backend.index')->with('users', json_encode($array));
+     return view('admin_panel.index')->with('users', json_encode($array));
     }
 
     public function profile(){
         $profile=Auth()->user();
         // return $profile;
-        return view('backend.users.profile')->with('profile',$profile);
+        return view('admin_panel.users.profile')->with('profile',$profile);
     }
 
     public function profileUpdate(Request $request,$id){
@@ -48,7 +48,7 @@ class AdminController extends Controller
 
     public function settings(){
         $data=Settings::first();
-        return view('backend.setting')->with('data',$data);
+        return view('admin_panel.setting')->with('data',$data);
     }
 
     public function settingsUpdate(Request $request){
@@ -77,7 +77,7 @@ class AdminController extends Controller
     }
 
     public function changePassword(){
-        return view('backend.layouts.changePassword');
+        return view('admin_panel.layouts.changePassword');
     }
     public function changPasswordStore(Request $request)
     {
@@ -106,12 +106,12 @@ class AdminController extends Controller
        $array[++$key] = [$value->day_name, $value->count];
      }
     //  return $data;
-     return view('backend.index')->with('course', json_encode($array));
+     return view('admin_panel.index')->with('course', json_encode($array));
     }
 
     // public function activity(){
     //     return Activity::all();
     //     $activity= Activity::all();
-    //     return view('backend.layouts.activity')->with('activities',$activity);
+    //     return view('admin_panel.layouts.activity')->with('activities',$activity);
     // }
 }

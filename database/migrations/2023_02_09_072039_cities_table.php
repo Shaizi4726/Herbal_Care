@@ -18,7 +18,7 @@ return new class extends Migration
       $table->collation = 'utf8mb4_unicode_ci';
       
       $table->id();
-      $table->string('name', 100)->unique();
+      $table->string('name', 100);
       $table->unsignedBigInteger('state_id');
       $table->foreign('state_id')->references('id')->on('states')->onDelete('CASCADE');
       $table->unsignedBigInteger('country_id');

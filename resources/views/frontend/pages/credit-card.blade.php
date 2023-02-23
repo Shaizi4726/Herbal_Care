@@ -343,8 +343,8 @@
                                     <div class="col-lg-6 col-md-6 col-12">
                                         <div class="form-group">
                                             <label>Postal Code</label>
-                                            <input type="text" name="post_code" placeholder="" value="{{old('post_code')}}">
-                                            @error('post_code')
+                                            <input type="text" name="landmark" placeholder="" value="{{old('landmark')}}">
+                                            @error('landmark')
                                                 <span class='text-danger'>{{$message}}</span>
                                             @enderror
                                         </div>
@@ -413,7 +413,7 @@
                                 <!-- Payment Method Widget -->
                                 <div class="single-widget payement">
                                     <div class="content">
-                                        <img src="{{('backend/img/payment-method.png')}}" alt="#">
+                                        <img src="{{('admin_panel/img/payment-method.png')}}" alt="#">
                                     </div>
                                 </div>
                                 <!--/ End Payment Method Widget -->

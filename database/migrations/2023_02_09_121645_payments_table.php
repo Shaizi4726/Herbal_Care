@@ -20,12 +20,13 @@ return new class extends Migration
       $table->id();
       $table->unsignedBigInteger('order_id')->nullable();
       $table->foreign('order_id')->references('id')->on('orders')->onDelete('SET NULL');
-      $table->enum('payment_method', ['cod', 'op'])->default('cod');
       $table->unsignedBigInteger('account_no')->nullable();
-      $table->enum('payment_status',['paid', 'unpaid'])->default('unpaid');
+      $table->enum('method', ['cod', 'op'])->default('cod');
+      $table->enum('status', ['paid', 'unpaid'])->default('unpaid');
       $table->float('subtotal');
-      $table->float('tax_amount');
-      $table->float('total_amount');
+      $table->float('tax');
+      $table->float('shipping')->nullable();
+      $table->float('total');
       $table->timestamps();
     });
   }

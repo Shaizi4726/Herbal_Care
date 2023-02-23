@@ -19,7 +19,7 @@ class Payment extends Model
    *
    * @var array
    */
-  protected $fillable = ['order_id', 'payment_method', 'account_no', 'payment_status', 'subtotal', 'tax_amount', 'total_amount'];
+  protected $fillable = ['order_id', 'account_no', 'method', 'status', 'subtotal', 'tax', 'shipping', 'total'];
   
   /**
    * Get the order that owns the payment.
@@ -28,4 +28,15 @@ class Payment extends Model
   {
     return $this->belongsTo(Order::class, 'order_id');
   }
+
+  /**
+   * The model's default values for attributes.
+   *
+   * @var array
+   */
+  protected $attributes = [
+    'method' => 'cod',
+    'status' => 'unpaid',
+    'shipping' => 'NULL'
+  ];
 }

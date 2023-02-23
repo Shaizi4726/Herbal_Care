@@ -21,7 +21,7 @@ class Order extends Model
    *
    * @var array
    */
-  protected $fillable = ['order_no', 'user_id', 'fname', 'lname', 'cname', 'trn_no', 'email', 'phone', 'address', 'city_id', 'post_code', 'payment_method', 'payment_status', 'subtotal', 'tax_amount', 'shipping', 'total_amount', 'coupon_id', 'status'];
+  protected $fillable = ['order_no', 'user_id', 'fname', 'lname', 'cname', 'trn_no', 'email', 'phone', 'altphone', 'address', 'city_id', 'landmark', 'coupon_id', 'status'];
   
   /**
    * Get the payment associated with the order.
@@ -29,6 +29,14 @@ class Order extends Model
   public function payment()
   {
     return $this->hasOne(Payment::class, 'order_id');
+  }
+  
+  /**
+   * Get the shipping associated with the order.
+   */
+  public function shipping()
+  {
+    return $this->hasOne(Shipping::class, 'order_id');
   }
 
   /**
@@ -70,8 +78,5 @@ class Order extends Model
    */
   protected $attributes = [
     'status' => 'new',
-    'payment_method' => 'cod',
-    'payment_status' => 'unpaid'
   ];
 }
-

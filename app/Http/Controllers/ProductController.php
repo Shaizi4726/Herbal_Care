@@ -26,7 +26,7 @@ class ProductController extends Controller
   public function index()
   {
     $products = Product::paginate(10);
-    return view('backend.product.index')->with('products',$products);
+    return view('admin_panel.product.index')->with('products',$products);
   }
 
   /**
@@ -42,7 +42,7 @@ class ProductController extends Controller
       $product_category=ProductCategory::get();
      
       // return $category;
-      return view('backend.product.create')->with('product_categories',$product_category)
+      return view('admin_panel.product.create')->with('product_categories',$product_category)
       ->with('categories',$category)->with('brands',$brand)->with('subcategories',$subcategory);
   }
 
@@ -162,7 +162,7 @@ class ProductController extends Controller
       $attribute=ProductsAttribute::where('id',$id)->get();
       $image=Image::where('id',$id);
       // return $items;
-      return view('backend.product.edit')->with('product',$product)
+      return view('admin_panel.product.edit')->with('product',$product)
           ->with('brands',$brand)
           ->with('categories',$category)
           ->with('items',$items)
@@ -287,7 +287,7 @@ class ProductController extends Controller
             }      
           return redirect('/admin/product/add-images/'.$id)->with('success','Product Attributes has been added successfully!');        
   }
-          return view('backend.product.image')->with(compact('productDetails'));
+          return view('admin_panel.product.image')->with(compact('productDetails'));
   }
 
   //delete Category
@@ -316,7 +316,7 @@ class ProductController extends Controller
           else{
               request()->session()->flash('error','Error while deleting product');
           }
-      //    return view('backend.product.add_attributes')->with(compact('productDetails'));
+      //    return view('admin_panel.product.add_attributes')->with(compact('productDetails'));
           return redirect()->back();
       }
 

@@ -18,7 +18,7 @@
     @csrf
     <div class="form-group">
       <label for="order-id-input">Order Id:</label>
-      <input type="text" class="order-id-input" id="order-id-input"  name="order_number" placeholder="Enter your order id">
+      <input type="text" class="order-id-input" id="order-id-input"  name="order_no" placeholder="Enter your order id">
     </div>
     <div class="form-group submit-track">
       <button type="submit" value="submit" class="btn btn-submit">Track Order</button>

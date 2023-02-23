@@ -3,7 +3,7 @@
 
 <head>
 
-  @include('backend.layouts.head')
+  @include('admin_panel.layouts.head')
 
 </head>
 
@@ -28,7 +28,7 @@
     </div>
 
 
-    @include('backend.layouts.footer')
+    @include('admin_panel.layouts.footer')
 
 </body>
 

@@ -151844,7 +151844,7 @@ INSERT INTO `notifications` (`id`, `type`, `notifiable_type`, `notifiable_id`, `
 
 CREATE TABLE `orders` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `order_number` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `order_no` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `user_id` bigint(20) UNSIGNED DEFAULT NULL,
   `sub_total` double(8,2) NOT NULL,
   `tax_total` double(8,2) NOT NULL,
@@ -151860,12 +151860,12 @@ CREATE TABLE `orders` (
   `fname` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `lname` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `cname` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `trn_number` int(11) DEFAULT NULL,
+  `trn_no` int(11) DEFAULT NULL,
   `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `phone` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `country` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `city` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `post_code` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `landmark` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `address1` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `address2` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -159593,7 +159593,7 @@ CREATE TABLE `users` (
   `fname` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `lname` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `cname` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `trn_number` bigint(40) DEFAULT NULL,
+  `trn_no` bigint(40) DEFAULT NULL,
   `email` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -159611,7 +159611,7 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `fname`, `lname`, `cname`, `trn_number`, `email`, `email_verified_at`, `password`, `photo`, `role`, `provider`, `provider_id`, `status`, `remember_token`, `created_at`, `updated_at`) VALUES
+INSERT INTO `users` (`id`, `fname`, `lname`, `cname`, `trn_no`, `email`, `email_verified_at`, `password`, `photo`, `role`, `provider`, `provider_id`, `status`, `remember_token`, `created_at`, `updated_at`) VALUES
 (1, 'Admin', NULL, NULL, NULL, 'admin@gmail.com', '2022-12-27 12:38:55', '$2y$10$GOGIJdzJydYJ5nAZ42iZNO3IL1fdvXoSPdUOH3Ajy5hRmi0xBmTzm', NULL, 'admin', NULL, NULL, 'active', NULL, NULL, '2023-01-31 05:23:58'),
 (2, 'zafar', 'khan', NULL, NULL, 'zafaraqbal786@gmail.com', NULL, '$2y$10$YUQcpUAynKtpwCkRA1blROrFpYoJYcNd9aq2wsxTeWICQEpOruW4.', NULL, 'admin', NULL, NULL, 'active', 'ub8j0Kv09RQCGRwLrWt5tql2Dxvb5ifZLTzoVQBjfH5mqu75D3H2SFnhEaVk', '2022-12-27 08:46:11', '2023-01-31 09:19:08'),
 (3, 'Vikas', 'Parjapati', 'abc group', NULL, 'Prajapativikas11060@gmail.com', NULL, '$2y$10$ud/YPWeySExIrWuy7g.v3.VB3CdVj9e6u4TdZtVIfdcDRywV3xjmu', NULL, 'user', NULL, NULL, 'active', NULL, '2022-12-28 02:28:19', '2023-01-31 09:12:44'),
@@ -159753,7 +159753,7 @@ ALTER TABLE `notifications`
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `orders_order_number_unique` (`order_number`),
+  ADD UNIQUE KEY `orders_order_number_unique` (`order_no`),
   ADD KEY `orders_user_id_foreign` (`user_id`);
 
 --

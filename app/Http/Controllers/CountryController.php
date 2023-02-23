@@ -15,7 +15,7 @@ class CountryController extends Controller
     public function index()
     {
         $country=Country::orderBy('id','ASC')->paginate('10');
-        return view('backend.country.index')->with('countries',$country);
+        return view('admin_panel.country.index')->with('countries',$country);
     }
 
     /**
@@ -25,7 +25,7 @@ class CountryController extends Controller
      */
     public function create()
     {
-        return view('backend.country.create');
+        return view('admin_panel.country.create');
     }
 
     /**
@@ -78,7 +78,7 @@ class CountryController extends Controller
         if(!$country){
             request()->session()->flash('error','country not found');
         }
-        return view('backend.country.edit')->with('country',$country);
+        return view('admin_panel.country.edit')->with('country',$country);
     }
 
     /**

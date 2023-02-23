@@ -227,6 +227,7 @@ function cartAdd(url, id) {
 /*==================== Add product to favorites ====================*/
 function fav(ico, id) {
   let el = $(ico).children()[0];
+  console.log(el);
   if ($(el).hasClass('fa-regular')) {
     el.classList.remove('fa-regular');
     $(`.${id}-card .fa-heart`).addClass('fa-solid');
@@ -236,7 +237,6 @@ function fav(ico, id) {
       url: '/wishlist-add/',
       data: {id: id},
       success: function(response) {
-        console.log(response);
         $('.fav-qty').html(response);
       },
       error: function() {

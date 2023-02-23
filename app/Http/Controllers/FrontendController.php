@@ -71,7 +71,7 @@ class FrontendController extends Controller
         $subcat=SubCategory::with('products')->where('slug', $request->subslug)->get();
         $products=$subcat[0]->products()->get();
       }
-
+      
       else {
         $category = Category::with('products')->where('slug', $request->slug)->get();
         
@@ -104,7 +104,7 @@ class FrontendController extends Controller
           $maxprice = $product->attrs()->max('price');;
           $images = $product->images()->pluck('name');
           $forms = $product->forms()->get(['form_id', 'name']);
-          $prod = $product->where('id', $product->id)->first(['id', 'name', 'photo']);
+          $prod = $product->where('id', $product->id)->first(['id', 'name', 'slug', 'photo']);
 
           $sizes = array();
           foreach ($forms as $form) {
@@ -124,7 +124,7 @@ class FrontendController extends Controller
           $maxPrice = number_format($maxprice, 2);
 
           $content .= <<<EOD
-            <div class="product-card carousel-cell">
+            <div class="product-card {$product->id}-card carousel-cell">
             <img class="product-image" src="{$product->photo}" alt="product image">
             
             <div class="overlay">

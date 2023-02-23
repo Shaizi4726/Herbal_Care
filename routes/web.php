@@ -66,7 +66,7 @@ Route::get('/checkout','CartController@checkout')->name('checkout');
 Route::get('/wishlist', 'WishlistController@wishlist')->name('wishlist');
 Route::get('wishlist-add/','WishlistController@wishlist_add')->name('add-to-wishlist')->middleware('user');
 Route::get('wishlist-delete/','WishlistController@wishlist_delete')->name('wishlist-delete');
-Route::post('cart/order','OrderController@store')->name('cart.order');
+Route::post('/order','OrderController@store')->name('order');
 Route::get('order/pdf/{id}','OrderController@pdf')->name('order.pdf');
 Route::get('/income','OrderController@incomeChart')->name('product.order.income');
 // Route::get('/user/chart','AdminController@userPieChart')->name('user.piechart');
@@ -107,7 +107,7 @@ Route::match(['get','post'],'/get-product-size','FrontendController@getProductSi
 Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     Route::get('/','AdminController@index')->name('admin');
     Route::get('/file-manager',function(){
-        return view('backend.layouts.file-manager');
+        return view('admin_panel.layouts.file-manager');
     })->name('file-manager');
     // user route
     Route::resource('users','UsersController');

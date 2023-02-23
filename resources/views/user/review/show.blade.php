@@ -124,7 +124,7 @@
                     </tr>
                     <tr>
                         <td>Post Code</td>
-                        <td> : {{$order->post_code}}</td>
+                        <td> : {{$order->landmark}}</td>
                     </tr>
               </table>
             </div>

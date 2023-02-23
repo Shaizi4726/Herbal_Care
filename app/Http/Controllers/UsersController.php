@@ -16,7 +16,7 @@ class UsersController extends Controller
     public function index()
     {
         $users=User::orderBy('id','ASC')->paginate(10);
-        return view('backend.users.index')->with('users',$users);
+        return view('admin_panel.users.index')->with('users',$users);
     }
 
     /**
@@ -26,7 +26,7 @@ class UsersController extends Controller
      */
     public function create()
     {
-        return view('backend.users.create');
+        return view('admin_panel.users.create');
         $roles = Role::get()->pluck('name', 'name');
 
         return view('admin.users.create', compact('roles'));
@@ -47,7 +47,7 @@ class UsersController extends Controller
             'fname'=>'string|max:30',
             'lname'=>'string|max:30',
             'cname'=>'string|max:30',
-            'trn_number'=>'numeric|max:30',
+            'trn_no'=>'numeric|max:30',
             'email'=>'string|required|unique:users',
             'password'=>'string|required',
             'role'=>'required|in:admin,user',
@@ -96,7 +96,7 @@ class UsersController extends Controller
     public function edit($id)
     {
         $user=User::findOrFail($id);
-        return view('backend.users.edit')->with('user',$user);
+        return view('admin_panel.users.edit')->with('user',$user);
     }
 
     /**
@@ -114,7 +114,7 @@ class UsersController extends Controller
             // 'fname'=>'string|required|max:30',
             // 'lname'=>'string|required|max:30',
             // 'cname'=>'string|required|max:30',
-            // 'trn_number'=>'numeric|required|max:30',
+            // 'trn_no'=>'numeric|required|max:30',
             // 'email'=>'string|required',
             // 'role'=>'required|in:admin,user',
             // 'status'=>'required|in:active,inactive',

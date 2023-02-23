@@ -1,0 +1,46 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+  /**
+   * Run the migrations.
+   *
+   * @return void
+   */
+  public function up()
+  {
+    Schema::create('shippings', function (Blueprint $table) {
+      $table->charset = 'utf8mb4';
+      $table->collation = 'utf8mb4_unicode_ci';
+      
+      $table->id();
+      $table->unsignedBigInteger('order_id')->nullable();
+      $table->foreign('order_id')->references('id')->on('orders')->onDelete('CASCADE');
+      $table->string('fname');
+      $table->string('lname');
+      $table->string('cname');
+      $table->unsignedBigInteger('trn_no');
+      $table->string('phone');
+      $table->string('altphone')->nullable();
+      $table->longText('address');
+      $table->unsignedBigInteger('city_id')->nullable();
+      $table->foreign('city_id')->references('id')->on('cities')->onDelete('SET NULL');
+      $table->string('landmark')->nullable();
+      $table->timestamps();
+    });
+  }
+
+  /**
+   * Reverse the migrations.
+   *
+   * @return void
+   */
+  public function down()
+  {
+      Schema::dropIfExists('shippings');
+  }
+};

@@ -80,7 +80,7 @@
 
             <div class="form-group collapse" id="trn">
               <label for="trn-number">TRN<span>*</span></label>
-              <input type="number" id="trn-number" name="trn_number" placeholder="TRN Number" value="{{ old('trn_number') }}">
+              <input type="number" id="trn-number" name="trn_no" placeholder="TRN Number" value="{{ old('trn_no') }}">
             </div>
           </div>
 
@@ -105,9 +105,9 @@
               @enderror
             </div>
 
-          @elseif ($errors->get('trn_number'))
+          @elseif ($errors->get('trn_no'))
             <div class="error">
-              @error('trn_number')
+              @error('trn_no')
                 {{$message}}
               @enderror
             </div>

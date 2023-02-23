@@ -11,10 +11,8 @@ Terms & Conditions Page
 Privacy Policy Page
 Payment Methods, Social Media Links
 zoom cart image on hover
-add to cart data in url
+add to cart data using post method
 Forgot Password Page
 aboutUs Check Email Validation backend
-scrolbar wit order summary
-shipping address 
 username and password with verify email
 link address with google map

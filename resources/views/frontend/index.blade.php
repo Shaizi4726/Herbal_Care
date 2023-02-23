@@ -46,7 +46,7 @@
               $maxprice = $product->attrs()->max('price');
               $images = $product->images()->pluck('name');
               $forms = $product->forms()->get(['form_id', 'name']);
-              $prod = $product->where('id', $product->id)->first(['id', 'name', 'photo']);
+              $prod = $product->where('id', $product->id)->first(['id', 'name', 'slug', 'photo']);
 
               $sizes = array();
               foreach ($forms as $form) {
@@ -111,7 +111,7 @@
               $maxprice = $product->attrs()->max('price');
               $images = $product->images()->pluck('name');
               $forms = $product->forms()->get(['form_id', 'name']);
-              $prod = $product->where('id', $product->id)->first(['id', 'name', 'photo']);
+              $prod = $product->where('id', $product->id)->first(['id', 'name', 'slug', 'photo']);
 
               $sizes = array();
               foreach ($forms as $form) {
@@ -175,7 +175,7 @@
               $maxprice = $product->attrs()->max('price');
               $images = $product->images()->pluck('name');
               $forms = $product->forms()->get(['form_id', 'name']);
-              $prod = $product->where('id', $product->id)->first(['id', 'name', 'photo']);
+              $prod = $product->where('id', $product->id)->first(['id', 'name', 'slug', 'photo']);
 
               $sizes = array();
               foreach ($forms as $form) {
@@ -245,7 +245,7 @@
               $maxprice = $product->attrs()->max('price');
               $images = $product->images()->pluck('name');
               $forms = $product->forms()->get(['form_id', 'name']);
-              $prod = $product->where('id', $product->id)->first(['id', 'name', 'photo']);
+              $prod = $product->where('id', $product->id)->first(['id', 'name', 'slug', 'photo']);
 
               $sizes = array();
               foreach ($forms as $form) {

@@ -123,7 +123,7 @@
               @foreach($orders as $order)   
                 <tr>
                     <td>{{$order->id}}</td>
-                    <td>{{$order->order_number}}</td>
+                    <td>{{$order->order_no}}</td>
                     <td>{{$order->first_name}} {{$order->last_name}}</td>
                     <td>{{$order->email}}</td>
                     <td>{{$order->quantity}}</td>

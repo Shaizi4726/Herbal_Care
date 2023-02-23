@@ -15,7 +15,7 @@ class CouponController extends Controller
     public function index()
     {
         $coupon=Coupon::with('products')->orderBy('id','DESC')->paginate('10');
-        return view('backend.coupon.index')->with('coupons',$coupon);
+        return view('admin_panel.coupon.index')->with('coupons',$coupon);
     }
 
     /**
@@ -25,7 +25,7 @@ class CouponController extends Controller
      */
     public function create()
     {
-        return view('backend.coupon.create');
+        return view('admin_panel.coupon.create');
     }
 
     /**
@@ -76,10 +76,10 @@ class CouponController extends Controller
     {
         $coupon=Coupon::with('products')->with('users')->find($id);
         if($coupon){
-            return view('backend.coupon.edit')->with('coupon',$coupon);
+            return view('admin_panel.coupon.edit')->with('coupon',$coupon);
         }
         else{
-            return view('backend.coupon.index')->with('error','Coupon not found');
+            return view('admin_panel.coupon.index')->with('error','Coupon not found');
         }
     }
 

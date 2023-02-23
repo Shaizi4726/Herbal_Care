@@ -7,7 +7,7 @@
 <div class="card shadow mb-4">
     <div class="row">
         <div class="col-md-12">
-           @include('backend.layouts.notification')
+           @include('admin_panel.layouts.notification')
         </div>
     </div>
    <div class="card-header py-3">
@@ -25,7 +25,7 @@
                         @if($profile->photo)
                         <img class="card-img-top img-fluid roundend-circle mt-4" style="border-radius:50%;height:80px;width:80px;margin:auto;" src="{{$profile->photo}}" alt="profile picture">
                         @else 
-                        <img class="card-img-top img-fluid roundend-circle mt-4" style="border-radius:50%;height:80px;width:80px;margin:auto;" src="{{asset('backend/img/avatar.png')}}" alt="profile picture">
+                        <img class="card-img-top img-fluid roundend-circle mt-4" style="border-radius:50%;height:80px;width:80px;margin:auto;" src="{{asset('admin_panel/img/avatar.png')}}" alt="profile picture">
                         @endif
                     </div>
                     <div class="card-body mt-4 ml-2">
@@ -87,7 +87,7 @@
       content:"/\00a0";
     }
     .image{
-        background:url('{{asset('backend/img/background.jpg')}}');
+        background:url('{{asset('admin_panel/img/background.jpg')}}');
         height:150px;
         background-position:center;
         background-attachment:cover;

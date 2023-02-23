@@ -18,86 +18,41 @@ $(function() {
   $('[name|=pay_mthd]').on('change', function() {
     if(this.value == 'op') {
       $('#op-form').toggleClass('collapse');
-
-      $('#account-name').attr('required', 'required');
-      $('#account-num').attr('required', 'required');
-      $('#cvv-cvc').attr('required', 'required');
-      $('#account-expiry').attr('required', 'required');
+      $('#cart-summary').css('max-height', '+=29.5em');
     }
 
     else {
-      if(!$('#op-form').hasClass('collapse'))
+      if(!$('#op-form').hasClass('collapse')) {
         $('#op-form').addClass('collapse');
-
-        $('#account-name').removeAttr('required');
-        $('#account-num').removeAttr('required');
-        $('#cvv-cvc').removeAttr('required');
-        $('#account-expiry').removeAttr('required');
+        $('#cart-summary').css('max-height', '-=29.5em');
+      }
     }
   });
 
-  let cnty = $('#country');
-  cnty.val('United Arab Emirates');
+  $('[name|=shipping-option]').on('change', function() {
+    if(this.value == 'different') {
+      $('#shipping-details').toggleClass('collapse');
+      $('#cart-summary').css('max-height', '+=25em');
+    }
 
-  cnty.on('change', function() {
-    let dl= $("#countries")[0];
-    $('#state').val('');
-    $('#city').val('');
-    $('#states').empty();
-    $('#cities').empty();
-    if(this.value.trim() != '') {
-      let opSelected = dl.querySelector(`[value="${this.value}"]`);
-      let id = opSelected.getAttribute('id');
-      let iso = opSelected.getAttribute('data-iso');
-      let phone = opSelected.getAttribute('data-phone');
-
-      $('#flag-img').attr('src', '/images/flags/' + iso + '.png');
-      $('#call-code').html('+' + phone);
-
-      /* AJAX request for adding shopping list items to cart */
-      $.ajax({
-        type: 'get',
-        url: '/states',
-        data: {
-          id: id,
-        },
-        success: function (resp) {
-          if(resp == '') {
-            $('#state-div').hide();
-            $('#city-div').hide();
-          }
-          else {
-            $('#state-div').show();
-            $('#city-div').show();
-            let stDl = $('#states')[0];
-            resp.forEach((element) => {
-              let option = document.createElement("option");
-              option.value = element['name'];
-              option.text = element['name'];
-              option.setAttribute('id', element['id']);
-              option.setAttribute('data-country', id);
-              stDl.appendChild(option);
-            });
-          }
-        },
-        error: function () {
-          alert("An error occured while accessing states")
-        }
-      });
+    else {
+      if(!$('#shipping-details').hasClass('collapse')) {
+        $('#shipping-details').addClass('collapse');
+        $('#cart-summary').css('max-height', '-=25em');
+      }
     }
   });
 
-  $('#state').on('change', function() {
-    let dl= $("#states")[0];
-    $('#city').val('');
-    $('#cities').empty();
-    if(this.value.trim() != ''){
-      let opSelected = dl.querySelector(`[value="${this.value}"]`);
-      let id = opSelected.getAttribute('data-country');
-      let st_id = opSelected.getAttribute('id');
+  $('#country').val('United Arab Emirates');
 
+  $('#country-div').on('click', function() {
+    $('#countries').toggleClass('collapse');
+  });
+
+  $('#state-div').on('click', function() {
+    $('#states').toggleClass('collapse');
       /* AJAX request for adding shopping list items to cart */
-      $.ajax({
+      /* $.ajax({
         type: 'get',
         url: '/cities',
         data: {
@@ -113,7 +68,7 @@ $(function() {
             let stDl = $('#cities')[0];
             resp.forEach((element) => {
               let option = document.createElement('option');
-              option.value = element['name'];
+              option.value = element['id'];
               option.text = element['name'];
               stDl.appendChild(option);
             });
@@ -122,10 +77,63 @@ $(function() {
         error: function () {
           alert("An error occured while accessing states")
         }
-      });
+      }); */
+  });
+
+  $('#city-div').on('click', function() {
+    $('#cities').toggleClass('collapse');
+  });
+
+  cnty.trigger('change');
+
+  $('#expiry-month').on('input', function(event) {
+    if(isNaN(Number(this.value)) || this.value > 12) {
+      this.value = this.value.slice(0, -1);
+      return false;
+    }
+
+    if(this.value.length == 2)
+      $('#expiry-year').focus();
+  });
+
+  $('#expiry-month').on('keypress', function(event) {
+    if(this.value.length >= 2 || isNaN(Number(this.value))) {
+      event.preventDefault();
+      event.stopPropagation();
+      return false;
     }
   });
-  cnty.trigger('change');
+
+  $('#expiry-year').on('input', function(event) {
+    let date = new Date();
+    if(isNaN(Number(this.value))) {
+      this.value = this.value.slice(0, -1);
+      return false;
+    }
+    
+    if(this.value.length == 4) {
+      if(this.value < date.getFullYear() || this.value > date.getFullYear() + 5) {
+        this.placeholder = 'Invalid Year';
+        this.value = '';
+      }
+      else
+        $('#cvv-cvc').focus();
+    }
+  });
+
+  $('#expiry-year').on('keypress', function(event) {
+    if(this.value.length >= 4 || isNaN(Number(this.value))) {
+      event.preventDefault();
+      event.stopPropagation();
+      return false;
+    }
+  });
+
+  $('#order-form').on('submit', function() {
+    let vale = $('#account-num').val();
+    vale = vale.split(" ").join("");
+    $('#account-num').val(vale);
+  }) 
 });
 
 function cardNum(el, event) {
@@ -157,4 +165,49 @@ function cardLen(el, event) {
     event.stopPropagation();
     return false;
   }
+}
+
+function country(el, id) {
+  $('#country-name').html($(el).html());
+  $('#state-name').html('State');
+  $('#state-name').css('color', '#727272');
+  $('#states').html('');
+
+  /* AJAX request for getting states for country */
+  $.ajax({
+    type: 'get',
+    url: '/states',
+    data: {
+      id: id,
+    },
+    success: function (resp) {
+      if(resp == '') {
+        $('#state-form-group').hide();
+        $('#city-form-group').hide();
+      }
+      else {
+        $('#state-form-group').show();
+        $('#city-form-group').show();
+        let stDl = $('#states')[0];
+        resp.forEach((element) => {
+          let item = document.createElement("li");
+          $(item).html(element['name']);
+          item.setAttribute('id', 'state' + element['id']);
+          item.setAttribute('data-state', element['id'])
+          item.setAttribute('data-country', id);
+          item.setAttribute('onclick', 'state(this)')
+          stDl.appendChild(item);
+        });
+      }
+    },
+    error: function () {
+      alert("An error occured while accessing states")
+    }
+  });
+}
+
+function state(el) {
+  let id = $(el).attr('data-state');
+  $('#state-name').html($(el).html());
+  $('#state-name').css('color', '#000');
 }

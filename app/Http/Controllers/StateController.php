@@ -17,7 +17,7 @@ class StateController extends Controller
     {
         $state=State::with('country')->orderBy('id','ASC')->paginate(10);
         //dd($state);
-        return view('backend.state.index')->with('states',$state);
+        return view('admin_panel.state.index')->with('states',$state);
     }
     /**
      * Show the form for creating a new resource.
@@ -26,7 +26,7 @@ class StateController extends Controller
      */
     public function create()
     {
-        return view('backend.state.create');
+        return view('admin_panel.state.create');
     }
     /**
      * Store a newly created resource in storage.
@@ -64,7 +64,7 @@ class StateController extends Controller
         if(!$state){
             request()->session()->flash('error','state not found');
         }
-        return view('backend.state.edit')->with('state',$state);
+        return view('admin_panel.state.edit')->with('state',$state);
     }
 
     /**

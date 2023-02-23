@@ -67,7 +67,7 @@ class RegisterController extends Controller
     } else {
       $this->validate($request, [
         'cname' => 'required|alpha_dashed',
-        'trn_number' => 'required|numeric'
+        'trn_no' => 'required|numeric'
       ]);
     }
     
@@ -80,7 +80,7 @@ class RegisterController extends Controller
       'fname' => $request->fname,
       'lname' => $request->lname,
       'cname' => $request->cname,
-      'trn_number' => $request->trn_number,
+      'trn_no' => $request->trn_no,
       'email' => $request->email,
       'password' => Hash::make($request->password),
       'status' => 'active'

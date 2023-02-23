@@ -18,7 +18,7 @@ class CategoryController extends Controller
     {
         $category=Category::orderBy('id','ASC')->paginate(10);
         //dd($state);
-        return view('backend.category.index')->with('categories',$category);
+        return view('admin_panel.category.index')->with('categories',$category);
     }
     /**
      * Show the form for creating a new resource.
@@ -27,7 +27,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('backend.category.create');
+        return view('admin_panel.category.create');
     }
     /**
      * Store a newly created resource in storage.
@@ -72,7 +72,7 @@ class CategoryController extends Controller
         if(!$category){
             request()->session()->flash('error','category not found');
         }
-        return view('backend.category.edit')->with('category',$category);
+        return view('admin_panel.category.edit')->with('category',$category);
     }
     /**
      * Update the specified resource in storage.

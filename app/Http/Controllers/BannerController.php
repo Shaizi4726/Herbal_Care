@@ -15,7 +15,7 @@ class BannerController extends Controller
     public function index()
     {
         $banner=Banner::orderBy('id','DESC')->paginate(10);
-        return view('backend.banner.index')->with('banners',$banner);
+        return view('admin_panel.banner.index')->with('banners',$banner);
     }
 
     /*
@@ -25,7 +25,7 @@ class BannerController extends Controller
     */
     public function create()
     {
-        return view('backend.banner.create');
+        return view('admin_panel.banner.create');
     }
 
     /*
@@ -78,7 +78,7 @@ class BannerController extends Controller
     public function edit($id)
     {
         $banner=Banner::findOrFail($id);
-        return view('backend.banner.edit')->with('banner',$banner);
+        return view('admin_panel.banner.edit')->with('banner',$banner);
     }
 
     /**

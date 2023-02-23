@@ -28,6 +28,14 @@ class City extends Model
   {
     return $this->hasMany(Order::class, 'city_id');
   }
+  
+  /**
+   * Get the shippings for the city.
+   */
+  public function shippings()
+  {
+    return $this->hasMany(Shipping::class, 'city_id');
+  }
 
   /**
    * Get the state that owns the city.

@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-@include('backend.layouts.head')
+@include('admin_panel.layouts.head')
 
 </head>
 

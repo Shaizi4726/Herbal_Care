@@ -7,7 +7,7 @@ use App\Models\Notification;
 class NotificationController extends Controller
 {
     public function index(){
-        return view('backend.notification.index');
+        return view('admin_panel.notification.index');
     }
     public function show(Request $request){
         $notification=Auth()->user()->notifications()->where('id',$request->id)->first();

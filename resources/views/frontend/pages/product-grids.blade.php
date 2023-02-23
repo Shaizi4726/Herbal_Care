@@ -16,7 +16,7 @@
       <li class="sort-list-item" data="z-a" onclick="sort(this, '{{$slug}}', '{{$subslug}}')">Z to A</li>
       <li class="sort-list-item" data="low-prc" onclick="sort(this, '{{$slug}}', '{{$subslug}}')">Low Price</li>
       <li class="sort-list-item" data="hgh-prc" onclick="sort(this, '{{$slug}}', '{{$subslug}}')">High Price</li>
-      <li class="sort-list-item" data="new" onclick="sort(this, '{{$slug}}')">New</li>
+      <li class="sort-list-item" data="new" onclick="sort(this, '{{$slug}}', '{{$subslug}}')">New</li>
       <li class="sort-list-item" data="popular" onclick="sort(this, '{{$slug}}', '{{$subslug}}')">Popular</li>
       <li class="sort-list-item" data="trending" onclick="sort(this, '{{$slug}}', '{{$subslug}}')">Trending</li>
     </ul>
@@ -60,7 +60,7 @@
               $maxprice = $product->attrs()->max('price');
               $images = $product->images()->pluck('name');
               $forms = $product->forms()->get(['form_id', 'name']);
-              $prod = $product->where('id', $product->id)->first(['id', 'name', 'photo']);
+              $prod = $product->where('id', $product->id)->first(['id', 'name', 'slug', 'photo']);
 
               $sizes = array();
               foreach ($forms as $form) {

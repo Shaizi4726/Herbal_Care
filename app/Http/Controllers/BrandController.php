@@ -15,7 +15,7 @@ class BrandController extends Controller
     public function index()
     {
         $brand=Brand::orderBy('id','DESC')->paginate();
-        return view('backend.brand.index')->with('brands',$brand);
+        return view('admin_panel.brand.index')->with('brands',$brand);
     }
 
     /**
@@ -25,7 +25,7 @@ class BrandController extends Controller
      */
     public function create()
     {
-        return view('backend.brand.create');
+        return view('admin_panel.brand.create');
     }
 
     /**
@@ -80,7 +80,7 @@ class BrandController extends Controller
         if(!$brand){
             request()->session()->flash('error','Brand not found');
         }
-        return view('backend.brand.edit')->with('brand',$brand);
+        return view('admin_panel.brand.edit')->with('brand',$brand);
     }
 
 

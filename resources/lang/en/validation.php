@@ -151,7 +151,7 @@ return [
           'alpha-dashed' => 'comapny name mus only contain letter and dashes'
         ],
         
-        'trn_number' => [
+        'trn_no' => [
           'required' => 'trn number is required.',
           'numeric' => 'trn number must be numeric.'
         ],

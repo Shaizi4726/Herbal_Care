@@ -19,7 +19,7 @@ class ProductReviewController extends Controller
     {
         $reviews=ProductReview::with('user_info')->paginate(10);
         
-        return view('backend.review.index')->with('reviews',$reviews);
+        return view('admin_panel.review.index')->with('reviews',$reviews);
     }
 
     /**
@@ -101,7 +101,7 @@ class ProductReviewController extends Controller
     {
         $review=ProductReview::find($id);
         // return $review;
-        return view('backend.review.edit')->with('review',$review);
+        return view('admin_panel.review.edit')->with('review',$review);
     }
 
     /**

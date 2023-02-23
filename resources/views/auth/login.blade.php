@@ -3,7 +3,7 @@
 
 <head>
   <title>The Herb Room || Login Page</title>
-  @include('backend.layouts.head')
+  @include('admin_panel.layouts.head')
 
 </head>
 
