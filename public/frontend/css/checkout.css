@@ -129,7 +129,7 @@ label {
   right: 20%;
   border-radius: 0.3em;
   overflow-y: auto;
-  z-index: 20;
+  z-index: 5;
 }
 
 .selection-list li {

@@ -18,6 +18,7 @@
   <div class="form-container">
     @php
       $countries = DB::table('countries')->where('status', 'active')->get();
+      $states = DB::table('states')->where('country_id', '784')->get();
     @endphp
     <form class="form" id="order-form" method="POST" action="{{route('order')}}" novalidate>
       @csrf
@@ -122,38 +123,42 @@
             <input type="text" name="landmark" id="landmark" placeholder="Landmark" value="{{old('landmark')}}">
           </div>
 
-          <div class="form-group">
+          <div id="country-form-group" class="form-group">
             <label for="country">Country<span>*</span></label>
-            <input type="hidden" name="country" id="country" value="United Arab Emirates">
-            <div id="country-div" class="dropdown-selection">
+            <input type="hidden" name="country" id="country" value="784">
+            <div id="country-div" class="dropdown-selection" tabindex="0">
               <div id="country-name">United Arab Emirates</div> 
               <div class="dropdown-icon"><i class="fa-solid fa-angle-down"></i></div>
-              <ul id="countries" class="selection-list collapse">
+              <ul id="countries" class="selection-list collapse" tabindex="-1">
                 @foreach($countries as $country)
-                  <li id="country-{{$country->id}}" data-iso="{{$country->iso_code}}" data-phone="{{$country->calling_code}}" onclick="country(this, {{$country->id}})">{{$country->name}}</li>
+                  <li id="country-{{$country->id}}" data-iso="{{$country->iso_code}}" data-call-code="{{$country->calling_code}}" onclick="country(this, {{$country->id}})">{{$country->name}}</li>
                 @endforeach
               </ul>
             </div>
           </div>
         </div>
-        <div id="state-form-group" class="fl-bl">
-          <div class="form-group">
+        <div class="fl-bl">
+          <div id="state-form-group" class="form-group">
             <label for="state">State<span>*</span></label>
             <input type="hidden" name="state" id="state">
-            <div id="state-div" class="dropdown-selection">
+            <div id="state-div" class="dropdown-selection" tabindex="0">
               <div id="state-name" class="select-placeholder">State</div> 
               <div class="dropdown-icon"><i class="fa-solid fa-angle-down"></i></div>
-              <ul id="states" class="selection-list collapse"></ul>
+              <ul id="states" class="selection-list collapse" tabindex="-1">
+                @foreach($states as $state)
+                  <li id="state-{{$state->id}}" data-state="{{$state->id}}" data-country="784" onclick="state(this)">{{$state->name}}</li>
+                @endforeach
+              </ul>
             </div>
           </div>
 
           <div id="city-form-group" class="form-group">
             <label for="city">City<span>*</span></label>
             <input type="hidden" placeholder="City" name="city" id="city">
-            <div id="city-div" class="dropdown-selection">
+            <div id="city-div" class="dropdown-selection" tabindex="0">
               <div id="city-name" class="select-placeholder">City</div> 
               <div class="dropdown-icon"><i class="fa-solid fa-angle-down"></i></div>
-              <ul id="cities" class="selection-list collapse"></ul>
+              <ul id="cities" class="selection-list collapse" tabindex="-1"></ul>
             </div>
           </div>
         </div>
@@ -161,7 +166,7 @@
           <div class="form-group">
             <label for="phone">Phone Number <span>*</span></label>
             <div class="phone-div">
-              <img class="flag-img" src="{{asset('images/flags/AE.png')}}" alt="Country Flag Image" width="64">
+              <img class="flag-img flag" src="{{asset('images/flags/AE.png')}}" alt="Country Flag Image" width="64">
               <p class="call-code">+971</p>
               <input type="tel" name="phone" id="phone" placeholder="50 123 4567" value="{{old('phone')}}">
             </div>
@@ -170,9 +175,9 @@
           <div class="form-group">
             <label for="phone">Phone Number <sup class='optional'>(Optional)</sup></label>
             <div class="phone-div">
-              <img class="flag-img" src="{{asset('images/flags/AE.png')}}" alt="Country Flag Image" width="64">
+              <img class="flag-img flag" src="{{asset('images/flags/AE.png')}}" alt="Country Flag Image" width="64">
               <p class="call-code">+971</p>
-              <input type="tel" name="altphone" id="altphone" placeholder="50 123 4567" value="{{old('phone')}}">
+              <input type="tel" name="altphone" id="altphone" placeholder="50 123 4567" value="{{old('altphone')}}">
             </div>
           </div>
         </div>
@@ -241,47 +246,61 @@
               <input type="text" name="shipping-landmark" id="shipping-landmark" placeholder="Nearby Landmark" value="{{old('shipping-landmark')}}">
             </div>
 
-            <div class="form-group">
-              <label for="shipping-country">Country<span>*</span></label>
-              <input list="countries" placeholder="Shipping Country" name="shipping-country" id="shipping-country" class="countries-list">
-              @php
-              $countries = DB::table('countries')->where('status', 'active')->get();
-              @endphp
-              <datalist id="shipping-countries">
+            <div id="shipping-country-form-group" class="form-group">
+            <label for="shipping-country">Country<span>*</span></label>
+            <input type="hidden" name="shipping_country" id="shipping-country" value="784">
+            <div id="shipping-country-div" class="dropdown-selection" tabindex="0">
+              <div id="shipping-country-name">United Arab Emirates</div> 
+              <div class="dropdown-icon"><i class="fa-solid fa-angle-down"></i></div>
+              <ul id="shipping-countries" class="selection-list collapse" tabindex="-1">
                 @foreach($countries as $country)
-                  <option id="{{$country->id}}" data-iso="{{$country->iso_code}}" data-phone="{{$country->calling_code}}" value="{{$country->name}}">{{$country->name}}</option>
+                  <li id="shipping-country-{{$country->id}}" class="shipping" data-iso="{{$country->iso_code}}" data-call-code="{{$country->calling_code}}" onclick="country(this, {{$country->id}})">{{$country->name}}</li>
                 @endforeach
-              </datalist>
+              </ul>
             </div>
           </div>
-          <div class="fl-bl">
-            <div id="state-div" class="form-group">
-              <label for="shipping-state">State<span>*</span></label>
-              <input list="states" placeholder="Shipping State" name="shipping-state" id="shipping-state" class="states-list">
-              <datalist id="shipping-states"></datalist>
-            </div>
-            <div id="shipping-city-div" class="form-group">
-              <label for="shipping-city">City<span>*</span></label>
-              <input list="cities" placeholder="Shipping City" name="shipping-city" id="shipping-city" class="cities-list">
-              <datalist id="shipping-cities"></datalist>
+        </div>
+        <div class="fl-bl">
+          <div id="shipping-state-form-group" class="form-group">
+            <label for="shipping-state">State<span>*</span></label>
+            <input type="hidden" name="shipping_state" id="shipping-state">
+            <div id="shipping-state-div" class="dropdown-selection" tabindex="0">
+              <div id="shipping-state-name" class="select-placeholder">State</div> 
+              <div class="dropdown-icon"><i class="fa-solid fa-angle-down"></i></div>
+              <ul id="shipping-states" class="selection-list collapse" tabindex="-1">
+                @foreach($states as $state)
+                  <li id="shipping-state-{{$state->id}}" class="shipping" data-state="{{$state->id}}" data-country="784" onclick="state(this)">{{$state->name}}</li>
+                @endforeach
+              </ul>
             </div>
           </div>
-          <div class="fl-bl">
-            <div class="form-group">
-              <label for="shipping-phone">Phone Number <span>*</span></label>
-              <div id="phone-div" class="phone-div">
-                <img id="flag-img" class="flag-img" src="{{asset('images/flags/AE.png')}}" alt="Country Flag Image" width="64">
-                <p id="call-code" class="call-code">+971</p>
-                <input type="tel" name="shipping-phone" id="shipping-phone" placeholder="50 123 4567" value="{{old('shipping-phone')}}">
-              </div>
+
+          <div id="shipping-city-form-group" class="form-group">
+            <label for="shipping-city">City<span>*</span></label>
+            <input type="hidden" placeholder="City" name="shipping_city" id="shipping-city">
+            <div id="shipping-city-div" class="dropdown-selection" tabindex="0">
+              <div id="shipping-city-name" class="select-placeholder">City</div> 
+              <div class="dropdown-icon"><i class="fa-solid fa-angle-down"></i></div>
+              <ul id="shipping-cities" class="selection-list collapse" tabindex="-1"></ul>
             </div>
-            <div class="form-group">
-              <label for="shipping-altphone">Phone Number <sup class="optional">(Optional)</sup></label>
-              <div id="phone-div" class="phone-div">
-                <img id="flag-img" class="flag-img" src="{{asset('images/flags/AE.png')}}" alt="Country Flag Image" width="64">
-                <p id="call-code" class="call-code">+971</p>
-                <input type="tel" name="shipping-altphone" id="shipping-altphone" placeholder="50 123 4567" value="{{old('shipping-altphone')}}">
-              </div>
+          </div>
+        </div>
+        <div class="fl-bl">
+          <div class="form-group">
+            <label for="phone">Phone Number <span>*</span></label>
+            <div class="phone-div">
+              <img class="shipping-flag-img flag" src="{{asset('images/flags/AE.png')}}" alt="Country Flag Image" width="64">
+              <p class="shipping-call-code">+971</p>
+              <input type="tel" name="shipping_phone" id="shipping-phone" placeholder="50 123 4567" value="{{old('shipping_phone')}}">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Phone Number <sup class='optional'>(Optional)</sup></label>
+            <div class="phone-div">
+              <img class="shipping-flag-img flag" src="{{asset('images/flags/AE.png')}}" alt="Country Flag Image" width="64">
+              <p class="shipping-call-code">+971</p>
+              <input type="tel" name="shipping_altphone" id="shipping-altphone" placeholder="50 123 4567" value="{{old('shipping_altphone')}}">
             </div>
           </div>
         </div>
@@ -304,7 +323,7 @@
         
         <div class="form-group">
           <label for="account-num">Card Number</label>
-          <input type="tel" id="account-num" class="account-num"  name="account_num"  placeholder="4242 4242 4242 4242" onkeypress="cardLen(this, event)" oninput="cardNum(this, event)" autocomplete="on" value="{{old('account_num')}}">
+          <input type="tel" id="account-no" class="account-no"  name="account_no"  placeholder="4242 4242 4242 4242" onkeypress="cardLen(this, event)" oninput="cardNum(this, event)" autocomplete="on" value="{{old('account_num')}}">
         </div>
         
         <div class="form-group">
@@ -332,9 +351,9 @@
         <div class="payment-options">
           <img src="{{('admin_panel/img/payment-method.png')}}" alt="payment options">
         </div>
-        @if ($errors->get('account_num'))
+        @if ($errors->get('account_no'))
           <div class="error">
-            @error('account_num')
+            @error('account_no')
               {{$message}}
             @enderror
           </div>

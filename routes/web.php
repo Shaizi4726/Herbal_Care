@@ -58,8 +58,8 @@ Route::get('/cart', function(){
     return view('frontend.pages.cart');
 })->name('cart');
 
-Route::get('/states', 'FrontendController@getStates');
-Route::get('/cities', 'FrontendController@getCities');
+Route::get('/states', 'StateController@getStates');
+Route::get('/cities', 'CityController@getCities');
 
 Route::get('/checkout','CartController@checkout')->name('checkout');
 // Wishlist
@@ -88,21 +88,21 @@ Route::post('/coupon-store','CouponController@couponStore')->name('coupon-store'
 // Route::get('payment', 'PayPalController@payment')->name('payment');
 // Route::get('cancel', 'PayPalController@cancel')->name('payment.cancel');
 // Route::get('payment/success', 'PayPalController@success')->name('payment.success');
-Route::match(['get','post'],'/stripe', 'StripeController@payment')->name('stripe.post');
+Route::match(['get','post'], '/stripe', 'StripeController@payment')->name('stripe.post');
 Route::get('cancel', 'PayPalController@cancel')->name('payment.cancel');
 Route::get('payment/success', 'PayPalController@success')->name('payment.success');
 //ProductAttribute
 Route::match(['get','post'], 'admin/product/add-attributes/{id}','ProductController@addAttributes');
-Route::match(['get','post'],'admin/product/edit-attributes/{id}','ProductController@editAttributes');
-Route::match(['get','post'],'admin/product/delete-attributes/{id}','ProductController@DeleteAttribute')->name('delete-attribute');
+Route::match(['get','post'], 'admin/product/edit-attributes/{id}','ProductController@editAttributes');
+Route::match(['get','post'], 'admin/product/delete-attributes/{id}','ProductController@DeleteAttribute')->name('delete-attribute');
 //Add Product Image
 Route::match(['get','post'], 'admin/product/add-images/{id}','ProductController@addImage');
-Route::match(['get','post'],'admin/product/delete-images/{id}','ProductController@deleteImage')->name('delete-image');
+Route::match(['get','post'], 'admin/product/delete-images/{id}','ProductController@deleteImage')->name('delete-image');
 //Delete category
-Route::match(['get','post'],'admin/product/delete-category/{id}','ProductController@DeleteCategory')->name('delete-category');
-Route::match(['get','post'],'/get-product-price','FrontendController@getProductPrice');
-Route::match(['get','post'],'/get-product-form','ProductController@getProductForm');
-Route::match(['get','post'],'/get-product-size','FrontendController@getProductSize');
+Route::match(['get','post'], 'admin/product/delete-category/{id}','ProductController@DeleteCategory')->name('delete-category');
+Route::match(['get','post'], '/get-product-price','FrontendController@getProductPrice');
+Route::match(['get','post'], '/get-product-form','ProductController@getProductForm');
+Route::match(['get','post'], '/get-product-size','FrontendController@getProductSize');
 // Backend section start
 Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     Route::get('/','AdminController@index')->name('admin');

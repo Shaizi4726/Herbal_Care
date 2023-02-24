@@ -99,30 +99,7 @@ class Helper
       foreach ($cart_items as $item) {
         $sum += $item->tax;
       }
-
       return $sum;
-    }
-  }
-
-  public static function wishlistCount($user_id = '')
-  {
-
-    if (Auth::check()) {
-      if ($user_id == "")
-        $user_id = auth()->user()->id;
-      return Wishlist::where('user_id', $user_id)->where('cart_id', null)->sum('quantity');
-    } else {
-      return 0;
-    }
-  }
-  public static function getAllProductFromWishlist($user_id = '')
-  {
-    if (Auth::check()) {
-      if ($user_id == "")
-        $user_id = auth()->user()->id;
-      return Wishlist::with('product')->where('user_id', $user_id)->where('cart_id', null)->get();
-    } else {
-      return 0;
     }
   }
 }

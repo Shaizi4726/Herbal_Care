@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Notifications\StatusNotification;
 use App\Models\CartItem;
 use App\Models\Order;
-use App\Models\city;
+use App\Models\Shipping;
+use App\Models\Payment;
+use App\Models\City;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -92,7 +94,7 @@ class OrderController extends Controller
       if($request['pay_mthd'] == 'op') {
         $this->validate($request, [
           'account_name' => 'required|string',
-          'account_num' => 'required|digits: 16',
+          'account_no' => 'required|digits: 16',
           'cvv_cvc' => 'required|numeric',
           'expiry_month' => 'required|digits: 2',
           'expiry_year' => 'required|digits: 4|gte:' . $current_year . '|lte: ' . ($current_year+5) . ''
@@ -104,7 +106,7 @@ class OrderController extends Controller
           'expiry_month' => 'gte:' . $current_month . ''
         ]);
       }
-
+      
       if(Auth::check())
         if(empty(CartItem::where('user_id', Auth()->user()->id)->first())){
           return back();
@@ -124,6 +126,27 @@ class OrderController extends Controller
         $order->city_id = $request->city;
         $order->landmark = $request->landmark;
         $order->save();
+
+        $order_id = Order::where('order_no', $order->order_no)->pluck('id')[0];
+        $subtotal = Helper::CartAmount();
+        $tax = Helper::totalCartTax();
+        $total = Helper::totalCartAmount();
+
+        if($total > 100)
+          $shipping = 0;
+        else
+          $shipping = City::where('id', $request->city)->pluck('shipping')[0];
+
+        $payment = new Payment();
+        $payment->order_id = $order_id;
+        $payment->account_name = $request->account_name;
+        $payment->account_no = $request->account_no;
+        $payment->method = $request->pay_mthd;
+        $payment->subtotal = $subtotal;
+        $payment->tax = $tax;
+        $payment->shipping = $shipping;
+        $payment->total = $total;
+        $payment->save();
         
       // Notification::send(Auth()->user(), new StatusNotification('Order Placed'));
       

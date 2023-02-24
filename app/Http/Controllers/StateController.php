@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\State;
 use App\Models\Country;
+use DB;
+
 class StateController extends Controller
 {
     /**
@@ -110,5 +112,8 @@ class StateController extends Controller
         }
     }
 
-
+    public function getStates(Request $request) {
+      $states = DB::table('states')->where('country_id', $request->id)->get();
+      return $states;
+    }
 }

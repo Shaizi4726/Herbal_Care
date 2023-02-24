@@ -42,49 +42,88 @@ $(function() {
       }
     }
   });
-
-  $('#country').val('United Arab Emirates');
+  
+  $('#country-div').on('keypress', function(event) {
+    if(event.keyCode == 13)
+      $(this).click();
+  })
 
   $('#country-div').on('click', function() {
-    $('#countries').toggleClass('collapse');
+    $('#countries').toggleClass('collapse').focus();
   });
+
+  $('#countries').on('focusout', function() {
+    $(this).addClass('collapse');
+  })
+
+  $('#state-div').on('keypress', function(event) {
+    if(event.keyCode == 13)
+      $(this).click();
+  })
 
   $('#state-div').on('click', function() {
-    $('#states').toggleClass('collapse');
-      /* AJAX request for adding shopping list items to cart */
-      /* $.ajax({
-        type: 'get',
-        url: '/cities',
-        data: {
-          id: id,
-          st_id: st_id
-        },
-        success: function (resp) {
-          if(resp == '') {
-            $('#city-div').hide();
-          }
-          else {
-            $('#city-div').show();
-            let stDl = $('#cities')[0];
-            resp.forEach((element) => {
-              let option = document.createElement('option');
-              option.value = element['id'];
-              option.text = element['name'];
-              stDl.appendChild(option);
-            });
-          }
-        },
-        error: function () {
-          alert("An error occured while accessing states")
-        }
-      }); */
+    if($('#states').html() != '')
+      $('#states').toggleClass('collapse').focus();
   });
+
+  $('#states').on('focusout', function() {
+    $(this).addClass('collapse');
+  })
+
+  $('#city-div').on('keypress', function(event) {
+    if(event.keyCode == 13)
+      $(this).click();
+  })
 
   $('#city-div').on('click', function() {
-    $('#cities').toggleClass('collapse');
+    if($('#cities').html() != '')
+      $('#cities').toggleClass('collapse').focus();
   });
 
-  cnty.trigger('change');
+  $('#cities').on('focusout', function() {
+    $(this).addClass('collapse');
+  })
+
+  $('#shipping-country-div').on('keypress', function(event) {
+    if(event.keyCode == 13)
+      $(this).click();
+  })
+
+  $('#shipping-country-div').on('click', function() {
+    $('#shipping-countries').toggleClass('collapse').focus();
+  });
+
+  $('#shipping-countries').on('focusout', function() {
+    $(this).addClass('collapse');
+  })
+
+  $('#shipping-state-div').on('keypress', function(event) {
+    if(event.keyCode == 13)
+      $(this).click();
+  })
+
+  $('#shipping-state-div').on('click', function() {
+    if($('#shipping-states').html() != '')
+      $('#shipping-states').toggleClass('collapse').focus();
+  });
+
+  $('#shipping-states').on('focusout', function() {
+    $(this).addClass('collapse');
+  })
+
+  $('#shipping-city-div').on('keypress', function(event) {
+    if(event.keyCode == 13)
+      $(this).click();
+  })
+
+  $('#shipping-city-div').on('click', function() {
+    if($('#shipping-cities').html() != '')
+      $('#shipping-cities').toggleClass('collapse').focus();
+  });
+
+  $('#shipping-cities').on('focusout', function() {
+    $(this).addClass('collapse');
+  })
 
   $('#expiry-month').on('input', function(event) {
     if(isNaN(Number(this.value)) || this.value > 12) {
@@ -130,9 +169,9 @@ $(function() {
   });
 
   $('#order-form').on('submit', function() {
-    let vale = $('#account-num').val();
+    let vale = $('#account-no').val();
     vale = vale.split(" ").join("");
-    $('#account-num').val(vale);
+    $('#account-no').val(vale);
   }) 
 });
 
@@ -168,10 +207,38 @@ function cardLen(el, event) {
 }
 
 function country(el, id) {
-  $('#country-name').html($(el).html());
-  $('#state-name').html('State');
-  $('#state-name').css('color', '#727272');
-  $('#states').html('');
+  let iso = $(el).attr('data-iso');
+  let callCode = $(el).attr('data-call-code');
+
+  if ($(el).hasClass('shipping')) {
+    $('.shipping-flag-img').attr('src', '/images/flags/' + iso + '.png');
+    $('.shipping-call-code').html('+' + callCode);
+
+    $('#shipping-country-name').html($(el).html());
+    $('#shipping-country').val(id);
+
+    $('#shipping-state-name').html('State');
+    $('#shipping-state-name').css('color', '#727272');
+    $('#shipping-states').html('');
+
+    $('#shipping-city-name').html('City');
+    $('#shipping-city-name').css('color', '#727272');
+    $('#shipping-cities').html('');
+  } else {
+    $('.flag-img').attr('src', '/images/flags/' + iso + '.png');
+    $('.call-code').html('+' + callCode);
+
+    $('#country-name').html($(el).html());
+    $('#country').val(id);
+
+    $('#state-name').html('State');
+    $('#state-name').css('color', '#727272');
+    $('#states').html('');
+
+    $('#city-name').html('City');
+    $('#city-name').css('color', '#727272');
+    $('#cities').html('');
+  }
 
   /* AJAX request for getting states for country */
   $.ajax({
@@ -182,21 +249,35 @@ function country(el, id) {
     },
     success: function (resp) {
       if(resp == '') {
-        $('#state-form-group').hide();
-        $('#city-form-group').hide();
+        if ($(el).hasClass('shipping')) {
+          $('#shipping-state-form-group').hide();
+          $('#shipping-city-form-group').hide();
+        } else {
+          $('#state-form-group').hide();
+          $('#city-form-group').hide();
+        }
       }
       else {
-        $('#state-form-group').show();
-        $('#city-form-group').show();
-        let stDl = $('#states')[0];
+        if ($(el).hasClass('shipping')) {
+          $('#shipping-state-form-group').show();
+          $('#shipping-city-form-group').show();
+          var stList = $('#shipping-states')[0];
+        } else {
+          $('#state-form-group').show();
+          $('#city-form-group').show();
+          var stList = $('#states')[0];
+        }
+
         resp.forEach((element) => {
           let item = document.createElement("li");
+          if ($(el).hasClass('shipping'))
+            $(item).attr('class', 'shipping');
           $(item).html(element['name']);
-          item.setAttribute('id', 'state' + element['id']);
-          item.setAttribute('data-state', element['id'])
-          item.setAttribute('data-country', id);
-          item.setAttribute('onclick', 'state(this)')
-          stDl.appendChild(item);
+          $(item).attr('id', 'state' + element['id']);
+          $(item).attr('data-state', element['id'])
+          $(item).attr('data-country', id);
+          $(item).attr('onclick', 'state(this)')
+          stList.appendChild(item);
         });
       }
     },
@@ -208,6 +289,80 @@ function country(el, id) {
 
 function state(el) {
   let id = $(el).attr('data-state');
-  $('#state-name').html($(el).html());
-  $('#state-name').css('color', '#000');
+  let country_id = $(el).attr('data-country');
+
+  if ($(el).hasClass('shipping')) {
+    $('#shipping-city-name').html('City');
+    $('#shipping-city-name').css('color', '#727272');
+    $('#shipping-cities').html('');
+
+    $('#shipping-state-name').html($(el).html());
+    $('#shipping-state-name').css('color', '#000');
+    $('#shipping-state').val(id);
+  } else {
+    $('#city-name').html('City');
+    $('#city-name').css('color', '#727272');
+    $('#cities').html('');
+    
+    $('#state-name').html($(el).html());
+    $('#state-name').css('color', '#000');
+    $('#state').val(id);
+  }
+
+  /* AJAX request for getting cities for state */
+  $.ajax({
+    type: 'get',
+    url: '/cities',
+    data: {
+      id: id,
+      country_id: country_id
+    },
+    success: function (resp) {
+      if(resp == '') {
+        if ($(el).hasClass('shipping')) {
+          $('#shipping-state-form-group').hide();
+        } else {
+          $('#city-form-group').hide();
+        }
+      }
+      else {
+        if ($(el).hasClass('shipping')) {
+          $('#shipping-city-form-group').show();
+          var ctList = $('#shipping-cities')[0];
+        } else {
+          $('#city-form-group').show();
+          var ctList = $('#cities')[0];
+        }
+        resp.forEach((element) => {
+          let item = document.createElement('li');
+          if ($(el).hasClass('shipping'))
+            $(item).attr('class', 'shipping');
+
+          $(item).html(element['name']);
+          $(item).attr('id', 'city'+element['id']);
+          $(item).attr('data-country', country_id);
+          $(item).attr('data-state', id);
+          $(item).attr('data-city', element['id']);
+          $(item).attr('onclick', 'city(this)')
+          ctList.appendChild(item);
+        });
+      }
+    },
+    error: function () {
+      alert("An error occured while accessing states")
+    }
+  });
+}
+
+function city(el) {
+  let id = $(el).attr('data-city');
+  if ($(el).hasClass('shipping')) {
+    $('#shipping-city-name').html($(el).html());
+    $('#shipping-city-name').css('color', '#000');
+    $('#shipping-city').val(id);
+  } else {
+    $('#city-name').html($(el).html());
+    $('#city-name').css('color', '#000');
+    $('#city').val(id);
+  }
 }

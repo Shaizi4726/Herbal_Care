@@ -332,14 +332,4 @@ class FrontendController extends Controller
         $proAttr = DB::table('product_attributes')->where('product_id', $request->id)->where('size', $request->size)->where('form_id', $request->form)->first();   
       return $proAttr->price;
     }
-
-    public function getStates(Request $request) {
-      $states = DB::table('states')->where('country_id', $request->id)->get();
-      return $states;
-    }
-
-    public function getCities(Request $request) {
-      $cities = DB::table('cities')->where(['country_id' => $request->id, 'state_id' => $request->st_id])->get();
-      return $cities;
-    }
 }
