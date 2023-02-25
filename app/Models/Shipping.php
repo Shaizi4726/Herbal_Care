@@ -36,13 +36,4 @@ class Shipping extends Model
   {
     return $this->belongsTo(City::class, 'city_id');
   }
-
-  /**
-   * The model's default values for attributes.
-   *
-   * @var array
-   */
-  protected $attributes = [
-    'status' => 'new',
-  ];
 }

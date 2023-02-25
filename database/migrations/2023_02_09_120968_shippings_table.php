@@ -20,10 +20,10 @@ return new class extends Migration
       $table->id();
       $table->unsignedBigInteger('order_id')->nullable();
       $table->foreign('order_id')->references('id')->on('orders')->onDelete('CASCADE');
-      $table->string('fname');
-      $table->string('lname');
-      $table->string('cname');
-      $table->unsignedBigInteger('trn_no');
+      $table->string('fname')->nullable();
+      $table->string('lname')->nullable();
+      $table->string('cname')->nullable();
+      $table->unsignedBigInteger('trn_no')->nullable();
       $table->string('phone');
       $table->string('altphone')->nullable();
       $table->longText('address');

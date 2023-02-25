@@ -202,12 +202,12 @@
           <div class="fl-bl">
             <div class="form-group" id="shipping-first-name">
               <label for="shipping-fname">First Name<span>*</span></label>
-              <input type="text" id="shipping-fname" name="shipping-fname" placeholder="First Name" value="{{old('shipping-fname')}}">
+              <input type="text" id="shipping-fname" name="shipping_fname" placeholder="First Name" value="{{old('shipping-fname')}}">
             </div>
 
             <div class="form-group" id="shipping-last-name">
               <label for="shipping-lname">Last Name<span>*</span></label>
-              <input type="text" id="shipping-lname" name="shipping-lname" placeholder="Last Name" value="{{old('shipping-lname')}}">
+              <input type="text" id="shipping-lname" name="shipping_lname" placeholder="Last Name" value="{{old('shipping-lname')}}">
             </div>
           </div>
 
@@ -229,7 +229,7 @@
 
           <div class="form-group">
             <label for="shipping-address">Address<span>*</span></label>
-            <input type="text" name="shipping-address" id="shipping-address" placeholder="Shipping Address" value="{{old('shipping-address')}}">
+            <input type="text" name="shipping_address" id="shipping-address" placeholder="Shipping Address" value="{{old('shipping-address')}}">
           </div>
 
           @if ($errors->get('shipping-address'))
@@ -243,7 +243,7 @@
           <div class="fl-bl">
             <div class="form-group">
               <label for="shipping-landmark">Nearby Landmark</label>
-              <input type="text" name="shipping-landmark" id="shipping-landmark" placeholder="Nearby Landmark" value="{{old('shipping-landmark')}}">
+              <input type="text" name="shipping_landmark" id="shipping-landmark" placeholder="Nearby Landmark" value="{{old('shipping-landmark')}}">
             </div>
 
             <div id="shipping-country-form-group" class="form-group">
@@ -309,7 +309,7 @@
       <fieldset class="payment-mthd type-selection">
         <legend>Payment Method</legend>
         <div class="form-group">
-          <input type="radio" name="pay_mthd" id="cod-input" value="cod">
+          <input type="radio" name="pay_mthd" id="cod-input" value="cod" checked>
           <label for="cod-input">Cash on Delivery</label>
         </div>
         <div class="form-group">
@@ -389,9 +389,10 @@
       @php
         $subtotal = Helper::CartAmount();
         $tax = Helper::totalCartTax();
-        $total_amount = Helper::totalCartAmount();
+        $total = Helper::totalCartAmount();
+
         if(session()->has('coupon')){
-          $total_amount = $total_amount-Session::get('coupon')['value'];
+          $total = $total-Session::get('coupon')['value'];
         }
       @endphp
 
@@ -427,9 +428,9 @@
       <div class="cart-total-value grand-total">
         <h4 class="total"> Grand Total: </h4>
         @if(session()->has('coupon'))
-          <p id="grand-total-value">AED {{number_format($total_amount, 2)}}</p>
+          <p id="grand-total-value">AED {{number_format($total, 2)}}</p>
         @else
-          <p id="grand-total-value">AED {{number_format($total_amount, 2)}}</p>
+          <p id="grand-total-value">AED {{number_format($total, 2)}}</p>
         @endif
       </div>
       <input type="submit" form="order-form" class="btn btn-checkout" value="Place Order">

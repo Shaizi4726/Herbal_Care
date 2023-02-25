@@ -7,6 +7,7 @@ use App\Models\CartItem;
 use App\Models\Order;
 use App\Models\Shipping;
 use App\Models\Payment;
+use App\Models\OrderItem;
 use App\Models\City;
 use App\User;
 use Illuminate\Http\Request;
@@ -16,6 +17,7 @@ use PDF;
 use Notification;
 use Helper;
 use Auth;
+use Session;
 
 class OrderController extends Controller
 {
@@ -61,7 +63,7 @@ class OrderController extends Controller
         ]);
       } else {
         $this->validate($request, [
-          'cname' => 'required|alpha_dashed',
+          'cname' => 'required|string',
           'trn_no' => 'required|numeric'
         ]);
       }
@@ -108,13 +110,16 @@ class OrderController extends Controller
       }
       
       if(Auth::check())
-        if(empty(CartItem::where('user_id', Auth()->user()->id)->first())){
+        if(empty(CartItem::where('user_id', Auth()->user()->id)->first()))
           return back();
-        }
+      else 
+        if(empty(Session::get('cart')))
+          return back();
 
         $order = new Order();
         $order->order_no = 'ORD-'.strtoupper(Str::random(10));
-        $order->user_id = $request->user()->id;
+        if(Auth::check())
+          $order->user_id = $request->user()->id;
         $order->fname = $request->fname;
         $order->lname = $request->lname;
         $order->cname = $request->cname;
@@ -134,8 +139,10 @@ class OrderController extends Controller
 
         if($total > 100)
           $shipping = 0;
-        else
+        else {
           $shipping = City::where('id', $request->city)->pluck('shipping')[0];
+          $total += $shipping;
+        }
 
         $payment = new Payment();
         $payment->order_id = $order_id;
@@ -147,6 +154,64 @@ class OrderController extends Controller
         $payment->shipping = $shipping;
         $payment->total = $total;
         $payment->save();
+
+        $shippings = new Shipping();
+        $shippings->order_id = $order_id;
+        if($request->shipping_option == 'different') {
+          $shippings->fname = $request->shipping_fname;
+          $shippings->lname = $request->shipping_lname;
+          $shippings->phone = $request->shipping_phone;
+          $shippings->altphone = $request->shipping_altphone;
+          $shippings->address = $request->shipping_address;
+          $shippings->city_id = $request->shipping_city;
+          $shippings->landmark = $request->shipping_landmark;
+        } else {
+          $shippings->fname = $request->fname;
+          $shippings->lname = $request->lname;
+          $shippings->cname = $request->cname;
+          $shippings->trn_no = $request->trn_no;
+          $shippings->phone = $request->phone;
+          $shippings->altphone = $request->altphone;
+          $shippings->address = $request->address;
+          $shippings->city_id = $request->city;
+          $shippings->landmark = $request->landmark;
+        }
+        $shippings->save();
+
+        if(Auth::check()) {
+          $carts = CartItem::where('user_id', Auth::user()->id)->get();
+
+          foreach($carts as $cart) {
+            $order_item = new OrderItem;
+            $order_item->order_id = $order_id;
+            $order_item->product_id = $cart->product_id;
+            $order_item->form = $cart->form;
+            $order_item->size = $cart->size;
+            $order_item->price = $cart->price;
+            $order_item->quantity = $cart->quantity;
+            $order_item->amount = $cart->total;
+            $order_item->save();
+          }
+
+          CartItem::where('user_id', Auth::user()->id)->delete();
+        } else {
+          $carts = Session::get('cart');
+
+          foreach($carts as $cart) {
+            $order_item = new OrderItem;
+            $order_item->order_id = $order_id;
+            $order_item->product_id = $cart->product_id;
+            $order_item->form = $cart->form;
+            $order_item->size = $cart->size;
+            $order_item->price = $cart->price;
+            $order_item->quantity = $cart->quantity;
+            $order_item->amount = $cart->total;
+            $order_item->save();
+          }
+
+          Session::pull('cart');
+          Session::pull('id');
+        }
         
       // Notification::send(Auth()->user(), new StatusNotification('Order Placed'));
       

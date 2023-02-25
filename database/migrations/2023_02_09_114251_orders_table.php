@@ -21,10 +21,10 @@ return new class extends Migration
       $table->string('order_no')->unique();
       $table->unsignedBigInteger('user_id')->nullable();
       $table->foreign('user_id')->references('id')->on('users')->onDelete('SET NULL');
-      $table->string('fname');
-      $table->string('lname');
-      $table->string('cname');
-      $table->unsignedBigInteger('trn_no');
+      $table->string('fname')->nullable();
+      $table->string('lname')->nullable();
+      $table->string('cname')->nullable();
+      $table->unsignedBigInteger('trn_no')->nullable();
       $table->string('email');
       $table->string('phone');
       $table->string('altphone')->nullable();

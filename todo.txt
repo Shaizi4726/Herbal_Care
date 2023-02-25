@@ -1,4 +1,4 @@
-Checkout Page(months and years set)
+Checkout Page(on back from error company selected but fields of individual)
 Coupon Validation Backend
 modals
 Mobile Popup Offers
