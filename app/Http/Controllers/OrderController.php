@@ -28,7 +28,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-      $orders=Order::with('payment')->orderBy('id','DESC')->paginate(10);
+      $orders=Order::orderBy('id','DESC')->paginate(10);
       return view('admin_panel.order.index')->with('orders',$orders);
     }
 
@@ -109,14 +109,13 @@ class OrderController extends Controller
         ]);
       }
       
-      if(Auth::check()){
+      if(Auth::check())
         if(empty(CartItem::where('user_id', Auth()->user()->id)->first()))
           return back();
-      }
-      else {
+      else 
         if(empty(Session::get('cart')))
           return back();
-      }
+
         $order = new Order();
         $order->order_no = 'ORD-'.strtoupper(Str::random(10));
         if(Auth::check())
@@ -263,14 +262,14 @@ class OrderController extends Controller
         ]);
         $data=$request->all();
         // return $request->status;
-        // if($request->status=='delivered'){
-        //     foreach($order->cart as $cart){
-        //         $product=$cart->product;
-        //         // return $product;
-        //         $product->stock -=$cart->quantity;
-        //         $product->save();
-        //     }
-        // }
+        if($request->status=='delivered'){
+            foreach($order->cart as $cart){
+                $product=$cart->product;
+                // return $product;
+                $product->stock -=$cart->quantity;
+                $product->save();
+            }
+        }
         $status=$order->fill($data)->save();
         if($status){
             request()->session()->flash('success','Successfully updated order');
@@ -324,7 +323,7 @@ class OrderController extends Controller
             return redirect()->back();
         }
     }
-    
+
     public function orderTrack(){
         return view('frontend.pages.order-track');
     }
@@ -359,7 +358,6 @@ class OrderController extends Controller
 
     // PDF generate
     public function pdf(Request $request){
-      //dd($request->all());
         $order=Order::getAllOrder($request->id);
         // return $order;
         $file_name=$order->order_no.'-'.$order->first_name.'.pdf';
