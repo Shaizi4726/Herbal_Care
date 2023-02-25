@@ -322,7 +322,7 @@
         <legend>Online Payment</legend>
         
         <div class="form-group">
-          <label for="account-num">Card Number</label>
+          <label for="account-no">Card Number</label>
           <input type="tel" id="account-no" class="account-no"  name="account_no"  placeholder="4242 4242 4242 4242" onkeypress="cardLen(this, event)" oninput="cardNum(this, event)" autocomplete="on" value="{{old('account_num')}}">
         </div>
         
@@ -484,5 +484,5 @@
 @endsection
 
 @push('scripts')
-<script src="{{asset('frontend/js/checkout.js')}}"></script>
+  <script src="{{asset('frontend/js/checkout.js')}}"></script>
 @endpush

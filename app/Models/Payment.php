@@ -37,6 +37,5 @@ class Payment extends Model
   protected $attributes = [
     'method' => 'cod',
     'status' => 'unpaid',
-    'shipping' => 'NULL'
   ];
 }

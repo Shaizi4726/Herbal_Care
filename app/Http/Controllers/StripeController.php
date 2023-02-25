@@ -1,9 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\CartItem;
-use App\Models\Product;
-use App\Models\Order;
 use DB;
 use Helper;
 use Stripe;
@@ -12,52 +9,31 @@ use Session;
 use Illuminate\Http\Request;
 
 class StripeController extends Controller
-{
-	
-    public function payment(Request $req)
-    {
-		$cart = CartItem::where('user_id',auth()->user()->id)->where('order_id',null)->get()->toArray();
-    //    Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
-        $data = [];
-    //    dd($cart);
-	//    print_r($req->all()); die();   
-		Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
-	
-    	$data['items'] = Stripe\Charge::create([
-    			"amount"=>$req->amount*100,
-    			"currency"=>"AED",
-    			"source"=>$req->stripeToken,
-    			"description"=>$req->last_name,
-    	]);
-	//	print_r($req->all()); die();   
-    //  echo "<pre>"; print_r($data); die();
-	    $data['invoice_id'] ='HRD-'.strtoupper(uniqid());
-        $data['invoice_description'] = "Order #{$data['invoice_id']} Invoice";
-        $data['return_url'] = route('payment.success');
-        $data['cancel_url'] = route('payment.cancel');
-        
-        // $total = 0;
-        // foreach($data['items'] as $item) {
-        //     $total += $item['price']*$item['qty'];
-        // }
+{ 
+  public function paymentStripe() {
+    return view('paymentstripe');
+  }
 
-        // $data['total'] = $total;
-        // if(session('coupon')){
-        //     $data['city_discount'] = session('coupon')['value'];
-        // }
-        CartItem::where('user_id', auth()->user()->id)->where('order_id', null)->update(['order_id' => session()->get('id')]);
+  public function payment(Request $request) {
+    Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 
-        // return session()->get('id');
-        // $provider = new ExpressCheckout;
-  
-        // $response = $provider->setExpressCheckout($data);
-		Session::flash("success","Payment successfully!");
-
-    //    echo "<pre>"; print_r($response); die();
-        return redirect()->back();
-    }
-	
-    	
-    	
+    $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
+    $token = $stripe->tokens->create([
+      'card' => [
+        'number' => $request->account_no,
+        'exp_month' => $request->expiry_month,
+        'exp_year' => $request->expiry_year,
+        'cvc' => $request->cvv_cvc,
+      ],
+    ]);
     
+    $payment = Stripe\Charge::create ([
+      "amount" => $request->total * 100,
+      "currency" => "aed",
+      "source" => $token,
+      "description" => "Stripe Payment Test"
+    ]);
+
+    return $payment;
+  } 
 }

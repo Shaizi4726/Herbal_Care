@@ -51,11 +51,11 @@ class OrderController extends Controller
     public function store(Request $request) {
       $current_month = Carbon::now()->month;
       $current_year = Carbon::now()->year;
-
+      
       $this->validate($request, [
         'cust_type' => 'required|string'
       ]);
-
+      
       if($request['cust_type'] == 'individual') {
         $this->validate($request, [
           'fname' => 'required|alpha',
@@ -67,7 +67,7 @@ class OrderController extends Controller
           'trn_no' => 'required|numeric'
         ]);
       }
-
+      
       $this->validate($request, [
         'email' => 'required|email:strict,dns',
         'address'=>'nullable|string',
@@ -78,7 +78,7 @@ class OrderController extends Controller
         'phone'=>'nullable|numeric',
         'altphone' => 'nullable|numeric'
       ]);
-
+      
       if($request['shipping_option'] == 'different') {
         $this->validate($request, [
           'shipping-fname' => 'required|alpha',
@@ -92,7 +92,7 @@ class OrderController extends Controller
           'shipping-altphone' => 'nullable|numeric'
         ]);
       }
-
+      
       if($request['pay_mthd'] == 'op') {
         $this->validate($request, [
           'account_name' => 'required|string',
@@ -102,116 +102,124 @@ class OrderController extends Controller
           'expiry_year' => 'required|digits: 4|gte:' . $current_year . '|lte: ' . ($current_year+5) . ''
         ]);
       }
-
+      
       if($request['expiry_year'] == $current_year) {
         $this->validate($request, [
           'expiry_month' => 'gte:' . $current_month . ''
         ]);
       }
       
-      if(Auth::check())
-        if(empty(CartItem::where('user_id', Auth()->user()->id)->first()))
-          return back();
-      else 
+      if(Auth::check()) {
+        if(empty(CartItem::where('user_id', Auth()->user()->id)->get()))
+        return back();
+      }
+      else { 
         if(empty(Session::get('cart')))
-          return back();
+        return back();
+      }
+      
+      $order = new Order();
+      $order->order_no = 'ORD-'.strtoupper(Str::random(10));
+      if(Auth::check())
+      $order->user_id = $request->user()->id;
+      $order->fname = $request->fname;
+      $order->lname = $request->lname;
+      $order->cname = $request->cname;
+      $order->trn_no = $request->trn_no;
+      $order->email = $request->email;
+      $order->phone = $request->phone;
+      $order->altphone = $request->altphone;
+      $order->address = $request->address;
+      $order->city_id = $request->city;
+      $order->landmark = $request->landmark;
+      $order->save();
+      
+      $order_id = Order::where('order_no', $order->order_no)->pluck('id')[0];
+      $subtotal = Helper::CartAmount();
+      $tax = Helper::totalCartTax();
+      $total = Helper::totalCartAmount();
+      
+      if($total > 100)
+      $shipping = 0;
+      else {
+        $shipping = City::where('id', $request->city)->pluck('shipping')[0];
+        $total += $shipping;
+      }
 
-        $order = new Order();
-        $order->order_no = 'ORD-'.strtoupper(Str::random(10));
-        if(Auth::check())
-          $order->user_id = $request->user()->id;
-        $order->fname = $request->fname;
-        $order->lname = $request->lname;
-        $order->cname = $request->cname;
-        $order->trn_no = $request->trn_no;
-        $order->email = $request->email;
-        $order->phone = $request->phone;
-        $order->altphone = $request->altphone;
-        $order->address = $request->address;
-        $order->city_id = $request->city;
-        $order->landmark = $request->landmark;
-        $order->save();
+      $request->request->add(['total' => $total]);
+      
+      $payment = new Payment();
+      $payment->order_id = $order_id;
+      $payment->account_name = $request->account_name;
+      $payment->account_no = $request->account_no;
+      $payment->method = $request->pay_mthd;
+      $payment->subtotal = $subtotal;
+      $payment->tax = $tax;
+      $payment->shipping = $shipping;
+      $payment->total = $total;
+      $payment->save();
 
-        $order_id = Order::where('order_no', $order->order_no)->pluck('id')[0];
-        $subtotal = Helper::CartAmount();
-        $tax = Helper::totalCartTax();
-        $total = Helper::totalCartAmount();
+      if($request['pay_mthd'] == 'op') {
+        $req = (new StripeController)->payment($request);
+      }
+      
+      $shippings = new Shipping();
+      $shippings->order_id = $order_id;
+      if($request->shipping_option == 'different') {
+        $shippings->fname = $request->shipping_fname;
+        $shippings->lname = $request->shipping_lname;
+        $shippings->phone = $request->shipping_phone;
+        $shippings->altphone = $request->shipping_altphone;
+        $shippings->address = $request->shipping_address;
+        $shippings->city_id = $request->shipping_city;
+        $shippings->landmark = $request->shipping_landmark;
+      } else {
+        $shippings->fname = $request->fname;
+        $shippings->lname = $request->lname;
+        $shippings->cname = $request->cname;
+        $shippings->trn_no = $request->trn_no;
+        $shippings->phone = $request->phone;
+        $shippings->altphone = $request->altphone;
+        $shippings->address = $request->address;
+        $shippings->city_id = $request->city;
+        $shippings->landmark = $request->landmark;
+      }
+      $shippings->save();
 
-        if($total > 100)
-          $shipping = 0;
-        else {
-          $shipping = City::where('id', $request->city)->pluck('shipping')[0];
-          $total += $shipping;
+      if(Auth::check()) {
+        $carts = CartItem::where('user_id', Auth::user()->id)->get();
+
+        foreach($carts as $cart) {
+          $order_item = new OrderItem;
+          $order_item->order_id = $order_id;
+          $order_item->product_id = $cart->product_id;
+          $order_item->form = $cart->form;
+          $order_item->size = $cart->size;
+          $order_item->price = $cart->price;
+          $order_item->quantity = $cart->quantity;
+          $order_item->amount = $cart->total;
+          $order_item->save();
         }
 
-        $payment = new Payment();
-        $payment->order_id = $order_id;
-        $payment->account_name = $request->account_name;
-        $payment->account_no = $request->account_no;
-        $payment->method = $request->pay_mthd;
-        $payment->subtotal = $subtotal;
-        $payment->tax = $tax;
-        $payment->shipping = $shipping;
-        $payment->total = $total;
-        $payment->save();
+        CartItem::where('user_id', Auth::user()->id)->delete();
+      } else {
+        $carts = Session::get('cart');
 
-        $shippings = new Shipping();
-        $shippings->order_id = $order_id;
-        if($request->shipping_option == 'different') {
-          $shippings->fname = $request->shipping_fname;
-          $shippings->lname = $request->shipping_lname;
-          $shippings->phone = $request->shipping_phone;
-          $shippings->altphone = $request->shipping_altphone;
-          $shippings->address = $request->shipping_address;
-          $shippings->city_id = $request->shipping_city;
-          $shippings->landmark = $request->shipping_landmark;
-        } else {
-          $shippings->fname = $request->fname;
-          $shippings->lname = $request->lname;
-          $shippings->cname = $request->cname;
-          $shippings->trn_no = $request->trn_no;
-          $shippings->phone = $request->phone;
-          $shippings->altphone = $request->altphone;
-          $shippings->address = $request->address;
-          $shippings->city_id = $request->city;
-          $shippings->landmark = $request->landmark;
+        foreach($carts as $cart) {
+          $order_item = new OrderItem;
+          $order_item->order_id = $order_id;
+          $order_item->product_id = $cart->product_id;
+          $order_item->form = $cart->form;
+          $order_item->size = $cart->size;
+          $order_item->price = $cart->price;
+          $order_item->quantity = $cart->quantity;
+          $order_item->amount = $cart->total;
+          $order_item->save();
         }
-        $shippings->save();
 
-        if(Auth::check()) {
-          $carts = CartItem::where('user_id', Auth::user()->id)->get();
-
-          foreach($carts as $cart) {
-            $order_item = new OrderItem;
-            $order_item->order_id = $order_id;
-            $order_item->product_id = $cart->product_id;
-            $order_item->form = $cart->form;
-            $order_item->size = $cart->size;
-            $order_item->price = $cart->price;
-            $order_item->quantity = $cart->quantity;
-            $order_item->amount = $cart->total;
-            $order_item->save();
-          }
-
-          CartItem::where('user_id', Auth::user()->id)->delete();
-        } else {
-          $carts = Session::get('cart');
-
-          foreach($carts as $cart) {
-            $order_item = new OrderItem;
-            $order_item->order_id = $order_id;
-            $order_item->product_id = $cart->product_id;
-            $order_item->form = $cart->form;
-            $order_item->size = $cart->size;
-            $order_item->price = $cart->price;
-            $order_item->quantity = $cart->quantity;
-            $order_item->amount = $cart->total;
-            $order_item->save();
-          }
-
-          Session::pull('cart');
-          Session::pull('id');
-        }
+        Session::pull('cart');
+        Session::pull('id');
+      }
         
       // Notification::send(Auth()->user(), new StatusNotification('Order Placed'));
       
@@ -357,14 +365,14 @@ class OrderController extends Controller
     }
 
     // PDF generate
-    public function pdf(Request $request){
-        $order=Order::getAllOrder($request->id);
-        // return $order;
-        $file_name=$order->order_no.'-'.$order->first_name.'.pdf';
-        // return $file_name;
-        $pdf=PDF::loadview('admin_panel.order.pdf',compact('order'));
-        return $pdf->download($file_name);
+    public function pdf(int $id){
+      $order = Order::with('order_items')->where('id', $id)->get()[0];
+      $file_name = $order->order_no.'-'.$order->fname.'.pdf';
+      
+      $pdf = PDF::loadview('admin_panel.order.pdf', compact('order'));
+      return $pdf->download($file_name);
     }
+
     // Income chart
     public function incomeChart(Request $request){
         $year=\Carbon\Carbon::now()->year;

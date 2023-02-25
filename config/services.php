@@ -45,10 +45,8 @@ return [
         'redirect' => 'http://localhost:8000/login/facebook/callback',
      ],
 
-     'stripe' => [
-        'model'  => env('CASHIER_MODEL'),
-        'key'    => env('STRIPE_KEY'),
-        'secret_key' => env('STRIPE_API_SECRET'),
+    'stripe' => [
+      'secret' => env('STRIPE_SECRET'),
     ],
 
 ];
