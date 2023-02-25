@@ -71,6 +71,11 @@ class Order extends Model
     return $this->belongsTo(Coupon::class, 'coupon_id');
   }
 
+  public static function getAllOrder($id){
+      return Order::with('order_items')->find($id);
+  }
+
+
   /**
    * The model's default values for attributes.
    *

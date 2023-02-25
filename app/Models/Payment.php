@@ -28,7 +28,7 @@ class Payment extends Model
   {
     return $this->belongsTo(Order::class, 'order_id');
   }
-
+  
   /**
    * The model's default values for attributes.
    *

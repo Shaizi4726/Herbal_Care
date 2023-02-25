@@ -1,4 +1,4 @@
-Checkout Page(on back from error company selected but fields of individual)
+Checkout Page
 Coupon Validation Backend
 modals
 Mobile Popup Offers
@@ -16,3 +16,4 @@ Forgot Password Page
 aboutUs Check Email Validation backend
 username and password with verify email
 link address with google map
+Add list Show (details page strat)

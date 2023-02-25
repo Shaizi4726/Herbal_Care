@@ -90,7 +90,7 @@
   <div class="invoice-top">
     <div class="invoice-top float-left">
       <h6>Buyer</h6>
-      <h3>{{$order->first_name}} {{$order->last_name}}</h3>
+      <h3>{{$order->fname}} {{$order->lname}}</h3>
       <div class="address">
         <p>
           <strong>Country: </strong>
@@ -103,9 +103,7 @@
         <p><strong>Phone:</strong> {{ $order->phone }}</p>
           <p><strong>Email:</strong> {{ $order->email }}</p>
       </div>
-    </div>  
-   
-    
+    </div>      
     <div class="invoice-right-top float-right" > 
       <h5 class="invoice-right-top ">Tax Invoice</h5>   
       <h6>Invoice #{{$order->order_no}}</h6>
@@ -118,70 +116,58 @@
     <div class="table-header">
       <h5>Order Details</h5>
     </div>
-    <table class="table table-bordered table-stripe">
+    <table class="table table-bordered solid">
       <thead>
         <tr>
           <th scope="col" class="col-6">Product</th>
           <th scope="col" class="col-6">Form</th>
+          <th scope="col" class="col-3">size</th>
           <th scope="col" class="col-3">Quantity</th>
           <th scope="col" class="col-3">Unit Price</th>
-          <th scope="col" class="col-3">size</th>
-          <th scope="col" class="col-3">Total(Excluding VAT)</th>
-          <th scope="col" class="col-3">VAT 5%</th>
-          <th scope="col" class="col-3">VAT Amount</th>
-          <th scope="col" class="col-6">Total(Including VAT)</th>
+          <th scope="col" class="col-3">Amount</th>
         </tr>
       </thead>
       <tbody>
-      @foreach($order->cart_info as $cart)
+      @foreach($order->order_items as $order_item)
       @php 
-        $product=DB::table('products')->select('title')->where('id',$cart->product_id)->get();
+        $product=DB::table('products')->select('name')->where('id',$order_item->product_id)->get();
       @endphp
         <tr>
-          <td><span>
+          <td>
+            <span>
               @foreach($product as $pro)
                 {{$pro->name}}
               @endforeach
-            </span></td>
-          <td>{{$cart->form}}</td>
-          <td>x{{$cart->quantity}}</td>
-          <td><span>${{number_format($cart->price,2)}}</span></td>
-          <td>{{$cart->size}}</td>
-         <td><span>${{number_format($cart->tax,2)}}</span></td>
-          <td><span>5%</span></td>
-          <td><span>${{number_format($cart->total,2)}}</span></td>
-          <td><span>${{number_format($cart->subtotal,2)}}</span></td>
+            </span>
+          </td>
+          <td>{{$order_item->form}}</td>
+          <td>{{$order_item->size}}</td>
+          <td>{{$order_item->quantity}}</td>
+          <td><span>${{number_format($order_item->price,2)}}</span></td>
+          <td><span>${{number_format($order_item->amount,2)}}</span></td>
         </tr>
       @endforeach
       </tbody>
       <tfoot>
-        <tr>
-          
-          
+        <tr>          
           <th scope="col" class="empty"></th>
           <th scope="col" class="empty"></th>
           <th scope="col" class="empty"></th>
           <th scope="col" class="empty"></th>
-          <th scope="col" class="empty"></th>
-          <th scope="col" class="text-right">${{number_format($order->tax_total,2)}}</th>
-          <th scope="col" class="empty"></th>
-          <th scope="col" class="text-right">${{number_format($order->t_total,2)}}</th>
-          <th scope="col"> <span>${{number_format($order->sub_total,2)}}</span></th>
+          <th scope="col" class="text-right">Total</th>
+          <th scope="col" class="text-right">${{number_format($order->payment->subtotal,2)}}</th>         
         </tr>
-
-        <tr>
-          
-          <th scope="col" class="empty"></th>
-          <th scope="col" class="empty"></th>
-          <th scope="col" class="empty"></th>
+      @if($order->coupon_id)
+        <tr>         
           <th scope="col" class="empty"></th>
           <th scope="col" class="empty"></th>
           <th scope="col" class="empty"></th>
           <th scope="col" class="empty"></th>
           <th scope="col" class="text-right">Coupon:</th>
-          <th scope="col"> <span>- ${{number_format($order->coupon,2)}}</span></th>
+          <th scope="col"> <span>- ${{number_format($order->coupon->value,2)}}</span></th>        
         </tr>
-      {{-- @if(!empty($order->coupon))
+        
+      {{-- @if(!empty($order->coupon->value))
         <tr>
           <th scope="col" class="empty"></th>
           <th scope="col" class="text-right">Discount:</th>
@@ -189,33 +175,31 @@
         </tr>
       @endif --}}
         <tr>
+        @endif
         <th scope="col" class="empty"></th>
           
+          <!-- <th scope="col" class="empty"></th>
+          
+          <th scope="col" class="empty"></th>-->
+          <th scope="col" class="empty"></th> 
+          <th scope="col" class="empty"></th>
           <th scope="col" class="empty"></th>
           
-          <th scope="col" class="empty"></th>
-          <th scope="col" class="empty"></th>
-          <th scope="col" class="empty"></th>
-          <th scope="col" class="empty"></th>
-          
-          @php
-            $city_charge=DB::table('citys')->where('id',$order->city_id)->pluck('price');
-          @endphp
-          @if($order->city_id == null)
-          {{-- @if(!empty($city_charge))
-          <th scope="col" class="text-right ">city:</th>
-          <th><span>+ ${{number_format($city_charge[0],2)}}</span></th>
+          @if($order->payment->shipping == null)
+          {{-- @if(!empty($order->payment->shipping))
+          <th scope="col" class="text-right ">Shipping:</th>
+          <th><span>+ ${{number_format($order->payment->shipping,2)}}</span></th>
           @endif --}}
           @else
-          <th scope="col" class="text-right ">city:</th>
-          <th><span>+ ${{number_format($city_charge[0],2)}}</span></th>
+          <th scope="col" class="text-right ">Shipping:</th>
+          <th><span>+ ${{number_format($order->payment->shipping,2)}}</span></th>
           @endif
         </tr>
         <tr>
         <th scope="col" class="empty"></th>
+          <!-- <th scope="col" class="empty"></th>
           <th scope="col" class="empty"></th>
-          <th scope="col" class="empty"></th>
-          <th scope="col" class="empty"></th>
+          <th scope="col" class="empty"></th> -->
           <th scope="col" class="empty"></th>
           <th scope="col" class="empty"></th>
           <th scope="col" class="empty"></th>

@@ -21,10 +21,8 @@
               <th>Order No.</th>
               <th>Name</th>
               <th>Email</th>
-              <th>Quantity</th>
-              <th>Charge</th>
-              <th>Total Amount</th>
-              <th>payment Status</th>
+             <th>Total Amount</th>
+              <th>Payment Status</th>
               <th>Status</th>
               <th>Action</th>
             </tr>
@@ -34,64 +32,59 @@
               <th>S.N.</th>
               <th>Order No.</th>
               <th>Name</th>
-              <th>Email</th>
-              <th>Quantity</th>
-              <th>Charge</th>
+              <th>Email</th>            
               <th>Total Amount</th>
-              <th>payment Status</th>
-              <th>Status</th>
+              <th>Payment Status</th>  
+              <th>Status</th>           
               <th>Action</th>
               </tr>
           </tfoot>
           <tbody>
-            @foreach($orders as $order)  
-            @php
-                $city_charge=DB::table('citys')->where('id',$order->city_id)->pluck('price');
-            @endphp 
             <!-- @php
-                $cart=DB::table('carts')->get();
+              $payments = DB::table('payments')->orderBy('id','DESC')->get('total');
             @endphp -->
-                <tr>
-                    <td>{{$order->id}}</td>
-                    <td>{{$order->order_no}}</td>
-                    <td>{{$order->first_name}} {{$order->last_name}}</td>
-                    <td>{{$order->email}}</td>
-                    <td>{{$order->quantity}}</td>
-                    <td>@foreach($city_charge as $data) AED {{number_format($data,2)}} @endforeach</td>
-                    <td>AED {{number_format($order->total_amount,2)}}</td>
-                    <!-- <th>@foreach($cart as $data) @if($order->id == $data->order_id) {{$data->form}} @endif @endforeach</th> -->
-                    <td>{{$order->payment_status}}</td>
-                    <td>
-                        @if($order->status=='new')
-                          <span class="badge badge-primary">{{$order->status}}</span>
-                        @elseif($order->status=='process')
-                          <span class="badge badge-warning">{{$order->status}}</span>
-                        @elseif($order->status=='delivered')
-                          <span class="badge badge-success">{{$order->status}}</span>
-                        @else
-                          <span class="badge badge-danger">{{$order->status}}</span>
-                        @endif
-                    </td>
-                    <td>
-                        <a href="{{route('order.show',$order->id)}}" class="btn btn-warning btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="view" data-placement="bottom"><i class="fas fa-eye"></i></a>
-                        <a href="{{route('order.edit',$order->id)}}" class="btn btn-primary btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>
-                        <form method="POST" action="{{route('order.destroy',[$order->id])}}">
-                          @csrf 
-                          @method('delete')
-                              <button class="btn btn-danger btn-sm dltBtn" data-id="{{$order->id}}" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
-                        </form>
-                    </td>
-                </tr>  
+            @foreach($orders as $order)             
+              <tr>
+                <td>{{$order->id}}</td>
+                <td>{{$order->order_no}}</td>
+                <td>{{$order->fname}} {{$order->lname}}</td>
+                <td>{{$order->email}}</td>
+                
+                   
+                <td>AED {{number_format($order->payment->total,2)}}</td>
+                <td>{{$order->payment->status}}</td>
+                <td>
+                  @if($order->status=='new')
+                    <span class="badge badge-primary">{{$order->status}}</span>
+                  @elseif($order->status=='process')
+                    <span class="badge badge-warning">{{$order->status}}</span>
+                  @elseif($order->status=='delivered')
+                    <span class="badge badge-success">{{$order->status}}</span>
+                  @else
+                    <span class="badge badge-danger">{{$order->status}}</span>
+                  @endif
+                </td>
+               
+                <td>
+                  <a href="{{route('order.show',$order->id)}}" class="btn btn-warning btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="view" data-placement="bottom"><i class="fas fa-eye"></i></a>
+                  <a href="{{route('order.edit',$order->id)}}" class="btn btn-primary btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>
+                  <form method="POST" action="{{route('order.destroy',[$order->id])}}">
+                    @csrf 
+                    @method('delete')
+                        <button class="btn btn-danger btn-sm dltBtn" data-id="{{$order->id}}" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
+                  </form>
+                </td>
+              </tr>  
             @endforeach
           </tbody>
         </table>
         {!! $orders->withQueryString()->links('pagination::bootstrap-5') !!}
         
-        @else
-          <h6 class="text-center">No orders found!!! Please order some products</h6>
-        @endif
-      </div>
+      @else
+        <h6 class="text-center">No orders found!!! Please order some products</h6>
+      @endif
     </div>
+  </div>
 </div>
 @endsection
 
