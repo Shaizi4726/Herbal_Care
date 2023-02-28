@@ -29,7 +29,7 @@ $(function() {
     }
   });
 
-  $('[name|=shipping-option]').on('change', function() {
+  $('[name|=shipping_option]').on('change', function() {
     if(this.value == 'different') {
       $('#shipping-details').toggleClass('collapse');
       $('#cart-summary').css('max-height', '+=25em');

@@ -19,7 +19,7 @@ class OrderItem extends Model
    *
    * @var array
    */
-  protected $fillable = ['order_id', 'product_id', 'form', 'size', 'price', 'quantity', 'amount'];
+  protected $fillable = ['order_id', 'product_id', 'form', 'size', 'price', 'quantity', 'subtotal', 'tax', 'total'];
   
   /**
    * Get the order that owns the order item.

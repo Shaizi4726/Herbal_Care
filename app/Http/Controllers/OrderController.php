@@ -81,15 +81,15 @@ class OrderController extends Controller
       
       if($request['shipping_option'] == 'different') {
         $this->validate($request, [
-          'shipping-fname' => 'required|alpha',
-          'shipping-lname' => 'required|alpha',
-          'shipping-address'=>'required|string',
-          'shipping-landmark'=>'nullable|string',
-          'shipping-country' => 'required|string',
-          'shipping-state' => 'required|string',
-          'shipping-city' => 'required|string',
-          'shipping-phone' => 'required|numeric',
-          'shipping-altphone' => 'nullable|numeric'
+          'shipping_fname' => 'required|alpha',
+          'shipping_lname' => 'required|alpha',
+          'shipping_address'=>'required|string',
+          'shipping_landmark'=>'nullable|string',
+          'shipping_country' => 'required|string',
+          'shipping_state' => 'required|string',
+          'shipping_city' => 'required|string',
+          'shipping_phone' => 'required|numeric',
+          'shipping_altphone' => 'nullable|numeric'
         ]);
       }
       
@@ -197,7 +197,9 @@ class OrderController extends Controller
           $order_item->size = $cart->size;
           $order_item->price = $cart->price;
           $order_item->quantity = $cart->quantity;
-          $order_item->amount = $cart->total;
+          $order_item->subtotal = $cart->subtotal;
+          $order_item->tax = $cart->tax;
+          $order_item->total = $cart->total;
           $order_item->save();
         }
 
@@ -365,12 +367,15 @@ class OrderController extends Controller
     }
 
     // PDF generate
-    public function pdf(int $id){
-      $order = Order::with('order_items')->where('id', $id)->get()[0];
+    public function pdf($id){
+      $order = Order::with('order_items', 'payment', 'shipping')->where('id', $id)->get()[0];
       $file_name = $order->order_no.'-'.$order->fname.'.pdf';
       
       $pdf = PDF::loadview('admin_panel.order.pdf', compact('order'));
+      
+      return $pdf->stream($file_name);
       return $pdf->download($file_name);
+      return view('admin_panel.order.pdf', compact('order'));
     }
 
     // Income chart

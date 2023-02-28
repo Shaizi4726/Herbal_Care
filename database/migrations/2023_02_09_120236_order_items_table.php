@@ -26,7 +26,9 @@ return new class extends Migration
       $table->string('size');
       $table->float('price');
       $table->integer('quantity');
-      $table->float('amount');
+      $table->float('subtotal');
+      $table->float('tax');
+      $table->float('total');
       $table->timestamps();
     });
   }

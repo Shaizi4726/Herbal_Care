@@ -188,12 +188,12 @@
         <h5>Same As Above?</h5>
         <div class="type-selection">
           <div class="form-group">
-            <input type="radio" name="shipping-option" id="same" value="same" checked>
+            <input type="radio" name="shipping_option" id="same" value="same" checked>
             <label for="same">Yes</label>
           </div>
           
           <div class="form-group">
-            <input type="radio" name="shipping-option" id="different" value="different">
+            <input type="radio" name="shipping_option" id="different" value="different">
             <label for="different">No</label>
           </div>
         </div>
