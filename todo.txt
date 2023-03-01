@@ -15,4 +15,6 @@ Forgot Password Page
 aboutUs Check Email Validation backend
 username and password with verify email
 link address with google map
-Add list Show (details page strat)
+Add list Show (details page)
+other image not show on details page
+Admin page logout not work

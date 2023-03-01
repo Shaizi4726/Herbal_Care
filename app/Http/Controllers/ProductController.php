@@ -4,13 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
-use App\Models\ProductsAttribute;
+use App\Models\ProductAttribute;
 use App\Models\ProductCategory;
 use App\Models\ProductForm;
 use App\Models\Category;
 use App\Models\SubCategory;
 use App\Models\Brand;
-use App\Models\Image;
+use App\Models\ProductBrand;
+use App\Models\Coupon;
+use App\Models\ProductImage;
 use App\Imports\ProductsImport;
 use Illuminate\Support\Facades\File;
 
@@ -37,13 +39,15 @@ class ProductController extends Controller
   public function create()
   {
       $brand=Brand::get();
+      $coupon=Coupon::get();
       $category=Category::get();
       $subcategory=SubCategory::get();
       $product_category=ProductCategory::get();
      
       // return $category;
       return view('admin_panel.product.create')->with('product_categories',$product_category)
-      ->with('categories',$category)->with('brands',$brand)->with('subcategories',$subcategory);
+      ->with('categories',$category)->with('brands',$brand)->with('subcategories',$subcategory)
+      ->with('coupons',$coupon);
   }
 
   /**
@@ -53,29 +57,30 @@ class ProductController extends Controller
    * @return \Illuminate\Http\Response
    */
   public function store(Request $request)
-  {  dd($request->all());                  
+  {    //dd($request->all());                
       $this->validate($request,[
-        'plu'=>'required|numeric',
-        'name'=>'string|required',
-        'slug'=>'string|required',
-        'sci_name'=>'string|nullable',
-        'other_name'=>'string|nullable',
-        'benefits'=>'string|nullable',
-        'description'=>'string|nullable', 
-        'dprecautions'=>'string|nullable',                 
-        'photo'=>'required',
-        'promotion'=>'required|in:default,new,trending',
-        'minprice'=>'numeric|nullable',
-        'photo.*'=>'image|mimes:jpg,jpeg,png,gif|max:1024|required',
-        'coupon_id'=>'nullable|exists:coupons,id',            
-        'status'=>'required|in:active,inactive'
+        // 'plu'=>'required|numeric',
+        // 'name'=>'string|required',
+        // 'slug'=>'string|required',
+        // 'sci_name'=>'string|nullable',
+        // 'other_name'=>'string|nullable',
+        // 'benefits'=>'string|nullable',
+        // 'description'=>'string|nullable', 
+        // 'precautions'=>'string|nullable',                 
+        // 'photo'=>'required',
+        // 'promotion'=>'required|in:default,new,trending',
+        // 'minprice'=>'numeric|nullable',
+        // 'coupon_id'=>'nullable|exists:coupons,id',            
+        // 'status'=>'required|in:active,inactive'
           
     ]);
-    
-    $data=$request->all();        
+    //dd($request->all());  
+    $data=$request->all(); 
+         
     $slug=Str::slug($request->name);
     $count=Product::where('slug',$slug)->count();        
     $data['slug']=$slug;
+
     $status=Product::create($data);
     $brands = [];
     $brands[] =$request->brand_id;
@@ -91,33 +96,59 @@ class ProductController extends Controller
     }   
     $categories = [];
     $categories[] = $request->cat_id;
+    $subcategories = [];
+    $subcategories[] = $request->subcat_id;
     for($i=2; $i<=$request->cat_count; $i++){
         $cat= 'cat_id'.$i;
-        $categories[] = $request->$cat;
+        $categories[] = $request->$cat; 
+       
     }
-    foreach ($categories as $product_cat) {
-        $category = new ProductCategory;
-        $category['product_id']=$status->id;           
-        $category['category_id']=$product_cat;
-        $category->save();
-    }        
+    for($i=2; $i<=$request->cat_count; $i++){ 
+        $subcat= 'subcat_id'.$i;
+        $subcategories[]= $request->$subcat;   
+    }
+    if($categories[0]!==""){
+        foreach ($categories as $product_cat) {
+            $category = new ProductCategory;
+            $category['product_id']=$status->id;           
+            $category['cat_id']=$product_cat;
+            $category->save();
+        }
+    }
+    if($subcategories[0]!==""){
+        foreach ($subcategories as $product_subcat) {
+            $subcategory = new ProductCategory;
+            $subcategory['product_id']=$status->id;  
+            $category['cat_id']=$product_cat;         
+            $subcategory['subcat_id']=$product_subcat;            
+            $subcategory->save();
+        }
+    }           
     if($request->hasFile("images")){
         $files=$request->file("images");
         foreach($files as $file){
             $imageName=time().'_'.$file->getClientOriginalName();
             $request['product_id']=$status->id;
-            $request['plu']=$status->plu;
-            $request['image']=$imageName;
+            $request['name']=$imageName;
             $file->move(\public_path("/images"),$imageName);
-            Image::create($request->all());
+            ProductImage::create($request->all());
         }
+    }  
+    $forms = [];
+    $forms[] =$request->form_id;
+    
+    foreach ($forms as $product_form) {
+        $form = new ProductForm;
+        $form['product_id']=$status->id;           
+        $form['form_id']=$product_form;
+        $form->save();
     }            
-    for($i=0; $i<count($request->form); $i++){
+    for($i=0; $i<count($request->form_id); $i++){
         $attribute = new ProductsAttribute;
         $attribute['product_id']=$status->id;           
-        $attribute['plu']=$request->plu;
+        $attribute['flu']=$request->flu[$i];
         $attribute['sku']= $request->sku[$i];
-        $attribute['form']=$request->form[$i];
+        $attribute['form_id']=$request->form_id[$i];
         $attribute['size']=$request->size[$i];
         $attribute['price']=$request->price[$i];
         $attribute['discount']=$request->discount[$i];
@@ -156,18 +187,20 @@ class ProductController extends Controller
   public function edit($id)
   {
       $brand=Brand::get();
+      $coupon=Coupon::get();
       $product=Product::findOrFail($id);
       $category=Category::get();
       $items=Product::where('id',$id)->get();
-      $attribute=ProductsAttribute::where('id',$id)->get();
-      $image=Image::where('id',$id);
+      $attribute=ProductAttribute::where('id',$id)->get();
+      $image=ProductImage::where('id',$id);
       // return $items;
       return view('admin_panel.product.edit')->with('product',$product)
           ->with('brands',$brand)
           ->with('categories',$category)
           ->with('items',$items)
           ->with('attributes',$attribute)
-          ->with('image',$image);
+          ->with('image',$image)
+          ->with('coupons',$coupon);
   }
 
   /**
@@ -218,7 +251,8 @@ class ProductController extends Controller
           foreach ($categories as $product_cat) {
               $category = new ProductCategory;
               $category['product_id']=$id;           
-              $category['category_id']=$product_cat;
+              $category['cat_id']=$product_cat;
+              $category['subcat_id']=$product_cat->subcat_id;
               $category->save();
           }
           // dd($request->sku[0]);

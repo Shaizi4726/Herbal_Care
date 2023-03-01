@@ -11,14 +11,14 @@
         <div class="form-group">
           <label for="inputTitle" class="col-form-label">Plu Code <span class="text-danger">*</span></label>
           <input id="inputTitle" type="text" name="plu" placeholder="Enter Plu"  value="{{old('plu')}}" class="form-control">
-          @error('title')
+          @error('plu')
           <span class="text-danger">{{$message}}</span>
           @enderror
         </div>
         <div class="form-group">
           <label for="inputTitle" class="col-form-label">Name <span class="text-danger">*</span></label>
-          <input id="inputTitle" type="text" name="title" placeholder="Enter Name"  value="{{old('title')}}" class="form-control">
-          @error('title')
+          <input id="inputTitle" type="text" name="name" placeholder="Enter Name"  value="{{old('name')}}" class="form-control">
+          @error('name')
           <span class="text-danger">{{$message}}</span>
           @enderror
         </div>
@@ -38,8 +38,8 @@
         </div>
         <div class="form-group">
           <label for="benefit" class="col-form-label">Benefit</label>
-          <textarea class="form-control" id="benefit" name="benefit">{{old('benefit')}}</textarea>
-          @error('benefit')
+          <textarea class="form-control" id="benefits" name="benefits">{{old('benefits')}}</textarea>
+          @error('benefits')
           <span class="text-danger">{{$message}}</span>
           @enderror
         </div>
@@ -58,10 +58,22 @@
           @enderror
         </div>
         <div class="form-group">
-          <div class="category">
+          <label for="coupon_id">Coupon</label>
+          {{-- {{$coupons}} --}}
+          <div class="coupon">
+            <select name="coupon_id" id="coupon_id" class="form-control">
+              <option value="">--Select Coupon--</option>
+              @foreach($coupons as $coupon)
+              <option value="{{$coupon->id}}">{{$coupon->code}}</option>
+              @endforeach
+            </select>
+          </div>         
+        </div>
+        <div class="form-group">
+          <div id="category">
             <label for="category_id">Category</label>
             {{-- {{$categories}} --}}
-            <select name="category_id" id="category_id" class="form-control category_id">
+            <select name="cat_id" id="category_id" class="form-control category_id">
               <option value="">--Select category--</option>
               @foreach($categories as $category)
               <option value="{{$category->id}}">{{$category->name}}</option>
@@ -70,22 +82,24 @@
           
             <div class="form-group d-none child_cat_div" id="child_cat_div">
               <label for="child_cat_id">Sub Category</label>
-              <select name="child_cat_id" id="child_cat_id" class="form-control child_cat_id">
+              <select name="subcat_id" id="child_cat_id" class="form-control child_cat_id">
                 <option value="">--Select any category--</option>
                 {{-- @foreach($subcategories as $key=>$subcategory)
                   <option value='{{$subcategory->id}}'>{{$subcategory->name}}</option>
                 @endforeach --}}
-              </select>  
+              </select> 
+              
             </div>
             <a href="javascript:void(0);" class="category_button" title="Add field">Add</a><br> 
           </div>
-                 
+          <input type="hidden" id="cat_count" name="cat_count" value="">
+          <input type="hidden" id="subcat_count" name="subcat_count" value="">          
         </div>
         
         <div class="form-group">
           <label for="brand_id">Brand</label>
           {{-- {{$brands}} --}}
-          <div class="barand">
+          <div class="brand">
             <select name="brand_id" id="brand_id" class="form-control">
               <option value="">--Select Brand--</option>
               @foreach($brands as $brand)
@@ -112,18 +126,17 @@
           <span class="text-danger">{{$message}}</span>
           @enderror
         </div>
-
         @php
-          $forms = DB::table('product_forms')->get();
+          $form = DB::table('product_forms')->first();
         @endphp
-
         <div class="controls">
           <label class="control-label">Size Wise Price: </label>                                
           <div class="control-group">
             
             <div class="field_wrapper">
               <div class="abc">
-                <input type="select" class="name" name="form[]" id="form" placeholder="form" style="width:120px;"/>
+                <input type="text" name="flu[]" id="flu" placeholder="flu" style="width:120px;"/> 
+                <input type="text" class="form_id" value="{{$product->form->name}}" name="form_id[]" id="form" placeholder="form_id" style="width:120px;"/>
                 <input type="text" name="sku[]" id="sku" placeholder="sku" style="width:120px;" required/>                                    
                 <input type="text" name="size[]" id="size" placeholder="size" style="width:120px;"required/>
                 <input type="float"  name="price[]" id="price" placeholder="price" style="width:120px;"required/>
@@ -209,7 +222,7 @@
   });
 
   $(document).ready(function() {
-    $('#benefit').summernote({
+    $('#benefits').summernote({
       placeholder: "Write benefit.....",
         tabsize: 2,
         height: 100
@@ -240,7 +253,7 @@
 
   $(document).ready(function() {
     var max_fields = 15;
-    var wrapper = $(".barand");
+    var wrapper = $(".brand");
     var add_button = $(".brand_button");
 
     var x = 1;
@@ -267,34 +280,76 @@
 
   $(document).ready(function() {
     var max_fields = 15;
-    var wrapper = $(".category");
-    var add_button = $(".category_button");
     var x = 1;
+    var wrapper = $("#category");
+    var add_button = $(".category_button");
+    
     $(add_button).click(function(e) {
-        e.preventDefault();
-        if (x < max_fields) {
-          x++;
-          $(wrapper).append(`<div><br><label for="category_id${x}">Category</label>
-          <select name="category_id${x}" id="category_id${x}" class="form-control category_id">
-            <option value="">--Select category--</option>
-            @foreach($categories as $category)
-            <option value="{{$category->id}}">{{$category->name}}</option>
-            @endforeach
+      e.preventDefault();
+      if (x < max_fields) {
+        x++;
+        $(wrapper).append(`<div class="category${x}"><br><label for="cat_id">Category</label>
+        <select name="cat_id${x}" id="category_id${x}" class="form-control category_id${x}">
+          <option value="">--Select category--</option>
+          @foreach($categories as $category)
+          <option value="{{$category->id}}">{{$category->name}}</option>
+          @endforeach
+        </select>
+        
+        <div class="form-group d-none child_cat_div${x}" id="child_cat_div${x}">
+          <label for="subcat_id${x}">Sub Category</label>
+          <select name="subcat_id${x}" id="child_cat_id${x}" class="form-control child_cat_id${x}">
+            <option value="">--Select any category--</option>
+            {{-- @foreach($subcategories as $key=>$subcategory)
+              <option value='{{$subcategory->id}}'>{{$subcategory->name}}</option>
+            @endforeach --}}
           </select>
-          
-          <div class="form-group d-none child_cat_div${x}" id="child_cat_div${x}">
-            <label for="child_cat_id">Sub Category</label>
-            <select name="child_cat_id${x}" id="child_cat_id${x}" class="form-control child_cat_id">
-              <option value="">--Select any category--</option>
-              {{-- @foreach($subcategories as $key=>$subcategory)
-                <option value='{{$subcategory->id}}'>{{$subcategory->name}}</option>
-              @endforeach --}}
-            </select>
-          </div> <a href="#" class="delete">Delete</a></div>`);
-          $("#category_count").val(x);
-        } else {
-          alert('You Reached the limits')
+        </div> <a href="#" class="delete">Delete</a></div>`);
+        $("#cat_count").val(x);
+        $("#subcat_count").val(x);
+        
+      } else {
+        alert('You Reached the limits')
+      }
+      $(`.category_id${x}`).change(function (){         
+        var category_id=$(this).val();
+        if(category_id !=null){         
+          // Ajax call
+          $.ajax({        
+            url:`/admin/category/"+category_id+"/child`,
+            data:{
+              _token:"{{csrf_token()}}",
+              id:category_id
+            },
+            type:"GET",
+            success:function(response){       
+              if(typeof(response) !='object'){
+                response=$.parseJSON(response)            
+              }
+              var html_option="<option value=''>----Select sub category----</option>"
+              if(response.status){
+                var data=response.data;
+                if(response.data){
+                  $(`.child_cat_div${x}`).removeClass('d-none');
+                  $.each(data,function(id,name){
+                    html_option +="<option value='"+id+"'>"+name+"</option>"
+                  });
+                }
+                else{ 
+                }
+              }
+              else{
+                
+                $(`.child_cat_div${x}`).addClass('d-none');
+              }
+              $(`.child_cat_id${x}`).html(html_option);
+            }
+          });
         }
+        else{
+        }
+        
+      })
     });
     $(wrapper).on("click", ".delete", function(e) {
       e.preventDefault();
@@ -303,11 +358,12 @@
     })
   });
  
-  $('.category_id').change(function (){     
+  $('.category_id').change(function (){ 
+        
     var category_id=$(this).val();
-   
+    console.log(category_id);
     if(category_id !=null){
-      alert(category_id);
+      //alert(category_id);
       // Ajax call
       $.ajax({        
         url:"/admin/category/"+category_id+"/child",
@@ -356,13 +412,14 @@
         e.preventDefault();
         if (x < max_fields) {
             x++;
-            $(wrapper).append(`<div><input type="select" class="title" name="form[]" id="form" 
-            placeholder="form" style="width:120px;"/><input type="text" name="sku[]" id="sku" 
-            placeholder="sku" style="width:120px; margin-right:5px; margin-top:5px;" required />
-            <input type="text" name="size[]" id="size" placeholder="size" style="width:120px; margin-right:5px" required/>
-            <input type="text" name="price[]" id="price" placeholder="price" style="width:120px; margin-right:4px" required/>
+            $(wrapper).append(`<div>
+            <input type="text" name="flu[]" id="flu" placeholder="flu" style="width:120px;margin-right:5px; margin-top:5px;"/>
+            <input type="select" class="form_id" name="form_id[]" id="form" placeholder="form_id" style="width:120px;"/>
+            <input type="text" name="sku[]" id="sku" placeholder="sku" style="width:120px; margin-right:5px; margin-top:5px;" required />
+            <input type="text" name="size[]" id="size" placeholder="size" style="width:120px; margin-right:5px margin-top:5px;" required/>
+            <input type="text" name="price[]" id="price" placeholder="price" style="width:120px; margin-right:5px margin-top:5px;" required/>
             <input id="discount" type="number" name="discount[]" min="0" max="100" placeholder="Enter discount" style="width:120px;"required/>
-            <input type="text" name="stock[]" id="stock" placeholder="stock" style="width:120px; margin-right:4px" required/>
+            <input type="text" name="stock[]" id="stock" placeholder="stock" style="width:120px; margin-right:5px margin-top:5px;" required/>
             <a href="#" class="delete">Delete</a></div>`);//add input box
            
         } else {

@@ -82,8 +82,7 @@
               <th>S.N.</th>
               <th> PLU </th>
               <th>Name</th>
-              <th>Is Featured</th>
-              <th>Promotion</th>
+              <th>Promotion</th>              
               <th>Photo</th>
               <th>Status</th>
               <th>Action</th>
@@ -94,8 +93,7 @@
               <th>S.N.</th>
               <th> PLU </th>
               <th>Name</th>
-              <th>Is Featured</th>
-              <th>Promotion</th>
+              <th>Promotion</th>              
               <th>Photo</th>
               <th>Status</th>
               <th>Action</th>
@@ -105,7 +103,7 @@
 
             @foreach($products as $product)
               @php
-              $sub_cat_info=DB::table('categories')->select('name')->where('id',$product->child_cat_id)->get();
+              $product_category=DB::table('product_categories')->where('id',$product->product_id)->get();
               // dd($sub_cat_info);
               $brands=DB::table('brands')->select('name')->where('id',$product->brand_id)->get();
               @endphp
@@ -113,8 +111,8 @@
                     <td>{{$product->id}}</td>
                     <td>{{$product->plu}}</td>
                     <td>{{$product->name}}</td>                    
-                    <td>{{(($product->is_featured==1)? 'Yes': 'No')}}</td>
-                    <td>{{$product->promotion}}</td>                    
+                    <td>{{$product->promotion}}</td> 
+                               
                     <td>
                         @if($product->photo)
                             @php
