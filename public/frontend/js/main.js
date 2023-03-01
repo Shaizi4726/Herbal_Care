@@ -231,7 +231,7 @@ function fav(ico, id) {
   if ($(el).hasClass('fa-regular')) {
     el.classList.remove('fa-regular');
     $(`.${id}-card .fa-heart`).addClass('fa-solid');
-    /* AJAX request for adding shopping list items to cart */
+    /* AJAX request for adding shopping list items to wishlist */
     $.ajax({
       type: 'get',
       url: '/wishlist-add/',

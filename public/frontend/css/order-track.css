@@ -8,12 +8,12 @@
   width: 80%;
 }
 
-.tracking-form label {
+label {
   display: block;
   font-weight: bold;
 }
 
-.tracking-form input {
+input {
   width: 80%;
   height: 2.5em;
   border-radius: 5px;

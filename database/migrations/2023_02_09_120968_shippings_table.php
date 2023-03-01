@@ -30,6 +30,7 @@ return new class extends Migration
       $table->unsignedBigInteger('city_id')->nullable();
       $table->foreign('city_id')->references('id')->on('cities')->onDelete('SET NULL');
       $table->string('landmark')->nullable();
+      $table->enum('status', ['ordered', 'processed', 'shipped', 'delivered'])->default('ordered');
       $table->timestamps();
     });
   }

@@ -14,14 +14,12 @@
   <div class="track-order-container">
     <h2>Track Order</h2>
     <p>Enter your order id in the input box below and track your order. Order id would be given at the invoice slip.</p>
-    <form class="tracking-form" action="{{route('product.track.order')}}" method="post">
-    @csrf
     <div class="form-group">
       <label for="order-id-input">Order Id:</label>
       <input type="text" class="order-id-input" id="order-id-input"  name="order_no" placeholder="Enter your order id">
     </div>
     <div class="form-group submit-track">
-      <button type="submit" value="submit" class="btn btn-submit">Track Order</button>
+      <button id="order-track" class="btn btn-submit">Track Order</button>
     </div>
   </form>
 </div>
@@ -31,3 +29,7 @@
 </div>
 </section>
 @endsection
+
+@push('scripts')
+  <script src="{{asset('frontend/js/order-track.js')}}"></script>
+@endpush

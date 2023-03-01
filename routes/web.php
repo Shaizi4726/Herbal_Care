@@ -74,8 +74,8 @@ Route::get('/product-grids','FrontendController@productGrids')->name('product-gr
 Route::get('/product-lists','FrontendController@productLists')->name('product-lists');
 Route::match(['get','post'],'/sort','FrontendController@productSort')->name('shop.filter');
 // Order Track
-Route::get('/product/track','OrderController@orderTrack')->name('order.track');
-Route::post('product/track/order','OrderController@productTrackOrder')->name('product.track.order');
+Route::view('/order/track','frontend.pages.order-track')->name('order.track');
+Route::get('/track/order','OrderController@track_order')->name('track.order');
 
 // NewsLetter
 Route::post('/subscribe','FrontendController@subscribe')->name('subscribe');
@@ -188,3 +188,6 @@ Route::group(['prefix'=>'/user','middleware'=>['user']],function(){
 Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
     \UniSharp\LaravelFilemanager\Lfm::routes();
 });
+
+Route::get('/email', 'MailController@send_mail')->name('send_mail');
+Route::view('/phone-auth', 'frontend.order.sms')->name('phone-auth');

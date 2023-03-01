@@ -49,6 +49,7 @@ class OrderController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
+      
       $current_month = Carbon::now()->month;
       $current_year = Carbon::now()->year;
       
@@ -145,7 +146,7 @@ class OrderController extends Controller
         $shipping = City::where('id', $request->city)->pluck('shipping')[0];
         $total += $shipping;
       }
-
+      
       $request->request->add(['total' => $total]);
       
       $payment = new Payment();
@@ -158,7 +159,7 @@ class OrderController extends Controller
       $payment->shipping = $shipping;
       $payment->total = $total;
       $payment->save();
-
+      
       if($request['pay_mthd'] == 'op') {
         $req = (new StripeController)->payment($request);
       }
@@ -185,10 +186,10 @@ class OrderController extends Controller
         $shippings->landmark = $request->landmark;
       }
       $shippings->save();
-
+      
       if(Auth::check()) {
         $carts = CartItem::where('user_id', Auth::user()->id)->get();
-
+        
         foreach($carts as $cart) {
           $order_item = new OrderItem;
           $order_item->order_id = $order_id;
@@ -202,11 +203,11 @@ class OrderController extends Controller
           $order_item->total = $cart->total;
           $order_item->save();
         }
-
+        
         CartItem::where('user_id', Auth::user()->id)->delete();
       } else {
         $carts = Session::get('cart');
-
+        
         foreach($carts as $cart) {
           $order_item = new OrderItem;
           $order_item->order_id = $order_id;
@@ -218,17 +219,20 @@ class OrderController extends Controller
           $order_item->amount = $cart->total;
           $order_item->save();
         }
-
+        
         Session::pull('cart');
         Session::pull('id');
+
       }
-        
+      
       // Notification::send(Auth()->user(), new StatusNotification('Order Placed'));
+      $pdf = $this->pdf($order_id);
+      (new MailController)->send_mail($request->email, $pdf);
       
       request()->session()->flash('success','Your product successfully placed in order');
       return redirect()->route('home');
     }
-
+    
     
 
     /**
@@ -334,36 +338,9 @@ class OrderController extends Controller
         }
     }
 
-    public function orderTrack(){
-        return view('frontend.pages.order-track');
-    }
-
-    public function productTrackOrder(Request $request){
-        $order=Order::where('user_id',auth()->user()->id)->where('order_no',$request->order_no)->first();
-        if($order){
-            if($order->status=="new"){
-            request()->session()->flash('success','Your order has been placed. please wait.');
-            return redirect()->route('home');
-            }
-            elseif($order->status=="process"){
-                request()->session()->flash('success','Your order is under processing please wait.');
-                return redirect()->route('home');
-    
-            }
-            elseif($order->status=="delivered"){
-                request()->session()->flash('success','Your order is successfully delivered.');
-                return redirect()->route('home');
-    
-            }
-            else{
-                request()->session()->flash('error','Your order canceled. please try again');
-                return redirect()->route('home');
-            }
-        }
-        else{
-            request()->session()->flash('error','Invalid order numer please try again');
-            return back();
-        }
+    public function track_order(Request $request){
+      $order = Order::where('order_no', $request->id)->pluck('status');
+      return $order;
     }
 
     // PDF generate
@@ -373,7 +350,7 @@ class OrderController extends Controller
       
       $pdf = PDF::loadview('admin_panel.order.pdf', compact('order'));
       
-      return $pdf->stream($file_name);
+      return $pdf->output();
       return $pdf->download($file_name);
       return view('admin_panel.order.pdf', compact('order'));
     }
