@@ -18,7 +18,7 @@
         <img src="{{$data->photo}}" alt="About Us image">
       </div>
       <div class="about-content">
-        <h2>Welcome To <span>The Herb Room</span></h2>
+        <h2>Welcome To <span>HerbalCare</span></h2>
         <p>{{$data->description}}</p>
       </div>
     @endforeach

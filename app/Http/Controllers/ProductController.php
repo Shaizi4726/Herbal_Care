@@ -12,6 +12,7 @@ use App\Models\SubCategory;
 use App\Models\Brand;
 use App\Models\ProductBrand;
 use App\Models\Coupon;
+use App\Models\Form;
 use App\Models\ProductImage;
 use App\Imports\ProductsImport;
 use Illuminate\Support\Facades\File;
@@ -39,6 +40,7 @@ class ProductController extends Controller
   public function create()
   {
       $brand=Brand::get();
+      $form=Form::get();
       $coupon=Coupon::get();
       $category=Category::get();
       $subcategory=SubCategory::get();
@@ -47,7 +49,7 @@ class ProductController extends Controller
       // return $category;
       return view('admin_panel.product.create')->with('product_categories',$product_category)
       ->with('categories',$category)->with('brands',$brand)->with('subcategories',$subcategory)
-      ->with('coupons',$coupon);
+      ->with('coupons',$coupon)->with('forms',$form);
   }
 
   /**

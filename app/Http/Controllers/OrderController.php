@@ -256,6 +256,7 @@ class OrderController extends Controller
      */
     public function edit($id)
     {
+      
         $order=Order::find($id);
         return view('admin_panel.order.edit')->with('order',$order);
     }
@@ -269,48 +270,27 @@ class OrderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $order=Order::find($id);
-        $this->validate($request,[
-            'status'=>'required|in:new,process,delivered,cancel'
-//            'payment_status'=>'required|in:unpaid,paid'
-        ]);
-        $data=$request->all();
-        // return $request->status;
-        if($request->status=='delivered'){
-            foreach($order->cart as $cart){
-                $product=$cart->product;
-                // return $product;
-                $product->stock -=$cart->quantity;
-                $product->save();
-            }
-        }
-        $status=$order->fill($data)->save();
-        if($status){
-            request()->session()->flash('success','Successfully updated order');
-        }
-        else{
-            request()->session()->flash('error','Error while updating order');
-        }
+      $current_date=Carbon::now()->toDateString();
+      $order=Order::with('shipping', 'payment')->where('id', $id)->get()[0];
+      
+      if($request->shipping_status == 'processed')
+        $order->shipping->processed = $current_date;
+      
+      if($request->shipping_status == 'shipped')
+        $order->shipping->shipped = $current_date;
+      
+      if($request->shipping_status == 'delivered') 
+        $order->shipping->delivered = $current_date;
 
-       
-        // return $request->payment_status;
-/*        if($request->payment_status=='paid'){
-            foreach($order->cart as $cart){
-                $product=$cart->product;
-         //        return $product;
-                $product->stock -=$cart->quantity;
-                $product->save();
-            }
-        }
-        $payment_status=$order->fill($data)->save();
-        if($payment_status){
-            request()->session()->flash('success','Successfully updated order');
-        }
-        else{
-            request()->session()->flash('error','Error while updating order');
-        }  */
+      $order->status = $request->order_status;
+      $order->payment->status = $request->payment_status;
+      $order->shipping->status = $request->shipping_status;
 
-        return redirect()->route('order.index');
+      $order->save();
+      $order->shipping->save();
+      $order->payment->save();
+        
+      return redirect()->route('order.index');
     }
 
     /**

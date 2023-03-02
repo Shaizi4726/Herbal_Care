@@ -21,9 +21,10 @@
               <th>Order No.</th>
               <th>Name</th>
               <th>Email</th>
-             <th>Total Amount</th>
+              <th>Total Amount</th>
               <th>Payment Status</th>
-              <th>Status</th>
+              <th>Order Status</th>
+              <th>Shipping Status</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -35,7 +36,8 @@
               <th>Email</th>            
               <th>Total Amount</th>
               <th>Payment Status</th>  
-              <th>Status</th>           
+              <th>Order Status</th>
+              <th>Shipping Status</th>           
               <th>Action</th>
               </tr>
           </tfoot>
@@ -56,14 +58,15 @@
                 <td>
                   @if($order->status=='new')
                     <span class="badge badge-primary">{{$order->status}}</span>
-                  @elseif($order->status=='process')
+                  @elseif($order->status=='processsed')
                     <span class="badge badge-warning">{{$order->status}}</span>
-                  @elseif($order->status=='delivered')
+                  @elseif($order->status=='completed')
                     <span class="badge badge-success">{{$order->status}}</span>
                   @else
                     <span class="badge badge-danger">{{$order->status}}</span>
                   @endif
                 </td>
+                <td>{{$order->shipping->status}}</td>
                
                 <td>
                   <a href="{{route('order.show',$order->id)}}" class="btn btn-warning btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="view" data-placement="bottom"><i class="fas fa-eye"></i></a>
