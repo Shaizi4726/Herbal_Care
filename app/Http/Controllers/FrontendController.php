@@ -50,7 +50,7 @@ class FrontendController extends Controller
 
     public function product_detail($slug)
     {
-      $product = Product::with('categories')->where('slug', $slug)->first();
+      $product = Product::with('categories', 'images')->where('slug', $slug)->first();
       $category_ids = $product->categories->pluck('id');
       $relcats = Category::with('products')->whereIn('id', $category_ids)->get();
       
@@ -298,12 +298,8 @@ class FrontendController extends Controller
       return back();
     }
 
-    // Reset password
-    public function showResetForm(){
-        return view('auth.passwords.old-reset');
-    }
     public function PassResetForm(Request $request){
-        return view('auth.passwords.reset')->with('request',$request);
+      return view('auth.passwords.reset')->with('request',$request);
     }
 
     public function subscribe(Request $request){

@@ -24,7 +24,6 @@ function showModal(id, product, sizes, images, forms, minprice, maxprice, auth) 
         <div class="shazoom" id="shazoom">
           <div class="img-box">
             <ul class="img-ul">
-              <li><img src="${product['photo']}" alt="product-photo"></li>
               ${
                 images.map(item =>
                 `<li><img src="images${item}" alt=""></li>`

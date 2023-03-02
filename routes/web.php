@@ -20,8 +20,8 @@ Route::view('/signup', 'frontend.pages.register')->name('signup.form');
 Route::post('user/register','Auth\RegisterController@registerSubmit')->name('register.submit');
 
 // Verify Email
-Route::view('/email/verify', 'auth.verify-email')->middleware('auth')->name('verification.notice');
-Route::view('/verify/email', 'auth.verify-email')->middleware('auth')->name('verify.email');
+Route::view('/email/verify', 'auth.verify-email')->middleware('auth')->withoutMiddleware('account.verified')->name('verification.notice');
+Route::view('/verify/email', 'auth.verify-email')->middleware('auth')->withoutMiddleware('account.verified')->name('verify.email');
 Route::get('/email/verify/{id}/{hash}', 'Auth\VerificationController@emailVerification')->middleware(['auth', 'signed'])->name('verification.verify');
 Route::post('/email/verification-notification', 'Auth\VerificationController@resendEmailVerification')->middleware(['auth', 'throttle:6,1'])->name('verification.resend');
 
@@ -31,10 +31,10 @@ Route::get('/signin','FrontendController@login')->name('signin.form');
 Route::get('user/login','FrontendController@login')->name('user.login.form');
 Route::post('user/login','FrontendController@loginSubmit')->name('login.submit');
 Route::get('user/logout','FrontendController@logout')->name('user.logout');
-Route::get('logout','FrontendController@logout')->name('logout');
+Route::get('/logout','FrontendController@logout')->name('logout');
 
 // Reset password
-Route::get('password-reset', 'FrontendController@showResetForm')->name('password.reset'); 
+Route::view('password-reset', 'auth.passwords.old-reset')->name('password.reset'); 
 Route::get('password-resets', 'FrontendController@PassResetForm')->name('password.resets');
 
 // Frontend Main Pages
@@ -190,4 +190,3 @@ Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']
 });
 
 Route::get('/email', 'MailController@send_mail')->name('send_mail');
-Route::view('/phone-auth', 'frontend.order.sms')->name('phone-auth');

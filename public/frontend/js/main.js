@@ -25,7 +25,7 @@ $('.minus').on('click', function (e) {
 $(function () {
   document.oncontextmenu = () => false;;
   document.onselectstart = () => false;
-  $('#main-content').on('cut copy paste', function (event) {
+  $('#main-content').on('cut copy', function (event) {
     event.preventDefault();
   });
 });

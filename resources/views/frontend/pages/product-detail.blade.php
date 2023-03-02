@@ -10,9 +10,8 @@
   <div class="shazoom" id="shazoom">
     <div class="img-box">
       <ul class="img-ul">
-        <li><img src="{{$product->photo}}" alt="product-photo"></li>
-        @foreach($product->images as $image)
-						<li><img src="{{('/images/'.$image->image)}}"/></li>	
+          @foreach($product->images as $image)
+						<li><img src="{{('/images'.$image->name)}}"/></li>	
 					@endforeach										
 				</ul>
 			</div>
@@ -31,7 +30,7 @@
         @endif
         
 				@php
-          $rate=ceil($product->reviews->avg('rate'))
+          $rate=ceil($product->reviews->avg('rate'));
 				@endphp
         
 				@for($i=1; $i<=5; $i++)

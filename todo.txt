@@ -1,7 +1,8 @@
-Coupon Validation Backend
+Order Details page
+remove add list button and direct add to cart
 modals
+Coupon Validation Backend
 Mobile Popup Offers
-Track Order Backend
 Search Backend
 product form with flu
 after verification verify page cant be accessed
@@ -15,4 +16,4 @@ Forgot Password Page
 aboutUs Check Email Validation backend
 username and password with verify email
 link address with google map
-Add list Show (details page strat)
+quickview on related products

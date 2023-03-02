@@ -26,6 +26,8 @@
   <!-- ExZoom -->
   <link href="{{asset('frontend/css/jquery.exzoom.css')}}" rel="stylesheet">
 
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
   <!-- HerbalCare StyleSheet -->
   <link href="{{asset('frontend/css/main.css')}}" rel="stylesheet">
   @stack('styles')

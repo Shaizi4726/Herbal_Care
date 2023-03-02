@@ -49,10 +49,10 @@ class OrderController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-      
       $current_month = Carbon::now()->month;
       $current_year = Carbon::now()->year;
-      
+      $current_date = Carbon::now()->toDateString();
+       
       $this->validate($request, [
         'cust_type' => 'required|string'
       ]);
@@ -185,44 +185,34 @@ class OrderController extends Controller
         $shippings->city_id = $request->city;
         $shippings->landmark = $request->landmark;
       }
+      $shippings->ordered = $current_date;
       $shippings->save();
       
       if(Auth::check()) {
         $carts = CartItem::where('user_id', Auth::user()->id)->get();
-        
-        foreach($carts as $cart) {
-          $order_item = new OrderItem;
-          $order_item->order_id = $order_id;
-          $order_item->product_id = $cart->product_id;
-          $order_item->form = $cart->form;
-          $order_item->size = $cart->size;
-          $order_item->price = $cart->price;
-          $order_item->quantity = $cart->quantity;
-          $order_item->subtotal = $cart->subtotal;
-          $order_item->tax = $cart->tax;
-          $order_item->total = $cart->total;
-          $order_item->save();
-        }
-        
-        CartItem::where('user_id', Auth::user()->id)->delete();
       } else {
         $carts = Session::get('cart');
+      }
         
-        foreach($carts as $cart) {
-          $order_item = new OrderItem;
-          $order_item->order_id = $order_id;
-          $order_item->product_id = $cart->product_id;
-          $order_item->form = $cart->form;
-          $order_item->size = $cart->size;
-          $order_item->price = $cart->price;
-          $order_item->quantity = $cart->quantity;
-          $order_item->amount = $cart->total;
-          $order_item->save();
-        }
-        
+      foreach($carts as $cart) {
+        $order_item = new OrderItem;
+        $order_item->order_id = $order_id;
+        $order_item->product_id = $cart->product_id;
+        $order_item->form = $cart->form;
+        $order_item->size = $cart->size;
+        $order_item->price = $cart->price;
+        $order_item->quantity = $cart->quantity;
+        $order_item->subtotal = $cart->subtotal;
+        $order_item->tax = $cart->tax;
+        $order_item->total = $cart->total;
+        $order_item->save();
+      }
+
+      if(Auth::check()) {  
+        CartItem::where('user_id', Auth::user()->id)->delete();
+      } else {
         Session::pull('cart');
         Session::pull('id');
-
       }
       
       // Notification::send(Auth()->user(), new StatusNotification('Order Placed'));
@@ -338,48 +328,52 @@ class OrderController extends Controller
         }
     }
 
-    public function track_order(Request $request){
-      $order = Order::where('order_no', $request->id)->pluck('status');
-      return $order;
+    public function track_order(Request $request) {
+      $order = Order::with('shipping')->where('order_no', $request->id)->get();
+
+      return $order[0];
     }
 
     // PDF generate
-    public function pdf($id){
+    public function pdf($id, Request $request = null) {
       $order = Order::with('order_items', 'payment', 'shipping')->where('id', $id)->get()[0];
       $file_name = $order->order_no.'-'.$order->fname.'.pdf';
       
-      $pdf = PDF::loadview('admin_panel.order.pdf', compact('order'));
+      $pdf = PDF::loadview('frontend.order.pdf', compact('order'));
+
+      if($request->download == 1) {
+        return $pdf->download($file_name);
+      }
       
       return $pdf->output();
-      return $pdf->download($file_name);
-      return view('admin_panel.order.pdf', compact('order'));
+      // return view('frontend.order.pdf', compact('order'));
     }
 
     // Income chart
     public function incomeChart(Request $request){
-        $year=\Carbon\Carbon::now()->year;
-        // dd($year);
-        $items=Order::with(['cart_info'])->whereYear('created_at',$year)->where('status','delivered')->get()
-            ->groupBy(function($d){
-                return \Carbon\Carbon::parse($d->created_at)->format('m');
-            });
-            // dd($items);
-        $result=[];
-        foreach($items as $month=>$item_collections){
-            foreach($item_collections as $item){
-                $amount=$item->cart_info->sum('amount');
-                // dd($amount);
-                $m=intval($month);
-                // return $m;
-                isset($result[$m]) ? $result[$m] += $amount :$result[$m]=$amount;
-            }
-        }
-        $data=[];
-        for($i=1; $i <=12; $i++){
-            $monthName=date('F', mktime(0,0,0,$i,1));
-            $data[$monthName] = (!empty($result[$i]))? number_format((float)($result[$i]), 2, '.', '') : 0.0;
-        }
-        return $data;
+      $year=\Carbon\Carbon::now()->year;
+      // dd($year);
+      $items=Order::with(['cart_info'])->whereYear('created_at',$year)->where('status','delivered')->get()
+          ->groupBy(function($d){
+              return \Carbon\Carbon::parse($d->created_at)->format('m');
+          });
+          // dd($items);
+      $result=[];
+      foreach($items as $month=>$item_collections){
+          foreach($item_collections as $item){
+              $amount=$item->cart_info->sum('amount');
+              // dd($amount);
+              $m=intval($month);
+              // return $m;
+              isset($result[$m]) ? $result[$m] += $amount :$result[$m]=$amount;
+          }
+      }
+      $data=[];
+      for($i=1; $i <=12; $i++){
+          $monthName=date('F', mktime(0,0,0,$i,1));
+          $data[$monthName] = (!empty($result[$i]))? number_format((float)($result[$i]), 2, '.', '') : 0.0;
+      }
+      return $data;
     }
     
 }

@@ -19,7 +19,7 @@ class Shipping extends Model
    *
    * @var array
    */
-  protected $fillable = ['order_id', 'fname', 'lname', 'cname', 'trn_no', 'phone', 'altphone', 'address', 'city_id', 'landmark'];
+  protected $fillable = ['order_id', 'fname', 'lname', 'cname', 'trn_no', 'phone', 'altphone', 'address', 'city_id', 'landmark', 'status', 'ordered', 'shipped', 'delivered'];
 
   /**
    * Get the order that owns the shipping.
@@ -36,4 +36,13 @@ class Shipping extends Model
   {
     return $this->belongsTo(City::class, 'city_id');
   }
+
+  /**
+   * The model's default values for attributes.
+   *
+   * @var array
+   */
+  protected $attributes = [
+    'status' => 'ordered',
+  ];
 }

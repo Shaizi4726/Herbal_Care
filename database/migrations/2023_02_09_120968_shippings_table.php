@@ -31,6 +31,10 @@ return new class extends Migration
       $table->foreign('city_id')->references('id')->on('cities')->onDelete('SET NULL');
       $table->string('landmark')->nullable();
       $table->enum('status', ['ordered', 'processed', 'shipped', 'delivered'])->default('ordered');
+      $table->date('ordered')->nullable();
+      $table->date('processed')->nullable();
+      $table->date('shipped')->nullable();
+      $table->date('delivered')->nullable();
       $table->timestamps();
     });
   }
