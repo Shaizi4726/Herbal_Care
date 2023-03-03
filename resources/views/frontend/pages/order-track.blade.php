@@ -15,7 +15,7 @@
       <h2>Track Order</h2>
       <p>Enter your order id in the input box below and track your order. Order id would be given at the invoice slip.</p>
       <div class="form-group">
-        <label for="order-id-input">Order Id:</label>
+        <label for="order-id-input">Order No:</label>
         <input type="text" class="order-id-input" id="order-id-input"  name="order_no" placeholder="Enter your order id">
       </div>
       <div class="form-group submit-track">

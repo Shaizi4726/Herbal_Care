@@ -21,339 +21,355 @@ use Session;
 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-      $orders=Order::orderBy('id','DESC')->paginate(10);
-      return view('admin_panel.order.index')->with('orders',$orders);
-    }
+  /**
+   * Display a listing of the resource.
+   *
+   * @return \Illuminate\Http\Response
+   */
+  public function index()
+  {
+    $orders=Order::orderBy('id','DESC')->paginate(10);
+    return view('admin_panel.order.index')->with('orders',$orders);
+  }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-      //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request) {
-      $current_month = Carbon::now()->month;
-      $current_year = Carbon::now()->year;
-      $current_date = Carbon::now()->toDateString();
-       
+  /**
+   * Store a newly created resource in storage.
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @return \Illuminate\Http\Response
+   */
+  public function store(Request $request) {
+    $current_month = Carbon::now()->month;
+    $current_year = Carbon::now()->year;
+    $current_date = Carbon::now()->toDateString();
+      
+    $this->validate($request, [
+      'cust_type' => 'required|string'
+    ]);
+    
+    if($request['cust_type'] == 'individual') {
       $this->validate($request, [
-        'cust_type' => 'required|string'
+        'fname' => 'required|alpha',
+        'lname' => 'required|alpha'
       ]);
-      
-      if($request['cust_type'] == 'individual') {
-        $this->validate($request, [
-          'fname' => 'required|alpha',
-          'lname' => 'required|alpha'
-        ]);
-      } else {
-        $this->validate($request, [
-          'cname' => 'required|string',
-          'trn_no' => 'required|numeric'
-        ]);
-      }
-      
+    } else {
       $this->validate($request, [
-        'email' => 'required|email:strict,dns',
-        'address'=>'nullable|string',
-        'landmark'=>'nullable|string',
-        'country'=>'required|string',
-        'state'=>'nullable|string',
-        'city'=>'nullable|string',
-        'phone'=>'nullable|numeric',
-        'altphone' => 'nullable|numeric'
+        'cname' => 'required|string',
+        'trn_no' => 'required|numeric'
       ]);
-      
-      if($request['shipping_option'] == 'different') {
-        $this->validate($request, [
-          'shipping_fname' => 'required|alpha',
-          'shipping_lname' => 'required|alpha',
-          'shipping_address'=>'required|string',
-          'shipping_landmark'=>'nullable|string',
-          'shipping_country' => 'required|string',
-          'shipping_state' => 'required|string',
-          'shipping_city' => 'required|string',
-          'shipping_phone' => 'required|numeric',
-          'shipping_altphone' => 'nullable|numeric'
-        ]);
-      }
-      
-      if($request['pay_mthd'] == 'op') {
-        $this->validate($request, [
-          'account_name' => 'required|string',
-          'account_no' => 'required|digits: 16',
-          'cvv_cvc' => 'required|numeric',
-          'expiry_month' => 'required|digits: 2',
-          'expiry_year' => 'required|digits: 4|gte:' . $current_year . '|lte: ' . ($current_year+5) . ''
-        ]);
-      }
-      
-      if($request['expiry_year'] == $current_year) {
-        $this->validate($request, [
-          'expiry_month' => 'gte:' . $current_month . ''
-        ]);
-      }
-      
-      if(Auth::check()) {
-        if(empty(CartItem::where('user_id', Auth()->user()->id)->get()))
-        return back();
-      }
-      else { 
-        if(empty(Session::get('cart')))
-        return back();
-      }
-      
-      $order = new Order();
-      $order->order_no = 'ORD-'.strtoupper(Str::random(10));
-      if(Auth::check())
-      $order->user_id = $request->user()->id;
-      $order->fname = $request->fname;
-      $order->lname = $request->lname;
-      $order->cname = $request->cname;
-      $order->trn_no = $request->trn_no;
-      $order->email = $request->email;
-      $order->phone = $request->phone;
-      $order->altphone = $request->altphone;
-      $order->address = $request->address;
-      $order->city_id = $request->city;
-      $order->landmark = $request->landmark;
-      $order->save();
-      
-      $order_id = Order::where('order_no', $order->order_no)->pluck('id')[0];
-      $subtotal = Helper::CartAmount();
-      $tax = Helper::totalCartTax();
-      $total = Helper::totalCartAmount();
-      
-      if($total > 100)
-      $shipping = 0;
-      else {
-        $shipping = City::where('id', $request->city)->pluck('shipping')[0];
-        $total += $shipping;
-      }
-      
-      $request->request->add(['total' => $total]);
-      
-      $payment = new Payment();
-      $payment->order_id = $order_id;
-      $payment->account_name = $request->account_name;
-      $payment->account_no = $request->account_no;
-      $payment->method = $request->pay_mthd;
-      $payment->subtotal = $subtotal;
-      $payment->tax = $tax;
-      $payment->shipping = $shipping;
-      $payment->total = $total;
-      $payment->save();
-      
-      if($request['pay_mthd'] == 'op') {
-        $req = (new StripeController)->payment($request);
-      }
-      
-      $shippings = new Shipping();
-      $shippings->order_id = $order_id;
-      if($request->shipping_option == 'different') {
-        $shippings->fname = $request->shipping_fname;
-        $shippings->lname = $request->shipping_lname;
-        $shippings->phone = $request->shipping_phone;
-        $shippings->altphone = $request->shipping_altphone;
-        $shippings->address = $request->shipping_address;
-        $shippings->city_id = $request->shipping_city;
-        $shippings->landmark = $request->shipping_landmark;
-      } else {
-        $shippings->fname = $request->fname;
-        $shippings->lname = $request->lname;
-        $shippings->cname = $request->cname;
-        $shippings->trn_no = $request->trn_no;
-        $shippings->phone = $request->phone;
-        $shippings->altphone = $request->altphone;
-        $shippings->address = $request->address;
-        $shippings->city_id = $request->city;
-        $shippings->landmark = $request->landmark;
-      }
-      $shippings->ordered = $current_date;
-      $shippings->save();
-      
-      if(Auth::check()) {
-        $carts = CartItem::where('user_id', Auth::user()->id)->get();
-      } else {
-        $carts = Session::get('cart');
-      }
-        
-      foreach($carts as $cart) {
-        $order_item = new OrderItem;
-        $order_item->order_id = $order_id;
-        $order_item->product_id = $cart->product_id;
-        $order_item->form = $cart->form;
-        $order_item->size = $cart->size;
-        $order_item->price = $cart->price;
-        $order_item->quantity = $cart->quantity;
-        $order_item->subtotal = $cart->subtotal;
-        $order_item->tax = $cart->tax;
-        $order_item->total = $cart->total;
-        $order_item->save();
-      }
-
-      if(Auth::check()) {  
-        CartItem::where('user_id', Auth::user()->id)->delete();
-      } else {
-        Session::pull('cart');
-        Session::pull('id');
-      }
-      
-      // Notification::send(Auth()->user(), new StatusNotification('Order Placed'));
-      $pdf = $this->pdf($order_id);
-      (new MailController)->send_mail($request->email, $pdf);
-      
-      request()->session()->flash('success','Your product successfully placed in order');
-      return redirect()->route('home');
     }
     
+    $this->validate($request, [
+      'email' => 'required|email:strict,dns',
+      'address'=>'nullable|string',
+      'landmark'=>'nullable|string',
+      'country'=>'required|string',
+      'state'=>'nullable|string',
+      'city'=>'nullable|string',
+      'phone'=>'nullable|numeric',
+      'altphone' => 'nullable|numeric'
+    ]);
     
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $order=Order::find($id);
-        // return $order;
-        return view('admin_panel.order.show')->with('order',$order);
+    if($request['shipping_option'] == 'different') {
+      $this->validate($request, [
+        'shipping_fname' => 'required|alpha',
+        'shipping_lname' => 'required|alpha',
+        'shipping_address'=>'required|string',
+        'shipping_landmark'=>'nullable|string',
+        'shipping_country' => 'required|string',
+        'shipping_state' => 'required|string',
+        'shipping_city' => 'required|string',
+        'shipping_phone' => 'required|numeric',
+        'shipping_altphone' => 'nullable|numeric'
+      ]);
+    }
+    
+    if($request['pay_mthd'] == 'op') {
+      $this->validate($request, [
+        'account_name' => 'required|string',
+        'account_no' => 'required|digits: 16',
+        'cvv_cvc' => 'required|numeric',
+        'expiry_month' => 'required|digits: 2',
+        'expiry_year' => 'required|digits: 4|gte:' . $current_year . '|lte: ' . ($current_year+5) . ''
+      ]);
+    }
+    
+    if($request['expiry_year'] == $current_year) {
+      $this->validate($request, [
+        'expiry_month' => 'gte:' . $current_month . ''
+      ]);
+    }
+    
+    if(Auth::check()) {
+      if(empty(CartItem::where('user_id', Auth()->user()->id)->get()))
+      return back();
+    }
+    else { 
+      if(empty(Session::get('cart')))
+      return back();
+    }
+    
+    $order = new Order();
+    $order->order_no = 'HC-' . $this->generateUniqueCode();
+    if(Auth::check())
+    $order->user_id = $request->user()->id;
+    $order->fname = $request->fname;
+    $order->lname = $request->lname;
+    $order->cname = $request->cname;
+    $order->trn_no = $request->trn_no;
+    $order->email = $request->email;
+    $order->phone = $request->phone;
+    $order->altphone = $request->altphone;
+    $order->address = $request->address;
+    $order->city_id = $request->city;
+    $order->landmark = $request->landmark;
+    $order->save();
+    
+    $order_id = Order::where('order_no', $order->order_no)->pluck('id')[0];
+    $subtotal = Helper::CartAmount();
+    $tax = Helper::totalCartTax();
+    $total = Helper::totalCartAmount();
+    
+    if($total > 100)
+    $shipping = 0;
+    else {
+      $shipping = City::where('id', $request->city)->pluck('shipping')[0];
+      $total += $shipping;
+    }
+    
+    $request->request->add(['total' => $total]);
+    
+    $payment = new Payment();
+    $payment->order_id = $order_id;
+    $payment->account_name = $request->account_name;
+    $payment->account_no = $request->account_no;
+    $payment->method = $request->pay_mthd;
+    $payment->subtotal = $subtotal;
+    $payment->tax = $tax;
+    $payment->shipping = $shipping;
+    $payment->total = $total;
+    $payment->save();
+    
+    if($request['pay_mthd'] == 'op') {
+      $req = (new StripeController)->payment($request);
+    }
+    
+    $shippings = new Shipping();
+    $shippings->order_id = $order_id;
+    if($request->shipping_option == 'different') {
+      $shippings->fname = $request->shipping_fname;
+      $shippings->lname = $request->shipping_lname;
+      $shippings->phone = $request->shipping_phone;
+      $shippings->altphone = $request->shipping_altphone;
+      $shippings->address = $request->shipping_address;
+      $shippings->city_id = $request->shipping_city;
+      $shippings->landmark = $request->shipping_landmark;
+    } else {
+      $shippings->fname = $request->fname;
+      $shippings->lname = $request->lname;
+      $shippings->cname = $request->cname;
+      $shippings->trn_no = $request->trn_no;
+      $shippings->phone = $request->phone;
+      $shippings->altphone = $request->altphone;
+      $shippings->address = $request->address;
+      $shippings->city_id = $request->city;
+      $shippings->landmark = $request->landmark;
+    }
+    $shippings->ordered = $current_date;
+    $shippings->save();
+    
+    if(Auth::check()) {
+      $carts = CartItem::where('user_id', Auth::user()->id)->get();
+    } else {
+      $carts = Session::get('cart');
+    }
+      
+    foreach($carts as $cart) {
+      $order_item = new OrderItem;
+      $order_item->order_id = $order_id;
+      $order_item->product_id = $cart->product_id;
+      $order_item->form = $cart->form;
+      $order_item->size = $cart->size;
+      $order_item->price = $cart->price;
+      $order_item->quantity = $cart->quantity;
+      $order_item->subtotal = $cart->subtotal;
+      $order_item->tax = $cart->tax;
+      $order_item->total = $cart->total;
+      $order_item->save();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-      
-        $order=Order::find($id);
-        return view('admin_panel.order.edit')->with('order',$order);
+    if(Auth::check()) {  
+      CartItem::where('user_id', Auth::user()->id)->delete();
+    } else {
+      Session::pull('cart');
+      Session::pull('id');
     }
+    
+    // Notification::send(Auth()->user(), new StatusNotification('Order Placed'));
+    $pdf = $this->pdf($order_id);
+    (new MailController)->send_mail($request->email, $pdf);
+    
+    request()->session()->flash('success','Your product successfully placed in order');
+    return redirect()->route('home');
+  }
+  
+  
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-      $current_date=Carbon::now()->toDateString();
-      $order=Order::with('shipping', 'payment')->where('id', $id)->get()[0];
-      
-      if($request->shipping_status == 'processed')
-        $order->shipping->processed = $current_date;
-      
-      if($request->shipping_status == 'shipped')
-        $order->shipping->shipped = $current_date;
-      
-      if($request->shipping_status == 'delivered') 
-        $order->shipping->delivered = $current_date;
+  /**
+   * Display the specified resource.
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function show($id)
+  {
+    $order=Order::find($id);
+    return view('admin_panel.order.show')->with('order',$order);
+  }
 
-      $order->status = $request->order_status;
-      $order->payment->status = $request->payment_status;
-      $order->shipping->status = $request->shipping_status;
+  /**
+   * Show the form for editing the specified resource.
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function edit($id)
+  {
+    $order=Order::find($id);
+    return view('admin_panel.order.edit')->with('order',$order);
+  }
 
-      $order->save();
-      $order->shipping->save();
-      $order->payment->save();
-        
+  /**
+   * Update the specified resource in storage.
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+  */
+  public function update(Request $request, $id)
+  {
+    $current_date=Carbon::now()->toDateString();
+    $order=Order::with('shipping', 'payment')->where('id', $id)->get()[0];
+    
+    if($request->shipping_status == 'processed')
+      $order->shipping->processed = $current_date;
+    
+    if($request->shipping_status == 'shipped')
+      $order->shipping->shipped = $current_date;
+    
+    if($request->shipping_status == 'delivered') 
+      $order->shipping->delivered = $current_date;
+
+    $order->status = $request->order_status;
+    $order->payment->status = $request->payment_status;
+    $order->shipping->status = $request->shipping_status;
+
+    $order->save();
+    $order->shipping->save();
+    $order->payment->save();
+      
+    return redirect()->route('order.index');
+  }
+
+  /**
+   * Remove the specified resource from storage.
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function destroy($id)
+  {
+    $order=Order::find($id);
+    if($order){
+      $status=$order->delete();
+      if($status){
+        request()->session()->flash('success','Order Successfully deleted');
+      }
+      else{
+        request()->session()->flash('error','Order can not deleted');
+      }
       return redirect()->route('order.index');
     }
+    else{
+      request()->session()->flash('error','Order can not found');
+      return redirect()->back();
+    }
+  }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $order=Order::find($id);
-        if($order){
-            $status=$order->delete();
-            if($status){
-                request()->session()->flash('success','Order Successfully deleted');
-            }
-            else{
-                request()->session()->flash('error','Order can not deleted');
-            }
-            return redirect()->route('order.index');
-        }
-        else{
-            request()->session()->flash('error','Order can not found');
-            return redirect()->back();
-        }
+  public function track_order(Request $request) {
+    $order = Order::with('shipping')->where('order_no', $request->id)->get();
+
+    return $order[0];
+  }
+
+  public function user_orders (Request $request) {
+    if(Auth::check()) {
+      $orders = Order::with('payment')->where('user_id', Auth()->user()->id)->orderBy('created_at', 'desc')->get();
+
+      if($orders == null)
+        $orders = 0;
+    } else {
+      $orders = 0;
     }
 
-    public function track_order(Request $request) {
-      $order = Order::with('shipping')->where('order_no', $request->id)->get();
+    return view('frontend.pages.orders-detail')->with(['orders' => $orders, 'order' => 0, 'return' => 0, 'cancel' => 0]);
+  }
 
-      return $order[0];
-    }
+  public function order_details (Request $request) {
+    $order = Order::with('order_items.product', 'shipping')->where('order_no', $request->id)->get();
 
-    // PDF generate
-    public function pdf($id, Request $request = null) {
-      $order = Order::with('order_items', 'payment', 'shipping')->where('id', $id)->get()[0];
-      $file_name = $order->order_no.'-'.$order->fname.'.pdf';
+    if($order) {
+      $order = $order[0];
+      $shipping = $order->shipping;
+
+      $cancel = 1;
+      $return = 0;
+      $date = Carbon::now()->subDays(15)->toDateString();
       
-      $pdf = PDF::loadview('frontend.order.pdf', compact('order'));
+      if($shipping->shipped != null ) {
+        $cancel = 0;
+      } 
 
-      if($request->download == 1) {
+      if ($shipping->status == 'delivered') {
+        if($shipping->delivered > $date) {
+          $return = 1;
+        }
+      }
+    }
+    else {
+      $order = -1;
+    }
+
+    return view('frontend.pages.orders-detail')->with(['orders' => 0, 'order' => $order, 'return' => $return, 'cancel' => $cancel]);
+  }
+
+  // PDF generate
+  public function pdf($id, Request $request = null) {
+    $order = Order::with('order_items', 'payment', 'shipping')->where('id', $id)->get()[0];
+    $file_name = $order->order_no.'-'.$order->fname.'.pdf';
+    
+    $pdf = PDF::loadview('frontend.order.pdf', compact('order'));
+
+    if($request) {
+      if($request->download == 1)
         return $pdf->download($file_name);
-      }
-      
-      return $pdf->output();
-      // return view('frontend.order.pdf', compact('order'));
-    }
-
-    // Income chart
-    public function incomeChart(Request $request){
-      $year=\Carbon\Carbon::now()->year;
-      // dd($year);
-      $items=Order::with(['cart_info'])->whereYear('created_at',$year)->where('status','delivered')->get()
-          ->groupBy(function($d){
-              return \Carbon\Carbon::parse($d->created_at)->format('m');
-          });
-          // dd($items);
-      $result=[];
-      foreach($items as $month=>$item_collections){
-          foreach($item_collections as $item){
-              $amount=$item->cart_info->sum('amount');
-              // dd($amount);
-              $m=intval($month);
-              // return $m;
-              isset($result[$m]) ? $result[$m] += $amount :$result[$m]=$amount;
-          }
-      }
-      $data=[];
-      for($i=1; $i <=12; $i++){
-          $monthName=date('F', mktime(0,0,0,$i,1));
-          $data[$monthName] = (!empty($result[$i]))? number_format((float)($result[$i]), 2, '.', '') : 0.0;
-      }
-      return $data;
     }
     
+    return $pdf->output();
+    // return view('frontend.order.pdf', compact('order'));
+  }
+
+  /**
+   * Generate unique code for orders
+   *
+   * @return response()
+   */
+  public function generateUniqueCode()
+  {
+    do {
+      $code = random_int(1000000, 9999999);
+    } while (Order::where("order_no", $code)->first());
+
+    return $code;
+  }  
 }

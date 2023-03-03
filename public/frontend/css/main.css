@@ -46,11 +46,11 @@ caption {
 }
 
 table, th, td {
-    text-align: center;
-    border: 1px solid #2c542f;
-    border-collapse: collapse;
-    padding: 0.5em;
-    overflow-x: auto;
+  text-align: center;
+  border: 1px solid #000;
+  border-collapse: collapse;
+  padding: 0.5em;
+  overflow-x: auto;
 }
 
 tfoot tr {
@@ -301,18 +301,26 @@ input[type="button"] {
 }
 
 .btn-submit {
-  background-color: #2c542f;
-  color: #faf9f6;
+  color: #2c542f;
+  background-color: #f2f4e6;
   font-size: 12px;
+  font-weight: bold;
+  text-align: center;
   width: auto;
   padding: 0.5em;
   margin-top: 1em;
+  border: 1px solid #2c542f;
   border-radius: 10px;
   transition: 300ms ease-in-out;
 }
 
 .btn-submit:active {
   transform: scale(0.95);
+}
+
+.btn-submit:hover {
+  color: #fff;
+  background-color: #2c542f;
 }
 
 .prod-detail-link .detail-link {

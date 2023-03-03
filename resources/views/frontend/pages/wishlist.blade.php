@@ -9,11 +9,11 @@
 @section('main-content')
   <section class="products-catalog">
     @php
-     $auth = Auth::check();
+      $auth = Auth::check();
     @endphp
       <div id="products-catalog" class="products catalog">
         @if($products->count() > 0)
-            @foreach($products as $product)
+          @foreach($products as $product)
             @php
               $minprice = $product->attrs()->min('price');
               $maxprice = $product->attrs()->max('price');
@@ -33,26 +33,26 @@
               $sizes = json_encode($sizes);
             @endphp
                 <div class="product-card {{$product->id}}-card carousel-cell">
-                <img class="product-image" src="{{$product->photo}}" alt="product image">
-                
-                <div class="overlay">
-                  <button id="product{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, {{$prod}}, {{$sizes}}, {{$images}}, {{$forms}}, {{$minprice}}, {{$maxprice}}, {{$auth}})"> 
-                    <i class="fa-regular fa-eye"></i>
-                    <p>Quick View</p>
-                  </button>
-                </div>
+                  <img class="product-image" src="{{$product->photo}}" alt="product image">
+                  
+                  <div class="overlay">
+                    <button id="product{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, {{$prod}}, {{$sizes}}, {{$images}}, {{$forms}}, {{$minprice}}, {{$maxprice}}, {{$auth}})"> 
+                      <i class="fa-regular fa-eye"></i>
+                      <p>Quick View</p>
+                    </button>
+                  </div>
 
-                <div class="meta-detail">
-                  <h3 class="product-title">{{$product->name}}</h3>
-                  @if($minprice==$maxprice)
-                    <p class="price">AED <span class="value">{{number_format($product->minprice,2)}}</span></p>
-                  @else
-                    <p class="price">AED <span class="value">{{number_format($product->minprice,2)}}</span> - AED <span class="value">{{number_format($maxprice,2)}}</span></p>
-                  @endif                  
-                </div>
-                <div class="prod-detail-link">
-                    <a href="{{route('product-detail', $product->slug)}}" class="btn btn-submit detail-link"> Product Details </a>
-                </div>
+                  <div class="meta-detail">
+                    <h3 class="product-title">{{$product->name}}</h3>
+                    @if($minprice==$maxprice)
+                      <p class="price">AED <span class="value">{{number_format($product->minprice,2)}}</span></p>
+                    @else
+                      <p class="price">AED <span class="value">{{number_format($product->minprice,2)}}</span> - AED <span class="value">{{number_format($maxprice,2)}}</span></p>
+                    @endif                  
+                  </div>
+                  <div class="prod-detail-link">
+                      <a href="{{route('product-detail', $product->slug)}}" class="btn btn-submit detail-link"> Product Details </a>
+                  </div>
                 </div>
             @endforeach
         @else

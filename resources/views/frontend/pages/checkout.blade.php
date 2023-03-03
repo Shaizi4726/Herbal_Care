@@ -8,7 +8,15 @@
 @section('main-content')
 <!-- Start Checkout -->
 <h1 class="title page-title">Checkout</h1>
+@php
+  $countries = DB::table('countries')->where('status', 'active')->get();
+  $states = DB::table('states')->where('country_id', '784')->get();
+  $subtotal = Helper::CartAmount();
+  $tax = Helper::totalCartTax();
+  $total = Helper::totalCartAmount();
+@endphp
 
+@if($total != 0)
 @guest
 <p class="checkout-para">Please register in order to checkout more quickly.</p>
 @endguest
@@ -16,10 +24,7 @@
 <section class="shop-checkout checkout-sec">
   <!-- Form -->
   <div class="form-container">
-    @php
-      $countries = DB::table('countries')->where('status', 'active')->get();
-      $states = DB::table('states')->where('country_id', '784')->get();
-    @endphp
+    
     <form class="form" id="order-form" method="POST" action="{{route('order')}}" novalidate>
       @csrf
       <fieldset class="type-selection">
@@ -387,9 +392,7 @@
   <div class="order-summary">
     <div class="sums-summary">
       @php
-        $subtotal = Helper::CartAmount();
-        $tax = Helper::totalCartTax();
-        $total = Helper::totalCartAmount();
+        
 
         if(session()->has('coupon')){
           $total = $total-Session::get('coupon')['value'];
@@ -481,6 +484,9 @@
     </div>
   </div>
 </section>
+@else
+<h4>Please add items to cart to proceed further. <a href="{{route('home')}}">Continue Shopping</a></h4>
+@endif
 @endsection
 
 @push('scripts')

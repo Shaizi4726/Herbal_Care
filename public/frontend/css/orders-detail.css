@@ -1,0 +1,108 @@
+.orders h1 {
+  font-size: 1.5em;
+  text-align: center;
+  margin-bottom: 0.5em;
+}
+
+.orders-table {
+  width: 95vw;
+  overflow: auto;
+  max-height: 80vh;
+  margin: 0.6em auto;
+}
+
+.img-container img {
+  max-width: 100%;
+}
+
+.order-details-container {
+  margin: 1em 0 0 3em;
+}
+
+.order-details-container p {
+  margin-bottom: 3em;
+  text-align: justify;
+  width: 80%;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+}
+
+input {
+  width: 80%;
+  height: 2.5em;
+  border-radius: 5px;
+  padding: 0.5em;
+}
+
+.btn-submit {
+  width: 7em;
+}
+
+.order {
+  margin-bottom: 1em;
+}
+
+.order-detail {
+  font-size: 1em;
+}
+
+.order-detail h2 {
+  font-size: 1.2em;
+}
+
+thead {
+  top: 0;
+  position: sticky;
+  background-color: #2c542f;
+  color: #fff;
+  height: 3em;
+}
+
+td .btn-submit {
+  width: 7em;
+  background-color: #f2f4e6;
+  color: #2c542f;
+  margin: 0;
+}
+
+@media screen and (min-width: 480px) {
+  .orders h1 {
+    font-size: 2em;
+  }
+  
+  table {
+    font-size: 0.85em;
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .orders {
+    max-height: 75vh;
+  }
+
+  .orders h1 {
+    font-size: 2.5em;
+  }
+
+  table {
+    font-size: 1em;
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .orders {
+    max-height: 70vh;
+    width: 90vw;
+  }
+
+  table {
+    font-size: 1em;
+    width: 95%;
+    margin: auto;
+  }
+}

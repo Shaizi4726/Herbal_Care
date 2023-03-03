@@ -109,7 +109,7 @@
         </tfoot>
       </table>
       <div class="summary clearfix">
-        <h5>Subtotal: </h5><span class="value">AED {{number_format($sum, 2)}}</span><br/>
+        <h5>Subtotal: </h5><span class="value">AED {{number_format($order->payment->subtotal, 2)}}</span><br/>
         <h5>VAT Amount: </h5><span class="value">AED {{number_format($order->payment->tax, 2)}}</span><br/>
         <h5>Shipping: </h5><span class="value">AED {{number_format($order->payment->shipping, 2)}}</span><br/>
         <hr/>

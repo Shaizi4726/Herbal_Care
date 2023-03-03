@@ -73,9 +73,14 @@ Route::get('/income','OrderController@incomeChart')->name('product.order.income'
 Route::get('/product-grids','FrontendController@productGrids')->name('product-grids');
 Route::get('/product-lists','FrontendController@productLists')->name('product-lists');
 Route::match(['get','post'],'/sort','FrontendController@productSort')->name('shop.filter');
+
 // Order Track
-Route::view('/order/track','frontend.pages.order-track')->name('order.track');
-Route::get('/track/order','OrderController@track_order')->name('track.order');
+Route::view('/order/track', 'frontend.pages.order-track')->name('order.track');
+Route::get('/track/order', 'OrderController@track_order')->name('track.order');
+
+// Order Details
+Route::get('/orders-detail', 'OrderController@user_orders')->name('orders-detail');
+Route::get('/order-data', 'OrderController@order_details')->name('order-data');
 
 // NewsLetter
 Route::post('/subscribe','FrontendController@subscribe')->name('subscribe');
