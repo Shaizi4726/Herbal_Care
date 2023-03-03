@@ -136,17 +136,17 @@ class ProductController extends Controller
             ProductImage::create($request->all());
         }
     }  
-    $forms = [];
+    $forms = [];   
     $forms[] =$request->form_id;
-    
-    foreach ($forms as $product_form) {
+    //dd($forms);
+    foreach ($forms[0] as $product_form) {
         $form = new ProductForm;
-        $form['product_id']=$status->id;           
-        $form['form_id']=$product_form;
+        $form->product_id=$status->id;           
+        $form->form_id=$product_form;
         $form->save();
     }            
     for($i=0; $i<count($request->form_id); $i++){
-        $attribute = new ProductsAttribute;
+        $attribute = new ProductAttribute;
         $attribute['product_id']=$status->id;           
         $attribute['flu']=$request->flu[$i];
         $attribute['sku']= $request->sku[$i];
@@ -187,22 +187,16 @@ class ProductController extends Controller
    * @return \Illuminate\Http\Response
    */
   public function edit($id)
-  {
-      $brand=Brand::get();
-      $coupon=Coupon::get();
-      $product=Product::findOrFail($id);
-      $category=Category::get();
-      $items=Product::where('id',$id)->get();
-      $attribute=ProductAttribute::where('id',$id)->get();
-      $image=ProductImage::where('id',$id);
+  {     
+    $product=Product::findOrFail($id);
+    $category=Category::get();
+    $brand=Brand::get();
+    $form=Form::get();
       // return $items;
-      return view('admin_panel.product.edit')->with('product',$product)
-          ->with('brands',$brand)
-          ->with('categories',$category)
-          ->with('items',$items)
-          ->with('attributes',$attribute)
-          ->with('image',$image)
-          ->with('coupons',$coupon);
+    return view('admin_panel.product.edit')->with('product',$product)
+    ->with('categories',$category)
+    ->with('forms',$form)
+    ->with('brands',$brand);
   }
 
   /**
@@ -214,67 +208,99 @@ class ProductController extends Controller
    */
   public function update(Request $request, $id)
   {
-      //dd($request->all());
+    //  dd($request->all());
       $product=Product::findOrFail($id);
-      // $this->validate($request,[
-      //     'name'=>'string|required',
-      //     'scientific'=>'string|nullable',
-      //     'other_name'=>'string|nullable',
-      //     'benafit'=>'string|nullable',
-      //     'description'=>'string|nullable',
-      //     'photo'=>'string|required',
-      //     'minprice'=>'numeric|required',
-      //     // 'cat_id'=>'required|exists:categories,id',
-      //     // 'child_cat_id'=>'nullable|exists:categories,id',
-      //     'is_featured'=>'sometimes|in:1',
-      //     'brand_id'=>'nullable|exists:brands,id',
-      //     'status'=>'required|in:active,inactive',
-      //     'condition'=>'required|in:default,new,trending',
-      //     'plu'=>'required|numeric'
-      // ]);
-      
+     
       $data=$request->all();
       
-      
-      $data['is_featured']=$request->input('is_featured',0);
       $size=$request->input('size');
               
       $status=$product->fill($data)->save();
       
-      $categories = [];
-      
-          $categories[] = $request->cat_id;
-          for($i=2; $i<=$request->cat_count; $i++){
-              $cat= 'cat_id'.$i;
-              $categories[] = $request->$cat;
-          }
-          
-          if($categories[0] != null)
-          foreach ($categories as $product_cat) {
-              $category = new ProductCategory;
-              $category['product_id']=$id;           
-              $category['cat_id']=$product_cat;
-              $category['subcat_id']=$product_cat->subcat_id;
-              $category->save();
-          }
-          // dd($request->sku[0]);
+      $brands = [];
+    $brands[] =$request->brand_id;
+    for($i=2; $i<=$request->brands_count; $i++){
+        $brand= 'brand_id'.$i;
+        $brands[] = $request->$brand;
+    }
+    if($brands[0]){
+        foreach ($brands as $product_brand) {
+            $brand = new ProductBrand;
+            $brand['product_id']=$id;           
+            $brand['brand_id']=$product_brand;
+            $brand->save();
+        } 
+    } 
     
-          if($request->sku[0] != null)        
-          for($i=0; $i<count((array)$request->form); $i++){
-              $attribute = new ProductsAttribute;
-              $attribute['product_id']=$id;           
-              $attribute['plu']=$request->plu;
-              $attribute['sku']= $request->sku[$i];
-              $attribute['form']=$request->form[$i];
-              $attribute['size']=$request->size[$i];
-              $attribute['price']=$request->price[$i];
-              $attribute['discount']=$request->discount[$i];
-              $attribute['stock']=$request->stock[$i];
-             
-              $attribute->save();                             
-          }  
-
-          
+    $categories = [];
+    $categories[] = $request->cat_id;
+    $subcategories = [];
+    $subcategories[] = $request->subcat_id;
+    for($i=2; $i<=$request->cat_count; $i++){
+        $cat= 'cat_id'.$i;
+        $categories[] = $request->$cat; 
+       
+    }
+    for($i=2; $i<=$request->cat_count; $i++){ 
+        $subcat= 'subcat_id'.$i;
+        $subcategories[]= $request->$subcat;   
+    }
+    if($categories[0]!==""){
+        foreach ($categories as $product_cat) {
+            $category = new ProductCategory;
+            $category['product_id']=$id;           
+            $category['cat_id']=$product_cat;
+            $category->save();
+        }
+    }
+    if($subcategories[0]!==""){
+        foreach ($subcategories as $product_subcat) {
+            $subcategory = new ProductCategory;
+            $subcategory['product_id']=$id;  
+            $category['cat_id']=$product_cat;         
+            $subcategory['subcat_id']=$product_subcat;            
+            $subcategory->save();
+        }
+    } 
+           
+    if($request->hasFile("images")){
+        $files=$request->file("images");
+        foreach($files as $file){
+            $imageName=time().'_'.$file->getClientOriginalName();
+            $request['product_id']=$id;
+            $request['name']=$imageName;
+            $file->move(\public_path("/images"),$imageName);
+            ProductImage::create($request->all());
+        }
+    }  
+    
+    $forms = [];   
+    $forms[] =$request->form_id;
+    //dd($forms);
+    if($forms=''){
+        foreach ($forms[0] as $product_form) {
+            $form = new ProductForm;
+            $form->product_id=$id;           
+            $form->form_id=$product_form;
+            $form->save();
+        }   
+    }
+    if($forms=''){         
+        for($i=0; $i<count($request->form_id); $i++){
+            $attribute = new ProductAttribute;
+            $attribute['product_id']=$id;           
+            $attribute['flu']=$request->flu[$i];
+            $attribute['sku']= $request->sku[$i];
+            $attribute['form_id']=$request->form_id[$i];
+            $attribute['size']=$request->size[$i];
+            $attribute['price']=$request->price[$i];
+            $attribute['discount']=$request->discount[$i];
+            $attribute['stock']=$request->stock[$i];
+            //dd($request->all());
+            $attribute->save();                             
+        } 
+    }
+   // dd($request->all());             
       if($status){
           
           request()->session()->flash('success','Product Successfully updated');

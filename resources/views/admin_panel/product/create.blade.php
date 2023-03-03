@@ -131,19 +131,20 @@
           <label for="form_id">form</label>
           {{-- {{$forms}} --}}
           <div class="form">
-            <select name="form_id" id="form_id" class="form-control">
-              <option value="">--Select Form--</option>
-              @foreach($forms as $form)
-              <option value="{{$form->id}}">{{$form->name}}</option>
-              @endforeach
-            </select>
+            
           <div class="controls">
           <label class="control-label">Size Wise Price: </label>                                
           <div class="control-group">
             
             <div class="field_wrapper">
               <div class="abc">
-                <input type="text" name="flu[]" id="flu" placeholder="flu" style="width:120px;"/> 
+                <input type="text" name="flu[]" id="flu" placeholder="flu" style="width:120px;"/>
+                <select name="form_id[]" id="form_id" placeholder="form_id" style="width:120px;">
+                  <option value="">--Select Form--</option>
+                  @foreach($forms as $form)
+                  <option value="{{$form->id}}">{{$form->name}}</option>
+                  @endforeach
+                </select>
                 <input type="text" name="sku[]" id="sku" placeholder="sku" style="width:120px;" required/>                                    
                 <input type="text" name="size[]" id="size" placeholder="size" style="width:120px;"required/>
                 <input type="float"  name="price[]" id="price" placeholder="price" style="width:120px;"required/>
@@ -154,7 +155,6 @@
             </div>
           </div>
         </div>
-          <a href="javascript:void(0);" class="form_button" title="Add field">Add</a><br>
         </div>         
         <input type="hidden" id="form_count" name="form_count" value="">
       </div>
@@ -412,82 +412,7 @@
     }
     
   })
-  $(document).ready(function() {
-    var max_fields = 15;
-    var wrapper = $(".form");
-    var add_button = $(".form_button");
-
-    var x = 1;
-    $(add_button).click(function(e) {
-        e.preventDefault();
-        if (x < max_fields) {
-          x++;
-          $(wrapper).append(`<div><select name="form_id" id="form_id" class="form-control">
-              <option value="">--Select Form--</option>
-              @foreach($forms as $form)
-              <option value="{{$form->id}}">{{$form->name}}</option>
-              @endforeach
-            </select><div class="controls">
-          <label class="control-label">Size Wise Price: </label>                                
-          <div class="control-group">
-            
-            <div class="field_wrapper">
-              <div class='Add_size'>
-                <input type="text" name="flu[]" id="flu" placeholder="flu" style="width:120px;"/> 
-                <input type="text" name="sku[]" id="sku" placeholder="sku" style="width:120px;" required/>                                    
-                <input type="text" name="size[]" id="size" placeholder="size" style="width:120px;"required/>
-                <input type="float"  name="price[]" id="price" placeholder="price" style="width:120px;"required/>
-                <input id="discount" type="numberfloat" name="discount[]" min="0" max="100" placeholder="Enter discount" style="width:120px;"required/>
-                <input type="float" name="stock[]" id="stock" placeholder="stock" style="width:120px;"required/>
-                <a href="javascript:void(0);" class="size_button" title="Add field">Add</a><br>
-              </div>
-            </div>
-          </div>
-        </div>
-        <a href="javascript:void(0);" class="form_button" title="Add field">Add</a><br>
-        </div><a href="#" class="delete">Delete</a></div>`);//add input box
-          $("#form_count").val(x);
-          $(document).ready(function() {
-            var max_fields = 15;
-            var wrapper = $(`.Add_size`);
-            var add_button = $(`.size_button`);
-
-            var x = 1;
-            $(add_button).click(function(e) {
-                e.preventDefault();
-              if (x < max_fields) {
-                x++;
-                $(wrapper).append(`<div>
-                <input type="text" name="flu[]" id="flu" placeholder="flu" style="width:120px;margin-right:5px; margin-top:5px;"/>
-                <input type="text" name="sku[]" id="sku" placeholder="sku" style="width:120px; margin-right:5px; margin-top:5px;" required />
-                <input type="text" name="size[]" id="size" placeholder="size" style="width:120px; margin-right:5px margin-top:5px;" required/>
-                <input type="text" name="price[]" id="price" placeholder="price" style="width:120px; margin-right:5px margin-top:5px;" required/>
-                <input id="discount" type="number" name="discount[]" min="0" max="100" placeholder="Enter discount" style="width:120px;"required/>
-                <input type="text" name="stock[]" id="stock" placeholder="stock" style="width:120px; margin-right:5px margin-top:5px;" required/>
-                <a href="#" class="delete">Delete</a></div>`);//add input box
-           
-              } else {
-                alert('You Reached the limits')
-              }
-            });
-
-          $(wrapper).on("click", ".delete", function(e) {
-        e.preventDefault();
-      $(this).parent('div').remove();
-      x--;
-    })
-  });
-    } else {
-      alert('You Reached the limits')
-    }
-  });
-
-    $(wrapper).on("click", ".delete", function(e) {
-      e.preventDefault();
-      $(this).parent('div').remove();
-      x--;
-    })
-  });
+  
 
   $(document).ready(function() {
     var max_fields = 15;
@@ -501,13 +426,19 @@
         x++;
         $(wrapper).append(`<div>
           <input type="text" name="flu[]" id="flu" placeholder="flu" style="width:120px;margin-right:5px; margin-top:5px;"/>
+          <select name="form_id[]" id="form_id" placeholder="form_id" style="width:120px;">
+            <option value="">--Select Form--</option>
+            @foreach($forms as $form)
+            <option value="{{$form->id}}">{{$form->name}}</option>
+            @endforeach
+          </select>
           <input type="text" name="sku[]" id="sku" placeholder="sku" style="width:120px; margin-right:5px; margin-top:5px;" required />
           <input type="text" name="size[]" id="size" placeholder="size" style="width:120px; margin-right:5px margin-top:5px;" required/>
           <input type="text" name="price[]" id="price" placeholder="price" style="width:120px; margin-right:5px margin-top:5px;" required/>
           <input id="discount" type="number" name="discount[]" min="0" max="100" placeholder="Enter discount" style="width:120px;"required/>
           <input type="text" name="stock[]" id="stock" placeholder="stock" style="width:120px; margin-right:5px margin-top:5px;" required/>
           <a href="#" class="delete">Delete</a></div>`);//add input box
-      
+          $("#form_count").val(x);
         } else {
           alert('You Reached the limits')
         }
