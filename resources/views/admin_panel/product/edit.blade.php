@@ -64,10 +64,8 @@
           {{-- {{$coupons}} --}}
           <div class="coupon">
             <select name="coupon_id" id="coupon_id" class="form-control">
-              <option value="">--Select Coupon--</option>
-              @foreach($coupons as $coupon)
-              <option value="{{$coupon->id}}">{{$coupon->code}}</option>
-              @endforeach
+              <option value="{{$product->coupon->id}}">{{$product->coupon->code ?? ''}}</option>             
+              <option value="{{$product->coupon->id}}">{{$product->coupon->code}}</option>             
             </select>
           </div>         
         </div>
@@ -89,29 +87,74 @@
                 {{-- @foreach($subcategories as $key=>$subcategory)
                   <option value='{{$subcategory->id}}'>{{$subcategory->name}}</option>
                 @endforeach --}}
-              </select> 
-              
+              </select>               
             </div>
             <a href="javascript:void(0);" class="category_button" title="Add field">Add</a><br> 
           </div>
           <input type="hidden" id="cat_count" name="cat_count" value="">
           <input type="hidden" id="subcat_count" name="subcat_count" value="">          
         </div>
-        
-      <div class="form-group">
-        <label for="brand_id">Brand</label>
-        <select name="brand_id" class="form-control">
-            <option value="">--Select Brand--</option>
-            @foreach($brands as $brand)
-            <option value="{{$brand->id}}" {{(($product->brand_id==$brand->id)? 'selected':'')}}>{{$brand->name}}</option>
+        <div class="modal-shopping-list" id="modal-shopping-list">
+          <table class="table table-bordered" id="shopping-list-table">
+            <h6>Category and SubCategory List</h6>
+            <thead>
+              <tr style="border:1px">
+                <th scope="col">Category</th>
+                <th scope="col">SubCategory</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <body>
+           
+            @foreach($product['categories'] as $pro_cate )
+              <tr>
+                <td>{{$pro_cate->name}}</td>
+               
+                <td>@foreach($product['subcat'] as $pro_subcate )
+                @if($pro_cate->id == $pro_subcate->parent_id) 
+                {{$pro_subcate->name}}
+                @endif 
+                @endforeach 
+                </td>
+                <td>
+                  <button type="button" onclick="proCatDlt(<?=$product->id?>,<?=$pro_cate->category_id?>)"><i class="fas fa-trash-alt"></i></button>
+                </td>           
+              </tr>
             @endforeach
-        </select>
-      </div>
+          </table>
+        </div>
+        
+        <div class="form-group">
+          <label for="brand_id">Brand</label>
+          <select name="brand_id" class="form-control">
+              <option value="">--Select Brand--</option>
+              @foreach($brands as $brand)
+              <option value="{{$brand->id}}" {{(($product->brand_id==$brand->id)? 'selected':'')}}>{{$brand->name}}</option>
+              @endforeach
+          </select>
+        </div>
+        <div class="modal-shopping-list" id="modal-shopping-list">
+          <table id="shopping-list-table">
+            <h6>Brand List</h6>
+            <thead>
+              <tr>
+                <th>Brand Name</th>
+              </tr>
+            </thead>
+            <body>
+              @foreach($product['brands'] as $pro_brand)
+            <tr>
+                <td>{{$pro_brand->name}}</td>              
+              </tr>
+              @endforeach
+          </table>
+        </div>
+          
 
       <div class="form-group">
         <label for="promotion">promotion</label>
         <select name="promotion" class="form-control">
-          <option value="">--Select promotion--</option>
+          <option value="">{{$product->promotion}}</option>
           <option value="default" {{(($product->promotion=='default')? 'selected':'')}}>Default</option>
           <option value="new" {{(($product->promotion=='new')? 'selected':'')}}>New</option>
           <option value="trending" {{(($product->promotion=='trending')? 'selected':'')}}>Trending</option>
@@ -140,18 +183,20 @@
             <span class="text-danger">{{$message}}</span>
           @enderror
         </div>
-        @php
-          $forms = DB::table('product_forms')->get();
-        @endphp
 
         <div class="controls">
           <label class="control-label">Size Wise Price: </label>                                
           <div class="control-group">
-            
+          {{-- {{$forms}} --}}
             <div class="field_wrapper">
               <div class="abc">
                 <input type="text" name="flu[]" id="flu" placeholder="flu" style="width:120px;"/> 
-                <input type="select" class="form_id" name="form_id[]" id="form" placeholder="form_id" style="width:120px;"/>
+                <select name="form_id[]" id="form_id" placeholder="form_id" style="width:120px;">
+                  <option value="">--Select Form--</option>
+                  @foreach($forms as $form)
+                    <option value="{{$form->id}}">{{$form->name}}</option>
+                  @endforeach
+                </select>
                 <input type="text" name="sku[]" id="sku" placeholder="sku" style="width:120px;" />                                    
                 <input type="text" name="size[]" id="size" placeholder="size" style="width:120px;"/>
                 <input type="float"  name="price[]" id="price" placeholder="price" style="width:120px;"/>
@@ -485,7 +530,12 @@
             x++;
             $(wrapper).append(`<div>
             <input type="text" name="flu[]" id="flu" placeholder="flu" style="width:120px;margin-right:5px; margin-top:5px;"/>
-            <input type="select" class="form_id" name="form_id[]" id="form" placeholder="form_id" style="width:120px;"/>
+            <select name="form_id[]" id="form_id" placeholder="form_id" style="width:120px;">
+              <option value="">--Select Form--</option>
+              @foreach($forms as $form)
+              <option value="{{$form->id}}">{{$form->name}}</option>
+              @endforeach
+            </select>
             <input type="text" name="sku[]" id="sku" placeholder="sku" style="width:120px; margin-right:5px; margin-top:5px;" required />
             <input type="text" name="size[]" id="size" placeholder="size" style="width:120px; margin-right:5px margin-top:5px;" required/>
             <input type="text" name="price[]" id="price" placeholder="price" style="width:120px; margin-right:5px margin-top:5px;" required/>
@@ -505,6 +555,19 @@
     })
   });
 
+  function proCatDlt(productId, catId){
+  $("#" + catId + "-tr").remove();
+ alert(catId);
+  $.ajax({
+    url:'/admin/product/delete-category/' + catId,
+    type:"get",
+    data:{
+        productId:productId
+    },
+    success:function(response){
+        
+    }});
+  }
   
 </script>
 @endpush
