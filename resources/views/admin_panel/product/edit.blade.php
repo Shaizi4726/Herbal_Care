@@ -5,7 +5,7 @@
 <div class="card">
   <h5 class="card-header">Edit Product</h5>
   <div class="card-body">
-    <form method="post" id="main-form" action="{{route('product.update',$product->id)}}">
+    <form method="post" id="main-form" action="{{route('product.update',$product->id)}}" enctype="multipart/form-data">
       @csrf 
       @method('PATCH')
       <div class="form-group">
@@ -61,11 +61,13 @@
       </div>
       <div class="form-group">
           <label for="coupon_id">Coupon</label>
-          {{-- {{$coupons}} --}}
+         
           <div class="coupon">
             <select name="coupon_id" id="coupon_id" class="form-control">
-              <option value="{{$product->coupon->id}}">{{$product->coupon->code ?? ''}}</option>             
-              <option value="{{$product->coupon->id}}">{{$product->coupon->code}}</option>             
+            <option value="">--Select Coupon--</option>           
+              @foreach($coupons as $coupon)
+                <option value="{{$coupon->id}}">{{$coupon->code}}</option>
+              @endforeach             
             </select>
           </div>         
         </div>
@@ -117,7 +119,7 @@
                 @endforeach 
                 </td>
                 <td>
-                  <button type="button" onclick="proCatDlt(<?=$product->id?>,<?=$pro_cate->category_id?>)"><i class="fas fa-trash-alt"></i></button>
+                  <button type="button" onclick="proCatDlt(<?=$product->id?>,<?=$pro_cate->id?>)"><i class="fas fa-trash-alt"></i></button>
                 </td>           
               </tr>
             @endforeach
@@ -143,18 +145,17 @@
             </thead>
             <body>
               @foreach($product['brands'] as $pro_brand)
-            <tr>
-                <td>{{$pro_brand->name}}</td>              
-              </tr>
+                <tr>
+                  <td>{{$pro_brand->name}}</td>              
+                </tr>
               @endforeach
+            </body>
           </table>
         </div>
-          
-
       <div class="form-group">
         <label for="promotion">promotion</label>
         <select name="promotion" class="form-control">
-          <option value="">{{$product->promotion}}</option>
+          <option value="{{$product->promotion}}">{{$product->promotion}}</option>
           <option value="default" {{(($product->promotion=='default')? 'selected':'')}}>Default</option>
           <option value="new" {{(($product->promotion=='new')? 'selected':'')}}>New</option>
           <option value="trending" {{(($product->promotion=='trending')? 'selected':'')}}>Trending</option>
@@ -190,7 +191,6 @@
           {{-- {{$forms}} --}}
             <div class="field_wrapper">
               <div class="abc">
-                <input type="text" name="flu[]" id="flu" placeholder="flu" style="width:120px;"/> 
                 <select name="form_id[]" id="form_id" placeholder="form_id" style="width:120px;">
                   <option value="">--Select Form--</option>
                   @foreach($forms as $form)
@@ -204,6 +204,7 @@
                 <input type="float" name="stock[]" id="stock" placeholder="stock" style="width:120px;"/>
                 <a href="javascript:void(0);" class="add_button1" title="Add field">Add</a><br>
               </div>
+              <input type="hidden" id="form_count" name="form_count" value="">
             </div>
           </div>
         </div>
@@ -254,13 +255,13 @@
       </table>
 
       <div class="form-group">
-        <label for="inputPhoto" class="col-form-label">Photo <span class="text-danger"></span></label>
-        <div class="input-group">
-            <span class="input-group-btn">
-              <input type="file" form="main-form" id="input-file-now-custom-3" class="form-control m-2" name="images[]" multiple>
-            </span>          
+          <label for="inputPhoto" class="col-form-label">Photo <span class="text-danger"></span></label>
+          <div class="input-group">
+              <span class="input-group-btn">
+                <input type="file" id="input-file-now-custom-3" class="form-control m-2" name="images[]" multiple>
+              </span>          
+          </div>
         </div>
-      </div>
       <form method="post" action="{{url('/admin/product/edit-attributes/'.$product->id)}}" >
         {{csrf_field()}}
         <table class="table table-bordered" id="product-dataTable" width="100%" cellspacing="0">
@@ -279,7 +280,7 @@
                 <td>{{$image->name}} </td>                        
                 <td class="center">
               </form>                                                                                   
-              <form method="get" action="{{url('admin/product/delete-images',[$image->id])}}">
+              <form method="get" id="edirAttribute" action="{{url('admin/product/delete-images',[$image->id])}}">
                 @csrf
                 @method('delete')
                 <button class="btn btn-danger btn-sm dltBtn" data-id="{{$attribute->id}}" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>  
@@ -303,8 +304,8 @@
       <div class="form-group mb-3">
           <button class="btn btn-success" form="main-form" type="submit">Update</button>
       </div>
-    
-    </div>
+    </form>
+  </div>
 </div>
 
 @endsection
@@ -529,7 +530,7 @@
         if (x < max_fields) {
             x++;
             $(wrapper).append(`<div>
-            <input type="text" name="flu[]" id="flu" placeholder="flu" style="width:120px;margin-right:5px; margin-top:5px;"/>
+            
             <select name="form_id[]" id="form_id" placeholder="form_id" style="width:120px;">
               <option value="">--Select Form--</option>
               @foreach($forms as $form)
@@ -542,6 +543,7 @@
             <input id="discount" type="number" name="discount[]" min="0" max="100" placeholder="Enter discount" style="width:120px;"required/>
             <input type="text" name="stock[]" id="stock" placeholder="stock" style="width:120px; margin-right:5px margin-top:5px;" required/>
             <a href="#" class="delete">Delete</a></div>`);//add input box
+            $("#form_count").val(x);
            
         } else {
             alert('You Reached the limits')
@@ -555,17 +557,18 @@
     })
   });
 
-  function proCatDlt(productId, catId){
-  $("#" + catId + "-tr").remove();
- alert(catId);
-  $.ajax({
-    url:'/admin/product/delete-category/' + catId,
-    type:"get",
-    data:{
-        productId:productId
-    },
-    success:function(response){
-        
+  function proCatDlt(productId, pro_cate){
+    $("#" + pro_cate + "-tr").remove();
+    
+    $.ajax({
+      url:'/admin/product/delete-category/' + pro_cate,
+      type:"get",
+      data:{
+          productId:productId
+      },
+      
+      success:function(response){
+        alert(productId);   
     }});
   }
   

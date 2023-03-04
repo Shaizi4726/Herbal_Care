@@ -78,7 +78,7 @@ class ProductController extends Controller
     ]);
     //dd($request->all());  
     $data=$request->all(); 
-         
+    
     $slug=Str::slug($request->name);
     $count=Product::where('slug',$slug)->count();        
     $data['slug']=$slug;
@@ -125,7 +125,8 @@ class ProductController extends Controller
             $subcategory['subcat_id']=$product_subcat;            
             $subcategory->save();
         }
-    }           
+    }  
+    //dd($request->hasFile);           
     if($request->hasFile("images")){
         $files=$request->file("images");
         foreach($files as $file){
@@ -191,11 +192,13 @@ class ProductController extends Controller
     $product=Product::findOrFail($id);
     $category=Category::get();
     $brand=Brand::get();
+    $coupon=Coupon::get();
     $form=Form::get();
       // return $items;
     return view('admin_panel.product.edit')->with('product',$product)
     ->with('categories',$category)
     ->with('forms',$form)
+    ->with('coupons',$coupon)
     ->with('brands',$brand);
   }
 
@@ -214,10 +217,10 @@ class ProductController extends Controller
       $data=$request->all();
       
       $size=$request->input('size');
-              
+      //dd($request->all());        
       $status=$product->fill($data)->save();
       
-      $brands = [];
+    $brands = [];
     $brands[] =$request->brand_id;
     for($i=2; $i<=$request->brands_count; $i++){
         $brand= 'brand_id'.$i;
@@ -262,35 +265,40 @@ class ProductController extends Controller
             $subcategory->save();
         }
     } 
-           
+    
     if($request->hasFile("images")){
         $files=$request->file("images");
         foreach($files as $file){
             $imageName=time().'_'.$file->getClientOriginalName();
             $request['product_id']=$id;
             $request['name']=$imageName;
-            $file->move(\public_path("/images"),$imageName);
+            $file->move(\public_path("/images"),$imageName);            
             ProductImage::create($request->all());
         }
     }  
-    
-    $forms = [];   
-    $forms[] =$request->form_id;
-    //dd($forms);
-    if($forms=''){
+   
+   $forms = [];
+   $forms[] = $request->form_id;
+   for($i=2; $i<=$request->form_count; $i++){
+       $pro_form= 'form_id'.$i;
+       $forms[] = $request->$pro_form;       
+   }
+    // dd($forms);
+    if($forms[0]!==""){
         foreach ($forms[0] as $product_form) {
             $form = new ProductForm;
-            $form->product_id=$id;           
-            $form->form_id=$product_form;
+            $form['product_id']=$id;           
+            $form['form_id']=$product_form;
             $form->save();
         }   
     }
-    if($forms=''){         
+    //dd($request->idAttr);
+    if($request->sku[0]){         
         for($i=0; $i<count($request->form_id); $i++){
             $attribute = new ProductAttribute;
-            $attribute['product_id']=$id;           
-            $attribute['flu']=$request->flu[$i];
+            $attribute['product_id']=$id;                      
             $attribute['sku']= $request->sku[$i];
+            $attribute['flu']=$request->IdAttr;
             $attribute['form_id']=$request->form_id[$i];
             $attribute['size']=$request->size[$i];
             $attribute['price']=$request->price[$i];
@@ -300,7 +308,7 @@ class ProductController extends Controller
             $attribute->save();                             
         } 
     }
-   // dd($request->all());             
+    //dd($request->all());             
       if($status){
           
           request()->session()->flash('success','Product Successfully updated');
@@ -330,35 +338,14 @@ class ProductController extends Controller
       }
       return redirect()->route('product.index');
   }
-  public function addImage(Request $request, $id=null){
-      $productDetails = Product::find($id);
-      $path='images/';
-          
-          if($request->hasFile("images")){
-              
-              $files=$request->file("images");
-              //dd($files);
-              foreach($files as $file){
-                  $imageName=time().'_'.$file->getClientOriginalName();
-                  $request['product_id']=$productDetails->id;
-                  $request['plu']=$productDetails->plu;
-                  $request['image']=$imageName;
-                  $file->move(\public_path("/images"),$imageName);
-                  Image::create($request->all());
-  
-            }      
-          return redirect('/admin/product/add-images/'.$id)->with('success','Product Attributes has been added successfully!');        
-  }
-          return view('admin_panel.product.image')->with(compact('productDetails'));
-  }
+ 
 
   //delete Category
   public function deleteCategory($id, Request $request){
-      $productCategory=ProductCategory::where('category_id',  $id)->where('product_id', $request->productId)->delete();
-      //$status=$productCategory->delete();
-      
-      
-      if($productCategory){
+    
+      $productCategory=ProductCategory::where('id',  $id)->where('product_id', $request->productId);
+      $status=$productCategory->delete();      
+      if($status){
           request()->session()->flash('success','Product successfully deleted');
       }
       else{
@@ -368,7 +355,7 @@ class ProductController extends Controller
       //return redirect()->back();
   }
       public function deleteImage($id){
-          $product=Image::findOrFail($id);
+          $product=ProductImage::findOrFail($id);
           $status=$product->delete();
   //        dd($product);
           
@@ -383,7 +370,7 @@ class ProductController extends Controller
       }
 
       public function deleteAttribute($id){
-          $product=ProductsAttribute::findOrFail($id);
+          $product=ProductAttribute::findOrFail($id);
           $status=$product->delete();
   //        dd($product);
           
@@ -398,11 +385,12 @@ class ProductController extends Controller
       }
   
       public function editAttributes(Request $request, $id = null){
+        dd($request->all());
           if($request->isMethod('post')){
               $data = $request->all();
-              //echo "<pre>"; print_r($data); die;
+            //   echo "<pre>"; print_r($data); die;
               foreach($data['idAttr'] as $key => $attr){
-                  ProductsAttribute::where(['id'=>$data['idAttr'][$key]])->update(['price'=>$data['price'][$key],
+                  ProductAttribute::where(['id'=>$data['idAttr'][$key]])->update(['price'=>$data['price'][$key],
                   'discount'=>$data['discount'][$key],'stock'=>$data['stock'][$key]]);
               }
               
