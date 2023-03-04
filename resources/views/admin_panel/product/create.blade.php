@@ -64,7 +64,7 @@
             <select name="coupon_id" id="coupon_id" class="form-control">
               <option value="">--Select Coupon--</option>
               @foreach($coupons as $coupon)
-              <option value="{{$coupon->id}}">{{$coupon->code}}</option>
+                <option value="{{$coupon->id}}">{{$coupon->code}}</option>
               @endforeach
             </select>
           </div>         
@@ -158,16 +158,14 @@
         </div>         
         <input type="hidden" id="form_count" name="form_count" value="">
       </div>
-        
-
        <div class="form-group">
           <label for="inputPhoto" class="col-form-label">Photo <span class="text-danger">*</span></label>
           <div class="input-group">
-              <span class="input-group-btn">
-                  <a id="lfm" data-input="thumbnail" data-preview="holder" class="btn btn-primary">
-                  <i class="fa fa-picture-o"></i> Choose
-                  </a>
-              </span>
+            <span class="input-group-btn">
+              <a id="lfm" data-input="thumbnail" data-preview="holder" class="btn btn-primary">
+                <i class="fa fa-picture-o"></i> Choose
+              </a>
+            </span>
           <input id="thumbnail" class="form-control" type="text" name="photo" value="{{old('photo')}}">
         </div>
         <div id="holder" style="margin-top:15px;max-height:100px;"></div>
@@ -425,7 +423,7 @@
       if (x < max_fields) {
         x++;
         $(wrapper).append(`<div>
-          <input type="text" name="flu[]" id="flu" placeholder="flu" style="width:120px;margin-right:5px; margin-top:5px;"/>
+          <input type="text" name="flu[]" id="flu${x}" placeholder="flu" style="width:120px;margin-right:5px; margin-top:5px;"/>
           <select name="form_id[]" id="form_id" placeholder="form_id" style="width:120px;">
             <option value="">--Select Form--</option>
             @foreach($forms as $form)

@@ -2,6 +2,7 @@ Order Details page
 remove add list button and direct add to cart
 modals
 Coupon Validation Backend
+add precoution in details page
 Mobile Popup Offers
 Search Backend
 product form with flu
