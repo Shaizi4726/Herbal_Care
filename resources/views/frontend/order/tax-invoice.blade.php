@@ -8,7 +8,7 @@
 
   <body>
     <div class="invoice-header">
-      <img src="{{public_path('images/pdf_header.png')}}"/>
+      <img src="{{public_path('images/tax_invoice_header.png')}}"/>
     </div>
 
     <div class="watermark">HerbalCare.ae</div>

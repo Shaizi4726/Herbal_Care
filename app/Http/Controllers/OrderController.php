@@ -206,15 +206,15 @@ class OrderController extends Controller
     }
     
     // Notification::send(Auth()->user(), new StatusNotification('Order Placed'));
-    $pdf = $this->pdf($order_id);
+    $req = new Request;
+    $req->id = 1;
+    $pdf = $this->sale_invoice($req);
     (new MailController)->send_mail($request->email, $pdf);
     
     request()->session()->flash('success','Your product successfully placed in order');
     return redirect()->route('home');
   }
   
-  
-
   /**
    * Display the specified resource.
    *
@@ -306,19 +306,29 @@ class OrderController extends Controller
     if(Auth::check()) {
       $orders = Order::with('payment')->where('user_id', Auth()->user()->id)->orderBy('created_at', 'desc')->get();
 
-      if($orders == null)
+      $completed = 0;
+
+      if($orders == null) {
         $orders = 0;
+      }
+      else {
+        foreach($orders as $ord) {
+          if($ord->status == 'completed') {
+            $completed = 1;
+          }
+        }
+      }
     } else {
       $orders = 0;
     }
 
-    return view('frontend.pages.orders-detail')->with(['orders' => $orders, 'order' => 0, 'return' => 0, 'cancel' => 0]);
+    return view('frontend.pages.orders-detail')->with(['orders' => $orders, 'order' => 0, 'return' => 0, 'cancel' => 0, 'completed' => $completed]);
   }
 
   public function order_details (Request $request) {
     $order = Order::with('order_items.product', 'shipping')->where('order_no', $request->id)->get();
 
-    if($order) {
+    if(count($order) != 0) {
       $order = $order[0];
       $shipping = $order->shipping;
 
@@ -337,18 +347,34 @@ class OrderController extends Controller
       }
     }
     else {
+      $cancel = 0;
+      $return = 0;
       $order = -1;
     }
 
-    return view('frontend.pages.orders-detail')->with(['orders' => 0, 'order' => $order, 'return' => $return, 'cancel' => $cancel]);
+    return view('frontend.pages.orders-detail')->with(['orders' => 0, 'order' => $order, 'return' => $return, 'cancel' => $cancel, 'completed' => 0]);
   }
 
-  // PDF generate
-  public function pdf($id, Request $request = null) {
-    $order = Order::with('order_items', 'payment', 'shipping')->where('id', $id)->get()[0];
+  // Sale invoice generate
+  public function sale_invoice(Request $request) {
+    $order = Order::with('order_items', 'payment', 'shipping')->where('id', $request->id)->get()[0];
     $file_name = $order->order_no.'-'.$order->fname.'.pdf';
     
-    $pdf = PDF::loadview('frontend.order.pdf', compact('order'));
+    $pdf = PDF::loadview('frontend.order.sale-invoice', compact('order'));
+
+    if($request->download == 1) {
+      return $pdf->download($file_name);
+    }
+    
+    return $pdf->output();
+  }
+
+  // Tax invoice generate
+  public function tax_invoice(Request $request) {
+    $order = Order::with('order_items', 'payment', 'shipping')->where('id', $request->id)->get()[0];
+    $file_name = $order->order_no.'-'.$order->fname.'.pdf';
+    
+    $pdf = PDF::loadview('frontend.order.tax-invoice', compact('order'));
 
     if($request) {
       if($request->download == 1)
@@ -356,7 +382,6 @@ class OrderController extends Controller
     }
     
     return $pdf->output();
-    // return view('frontend.order.pdf', compact('order'));
   }
 
   /**

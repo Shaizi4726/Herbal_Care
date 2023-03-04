@@ -34,7 +34,7 @@ return new class extends Migration
       $table->string('landmark')->nullable();
       $table->unsignedBigInteger('coupon_id')->nullable();
       $table->foreign('coupon_id')->references('id')->on('coupons')->onDelete('SET NULL');
-      $table->enum('status', ['new', 'processed', 'completed', 'cancelled'])->default('new');
+      $table->enum('status', ['new', 'processed', 'completed', 'cancelled', 'returned'])->default('new');
       $table->timestamps();
     });
   }

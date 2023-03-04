@@ -67,12 +67,15 @@ Route::get('/wishlist', 'WishlistController@wishlist')->name('wishlist');
 Route::get('wishlist-add/','WishlistController@wishlist_add')->name('add-to-wishlist')->middleware('user');
 Route::get('wishlist-delete/','WishlistController@wishlist_delete')->name('wishlist-delete');
 Route::post('/order','OrderController@store')->name('order');
-Route::get('order/pdf/{id}','OrderController@pdf')->name('order.pdf');
 Route::get('/income','OrderController@incomeChart')->name('product.order.income');
 // Route::get('/user/chart','AdminController@userPieChart')->name('user.piechart');
 Route::get('/product-grids','FrontendController@productGrids')->name('product-grids');
 Route::get('/product-lists','FrontendController@productLists')->name('product-lists');
 Route::match(['get','post'],'/sort','FrontendController@productSort')->name('shop.filter');
+
+// Order invoices
+Route::get('sale/{id}/order/{download?}', 'OrderController@sale_invoice')->name('sale.pdf');
+Route::get('tax/{id}/order/{download?}', 'OrderController@tax_invoice')->name('tax.pdf');
 
 // Order Track
 Route::view('/order/track', 'frontend.pages.order-track')->name('order.track');
