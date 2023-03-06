@@ -1,15 +1,15 @@
 Order Details page
 remove add list button and direct add to cart
 modals
-Coupon Validation Backend
-add precoution in details page
-Mobile Popup Offers
-Search Backend
-product form with flu
-after verification verify page cant be accessed
+add precautions in details page
 FAQ Page
 Terms & Conditions Page
 Privacy Policy Page
+Mobile Popup Offers
+Search Backend
+Coupon Validation Backend, Coupon reversal in return or cancel
+product form with flu
+after verification verify page cant be accessed
 Payment Methods, Social Media Links
 zoom cart image on hover
 add to cart data using post method
@@ -18,3 +18,5 @@ aboutUs Check Email Validation backend
 username and password with verify email
 link address with google map
 quickview on related products
+
+Coupon would become invalid on return or cancellation / Coupon applied items are not applicable for return or cancellation

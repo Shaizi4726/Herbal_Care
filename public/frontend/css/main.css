@@ -20,7 +20,7 @@ ul li, ol li {
 }
 
 a {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 hr {
@@ -29,20 +29,20 @@ hr {
 }
 
 .btn {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
 }
 
 .collapse {
-    display: none;
+  display: none;
 }
 
 caption {
-    font-family: Vollkorn, 'Times New Roman', Times, serif;
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 1em;
+  font-family: Vollkorn, 'Times New Roman', Times, serif;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 1em;
 }
 
 table, th, td {
@@ -59,8 +59,8 @@ tfoot tr {
 }
 
 .dropdown-toggle::after {
-    content: '\25BC';
-    font-size: 0.8em;
+  content: '\25BC';
+  font-size: 0.8em;
 }
 
 .error {
@@ -132,17 +132,17 @@ input[type="button"] {
 
 /*========== View all link card ==========*/
 .link-card {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .view-link {
-    text-align: center;
-    color: #2c542f;
-    font-size: 24px;
-    font-weight: bold;
-    border-radius: 5px;
+  text-align: center;
+  color: #2c542f;
+  font-size: 24px;
+  font-weight: bold;
+  border-radius: 5px;
 }
 
 .btn-quick-view {
@@ -321,12 +321,6 @@ input[type="button"] {
 .btn-submit:hover {
   color: #fff;
   background-color: #2c542f;
-}
-
-.prod-detail-link .detail-link {
-  color: #faf9f6;
-  font-weight: normal;
-  padding: 0.3em;
 }
 
 .prod-detail-link .favbtn {

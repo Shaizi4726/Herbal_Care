@@ -46,6 +46,22 @@ class Order extends Model
   {
     return $this->hasMany(OrderItem::class, 'order_id');
   }
+  
+  /**
+   * Get the cancel items for the order.
+   */
+  public function cancel_items()
+  {
+    return $this->hasMany(CancelItem::class, 'order_id');
+  }
+  
+  /**
+   * Get the return items for the order.
+   */
+  public function return_items()
+  {
+    return $this->hasMany(ReturnItem::class, 'order_id');
+  }
 
   /**
    * Get the user that owns the order.

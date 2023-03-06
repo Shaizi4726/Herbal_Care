@@ -56,14 +56,6 @@ class Coupon extends Model
   }
   
   /**
-   * Get the orders for the coupon.
-   */
-  public function coupons()
-  {
-    return $this->hasMany(Order::class, 'coupon_id');
-  }
-  
-  /**
    * Get the users for the coupon.
   */
   public function users()

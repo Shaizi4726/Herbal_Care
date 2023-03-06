@@ -21,7 +21,7 @@ return new class extends Migration
       $table->string('code')->unique();
       $table->enum('type', ['fixed', 'percent'])->default('fixed');
       $table->decimal('value');
-      $table->enum('effect', ['product', 'category', 'subcategory', 'user', 'order']);
+      $table->enum('effect', ['product', 'category', 'subcategory', 'user', 'all']);
       $table->timestamps();
     });
   }

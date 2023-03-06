@@ -1,5 +1,5 @@
 @extends('frontend.layouts.master')
-@section('title','HERB || Order Track Page')
+@section('title', 'HERB || Orders Detail Page')
 
 @push('styles')
   <link rel="stylesheet" href="{{asset('frontend/css/orders-detail.css')}}">
@@ -159,21 +159,21 @@
                   <td>{{$item->quantity}}</td>
                   <td>{{$item->total}}</td>
                   @if($return != 0 || $cancel != 0)
-                    <td><input type="checkbox" name="{{$item->id}}-checkbox" id="{{$item->id}}-item-detail" class="btn btn-submit item-checkbox" value="{{$item->id}}"></td>
+                    <td><input type="checkbox" name="item_checkbox" class="btn btn-submit item-checkbox" value="{{$item->id}}"></td>
                   @endif
                 </tr>
               @endforeach
             </table>
           @endif
           <div class="summary-container">
-            <form id="order-action" class="action">
-              <input type="hidden" name="order" value="{{$order->id}}">
+            <div id="order-action" class="action">
+              <input type="hidden" id="order" name="order" value="{{$order->id}}">
               @if($cancel == 1)
-                <button id="{{$item->id}}-item-detail" class="btn btn-submit item-cancel">Cancel</button>
+                <button id="cancel" class="btn btn-submit item-cancel action-btn" disabled>Cancel</button>
               @elseif($return == 1)
-                <button id="{{$item->id}}-item-detail" class="btn btn-submit item-return" data-item="{{$item->id}}">Return</button>
+                <button id="return" class="btn btn-submit item-return action-btn" disabled>Return</button>
               @endif
-            </form>
+            </div>
             <div class="summary">
               <h5>Subtotal: </h5><span class="value">AED {{number_format($order->payment->subtotal, 2)}}</span><br/>
               <h5>VAT Amount: </h5><span class="value">AED {{number_format($order->payment->tax, 2)}}</span><br/>

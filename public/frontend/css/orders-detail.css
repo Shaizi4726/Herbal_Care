@@ -123,6 +123,12 @@ textarea {
   margin: 0 1em;
 }
 
+.btn-submit:disabled {
+  background-color: #ddd;
+  color: red;
+  cursor: not-allowed;
+}
+
 .summary {
   width: 12em;
   margin: 1em 0;
@@ -138,6 +144,7 @@ textarea {
 }
 
 .summary hr {
+  width: 95%;
   margin: 1em 0;
 }
 

@@ -85,6 +85,12 @@ Route::get('/track/order', 'OrderController@track_order')->name('track.order');
 Route::get('/orders-detail', 'OrderController@user_orders')->name('orders-detail');
 Route::get('/order-data', 'OrderController@order_details')->name('order-data');
 
+// Return item or order
+Route::get('/order-return', 'OrderController@return_order')->name('order-return');
+
+// cancel item or order
+Route::get('/order-cancel', 'OrderController@cancel_order')->name('order-cancel');
+
 // NewsLetter
 Route::post('/subscribe','FrontendController@subscribe')->name('subscribe');
 // Product Review

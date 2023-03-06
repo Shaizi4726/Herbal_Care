@@ -26,8 +26,8 @@ return new class extends Migration
       $table->string('size');
       $table->float('price');
       $table->integer('quantity');
-      $table->float('amount');
-      $table->string('reason');
+      $table->float('total');
+      $table->string('reason')->nullable();
       $table->timestamps();
     });
   }

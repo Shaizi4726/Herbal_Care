@@ -27,6 +27,10 @@ return new class extends Migration
       $table->float('subtotal');
       $table->float('tax');
       $table->float('shipping')->nullable();
+      $table->float('discount')->nullable();
+      $table->float('cancelled')->nullable();
+      $table->float('returned')->nullable();
+      $table->float('refund')->nullable();
       $table->float('total');
       $table->timestamps();
     });
