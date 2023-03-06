@@ -327,6 +327,7 @@ class ProductController extends Controller
    */
   public function destroy($id)
   {
+    dd($id);
       $product=Product::findOrFail($id);
       $status=$product->delete();
       
@@ -365,11 +366,11 @@ class ProductController extends Controller
           else{
               request()->session()->flash('error','Error while deleting product');
           }
-      //    return view('admin_panel.product.add_attributes')->with(compact('productDetails'));
           return redirect()->back();
       }
 
       public function deleteAttribute($id){
+        dd($id);
           $product=ProductAttribute::findOrFail($id);
           $status=$product->delete();
   //        dd($product);
@@ -384,17 +385,17 @@ class ProductController extends Controller
           return redirect()->back();
       }
   
-      public function editAttributes(Request $request, $id = null){
-        dd($request->all());
-          if($request->isMethod('post')){
+      public function editAttributes(Request $request){
+     //   dd($request->all());
+         
               $data = $request->all();
             //   echo "<pre>"; print_r($data); die;
-              foreach($data['idAttr'] as $key => $attr){
-                  ProductAttribute::where(['id'=>$data['idAttr'][$key]])->update(['price'=>$data['price'][$key],
-                  'discount'=>$data['discount'][$key],'stock'=>$data['stock'][$key]]);
-              }
+              
+                  ProductAttribute::where(['id'=>$data['idAttr']])->update(['price'=>$data['price'],
+                  'discount'=>$data['discount'],'stock'=>$data['stock']]);
+           
               
               return redirect()->back()->with('flash_message_success','Products Attributes has been update successfully');
-          }
+         
       }
 }

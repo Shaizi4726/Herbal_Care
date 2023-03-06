@@ -41,7 +41,7 @@ class CouponController extends Controller
             'code'=>'string|required',        
             'type'=>'required|in:fixed,percent',
             'value'=>'required|numeric',
-            'effect'=>'required|in:product,category,subcategory,user',
+            'effect'=>'required|in:product,category,subcategory,user,all',
             
         ]);
         $data=$request->all();
