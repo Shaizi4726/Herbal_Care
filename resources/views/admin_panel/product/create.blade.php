@@ -93,7 +93,7 @@
             <a href="javascript:void(0);" class="category_button" title="Add field">Add</a><br> 
           </div>
           <input type="hidden" id="cat_count" name="cat_count" value="">
-          <input type="hidden" id="subcat_count" name="subcat_count" value="">          
+          <!-- <input type="hidden" id="subcat_count" name="subcat_count" value="">           -->
         </div>
         
         <div class="form-group">

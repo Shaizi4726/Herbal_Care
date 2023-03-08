@@ -96,19 +96,22 @@
         <input type="hidden" id="subcat_count" name="subcat_count" value="">          
       </div>
       <div class="modal-shopping-list" id="modal-shopping-list">
-        <table class="table table-bordered" id="shopping-list-table">
+        <table class="table table-bordered" id="catgory-dataTable" width="100%" cellspacing="0">
           <h6>Category and SubCategory List</h6>
           <thead>
             <tr style="border:1px">
-              <th scope="col">Category</th>
+              <!-- <th id="cat-id">Id</th> -->
+              <th id="cat-name" scope="col">Category</th>
               <th scope="col">SubCategory</th>
               <th scope="col">Action</th>
             </tr>
           </thead>
           <tbody>           
             @foreach($product['categories'] as $pro_cate )
-              <tr>
-                <td>{{$pro_cate->name}}</td>               
+            
+            <tr id="{{$pro_cate->id}}-tr">
+              <!-- <td class="td-cat-title">{{$pro_cate->id}}</td> -->
+                <td class="td-cat-title">{{$pro_cate->name}}</td>               
                 <td>
                   @foreach($product['subcat'] as $pro_subcate )
                     @if($pro_cate->id == $pro_subcate->parent_id) 
@@ -123,30 +126,40 @@
             @endforeach
           </tbody>
         </table>
-      </div>
-        
+      </div> 
       <div class="form-group">
         <label for="brand_id">Brand</label>
-        <select name="brand_id" class="form-control">
-          <option value="">--Select Brand--</option>
+        {{-- {{$brands}} --}}       
+        <div class="brand">
+          <select name="brand_id" id="brand_id" class="form-control">
+            <option value="">--Select Brand--</option>
             @foreach($brands as $brand)
               <option value="{{$brand->id}}" {{(($product->brand_id==$brand->id)? 'selected':'')}}>{{$brand->name}}</option>
             @endforeach
-        </select>
+          </select>
+          <a href="javascript:void(0);" class="brand_button" title="Add field">Add</a><br>
+        </div>         
+        <input type="hidden" id="brand_count" name="brand_count" value="">
       </div>
       <div class="modal-shopping-list" id="modal-shopping-list">
-        <table id="shopping-list-table">
+        <table class="table table-bordered" id="brand-dataTable" width="100%" cellspacing="0">
           <h6>Brand List</h6>
           <thead>
             <tr>
+              <th>Id</th>
               <th>Brand Name</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
             @foreach($product['brands'] as $pro_brand)
-              <tr>
-                <td>{{$pro_brand->name}}</td>              
-              </tr>
+            <tr id="{{$pro_brand->id}}-tr">
+              <td>{{$pro_brand->id}}</td>
+              <td calss="td-brand-title">{{$pro_brand->name}}</td> 
+              <td>
+                <button type="button" onclick="proBrandDlt(<?=$product->id?>,<?=$pro_brand->id?>)"><i class="fas fa-trash-alt"></i></button>
+              </td>             
+            </tr>
             @endforeach
           </tbody>
         </table>
@@ -211,7 +224,7 @@
         <h5> Product Attributes List</h5>
       </div>     
       
-        <table class="table table-bordered" id="product-dataTable" width="100%" cellspacing="0">
+        <table class="table table-bordered" id="attribute-dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
               <th>Flu</th>
@@ -240,71 +253,68 @@
                 <td class="center">
                   <input type="submit" form="edit{{$attribute->id}}" value="Update" class="btn btn-primary btn-mini" >
                                                                                               
+                  <form >                    
+                  </form>
                   <form method="get" id="delete{{$attribute->id}}" action="{{url('admin/product/delete-attributes',[$attribute->id])}}">
-                    @csrf
-                    <button class="btn btn-danger btn-sm dltBtn" form="delete{{$attribute->id}}" data-id="{{$attribute->id}}" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
+                    <button class="btn btn-danger btn-sm dltBtn" form="delete{{$attribute->id}}" data-id="{{$attribute->id}}" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>                    
                   </form>
                 </td>                        
               </tr> 
               <form method="post" id="edit{{$attribute->id}}" action="{{route('editAttribute', ['id' => $product->id])}}" enctype="multipart/form-data"> 
-                @csrf 
-              </form>                    
-            @endforeach  
-
-                         
+                {{csrf_field()}}
+              </form>       
+            @endforeach                           
+          </tbody>
+        </table>     
+        <div class="form-group">
+          <label for="inputPhoto" class="col-form-label">Photo <span class="text-danger"></span></label>
+          <div class="input-group">
+            <span class="input-group-btn">
+              <input type="file" id="input-file-now-custom-3" class="form-control m-2" name="images[]" multiple>
+            </span>          
+          </div>
+        </div>
+        <table class="table table-bordered" id="image-dataTable" width="100%" cellspacing="0">
+          <thead>
+            <tr>              
+              <th>Id</th>
+              <th>image</th>                            
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach($product['images'] as $image)
+              <tr>
+                <td>{{$image->id}}</td>                                    
+                <td>{{$image->name}} </td>                        
+                <td class="center">                                                                                 
+                  <form method="get" id="deletImage" action="{{url('admin/product/delete-images',[$image->id])}}">
+                    @csrf
+                    @method('delete')
+                    <button class="btn btn-danger btn-sm dltBtn1" form="deletImage" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>  
+                  </form>
+                </td>                        
+              </tr>                    
+            @endforeach                         
           </tbody>
         </table>
-     
-     
-      <div class="form-group">
-        <label for="inputPhoto" class="col-form-label">Photo <span class="text-danger"></span></label>
-        <div class="input-group">
-          <span class="input-group-btn">
-            <input type="file" id="input-file-now-custom-3" class="form-control m-2" name="images[]" multiple>
-          </span>          
+        <div class="form-group">
+          <label for="status" class="col-form-label">Status <span class="text-danger">*</span></label>
+          <select name="status" form="main-form" class="form-control">
+            <option value="active" {{(($product->status=='active')? 'selected' : '')}}>Active</option>
+            <option value="inactive" {{(($product->status=='inactive')? 'selected' : '')}}>Inactive</option>
+          </select>
+          @error('status')
+          <span class="text-danger">{{$message}}</span>
+          @enderror
         </div>
-      </div>
-      <table class="table table-bordered" id="product-dataTable" width="100%" cellspacing="0">
-        <thead>
-          <tr>              
-            <th>Id</th>
-            <th>image</th>                            
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          @foreach($product['images'] as $image)
-            <tr>
-              <td>{{$image->id}}</td>                                    
-              <td>{{$image->name}} </td>                        
-              <td class="center">                                                                                 
-                <form method="get" id="deletImage" action="{{url('admin/product/delete-images',[$image->id])}}">
-                  @csrf
-                  @method('delete')
-                  <button class="btn btn-danger btn-sm dltBtn1" form="deletImage" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>  
-                </form>
-              </td>                        
-            </tr>                    
-          @endforeach                         
-        </tbody>
-      </table>
-      <div class="form-group">
-        <label for="status" class="col-form-label">Status <span class="text-danger">*</span></label>
-        <select name="status" form="main-form" class="form-control">
-          <option value="active" {{(($product->status=='active')? 'selected' : '')}}>Active</option>
-          <option value="inactive" {{(($product->status=='inactive')? 'selected' : '')}}>Inactive</option>
-        </select>
-        @error('status')
-        <span class="text-danger">{{$message}}</span>
-        @enderror
-      </div>
-      <div class="form-group mb-3">
-      
-      </div>
-    </form>
-    <button class="btn btn-success" form="main" type="submit">Update</button>
+        <div class="form-group mb-3">
+        
+        </div>
+      </form>
+      <button class="btn btn-success" form="main" type="submit">Update</button>
+    </div>
   </div>
-</div>
 @endsection
 
 @push('styles')
@@ -362,34 +372,6 @@
     $("body").on("click",".btn-danger",function(){ 
         $(this).parents(".control-group").remove();
     });
-  });
-
-
-  $(document).ready(function() {
-    var max_fields = 15;
-    var wrapper = $(".brand");
-    var add_button = $(".brand_button");
-
-    var x = 1;
-    $(add_button).click(function(e) {
-        e.preventDefault();
-        if (x < max_fields) {
-          x++;
-          $(wrapper).append(`<div><br><select name="brand_id${x}" id="brand_id${x}" class="form-control">
-          <option value="">--Select Brand--</option>@foreach($brands as $brand)
-          <option value="{{$brand->id}}">{{$brand->name}}</option>@endforeach</select>
-          <a href="#" class="delete">Delete</a></div>`);//add input box
-          $("#brand_count").val(x);
-        } else {
-          alert('You Reached the limits')
-        }
-    });
-
-    $(wrapper).on("click", ".delete", function(e) {
-      e.preventDefault();
-      $(this).parent('div').remove();
-      x--;
-    })
   });
 
   $(document).ready(function() {
@@ -515,7 +497,32 @@
     
   })
 
+  $(document).ready(function() {
+    var max_fields = 15;
+    var wrapper = $(".brand");
+    var add_button = $(".brand_button");
 
+    var x = 1;
+    $(add_button).click(function(e) {
+        e.preventDefault();
+        if (x < max_fields) {
+          x++;
+          $(wrapper).append(`<div><br><select name="brand_id${x}" id="brand_id${x}" class="form-control">
+          <option value="">--Select Brand--</option>@foreach($brands as $brand)
+          <option value="{{$brand->id}}">{{$brand->name}}</option>@endforeach</select>
+          <a href="#" class="delete">Delete</a></div>`);//add input box
+          $("#brand_count").val(x);
+        } else {
+          alert('You Reached the limits')
+        }
+    });
+
+    $(wrapper).on("click", ".delete", function(e) {
+      e.preventDefault();
+      $(this).parent('div').remove();
+      x--;
+    })
+  });
   $(document).ready(function() {
     var max_fields = 15;
     var wrapper = $(".abc");
@@ -554,20 +561,47 @@
     })
   });
 
-  function proCatDlt(productId, pro_cate){
-    $("#" + pro_cate + "-tr").remove();
+  function proCatDlt(productId, catId){
     
+  $("#" + catId + "-tr").remove(); 
+  $.ajax({
+    url:'/admin/product/delete-category/' + catId,
+    type:"get",
+    data:{
+        productId:productId
+    },
+    success:function(response){
+     
+    }});
+  }
+  $.each($('.td-cat-title'), (key, value) => {
+    let el = document.getElementById(value.innerText);
+    if(el !== undefined) {
+      // el.setAttribute('disabled', 'disabled');
+      el.style.display = 'none';
+    }
+  });
+
+  function proBrandDlt(productId, brandId){
+    
+    $("#" + brandId + "-tr").remove(); 
     $.ajax({
-      url:'/admin/product/delete-category/' + pro_cate,
+      url:'/admin/product/delete-brand/' + brandId,
       type:"get",
       data:{
           productId:productId
       },
-      
       success:function(response){
-        alert(productId);   
-    }});
-  }
-  
+        
+      }});
+    }
+    $.each($('.td-brand-title'), (key, value) => {
+      let el = document.getElementById(value.innerText);
+      if(el !== undefined) {
+        el.setAttribute('disabled', 'disabled');
+        el.style.display = 'none';
+      }
+    });
+
 </script>
 @endpush
