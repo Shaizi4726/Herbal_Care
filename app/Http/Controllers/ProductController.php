@@ -76,7 +76,7 @@ class ProductController extends Controller
         // 'status'=>'required|in:active,inactive'
           
     ]);
-    //dd($request->all());  
+    dd($request->all());   
     $data=$request->all(); 
     
     $slug=Str::slug($request->name);
@@ -105,10 +105,13 @@ class ProductController extends Controller
         $categories[] = $request->$cat; 
        
     }
-    for($i=2; $i<=$request->cat_count; $i++){ 
+    
+    for($i=2; $i<=$request->subcat_count; $i++){ 
         $subcat= 'subcat_id'.$i;
         $subcategories[]= $request->$subcat;   
     }
+
+    
     if($categories[0]!==""){
         foreach ($categories as $product_cat) {
             $category = new ProductCategory;
@@ -116,24 +119,27 @@ class ProductController extends Controller
             $category['cat_id']=$product_cat;
             $category->save();
         }
+        
     }
+
     if($subcategories[0]!==""){
         foreach ($subcategories as $product_subcat) {
             $subcategory = new ProductCategory;
             $subcategory['product_id']=$status->id;  
-            $category['cat_id']=$product_cat;         
+            //$category['cat_id']=$product_cat;         
             $subcategory['subcat_id']=$product_subcat;            
             $subcategory->save();
         }
-    }  
+    }
+      
     //dd($request->hasFile);           
     if($request->hasFile("images")){
         $files=$request->file("images");
         foreach($files as $file){
-            $imageName=time().'_'.$file->getClientOriginalName();
+            $imageName='/'.$file->getClientOriginalName();
             $request['product_id']=$status->id;
             $request['name']=$imageName;
-            $file->move(\public_path("/images"),$imageName);
+            $file->move(\public_path("images"),$imageName);
             ProductImage::create($request->all());
         }
     }  
@@ -188,15 +194,17 @@ class ProductController extends Controller
    * @return \Illuminate\Http\Response
    */
   public function edit($id)
-  {     
+  {   
     $product=Product::findOrFail($id);
     $category=Category::get();
+    $procat=ProductCategory::get();
     $brand=Brand::get();
     $coupon=Coupon::get();
     $form=Form::get();
       // return $items;
     return view('admin_panel.product.edit')->with('product',$product)
     ->with('categories',$category)
+    ->with('procats',$procat)
     ->with('forms',$form)
     ->with('coupons',$coupon)
     ->with('brands',$brand);
@@ -244,7 +252,7 @@ class ProductController extends Controller
         $categories[] = $request->$cat; 
        
     }
-    for($i=2; $i<=$request->cat_count; $i++){ 
+    for($i=2; $i<=$request->subcat_count; $i++){ 
         $subcat= 'subcat_id'.$i;
         $subcategories[]= $request->$subcat;   
     }
@@ -256,13 +264,15 @@ class ProductController extends Controller
             $category->save();
         }
     }
-    if($subcategories[0]!==""){
-        foreach ($subcategories as $product_subcat) {
-            $subcategory = new ProductCategory;
-            $subcategory['product_id']=$id;  
-            $category['cat_id']=$product_cat;         
-            $subcategory['subcat_id']=$product_subcat;            
-            $subcategory->save();
+    if($request->subcat_count){
+        if($subcategories[0]!==""){
+            foreach ($subcategories as $product_subcat) {
+                $subcategory = new ProductCategory;
+                $subcategory['product_id']=$id;  
+                $category['cat_id']=$product_cat;         
+                $subcategory['subcat_id']=$product_subcat;            
+                $subcategory->save();
+            }
         }
     } 
     
@@ -327,6 +337,7 @@ class ProductController extends Controller
    */
   public function destroy($id)
   {
+    //dd($id);
       $product=Product::findOrFail($id);
       $status=$product->delete();
       
@@ -342,9 +353,8 @@ class ProductController extends Controller
 
   //delete Category
   public function deleteCategory($id, Request $request){
-    
-      $productCategory=ProductCategory::where('id',  $id)->where('product_id', $request->productId);
-      $status=$productCategory->delete();      
+      $productCategory=ProductCategory::where('cat_id',  $id)->where('product_id', $request->productId);
+      $status=$productCategory->delete(); 
       if($status){
           request()->session()->flash('success','Product successfully deleted');
       }
@@ -354,6 +364,19 @@ class ProductController extends Controller
   
       //return redirect()->back();
   }
+
+  public function deleteBrand($id, Request $request){
+    $productBrand=ProductBrand::where('brand_id',  $id)->where('product_id', $request->productId);
+    $status=$productBrand->delete(); 
+    if($status){
+        request()->session()->flash('success','Product successfully deleted');
+    }
+    else{
+        request()->session()->flash('error','Error while deleting product');
+    }
+
+    //return redirect()->back();
+}
       public function deleteImage($id){
           $product=ProductImage::findOrFail($id);
           $status=$product->delete();
@@ -365,13 +388,13 @@ class ProductController extends Controller
           else{
               request()->session()->flash('error','Error while deleting product');
           }
-      //    return view('admin_panel.product.add_attributes')->with(compact('productDetails'));
           return redirect()->back();
       }
 
       public function deleteAttribute($id){
-          $product=ProductAttribute::findOrFail($id);
-          $status=$product->delete();
+        //dd($id);
+          $attribute=ProductAttribute::findOrFail($id);
+          $status=$attribute->delete();
   //        dd($product);
           
           if($status){
@@ -384,17 +407,15 @@ class ProductController extends Controller
           return redirect()->back();
       }
   
-      public function editAttributes(Request $request, $id = null){
-        dd($request->all());
-          if($request->isMethod('post')){
-              $data = $request->all();
-            //   echo "<pre>"; print_r($data); die;
-              foreach($data['idAttr'] as $key => $attr){
-                  ProductAttribute::where(['id'=>$data['idAttr'][$key]])->update(['price'=>$data['price'][$key],
-                  'discount'=>$data['discount'][$key],'stock'=>$data['stock'][$key]]);
-              }
-              
-              return redirect()->back()->with('flash_message_success','Products Attributes has been update successfully');
-          }
+      public function editAttributes(Request $request){
+        //dd($request->all());
+        $data = $request->all();
+    //   echo "<pre>"; print_r($data); die;
+        
+        ProductAttribute::where(['id'=>$data['idAttr']])->update(['price'=>$data['price'],
+        'discount'=>$data['discount'],'stock'=>$data['stock']]);
+        
+        return redirect()->back()->with('flash_message_success','Products Attributes has been update successfully');
+         
       }
 }

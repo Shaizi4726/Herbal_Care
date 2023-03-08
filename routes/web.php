@@ -108,14 +108,16 @@ Route::match(['get','post'], '/stripe', 'StripeController@payment')->name('strip
 Route::get('cancel', 'PayPalController@cancel')->name('payment.cancel');
 Route::get('payment/success', 'PayPalController@success')->name('payment.success');
 //ProductAttribute
-Route::match(['get','post'], 'admin/product/add-attributes/{id}','ProductController@addAttributes');
-Route::match(['get','post'], 'admin/product/edit-attributes/{id}','ProductController@editAttributes');
-Route::match(['get','post'], 'admin/product/delete-attributes/{id}','ProductController@DeleteAttribute')->name('delete-attribute');
+Route::match(['get','post'], '/admin/product/edit-attributes/{id}','ProductController@editAttributes')->name('editAttribute');
+
+Route::match(['get','post'], 'admin/product/delete-attributes/{id}','ProductController@deleteAttribute')->name('delete-attribute');
 //Add Product Image
-Route::match(['get','post'], 'admin/product/add-images/{id}','ProductController@addImage');
 Route::match(['get','post'], 'admin/product/delete-images/{id}','ProductController@deleteImage')->name('delete-image');
 //Delete category
 Route::match(['get','post'], 'admin/product/delete-category/{id}','ProductController@deleteCategory')->name('delete-category');
+//Delete Brand
+Route::match(['get','post'], 'admin/product/delete-brand/{id}','ProductController@deleteBrand')->name('delete-brand');
+
 Route::match(['get','post'], '/get-product-price','FrontendController@getProductPrice');
 Route::match(['get','post'], '/get-product-form','ProductController@getProductForm');
 Route::match(['get','post'], '/get-product-size','FrontendController@getProductSize');

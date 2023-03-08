@@ -5,7 +5,7 @@
 <div class="card">
   <h5 class="card-header">Edit Product</h5>
   <div class="card-body">
-    <form method="post" id="main-form" action="{{route('product.update',$product->id)}}" enctype="multipart/form-data">
+    <form method="post" id="main" action="{{route('product.update',$product->id)}}" enctype="multipart/form-data">
       @csrf 
       @method('PATCH')
       <div class="form-group">
@@ -60,98 +60,110 @@
         @enderror
       </div>
       <div class="form-group">
-          <label for="coupon_id">Coupon</label>
+        <label for="coupon_id">Coupon</label>
          
-          <div class="coupon">
-            <select name="coupon_id" id="coupon_id" class="form-control">
+        <div class="coupon">
+          <select name="coupon_id" id="coupon_id" class="form-control">
             <option value="">--Select Coupon--</option>           
-              @foreach($coupons as $coupon)
-                <option value="{{$coupon->id}}">{{$coupon->code}}</option>
-              @endforeach             
-            </select>
-          </div>         
-        </div>
-        <div class="form-group">
-          <div id="category">
-            <label for="category_id">Category</label>
-            {{-- {{$categories}} --}}
-            <select name="cat_id" id="category_id" class="form-control category_id">
-              <option value="">--Select category--</option>
-              @foreach($categories as $category)
+            @foreach($coupons as $coupon)
+              <option value="{{$coupon->id}}">{{$coupon->code}}</option>
+            @endforeach             
+          </select>
+        </div>         
+      </div>
+      <div class="form-group">
+        <div id="category">
+          <label for="category_id">Category</label>
+          {{-- {{$categories}} --}}
+          <select name="cat_id" id="category_id" class="form-control category_id">
+            <option value="">--Select category--</option>
+            @foreach($categories as $category)
               <option value="{{$category->id}}">{{$category->name}}</option>
-              @endforeach
-            </select>
-          
-            <div class="form-group d-none child_cat_div" id="child_cat_div">
-              <label for="child_cat_id">Sub Category</label>
-              <select name="subcat_id" id="child_cat_id" class="form-control child_cat_id">
-                <option value="">--Select any category--</option>
-                {{-- @foreach($subcategories as $key=>$subcategory)
-                  <option value='{{$subcategory->id}}'>{{$subcategory->name}}</option>
-                @endforeach --}}
-              </select>               
-            </div>
-            <a href="javascript:void(0);" class="category_button" title="Add field">Add</a><br> 
+            @endforeach
+          </select>          
+          <div class="form-group d-none child_cat_div" id="child_cat_div">
+            <label for="child_cat_id">Sub Category</label>
+            <select name="subcat_id" id="child_cat_id" class="form-control child_cat_id">
+              <option value="">--Select any category--</option>
+              {{-- @foreach($subcategories as $key=>$subcategory)
+                <option value='{{$subcategory->id}}'>{{$subcategory->name}}</option>
+              @endforeach --}}
+            </select>               
           </div>
-          <input type="hidden" id="cat_count" name="cat_count" value="">
-          <input type="hidden" id="subcat_count" name="subcat_count" value="">          
+          <a href="javascript:void(0);" class="category_button" title="Add field">Add</a><br> 
         </div>
-        <div class="modal-shopping-list" id="modal-shopping-list">
-          <table class="table table-bordered" id="shopping-list-table">
-            <h6>Category and SubCategory List</h6>
-            <thead>
-              <tr style="border:1px">
-                <th scope="col">Category</th>
-                <th scope="col">SubCategory</th>
-                <th scope="col">Action</th>
-              </tr>
-            </thead>
-            <body>
-           
+        <input type="hidden" id="cat_count" name="cat_count" value="">
+        <input type="hidden" id="subcat_count" name="subcat_count" value="">          
+      </div>
+      <div class="modal-shopping-list" id="modal-shopping-list">
+        <table class="table table-bordered" id="catgory-dataTable" width="100%" cellspacing="0">
+          <h6>Category and SubCategory List</h6>
+          <thead>
+            <tr style="border:1px">
+              <!-- <th id="cat-id">Id</th> -->
+              <th id="cat-name" scope="col">Category</th>
+              <th scope="col">SubCategory</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>           
             @foreach($product['categories'] as $pro_cate )
-              <tr>
-                <td>{{$pro_cate->name}}</td>
-               
-                <td>@foreach($product['subcat'] as $pro_subcate )
-                @if($pro_cate->id == $pro_subcate->parent_id) 
-                {{$pro_subcate->name}}
-                @endif 
-                @endforeach 
+            
+            <tr id="{{$pro_cate->id}}-tr">
+              <!-- <td class="td-cat-title">{{$pro_cate->id}}</td> -->
+                <td class="td-cat-title">{{$pro_cate->name}}</td>               
+                <td>
+                  @foreach($product['subcat'] as $pro_subcate )
+                    @if($pro_cate->id == $pro_subcate->parent_id) 
+                      {{$pro_subcate->name}}
+                    @endif 
+                  @endforeach 
                 </td>
                 <td>
                   <button type="button" onclick="proCatDlt(<?=$product->id?>,<?=$pro_cate->id?>)"><i class="fas fa-trash-alt"></i></button>
                 </td>           
               </tr>
             @endforeach
-          </table>
-        </div>
-        
-        <div class="form-group">
-          <label for="brand_id">Brand</label>
-          <select name="brand_id" class="form-control">
-              <option value="">--Select Brand--</option>
-              @foreach($brands as $brand)
+          </tbody>
+        </table>
+      </div> 
+      <div class="form-group">
+        <label for="brand_id">Brand</label>
+        {{-- {{$brands}} --}}       
+        <div class="brand">
+          <select name="brand_id" id="brand_id" class="form-control">
+            <option value="">--Select Brand--</option>
+            @foreach($brands as $brand)
               <option value="{{$brand->id}}" {{(($product->brand_id==$brand->id)? 'selected':'')}}>{{$brand->name}}</option>
-              @endforeach
+            @endforeach
           </select>
-        </div>
-        <div class="modal-shopping-list" id="modal-shopping-list">
-          <table id="shopping-list-table">
-            <h6>Brand List</h6>
-            <thead>
-              <tr>
-                <th>Brand Name</th>
-              </tr>
-            </thead>
-            <body>
-              @foreach($product['brands'] as $pro_brand)
-                <tr>
-                  <td>{{$pro_brand->name}}</td>              
-                </tr>
-              @endforeach
-            </body>
-          </table>
-        </div>
+          <a href="javascript:void(0);" class="brand_button" title="Add field">Add</a><br>
+        </div>         
+        <input type="hidden" id="brand_count" name="brand_count" value="">
+      </div>
+      <div class="modal-shopping-list" id="modal-shopping-list">
+        <table class="table table-bordered" id="brand-dataTable" width="100%" cellspacing="0">
+          <h6>Brand List</h6>
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Brand Name</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach($product['brands'] as $pro_brand)
+            <tr id="{{$pro_brand->id}}-tr">
+              <td>{{$pro_brand->id}}</td>
+              <td calss="td-brand-title">{{$pro_brand->name}}</td> 
+              <td>
+                <button type="button" onclick="proBrandDlt(<?=$product->id?>,<?=$pro_brand->id?>)"><i class="fas fa-trash-alt"></i></button>
+              </td>             
+            </tr>
+            @endforeach
+          </tbody>
+        </table>
+      </div>
       <div class="form-group">
         <label for="promotion">promotion</label>
         <select name="promotion" class="form-control">
@@ -164,107 +176,105 @@
       <div class="form-group">
         <label for="inputPhoto" class="col-form-label">Photo <span class="text-danger">*</span></label>
         <div class="input-group">
-            <span class="input-group-btn">
-              <a id="lfm" data-input="thumbnail" data-preview="holder" class="btn btn-primary text-white">
-                <i class="fas fa-image"></i> Choose
-              </a>
-            </span>
+          <span class="input-group-btn">
+            <a id="lfm" data-input="thumbnail" data-preview="holder" class="btn btn-primary text-white">
+              <i class="fas fa-image"></i> Choose
+            </a>
+          </span>
           <input id="thumbnail" class="form-control" type="text" name="photo" value="{{$product->photo}}">
         </div>
         <div id="holder" style="margin-top:15px;max-height:100px;"></div>
-          @error('photo')
-            <span class="text-danger">{{$message}}</span>
-          @enderror
-        </div>
+        @error('photo')
+          <span class="text-danger">{{$message}}</span>
+        @enderror
+      </div>
         
-        <div class="form-group">
-          <label for="inputPrice" class="col-form-label">Min Price <span class="text-danger">*</span></label>
-          <input id="inputPrice" type="number" name="minprice" value="{{$product->minprice}}" class="form-control">
-          @error('minprice')
-            <span class="text-danger">{{$message}}</span>
-          @enderror
-        </div>
+      <div class="form-group">
+        <label for="inputPrice" class="col-form-label">Min Price <span class="text-danger">*</span></label>
+        <input id="inputPrice" type="number" name="minprice" value="{{$product->minprice}}" class="form-control">
+        @error('minprice')
+          <span class="text-danger">{{$message}}</span>
+        @enderror
+      </div>
 
-        <div class="controls">
-          <label class="control-label">Size Wise Price: </label>                                
-          <div class="control-group">
+      <div class="controls">
+        <label class="control-label">Size Wise Price: </label>                                
+        <div class="control-group">
           {{-- {{$forms}} --}}
-            <div class="field_wrapper">
-              <div class="abc">
-                <select name="form_id[]" id="form_id" placeholder="form_id" style="width:120px;">
-                  <option value="">--Select Form--</option>
-                  @foreach($forms as $form)
-                    <option value="{{$form->id}}">{{$form->name}}</option>
-                  @endforeach
-                </select>
-                <input type="text" name="sku[]" id="sku" placeholder="sku" style="width:120px;" />                                    
-                <input type="text" name="size[]" id="size" placeholder="size" style="width:120px;"/>
-                <input type="float"  name="price[]" id="price" placeholder="price" style="width:120px;"/>
-                <input id="discount" type="numberfloat" name="discount[]" min="0" max="100" placeholder="Enter discount" style="width:120px;"/>
-                <input type="float" name="stock[]" id="stock" placeholder="stock" style="width:120px;"/>
-                <a href="javascript:void(0);" class="add_button1" title="Add field">Add</a><br>
-              </div>
-              <input type="hidden" id="form_count" name="form_count" value="">
+          <div class="field_wrapper">
+            <div class="abc">
+              <select name="form_id[]" id="form_id" placeholder="form_id" style="width:120px;">
+                <option value="">--Select Form--</option>
+                @foreach($forms as $form)
+                  <option value="{{$form->id}}">{{$form->name}}</option>
+                @endforeach
+              </select>
+              <input type="text" name="sku[]" id="sku" placeholder="sku" style="width:120px;" />                                    
+              <input type="text" name="size[]" id="size" placeholder="size" style="width:120px;"/>
+              <input type="float"  name="price[]" id="price" placeholder="price" style="width:120px;"/>
+              <input id="discount" type="numberfloat" name="discount[]" min="0" max="100" placeholder="Enter discount" style="width:120px;"/>
+              <input type="float" name="stock[]" id="stock" placeholder="stock" style="width:120px;"/>
+              <a href="javascript:void(0);" class="add_button1" title="Add field">Add</a><br>
             </div>
+            <input type="hidden" id="form_count" name="form_count" value="">
           </div>
         </div>
-      <div class="widget-title"  ><span class="icon"><i class="icon-info-sign"></i></span>
-        <h5> Product Attributes List</h5>
       </div>
+      <div class="widget-title"  >
+        <h5> Product Attributes List</h5>
+      </div>     
       
-      <form method="post" action="{{url('/admin/product/edit-attributes/'.$product->id)}}" >
-        {{csrf_field()}}
-          <table class="table table-bordered" id="product-dataTable" width="100%" cellspacing="0">
-            <thead>
-              <tr>
-                <th>Flu</th>
-                <th>SKU</th>
-                <th>Form</th>
-                <th>Size</th>
-                <th>Price</th>
-                <th>Discount</th>
-                <th>Stock</th>                                    
-                <th>Action</th>
-              </tr>
-            </thead>  
-                
-            <body>
-              @foreach($product['attrs'] as $attribute)
-                <tr>
-                  <td><input type="hidden" name="idAttr[]" value="{{$attribute->id}}">{{$attribute->flu}}</td>
-                  <td>{{$attribute->sku}}</td>                                        
-                  <td>{{$attribute->form->name}}</td>
-                  <td>{{$attribute->size}} </td>
-                  <td><input type="float" name="price[]" value="{{$attribute->price}}" style="width:80px;"></td>
-                  <td><input type="float" name="discount[]" value="{{$attribute->discount}}" style="width:80px;"></td>
-                  <td><input type="number" name="stock[]" value="{{$attribute->stock}}" style="width:80px;"></td>
-                        
-                  <td class="center">
-                    <input type="submit" value="Update" class="btn btn-primary btn-mini">
-                </form>                                                                                   
-                <form method="get" action="{{url('admin/product/delete-attributes',[$attribute->id])}}">
-                  @csrf
-                  @method('delete')
-                  <button class="btn btn-danger btn-sm dltBtn" data-id="{{$attribute->id}}" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>  
-                </form>
-              </td>                        
-            </tr>                    
-          @endforeach
+        <table class="table table-bordered" id="attribute-dataTable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Flu</th>
+              <th>SKU</th>
+              <th>Form</th>
+              <th>Size</th>
+              <th>Price</th>
+              <th>Discount</th>
+              <th>Stock</th>                                    
+              <th>Action</th>
+            </tr>
+          </thead> 
                     
-        </body>
-      </table>
-
-      <div class="form-group">
+          <tbody>
+          
+            @foreach($product['attrs'] as $attribute)
+              <tr>
+                <td><input type="hidden" name="idAttr" form="edit{{$attribute->id}}" value="{{$attribute->id}}">{{$attribute->flu}}</td>
+                <td>{{$attribute->sku}}</td>                                        
+                <td>{{$attribute->form->name}}</td>
+                <td>{{$attribute->size}} </td>
+                <td><input type="float" form="edit{{$attribute->id}}" name="price" value="{{$attribute->price}}" style="width:80px;"></td>
+                <td><input type="float" form="edit{{$attribute->id}}" name="discount" value="{{$attribute->discount}}" style="width:80px;"></td>
+                <td><input type="number" form="edit{{$attribute->id}}" name="stock" value="{{$attribute->stock}}" style="width:80px;"></td>
+                      
+                <td class="center">
+                  <input type="submit" form="edit{{$attribute->id}}" value="Update" class="btn btn-primary btn-mini" >
+                                                                                              
+                  <form >                    
+                  </form>
+                  <form method="get" id="delete{{$attribute->id}}" action="{{url('admin/product/delete-attributes',[$attribute->id])}}">
+                    <button class="btn btn-danger btn-sm dltBtn" form="delete{{$attribute->id}}" data-id="{{$attribute->id}}" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>                    
+                  </form>
+                </td>                        
+              </tr> 
+              <form method="post" id="edit{{$attribute->id}}" action="{{route('editAttribute', ['id' => $product->id])}}" enctype="multipart/form-data"> 
+                {{csrf_field()}}
+              </form>       
+            @endforeach                           
+          </tbody>
+        </table>     
+        <div class="form-group">
           <label for="inputPhoto" class="col-form-label">Photo <span class="text-danger"></span></label>
           <div class="input-group">
-              <span class="input-group-btn">
-                <input type="file" id="input-file-now-custom-3" class="form-control m-2" name="images[]" multiple>
-              </span>          
+            <span class="input-group-btn">
+              <input type="file" id="input-file-now-custom-3" class="form-control m-2" name="images[]" multiple>
+            </span>          
           </div>
         </div>
-      <form method="post" action="{{url('/admin/product/edit-attributes/'.$product->id)}}" >
-        {{csrf_field()}}
-        <table class="table table-bordered" id="product-dataTable" width="100%" cellspacing="0">
+        <table class="table table-bordered" id="image-dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>              
               <th>Id</th>
@@ -272,42 +282,39 @@
               <th>Action</th>
             </tr>
           </thead>
-          <body>
+          <tbody>
             @foreach($product['images'] as $image)
               <tr>
-                <!-- <td><input type="hidden" name="idAttr[]" value="{{$attribute->id}}">{{$attribute->id}}</td> -->
                 <td>{{$image->id}}</td>                                    
                 <td>{{$image->name}} </td>                        
-                <td class="center">
-              </form>                                                                                   
-              <form method="get" id="edirAttribute" action="{{url('admin/product/delete-images',[$image->id])}}">
-                @csrf
-                @method('delete')
-                <button class="btn btn-danger btn-sm dltBtn" data-id="{{$attribute->id}}" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>  
-              </form>
-            </td>                        
-          </tr>                    
-        @endforeach                         
-      </body>
-    </table>
-
-      <div class="form-group">
-        <label for="status" class="col-form-label">Status <span class="text-danger">*</span></label>
-        <select name="status" form="main-form" class="form-control">
-          <option value="active" {{(($product->status=='active')? 'selected' : '')}}>Active</option>
-          <option value="inactive" {{(($product->status=='inactive')? 'selected' : '')}}>Inactive</option>
-        </select>
-        @error('status')
-        <span class="text-danger">{{$message}}</span>
-        @enderror
-      </div>
-      <div class="form-group mb-3">
-          <button class="btn btn-success" form="main-form" type="submit">Update</button>
-      </div>
-    </form>
+                <td class="center">                                                                                 
+                  <form method="get" id="deletImage" action="{{url('admin/product/delete-images',[$image->id])}}">
+                    @csrf
+                    @method('delete')
+                    <button class="btn btn-danger btn-sm dltBtn1" form="deletImage" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>  
+                  </form>
+                </td>                        
+              </tr>                    
+            @endforeach                         
+          </tbody>
+        </table>
+        <div class="form-group">
+          <label for="status" class="col-form-label">Status <span class="text-danger">*</span></label>
+          <select name="status" form="main-form" class="form-control">
+            <option value="active" {{(($product->status=='active')? 'selected' : '')}}>Active</option>
+            <option value="inactive" {{(($product->status=='inactive')? 'selected' : '')}}>Inactive</option>
+          </select>
+          @error('status')
+          <span class="text-danger">{{$message}}</span>
+          @enderror
+        </div>
+        <div class="form-group mb-3">
+        
+        </div>
+      </form>
+      <button class="btn btn-success" form="main" type="submit">Update</button>
+    </div>
   </div>
-</div>
-
 @endsection
 
 @push('styles')
@@ -365,34 +372,6 @@
     $("body").on("click",".btn-danger",function(){ 
         $(this).parents(".control-group").remove();
     });
-  });
-
-
-  $(document).ready(function() {
-    var max_fields = 15;
-    var wrapper = $(".brand");
-    var add_button = $(".brand_button");
-
-    var x = 1;
-    $(add_button).click(function(e) {
-        e.preventDefault();
-        if (x < max_fields) {
-          x++;
-          $(wrapper).append(`<div><br><select name="brand_id${x}" id="brand_id${x}" class="form-control">
-          <option value="">--Select Brand--</option>@foreach($brands as $brand)
-          <option value="{{$brand->id}}">{{$brand->name}}</option>@endforeach</select>
-          <a href="#" class="delete">Delete</a></div>`);//add input box
-          $("#brand_count").val(x);
-        } else {
-          alert('You Reached the limits')
-        }
-    });
-
-    $(wrapper).on("click", ".delete", function(e) {
-      e.preventDefault();
-      $(this).parent('div').remove();
-      x--;
-    })
   });
 
   $(document).ready(function() {
@@ -518,7 +497,32 @@
     
   })
 
+  $(document).ready(function() {
+    var max_fields = 15;
+    var wrapper = $(".brand");
+    var add_button = $(".brand_button");
 
+    var x = 1;
+    $(add_button).click(function(e) {
+        e.preventDefault();
+        if (x < max_fields) {
+          x++;
+          $(wrapper).append(`<div><br><select name="brand_id${x}" id="brand_id${x}" class="form-control">
+          <option value="">--Select Brand--</option>@foreach($brands as $brand)
+          <option value="{{$brand->id}}">{{$brand->name}}</option>@endforeach</select>
+          <a href="#" class="delete">Delete</a></div>`);//add input box
+          $("#brand_count").val(x);
+        } else {
+          alert('You Reached the limits')
+        }
+    });
+
+    $(wrapper).on("click", ".delete", function(e) {
+      e.preventDefault();
+      $(this).parent('div').remove();
+      x--;
+    })
+  });
   $(document).ready(function() {
     var max_fields = 15;
     var wrapper = $(".abc");
@@ -557,20 +561,47 @@
     })
   });
 
-  function proCatDlt(productId, pro_cate){
-    $("#" + pro_cate + "-tr").remove();
+  function proCatDlt(productId, catId){
     
+  $("#" + catId + "-tr").remove(); 
+  $.ajax({
+    url:'/admin/product/delete-category/' + catId,
+    type:"get",
+    data:{
+        productId:productId
+    },
+    success:function(response){
+     
+    }});
+  }
+  $.each($('.td-cat-title'), (key, value) => {
+    let el = document.getElementById(value.innerText);
+    if(el !== undefined) {
+      // el.setAttribute('disabled', 'disabled');
+      el.style.display = 'none';
+    }
+  });
+
+  function proBrandDlt(productId, brandId){
+    
+    $("#" + brandId + "-tr").remove(); 
     $.ajax({
-      url:'/admin/product/delete-category/' + pro_cate,
+      url:'/admin/product/delete-brand/' + brandId,
       type:"get",
       data:{
           productId:productId
       },
-      
       success:function(response){
-        alert(productId);   
-    }});
-  }
-  
+        
+      }});
+    }
+    $.each($('.td-brand-title'), (key, value) => {
+      let el = document.getElementById(value.innerText);
+      if(el !== undefined) {
+        el.setAttribute('disabled', 'disabled');
+        el.style.display = 'none';
+      }
+    });
+
 </script>
 @endpush

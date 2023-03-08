@@ -39,6 +39,7 @@
           <option value="category">Category</option>
           <option value="subcategory">Subcategory</option>
           <option value="user">User</option>
+          <option value="user">All</option>
         </select>
         @error('type')
         <span class="text-danger">{{$message}}</span>

@@ -30,7 +30,7 @@
         <option value="ordered" {{($order->shipping->status=="processed" || $order->shipping->status=="shipped" || $order->shipping->status=="delivered") ? 'hidden' : ''}}  {{(($order->shipping->status=='ordered')? 'selected' : '')}}>Ordered</option>
         <option value="processed" {{($order->shipping->status=="shipped" || $order->shipping->status=="delivered") ? 'hidden' : ''}}  {{(($order->shipping->status=='processed') ? 'selected' : '')}}>Processed</option>
         <option value="shipped" {{($order->shipping->status=="delivered") ? 'hidden' : ''}}  {{(($order->shipping->status=='shipped') ? 'selected' : '')}}>Shipped</option>
-        <option value="delivered" {{($order->shipping->status=="shipped") ? 'hidden' : ''}}  {{(($order->shipping->status=='delivered') ? 'selected' : '')}}>Delivered</option>
+        <option value="delivered" {{($order->shipping->status=="new") ? 'hidden' : ''}}  {{(($order->shipping->status=='delivered') ? 'selected' : '')}}>Delivered</option>
       </select>
     </div>
   </div>

@@ -102,11 +102,7 @@
           <tbody>
 
             @foreach($products as $product)
-              @php
-              $product_category=DB::table('product_categories')->where('id',$product->product_id)->get();
-              // dd($sub_cat_info);
-              $brands=DB::table('brands')->select('name')->where('id',$product->brand_id)->get();
-              @endphp
+              
                 <tr>
                     <td>{{$product->id}}</td>
                     <td>{{$product->plu}}</td>
