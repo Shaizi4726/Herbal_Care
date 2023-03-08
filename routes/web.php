@@ -49,14 +49,16 @@ Route::get('/product-cat/{slug}','FrontendController@productCat')->name('product
 Route::get('/product-cat/{slug}/{subslug}','FrontendController@productSubCat')->name('product-subcat')->middleware('account.verified');
 Route::get('/product-brand/{slug}','FrontendController@productBrand')->name('product-brand')->middleware('account.verified');
 
+// Create Modal
+Route::get('/create-modal','ModalController@create_modal')->name('create-modal')->middleware('account.verified');
+Route::get('/create-sizes','ModalController@create_sizes')->name('create-sizes')->middleware('account.verified');
+
 // Cart section
-Route::match(['get','post'],'/add-to-cart','CartController@singleAddToCart')->name('single-add-to-cart');
+Route::get('/cart-add', 'CartController@cart_add')->name('add-to-cart');
 Route::get('cart-delete/{id}','CartController@cartDelete')->name('cart-delete');
 Route::get('cart-update','CartController@cart_update')->name('cart.update');
 
-Route::get('/cart', function(){
-    return view('frontend.pages.cart');
-})->name('cart');
+Route::view('/cart', 'frontend.pages.cart')->name('cart');
 
 Route::get('/states', 'StateController@getStates');
 Route::get('/cities', 'CityController@getCities');

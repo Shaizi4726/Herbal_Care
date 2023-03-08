@@ -23,7 +23,7 @@
 		<!-- Scripts -->
 		<script src="https://code.jquery.com/jquery-3.6.2.min.js"></script>
 		<script src="https://unpkg.com/flickity@2.3.0/dist/flickity.pkgd.min.js" async></script>
-		<script src="{{asset('frontend/js/jquery.exzoom.js')}}" defer></script>
+		<script src="{{asset('frontend/js/jquery.exzoom.js')}}" async></script>
 		<script src="{{asset('frontend/js/header.js')}}"></script>
 		<script src="{{asset('frontend/js/main.js')}}"></script>
 		@stack('scripts')

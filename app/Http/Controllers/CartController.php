@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Wishlist;
 use App\Models\CartItem;
-use App\Models\ProductsAttribute;
+use App\Models\ProductAttribute;
 use Illuminate\Support\Str;
 use Helper;
 use Session;
@@ -23,90 +23,92 @@ class CartController extends Controller
 
   }
 
-  public function singleAddToCart(Request $request)
+  public function cart_add(Request $request)
   {
     $request->validate([
-      'id' => 'required',
-      'cart' => 'required',
+      'product_id' => 'required',
+      'form_id' => 'required',
+      'price' => 'required',
+      'size' => 'required',
+      'qty' => 'required',
     ]);
 
-    $data = $request->cart;
-    $items = count($data['size']);
-    $product = Product::with('attrs')->where('id', $request->id)->first();
+    $product = Product::with('attrs.form')->where('id', $request->product_id)->first();
+    $attr = $product->attrs->where('form_id', $request->form_id)->where('size', $request->size)->first();
 
-    for ($i = 0; $i < $items; $i++) {
-      $pro_attr = $product->attrs()->where('price', $data['price'][$i])->first();
+    if ($request->qty < 1) {
+      return response()->json(['error' => 'Invalid Quantity Value. Quantity must be positive integer'], 404);
 
-      if (($data['quantity'][$i] < 0) || empty($product)) {
-        request()->session()->flash('error', 'Invalid Products');
-        return back();
-      } else if (Auth::check()) {
-        if ($data['quantity'][$i] < 1) 
-          continue;
+    } else if (empty($product)) {
 
-        $already_cart = CartItem::where('user_id', auth()->user()->id)->where('product_id', $product->id)
-          ->where('attr_id', $pro_attr->id)->first();
+      return response()->json(['error' => 'Invalid Product. No such product'], 404);
 
-        if ($already_cart) {
-          $quantity = $data['quantity'][$i];
-          $total = $pro_attr->price * $quantity;
+    } else if (Auth::check()) {
+
+      $already_cart = CartItem::where(['user_id' => auth()->user()->id, 'product_id' => $product->id, 'attr_id' => $attr->id])->first();
+
+      if ($already_cart) {
+        $quantity = $request->qty;
+        $total = $attr->price * $quantity;
+        $subtotal = $total / 1.05;
+        $tax = $total - $subtotal;
+        $already_cart->quantity += $quantity;
+        $already_cart->total += $total;
+        $already_cart->subtotal += $subtotal;
+        $already_cart->tax += $tax;
+        $already_cart->save();
+
+      } else {
+
+        $cart = new CartItem;
+        $cart->user_id = auth()->user()->id;
+        $cart->product_id = $product->id;
+        $cart->attr_id = $attr->id;
+        $cart->form = $attr->form->name;
+        $cart->price = $attr->price;
+        $cart->size = $attr->size;
+        $cart->quantity = $request->qty;
+        $cart->total = $attr->price * $cart->quantity;
+        $cart->subtotal = $cart->total / 1.05;
+        $cart->tax = $cart->total - $cart->subtotal;
+        $cart->save();
+      }
+
+    } else {
+      
+      $already_cart = 0;
+      $cart_table = Session::get('cart');
+
+      foreach ($cart_table as $cart_entry) {
+        if ($cart_entry->product_id == $product->id && $cart_entry->attr_id == $attr->id) {
+          $already_cart = 1;
+          $quantity = $request->qty;
+          $total = $attr->price * $quantity;
           $subtotal = $total / 1.05;
           $tax = $total - $subtotal;
-          $already_cart->quantity += $quantity;
-          $already_cart->total += $total;
-          $already_cart->subtotal += $subtotal;
-          $already_cart->tax += $tax;
-          $already_cart->save();
-
-        } else {
-
-          $cart = new CartItem;
-          $cart->user_id = auth()->user()->id;
-          $cart->product_id = $product->id;
-          $cart->attr_id = $pro_attr->id;
-          $cart->form = $data['form'][$i];
-          $cart->price = ($pro_attr->price - ($pro_attr->price * $pro_attr->discount) / 100);
-          $cart->size = $pro_attr->size;
-          $cart->quantity = $data['quantity'][$i];
-          $cart->total = $pro_attr->price * $cart->quantity;
-          $cart->subtotal = ($cart->total) / 1.05;
-          $cart->tax = $cart->total - $cart->subtotal;
-          $cart->save();
+          $cart_entry->quantity += $quantity;
+          $cart_entry->total += $total;
+          $cart_entry->subtotal += $subtotal;
+          $cart_entry->tax += $tax;
         }
-      } else {
-        $already_cart = 0;
-        $cart_table = Session::get('cart');
-        foreach ($cart_table as $cart_entry) {
-          if ($cart_entry->product_id == $product->id && $cart_entry->attr_id == $pro_attr->id) {
-            $already_cart = 1;
-            $quantity = $data['quantity'][$i];
-            $total = $pro_attr->price * $quantity;
-            $subtotal = $total / 1.05;
-            $tax = $total - $subtotal;
-            $cart_entry->quantity += $quantity;
-            $cart_entry->total += $total;
-            $cart_entry->subtotal += $subtotal;
-            $cart_entry->tax += $tax;
-          }
-        }
+      }
 
-        if ($already_cart == 0) {
-          $id = Session::get('id') + 1;
-          $cart = new CartItem;
-          $cart->id = $id;
-          $cart->user_id = Session::get('_token');
-          $cart->product_id = $product->id;
-          $cart->attr_id = $pro_attr->id;
-          $cart->form = $data['form'][$i];
-          $cart->price = ($pro_attr->price - ($pro_attr->price * $pro_attr->discount) / 100);
-          $cart->size = $pro_attr->size;
-          $cart->quantity = $data['quantity'][$i];
-          $cart->total = $pro_attr->price * $data['quantity'][$i];
-          $cart->subtotal = ($cart->total) / 1.05;
-          $cart->tax = $cart->total - $cart->subtotal;
-          Session::push('cart', $cart);
-          Session::put('id', $id);
-        }
+      if ($already_cart == 0) {
+        $id = Session::get('id') + 1;
+        $cart = new CartItem;
+        $cart->id = $id;
+        $cart->user_id = Session::get('_token');
+        $cart->product_id = $product->id;
+        $cart->attr_id = $attr->id;
+        $cart->form = $attr->form->name;
+        $cart->price = $attr->price;
+        $cart->size = $attr->size;
+        $cart->quantity = $request->qty;
+        $cart->total = $cart->price * $cart->quantity;
+        $cart->subtotal = $cart->total / 1.05;
+        $cart->tax = $cart->total - $cart->subtotal;
+        Session::push('cart', $cart);
+        Session::put('id', $id);
       }
     }
   }

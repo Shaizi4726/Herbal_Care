@@ -278,7 +278,7 @@ final class GeneratedExamplesTest extends \Stripe\TestCase
         static::assertInstanceOf(\Stripe\LineItem::class, $result->data[0]);
     }
 
-    public function testCreatePrice()
+    public function testCreateprice()
     {
         $this->expectsRequest('post', '/v1/prices');
         $result = $this->client->prices->create(
@@ -2278,7 +2278,7 @@ final class GeneratedExamplesTest extends \Stripe\TestCase
         static::assertInstanceOf(\Stripe\Plan::class, $result);
     }
 
-    public function testListPrice()
+    public function testListprice()
     {
         $this->expectsRequest('get', '/v1/prices');
         $result = $this->client->prices->all(['limit' => 3]);
@@ -2300,14 +2300,14 @@ final class GeneratedExamplesTest extends \Stripe\TestCase
         static::assertInstanceOf(\Stripe\Price::class, $result);
     }
 
-    public function testRetrievePrice()
+    public function testRetrieveprice()
     {
         $this->expectsRequest('get', '/v1/prices/price_xxxxxxxxxxxxx');
         $result = $this->client->prices->retrieve('price_xxxxxxxxxxxxx', []);
         static::assertInstanceOf(\Stripe\Price::class, $result);
     }
 
-    public function testUpdatePrice()
+    public function testUpdateprice()
     {
         $this->expectsRequest('post', '/v1/prices/price_xxxxxxxxxxxxx');
         $result = $this->client->prices->update(
@@ -2317,7 +2317,7 @@ final class GeneratedExamplesTest extends \Stripe\TestCase
         static::assertInstanceOf(\Stripe\Price::class, $result);
     }
 
-    public function testSearchPrice()
+    public function testSearchprice()
     {
         $this->expectsRequest('get', '/v1/prices/search');
         $result = $this->client->prices->search(

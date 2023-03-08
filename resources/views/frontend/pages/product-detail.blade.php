@@ -2,31 +2,33 @@
 @section('title','HerbalCare || PRODUCT DETAIL')
 
 @push('styles')
-<link href="{{asset('frontend/css/product-detail.css')}}" rel="stylesheet">
+  <link href="{{asset('frontend/css/product-detail.css')}}" rel="stylesheet">
 @endpush
 
 @section('main-content')
-<section id="product-detail" class="modal-content">	
-  <div class="shazoom" id="shazoom">
-    <div class="img-box">
-      <ul class="img-ul">
-          @foreach($product->images as $image)
-						<li><img src="{{('/images'.$image->name)}}"/></li>	
-					@endforeach										
-				</ul>
-			</div>
-			<div class="zoom-nav"></div>
-			<!-- Nav Buttons -->
-			<p class="zoom-btn">
-        <a href="javascript:void(0);" class="zoom-prev-btn"> < </a>
-				<a href="javascript:void(0);" class="zoom-next-btn"> > </a>
-			</p>
-		</div>
+  <section id="product-detail" class="modal-content">	
+    <div class="shazoom" id="shazoom">
+      @if(count($product->images) != 0)
+        <div class="img-box">
+          <ul class="img-ul">
+            @foreach($product->images as $image)
+              <li><img src="{{('/images'.$image->name)}}"/></li>	
+            @endforeach										
+          </ul>
+        </div>
+        <div class="zoom-nav"></div>
+        <!-- Nav Buttons -->
+        <p class="zoom-btn">
+          <a href="javascript:void(0);" class="zoom-prev-btn"> < </a>
+          <a href="javascript:void(0);" class="zoom-next-btn"> > </a>
+        </p>
+      @endif
+    </div>
 		<div class="modal-details-container">
       <div class="product-modal-detail">
         <h1 class="title">{{$product->name}}</h1>
         @if($product->sci_name)
-        <h4 class="subtitle">Scientific Name: {{$product->sci_name}}</h4>
+          <h4 class="subtitle">Scientific Name: {{$product->sci_name}}</h4>
         @endif
         
 				@php
@@ -34,66 +36,83 @@
 				@endphp
         
 				@for($i=1; $i<=5; $i++)
-        @if($rate>=$i)
-        <i class="fa-solid fa-star"></i>
+          @if($rate>=$i)
+            <i class="fa-solid fa-star"></i>
 					@else 
-          <i class="fa-regular fa-star"></i>
+            <i class="fa-regular fa-star"></i>
 					@endif
-          @endfor
+        @endfor
           
-          <a href="#" class="total-review">({{$product->reviews->count()}}) Review</a>
+        <a href="#" class="total-review">({{$product->reviews->count()}}) Review</a>
           
-          <form id="modal-form">
+        <div id="modal-form">
           @php
+            $forms = $product->forms()->get();
+            $images = $product->images()->pluck('name');
+            $sizes = array();
+
+            if(count($forms) == 0) {
               $minprice = $product->attrs()->min('price');
               $maxprice = $product->attrs()->max('price');
-              $images = $product->images()->pluck('name');
-              $forms = $product->forms()->get(['form_id', 'name']);
-              $prod = $product->where('id', $product->id)->first(['id', 'name', 'photo']);
+              $sizes = $product->attrs()->pluck('size');
+            } else {
+              $minprice = $product->attrs()->where('form_id', $forms[0]->id)->min('price');
+              $maxprice = $product->attrs()->where('form_id', $forms[0]->id)->max('price');
+              $sizes = $product->attrs()->where('form_id', $forms[0]->id)->pluck('size');
+            }
 
-              $sizes = array();
-              foreach ($forms as $form) {
-                ${$form->name . "sizes"} = $product->attrs()->where('form_id', $form->form_id)->pluck('size');
-                $sizes[$form->name] =  ${$form->name . "sizes"};
-              }
-              
-              if(count($forms) == 0)
-                $sizes = $product->attrs()->pluck('size');
-              
-              $sizes = json_encode($sizes);
+            $minprice = number_format($minprice, 2);
+            $maxprice = number_format($maxprice, 2);
 
-              if(Auth::check())
-                $wishlist = $product->wishlists()->where('user_id', Auth::user()->id)->get();
-            @endphp
-            <input type="hidden" name="product-id" value="{{$product->id}}">
-            <div class="forms modal-radio" id="forms"></div>
-            <div class="prices" id="price">
-            @if($minprice==$maxprice)
-              <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span></p>
-            @else
-              <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span> - AED <span class="value">{{number_format($maxprice,2)}}</span></p>
-            @endif            
+            if(Auth::check())
+              $wishlist = $product->wishlists()->where('user_id', Auth::user()->id)->get();
+          @endphp
+
+          @if(count($forms) != 0)
+            <div class="forms modal-radio" id="forms">
+              <div id="forms-menu" class="forms-list">
+                @foreach($forms as $form)
+                  @if($form == $forms[0])
+                    <input type="radio" id="{{$form->name}}" name="product-form" value="{{$form->id}}" checked>
+                    <label for="{{$form->name}}">{{$form->name}}</label>
+                  @else
+                    <input type="radio" id="{{$form->name}}" name="product-form" value="{{$form->id}}" checked>
+                    <label for="{{$form->name}}">{{$form->name}}</label>
+                  @endif
+                @endforeach
+              </div>
             </div>
-            <div class="sizes modal-radio" id="sizes"></div>
+          @endif
+          <div class="price-size-container modal-radio" id="price-size">
+            <div class="prices" id="price">
+              @if($minprice==$maxprice)
+                <h4>AED {{$minprice}}</h4>
+              @else
+                <h4>AED {{$minprice}} - AED {{$maxprice}}</h4>
+              @endif            
+            </div>
+            <div id="sizes-menu" class="sizes-list">
+              @foreach($sizes as $size)
+                <input type="radio" id="{{$size}}" name="product-size" class="product-size" value="{{$size}}">
+                <label for="{{$size}}">{{$size}}</label>
+              @endforeach
+            </div>
+          </div>
             <input type="hidden" name="price-input" id="price-input" value="">
             <div class="qty-manage" id="qty-manage">
               <input type="button" value="-" class="qty-minus minus qty-control" field="quantity" disabled>
               <input type="number" name="quantity" value="1" min="1" oninput="this.value = Math.abs(this.value)" class="qty">
               <input type="button" value="+" class="qty-plus plus qty-control" field="quantity">
             </div>
-            <input type="button" id="detail-add-list" class="btn btn-submit add-list" value="Add to List" onclick="shopList()">
-            <i id="cart-button-arrow" class="fa-solid fa-right-long"></i>
-            <div class="cart-button-div">
-              <button form="modal-cart-form" id="detail-cart-button" class="cart-button">
+            <div class="cart-btn-div">
+              <button form="modal-cart-form" id="detail-cart-btn" class="cart-btn">
                 <span class="add-to-cart">Add to Cart</span>
                 <span class="added">Added</span>
                 <i class="fas fa-shopping-cart"></i>
                 <i class="fas fa-box"></i>
               </button>
             </div>
-          </form>
-          
-          <form action="/add-to-cart" data="{{$product->id}}" id="modal-cart-form"></form>
+          </div>
         </div>
         
         <section class="popup-section" id="ch-popup-sec">
@@ -109,29 +128,6 @@
             <button id="login-chkt-btn" class="btn btn-submit popup-btn chkt-btn collapse" onclick="location.href = `<?= route('login.form')?>?checkout=1`">Login to Checkout</button>
           </div>
         </section>
-      
-        <div class="modal-shopping-list" id="modal-shopping-list">
-          <table id="shopping-list-table">
-            <caption>Shopping List</caption>
-						<thead>
-              <tr>
-									<th id="list-frm">Form</th>
-									<th id="list-sze">Size</th>
-									<th id="list-qty">Qty</th>
-									<th id="list-prc">Price</th>
-									<th id="list-amt">Amount</th>
-								</tr>
-						</thead>
-						<tbody id="list-body">
-						</tbody>
-						<tfoot>
-							<tr>
-								<th colspan="3">Total Amount</th>
-								<th colspan="2" id="list-total"></th>
-							</tr>
-						</tfoot>
-					</table>
-			</div>
 		</div>
 	</section>
   
@@ -307,35 +303,24 @@
 @push('scripts')
 	<script src="{{asset('frontend/js/product-detail.js')}}"></script>
 	<script>
-    let form;
-    forms = <?= $forms ?>;
-
-    if(forms[0])
-      form = forms[0]['name'];
-
-		createForms(forms);
-		createSizes(form, <?= $sizes ?>);
-		Price(<?= $product->id ?>);
+		price(<?= $product->id ?>);
 
 		window.onload = function() {
   		$(function() {
         shazoom();
 
-				$('.add-list').hide();
 				/* Actions when form is changed */
 				$("[name|='product-form']").change(() => {
-					var form = $("[name|='product-form']:checked")[0];
-          form = form.getAttribute('id');
-          createSizes(form, <?= $sizes ?>);
+					let formId = $("[name|='product-form']:checked").val();
+          createSizes(<?= $product->id ?>, formId);
 					if($("[name|='product-size']:checked").val() == undefined) {
-						$("#price").html('<p class="price">AED <span class="value">' + @php echo number_format($minprice,2) @endphp + '</span> - AED <span class="value">' + @php echo number_format($maxprice,2) @endphp + '</span></p>');
-						$(".plus").prop('disabled', true);
+						$(".plus").attr('disabled', true);
 						$('.add-list').hide();
 						$("input.qty").val('1');
 						$("input.qty").prop('disabled', true)
 						$('.minus').prop('disabled', true);
 					}
-					Price(<?= $product->id ?>);
+					price(<?= $product->id ?>);
 				})
 
 				/* Enable minus button when value of input quantity is greater than 1 and vice versa */

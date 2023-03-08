@@ -22,6 +22,14 @@ $('.minus').on('click', function (e) {
   }
 });
 
+/* Enable minus button when value of input quantity is greater than 1 and vice versa */
+$('input.qty').on('change', () => {
+  if ($('input.qty').val() > 1)
+    $('.minus').removeAttr('disabled');
+  else
+    $('.minus').attr('disabled', true);
+});
+
 $(function () {
   document.oncontextmenu = () => false;;
   document.onselectstart = () => false;
@@ -32,202 +40,97 @@ $(function () {
 
 
 /*==================== Request product price from database ====================*/
-function Price(id) {
-  $(function () {
-    $("[name|='product-size']").on('change', () => {
-      var form = $("[name='product-form']:checked").val();
-      var size = $("input[name|='product-size']:checked").val();
-      $('.plus').prop('disabled', false);
-      $('.add-list').show();
-      $('input.qty').val(1);
-      $('input.qty').prop('disabled', false);
-      $.ajax({
-        type: 'get',
-        url: '/get-product-price',
-        data: {
-          id: id,
-          size: size,
-          form: form
-        },
-        success: function (resp) {
-          resp = Number(resp).toFixed(2);
-          $("#price").html(`<h3>AED ${resp}</h3>`);
-          $('#price-input').val(resp);
-        },
-        error: function (resp) {
-          alert('error');
-        }
-      });
+function price(id) {
+  $("[name='product-size']").on('change', () => {
+    let form = $("[name='product-form']:checked").val();
+    let size = $("input[name='product-size']:checked").val();
+    $('.cart-btn-div').css('width', '13.5em');
+    $('input.qty').val(1);
+    $('.plus').removeAttr('disabled');
+    $('input.qty').removeAttr('disabled');
+
+    $.ajax({
+      type: 'get',
+      url: '/get-product-price',
+      data: {
+        id: id,
+        size: size,
+        form: form
+      },
+      success: function (resp) {
+        resp = Number(resp).toFixed(2);
+        $("#price").html(`<h4>AED ${resp}</h4>`);
+        $('#price-input').val(resp);
+      },
+      error: function (resp) {
+        $("#price").html(`<div class="error">Something went wrong. Please try again...</div>`);
+      }
     });
-  })
-}
-
-/*========== Product Forms Creation ==========*/
-function createForms(forms) {
-  if(forms[0] == undefined)
-    return;
-
-  var formsMenu = document.createElement('div');
-  formsMenu.setAttribute('class', 'forms-list');
-  formsMenu.setAttribute('id', 'forms-menu');
-  var formsInput;
-  forms.map((item, key) => {
-    if (key == 0) {
-      formsInput = `<input type="radio" id="${item['name']}" name="product-form" value="${item['form_id']}" checked>
-      <label for="${item['name']}">${item['name']}</label>`;
-    }
-    else
-      formsInput += `<input type="radio" id="${item['name']}" name="product-form" value="${item['form_id']}">
-     <label for="${item['name']}">${item['name']}</label>`;
   });
-  formsMenu.innerHTML = formsInput;
-  document.getElementById('forms').appendChild(formsMenu);
 }
 
 /*========== Product Sizes Creation ==========*/
-function createSizes(form, sizes) {
-  if(form) {
-    if (document.getElementById("sizes-menu"))
-      document.getElementById("sizes-menu").remove();
-    var sizeMenu = document.createElement('div');
-    sizeMenu.setAttribute('class', form + '-sizes sizes-list');
-    sizeMenu.setAttribute('id', 'sizes-menu');
-    var sizesInput = ``;
-    sizes[form].map(size => {
-      sizesInput += `<input type="radio" id="${form}${size}" name="product-size" class="product-size" value="${size}">
-          <label for="${form}${size}">${size}</label>`;
-    });
-  } else {
-    var sizeMenu = document.createElement('div');
-    sizeMenu.setAttribute('class', 'sizes-list');
-    sizeMenu.setAttribute('id', 'sizes-menu');
-    var sizesInput = ``;
-    sizes.map(size => {
-      sizesInput += `<input type="radio" id="${size}" name="product-size" class="product-size" value="${size}">
-        <label for="${size}">${size}</label>`;
-    });
-  }
-
-  sizeMenu.innerHTML = sizesInput;
-  document.getElementById("sizes").appendChild(sizeMenu);
-};
-
-/*==================== Shopping List Table ====================*/
-var totalAmount = 0;
-
-function shopList() {
-  let form = $("[name='product-form']:checked")[0];
-  let price = $("[name='price-input']").val();
-  let size = $("[name='product-size']:checked").val();
-  let quant = $("[name='quantity']").val();
-  let amount = price * quant;
-  
-  if(form) {
-    form = form.getAttribute('id');
-    let row = document.getElementById(`${form}-${size}-quant`);
-  
-    tableRow: {
-      if (row !== null) {
-        let quantity = Number(row.innerHTML) + Number(quant);
-        row.innerHTML = quantity;
-        document.getElementById(`${form}-${size}-amnt`).innerHTML = `AED ${(price * quantity).toFixed(2)}`;
-        totalAmount += amount;
-        break tableRow;
-      }
-      $('#shopping-list-table > tbody').append(`<tr><td>${form}</td>
-      <td>${size}</td>
-      <td id = "${form}-${size}-quant">${quant}</td>
-      <td>${price}</td>
-      <td id = "${form}-${size}-amnt">AED ${amount.toFixed(2)}</td></tr>`);
-      totalAmount += amount;
-    }
-  } else {
-    let row = document.getElementById(`${size}-quant`);
-
-    tableRow: {
-      if (row !== null) {
-        let quantity = Number(row.innerHTML) + Number(quant);
-        row.innerHTML = quantity;
-        document.getElementById(`${size}-amnt`).innerHTML = `AED ${(price * quantity).toFixed(2)}`;
-        totalAmount += amount;
-        break tableRow;
-      }
-      $('#shopping-list-table > tbody').append(`<tr><td></td>
-      <td>${size}</td>
-      <td id = "${size}-quant">${quant}</td>
-      <td>${price}</td>
-      <td id = "${size}-amnt">AED ${amount.toFixed(2)}</td></tr>`);
-      totalAmount += amount;
-    }
-  }
-
-  $("#list-total").html(`AED ${totalAmount.toFixed(2)}`);
-  let cartButton = $(".cart-button-div")[0];
-  $("#cart-button-arrow").css('display', 'inline');
-  cartButton.style.width = "12.5em";
-}
-
-/*========== Add shopping list items to cart ==========*/
-function cartAdd(url, id) {
-  const cartList = {}
-  const formArr = [];
-  const priceArr = [];
-  const sizeArr = [];
-  const quantArr = [];
-
-  /* Store shopping list data in arrays */
-  $("#shopping-list-table tr:gt(0)").each(function () {
-    let this_row = $(this);
-    let form = this_row.find('td:eq(0)').html();
-    let size = this_row.find('td:eq(1)').html();
-    let quantity = this_row.find('td:eq(2)').html();
-    let price = this_row.find('td:eq(3)').html();
-
-    formArr.push(form);
-    priceArr.push(price);
-    sizeArr.push(size);
-    quantArr.push(quantity);
-  });
-
-  formArr.pop();
-  priceArr.pop();
-  sizeArr.pop();
-  quantArr.pop();
-
-  cartList['form'] = formArr;
-  cartList['price'] = priceArr;
-  cartList['size'] = sizeArr;
-  cartList['quantity'] = quantArr;
-
-  /* AJAX request for adding shopping list items to cart */
+function createSizes(productId, formId) {
+  /* AJAX request for sizes creation */
   $.ajax({
     type: 'get',
-    url: url,
+    url: '/create-sizes',
     data: {
-      id: id,
-      cart: cartList
+      product_id: productId,
+      form_id: formId
     },
-    success: function () {
-      let button = $(".cart-button")[0];
-      let chModal = $("#ch-popup-sec")[0];
-      button.classList.add('clicked');
-      $("#list-body").empty();
-      body.style.height = "90vh";
-      body.style.overflow = "hidden";
-      chModal.style.visibility = "visible";
-      chModal.style.opacity = "1";
-      chModal.style.transform = "scale(1)";
+    success: function (resp) {
+      $('#price-size').html(resp);
+      price(productId);
     },
-    error: function () {
-      alert("An error occured while adding to cart")
+    error: function (resp) {
+      $('#price-size').append('<div class="error">Something went wrong. Please try again...</div>');
     }
   });
+};
+
+/*========== Add items to cart ==========*/
+function cartAdd(id) {
+  let form = $('[name="product-form"]:checked').val();
+  let size = $('[name="product-size"]:checked').val();
+  let price = $("#price-input").val();
+  let qty = $("#qty").val();
+  
+  $('.modal-close').remove();
+
+  /* AJAX request for adding item to cart */
+  $.ajax({
+    type: 'get',
+    url: '/cart-add',
+    data: {
+      product_id: id,
+      form_id: form,
+      price: price,
+      size: size,
+      qty: qty
+    },
+    success: function () {
+      $('.cart-btn').addClass('clicked');
+      $('#location-popup').focus();
+      $('#location-popup').attr('data-toggle', '1');
+      $('#location-popup').css('transform', 'scale(1)');
+    },
+    error: function (e) {
+      $('#location-popup').focus();
+      $('#location-popup').attr('data-toggle', '1');
+      $('#location-popup').css('transform', 'scale(1)');
+      $('#location-popup').html('<div class="error modal-error">Something went wrong. Please try again...</div>');
+    }
+  });
+
+  $('#location-popup').on('focusout', function() {
+    remInnerModal();
+  })
 }
 
 /*==================== Add product to favorites ====================*/
 function fav(ico, id) {
   let el = $(ico).children()[0];
-  console.log(el);
   if ($(el).hasClass('fa-regular')) {
     el.classList.remove('fa-regular');
     $(`.${id}-card .fa-heart`).addClass('fa-solid');

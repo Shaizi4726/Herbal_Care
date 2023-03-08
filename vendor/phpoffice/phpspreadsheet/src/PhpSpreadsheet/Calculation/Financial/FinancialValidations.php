@@ -107,7 +107,7 @@ class FinancialValidations
     /**
      * @param mixed $price
      */
-    public static function validatePrice($price): float
+    public static function validateprice($price): float
     {
         $price = self::validateFloat($price);
         if ($price < 0.0) {

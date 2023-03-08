@@ -13,14 +13,14 @@ $('#all-checkbox').on('change', function() {
     $('.item-checkbox').prop('checked', true);
     if($('#cancel'))
       $('#cancel').removeAttr('disabled');
-    else if($('#return'))
+    if($('#return'))
       $('#return').removeAttr('disabled');
   }
   else {
     $('.item-checkbox').prop('checked', false);
     if($('#cancel'))
       $('#cancel').attr('disabled', true);
-    else if($('#return'))
+    if($('#return'))
       $('#return').attr('disabled', true);
   }
 });
@@ -31,7 +31,7 @@ $('.item-checkbox').on('change', function() {
   } else {
     if($('#cancel'))
       $('#cancel').removeAttr('disabled');
-    else if($('#return'))
+    if($('#return'))
       $('#return').removeAttr('disabled');
   }
 
@@ -41,7 +41,7 @@ $('.item-checkbox').on('change', function() {
   if($('.item-checkbox:not(:checked)').length == $('.item-checkbox').length) {
     if($('#cancel'))
       $('#cancel').attr('disabled', true);
-    else if($('#return'))
+    if($('#return'))
       $('#return').attr('disabled', true);
   }
 });
@@ -80,7 +80,7 @@ if($('#cancel')) {
   });
 }
 
-else if($('#return')) {
+if($('#return')) {
   $('#return').on('click', function() {
     let order_id = $('#order').val();
     let all = 0;

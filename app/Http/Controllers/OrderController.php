@@ -369,9 +369,9 @@ class OrderController extends Controller
         $cancel->fill($properties);
 
         $order->payment->cancelled += $cancel->total;
-        $order->payment->subtotal -= $item->subtotal;
-        $order->payment->tax -= $item->tax;
-        $order->payment->total = $order->payment->subtotal + $order->payment->tax;
+        $order->payment->total -= $cancel->total;
+        $order->payment->subtotal = $order->payment->total / 1.05;
+        $order->payment->tax = $order->payment->total - $order->payment->subtotal;
         $order->payment->shipping = 0;
 
         $cancel->save();
@@ -388,9 +388,9 @@ class OrderController extends Controller
         $cancel->fill($properties);
 
         $order->payment->cancelled += $cancel->total;
-        $order->payment->subtotal -= $item->subtotal;
-        $order->payment->tax -= $item->tax;
-        $order->payment->total = $order->payment->subtotal + $order->payment->tax;
+        $order->payment->total -= $cancel->total;
+        $order->payment->subtotal = $order->payment->total / 1.05;
+        $order->payment->tax = $order->payment->total - $order->payment->subtotal;
 
         if($order->payment->total < 100) {
           $order->payment->shipping = $order->shipping->city->shipping;
@@ -422,9 +422,9 @@ class OrderController extends Controller
         $return->fill($properties);
 
         $order->payment->returned += $return->total;
-        $order->payment->subtotal -= $item->subtotal;
-        $order->payment->tax -= $item->tax;
-        $order->payment->total = $order->payment->subtotal + $order->payment->tax;
+        $order->payment->total -= $return->total;
+        $order->payment->subtotal = $order->payment->total / 1.05;
+        $order->payment->tax = $order->payment->total - $order->payment->subtotal;
 
         if($order->payment->total < 100) {
           $order->payment->shipping = $order->shipping->city->shipping;
@@ -451,9 +451,9 @@ class OrderController extends Controller
         $return->fill($properties);
 
         $order->payment->returned += $return->total;
-        $order->payment->subtotal -= $item->subtotal;
-        $order->payment->tax -= $item->tax;
-        $order->payment->total = $order->payment->subtotal + $order->payment->tax;
+        $order->payment->total -= $return->total;
+        $order->payment->subtotal = $order->payment->total / 1.05;
+        $order->payment->tax = $order->payment->total - $order->payment->subtotal;
 
         /* if($order->coupon_id != null) {
           if($order->coupon->effect == 'product') {

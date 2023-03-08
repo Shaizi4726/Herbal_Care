@@ -43,21 +43,7 @@
           @foreach($pop_products as $product)
             @php
               $minprice = $product->attrs()->min('price');
-              $maxprice = $product->attrs()->max('price');
-              $images = $product->images()->pluck('name');
-              $forms = $product->forms()->get(['form_id', 'name']);
-              $prod = $product->where('id', $product->id)->first(['id', 'name', 'slug', 'photo']);
-
-              $sizes = array();
-              foreach ($forms as $form) {
-                ${$form->name . "sizes"} = $product->attrs()->where('form_id', $form->form_id)->pluck('size');
-                $sizes[$form->name] =  ${$form->name . "sizes"};
-              }
-              
-              if(count($forms) == 0)
-                $sizes = $product->attrs()->pluck('size');
-              
-              $sizes = json_encode($sizes);
+              $maxprice = $product->attrs()->max('price');            
 
               if($auth)
                 $wishlist = $product->wishlists()->where('user_id', Auth::user()->id)->get();
@@ -66,7 +52,7 @@
               <img class="product-image" src="{{$product->photo}}" alt="product image">
               
               <div class="overlay">
-                <button id="pop{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, {{$prod}}, {{$sizes}}, {{$images}}, {{$forms}}, {{$minprice}}, {{$maxprice}}, {{$auth}})"> 
+                <button id="pop{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, {{$product->id}})"> 
                   <i class="fa-regular fa-eye"></i>
                   <p>Quick View</p>
                 </button>
@@ -108,21 +94,7 @@
           @foreach($trn_products as $product)
             @php
               $minprice = $product->attrs()->min('price');
-              $maxprice = $product->attrs()->max('price');
-              $images = $product->images()->pluck('name');
-              $forms = $product->forms()->get(['form_id', 'name']);
-              $prod = $product->where('id', $product->id)->first(['id', 'name', 'slug', 'photo']);
-
-              $sizes = array();
-              foreach ($forms as $form) {
-                ${$form->name . "sizes"} = $product->attrs()->where('form_id', $form->form_id)->pluck('size');
-                $sizes[$form->name] =  ${$form->name . "sizes"};
-              }
-              
-              if(count($forms) == 0)
-                $sizes = $product->attrs()->pluck('size');
-              
-              $sizes = json_encode($sizes);
+              $maxprice = $product->attrs()->max('price'); 
 
               if($auth)
                 $wishlist = $product->wishlists()->where('user_id', Auth::user()->id)->get();
@@ -131,7 +103,7 @@
               <img class="product-image" src="{{$product->photo}}" alt="product image">
               
               <div class="overlay">
-                <button id="trn{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, {{$prod}}, {{$sizes}}, {{$images}}, {{$forms}}, {{$minprice}}, {{$maxprice}}, {{$auth}})"> 
+                <button id="trn{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, {{$product->id}})"> 
                   <i class="fa-regular fa-eye"></i>
                   <p>Quick View</p>
                 </button>
@@ -172,21 +144,7 @@
           @foreach($new_products as $product)
             @php
               $minprice = $product->attrs()->min('price');
-              $maxprice = $product->attrs()->max('price');
-              $images = $product->images()->pluck('name');
-              $forms = $product->forms()->get(['form_id', 'name']);
-              $prod = $product->where('id', $product->id)->first(['id', 'name', 'slug', 'photo']);
-
-              $sizes = array();
-              foreach ($forms as $form) {
-                ${$form->name . "sizes"} = $product->attrs()->where('form_id', $form->form_id)->pluck('size');
-                $sizes[$form->name] =  ${$form->name . "sizes"};
-              }
-              
-              if(count($forms) == 0)
-                $sizes = $product->attrs()->pluck('size');
-              
-              $sizes = json_encode($sizes);
+              $maxprice = $product->attrs()->max('price'); 
 
               if($auth)
                 $wishlist = $product->wishlists()->where('user_id', Auth::user()->id)->get();
@@ -195,7 +153,7 @@
               <img class="product-image" src="{{$product->photo}}" alt="product image">
               
               <div class="overlay">
-                <button id="new{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, {{$prod}}, {{$sizes}}, {{$images}}, {{$forms}}, {{$minprice}}, {{$maxprice}}, {{$auth}})"> 
+                <button id="new{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, {{$product->id}})"> 
                   <i class="fa-regular fa-eye"></i>
                   <p>Quick View</p>
                 </button>
@@ -241,31 +199,17 @@
             <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false }'>
               @foreach($product_cat as $product)
               @php
-              $minprice = $product->attrs()->min('price');
-              $maxprice = $product->attrs()->max('price');
-              $images = $product->images()->pluck('name');
-              $forms = $product->forms()->get(['form_id', 'name']);
-              $prod = $product->where('id', $product->id)->first(['id', 'name', 'slug', 'photo']);
+                $minprice = $product->attrs()->min('price');
+                $maxprice = $product->attrs()->max('price');
 
-              $sizes = array();
-              foreach ($forms as $form) {
-                ${$form->name . "sizes"} = $product->attrs()->where('form_id', $form->form_id)->pluck('size');
-                $sizes[$form->name] =  ${$form->name . "sizes"};
-              }
-              
-              if(count($forms) == 0)
-                $sizes = $product->attrs()->pluck('size');
-              
-              $sizes = json_encode($sizes);
-
-              if($auth)
-                $wishlist = $product->wishlists()->where('user_id', Auth::user()->id)->get();
-            @endphp
+                if($auth)
+                  $wishlist = $product->wishlists()->where('user_id', Auth::user()->id)->get();
+              @endphp
             <div class="product-card {{$product->id}}-card carousel-cell">
               <img class="product-image" src="{{$product->photo}}" alt="product image">
               
               <div class="overlay">
-                <button id="cat{{$cat->id}}_{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, {{$prod}}, {{$sizes}}, {{$images}}, {{$forms}}, {{$minprice}}, {{$maxprice}}, {{$auth}})"> 
+                <button id="cat{{$cat->id}}_{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, {{$product->id}})"> 
                   <i class="fa-regular fa-eye"></i>
                       <p>Quick View</p>
                     </button>
@@ -299,8 +243,9 @@
           </div>
         @endif
       @endforeach
-    @endif    
-    <div class="modal-container" id="modal-container"></div>
+    @endif
+
+    <div id="modal-container" class="modal-container"></div>
 	</section>
 @endsection
 

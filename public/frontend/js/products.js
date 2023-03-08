@@ -7,7 +7,7 @@ function sort(el, slug, subslug) {
   $('#selected-sort').html(content);
   $('#sorting-list').addClass('collapse');
 
-  /* AJAX request for adding shopping list items to cart */
+  /* AJAX request for sorting products */
   $.ajax({
     type: 'get',
     url: '/sort',

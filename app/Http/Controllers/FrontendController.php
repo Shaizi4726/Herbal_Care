@@ -181,10 +181,10 @@ class FrontendController extends Controller
           }
         } 
       } else {
-          $content = <<<EOD
-            <p class="no-product">There is no product in this criteria.</p>
-          EOD;
-        }
+        $content = <<<EOD
+          <p class="no-product">There is no product in this criteria.</p>
+        EOD;
+      }
       return $content;
     }
 
@@ -321,7 +321,7 @@ class FrontendController extends Controller
     }
 
 
-    public function getProductPrice(Request $request) {
+    public function getProductprice(Request $request) {
       if($request->form == null)
         $proAttr = DB::table('product_attributes')->where('product_id', $request->id)->where('size', $request->size)->first();   
       else

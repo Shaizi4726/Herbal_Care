@@ -983,7 +983,7 @@ class Financial
      *
      * @return float|string Result, or a string containing an error
      */
-    public static function PRICE($settlement, $maturity, $rate, $yield, $redemption, $frequency, $basis = 0)
+    public static function price($settlement, $maturity, $rate, $yield, $redemption, $frequency, $basis = 0)
     {
         return Securities\Price::price($settlement, $maturity, $rate, $yield, $redemption, $frequency, $basis);
     }
@@ -1241,7 +1241,7 @@ class Financial
      *
      * @return float|string Result, or a string containing an error
      */
-    public static function TBILLPRICE($settlement, $maturity, $discount)
+    public static function TBILLprice($settlement, $maturity, $discount)
     {
         return TreasuryBill::price($settlement, $maturity, $discount);
     }

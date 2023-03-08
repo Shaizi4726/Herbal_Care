@@ -97,7 +97,7 @@
         exzoom_nav.append("<p class='exzoom_nav_inner'></p>");
         exzoom_img_ul_outer = exzoom_img_box.find(".exzoom_img_ul_outer");
         exzoom_nav_inner = exzoom_nav.find(".exzoom_nav_inner");
-
+        imgArr = [];
        
         exzoom_img_ul_outer.append(exzoom_img_ul);
 
@@ -131,6 +131,8 @@
             "height": g.navHeight + "px",
         });
 
+        if(imgArr[1] == undefined)
+          $('.zoom-btn').remove();
         
         exzoom_img_ul_width = boxWidth * imgNum;
         exzoom_img_ul_max_margin = boxWidth * (imgNum - 1);

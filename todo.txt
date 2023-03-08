@@ -1,4 +1,3 @@
-Order Details page
 remove add list button and direct add to cart
 modals
 add precautions in details page
