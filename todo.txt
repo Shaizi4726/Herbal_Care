@@ -1,4 +1,5 @@
 Order Details page
+product without form admin_page and frontend_page
 remove add list button and direct add to cart
 modals
 add precautions in details page
