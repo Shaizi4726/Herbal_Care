@@ -76,10 +76,13 @@
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Order</div>
+                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{\App\http\Controllers\OrderController::countActiveOrder()}}</div>
+                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Total</div>
+                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{\App\http\Controllers\OrderController::amountOrder()}}</div>
                 <div class="row no-gutters align-items-center">
                   <div class="col-auto">
                   </div>
-                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{\App\http\Controllers\OrderController::countActiveOrder()}}</div>
+                  
                 </div>
               </div>
               <div class="col-auto">
@@ -143,8 +146,7 @@
                   <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{\App\http\Controllers\OrderController::countActiveShipped()}}</div>
                 </div>
               </div>
-              <div class="col-auto">
-             
+              <div class="col-auto">             
                 <i class="fas fa-light fa-truck fa-2x text-gray-300"></i>
               </div>
             </div>
@@ -178,10 +180,12 @@
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Cancelled</div>
+                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{\App\http\Controllers\OrderController::countActiveCancelled()}}</div>
+                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Total Cancelled</div>
+                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{\App\http\Controllers\OrderController::amountCance()}}</div>
                 <div class="row no-gutters align-items-center">
                   <div class="col-auto">
-                  </div>
-                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{\App\http\Controllers\OrderController::countActiveCancelled()}}</div>
+                  </div>                  
                 </div>
               </div>
               <div class="col-auto">
@@ -198,10 +202,13 @@
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Returned</div>
+                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{\App\http\Controllers\OrderController::countActiveReturned()}}</div>
+                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Total Returned</div>
+                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{\App\http\Controllers\OrderController::amountReturn()}}</div>
                 <div class="row no-gutters align-items-center">
                   <div class="col-auto">
                   </div>
-                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{\App\http\Controllers\OrderController::countActiveReturned()}}</div>
+                  
                 </div>
               </div>
               <div class="col-auto">
@@ -354,7 +361,7 @@
                       padding: 10,
                       // Include a dollar sign in the ticks
                       callback: function(value, index, values) {
-                        return '$' + number_format(value);
+                        return 'AED' + number_format(value);
                       }
                     },
                    
@@ -386,7 +393,8 @@
                   caretPadding: 10,
                   callbacks: {
                     label: function(tooltipItem, chart) {
-                      var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                      var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || ''; 
+                      console.log(data_values);                  
                       return datasetLabel + ': $' + number_format(tooltipItem.yLabel);
                     }
                   }
@@ -397,7 +405,7 @@
           })
           
           .catch(function (error) {
-          //   vm.answer = 'Error! Could not reach the API. ' + error
+          // vm.answer = 'Error! Could not reach the API. ' + error
          
           });
 

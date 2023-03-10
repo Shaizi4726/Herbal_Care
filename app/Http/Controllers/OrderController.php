@@ -531,7 +531,7 @@ class OrderController extends Controller
   public function incomeChart(Request $request){
     $year=\Carbon\Carbon::now()->year;
     // dd($year);
-    $items=Order::with(['shipping'])->whereYear('created_at',$year)->where('status','delivered')->get()
+    $items=Order::with(['order_items'])->whereYear('created_at',$year)->where('status','completed')->get()
         ->groupBy(function($d){
             return \Carbon\Carbon::parse($d->created_at)->format('m');
         });
@@ -540,7 +540,7 @@ class OrderController extends Controller
     foreach($items as $month=>$item_collections){
       //dd($items);
         foreach($item_collections as $item){
-            $amount=$item->cart_info->sum('amount');
+            $amount=$item->order_items->sum('total');
             //dd($amount);
             $m=intval($month);
             // return $m;
@@ -555,11 +555,19 @@ class OrderController extends Controller
     }
     return $data;
 }
-// dashboard Show Order
+// dashboard Show Order Count
   public static function countActiveOrder(){
     $data=Order::count();
     if($data){
         return $data;
+    }
+    return 0;
+  } 
+//Dashboard show total amount of order
+  public static function amountOrder(){
+    $data=OrderItem::get();
+    if($data){
+        return $data->sum('total');
     }
     return 0;
   } 
@@ -576,7 +584,7 @@ class OrderController extends Controller
   public static function countActiveProcessed(){
     $data=Shipping::where('status','processed')->count();
     if($data){
-        return $data;
+      return $data;
     }
     return 0;
   } 
@@ -606,11 +614,28 @@ class OrderController extends Controller
     }
     return 0;
   } 
+  //Cancelled Amount
+  public static function amountCance(){
+    $data=CancelItem::get();
+    if($data){
+        return $data->sum('total');
+    }
+    return 0;
+  } 
   // dashboard Show Returned
   public static function countActiveReturned(){
     $data=ReturnItem::count();
+    //dd($data);
     if($data){
         return $data;
+    }
+    return 0;
+  } 
+  //Returned Amount
+  public static function amountReturn(){
+    $data=ReturnItem::get();
+    if($data){
+        return $data->sum('total');
     }
     return 0;
   } 
