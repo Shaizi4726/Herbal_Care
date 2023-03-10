@@ -1,14 +1,3 @@
-/* Function when modal shopping list table is submitted */
-$("#modal-cart-form").submit(function (e) {
-  e.preventDefault();
-
-  var modalForm = $("#modal-cart-form");
-  var actionUrl = modalForm.attr('action');
-  let id = modalForm.attr('data');
-
-  cartAdd(actionUrl, id);
-});
-
 function showDetail(btn) {
   let data = btn.getAttribute('data-toggle');
   let active = btn.classList.contains('active-details-review');
@@ -24,3 +13,8 @@ function showDetail(btn) {
     document.getElementById(data).classList.toggle('collapse');
   }
 }
+
+$(body).on('keydown', function(event) {
+  if($('#location-popup').attr('data-toggle') == 1)
+    remInnerModal();
+});

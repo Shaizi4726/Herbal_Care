@@ -18,6 +18,14 @@
   transition: all 300ms;
 }
 
+.ch-popup .close {
+  position: absolute;
+  right: 1rem;
+  top: 0;
+  width: 30px;
+  z-index: 10;
+}
+
 .details-review-btn:hover {
   background-color: #f2f4e6;
   color: #2c542f;

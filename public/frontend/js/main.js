@@ -16,7 +16,7 @@ $('.plus').on('click', function (e) {
 /* Minus button function */
 $('.minus').on('click', function (e) {
   let qtyinput = $(this).next('input.qty');
-  var val = parseInt(qtyinput.val());
+  let val = parseInt(qtyinput.val());
   if (val > 1) {
     qtyinput.val(val - 1).trigger('change');
   }
@@ -93,10 +93,10 @@ function createSizes(productId, formId) {
 function cartAdd(id) {
   let form = $('[name="product-form"]:checked').val();
   let size = $('[name="product-size"]:checked').val();
-  let price = $("#price-input").val();
-  let qty = $("#qty").val();
-  
-  $('.modal-close').remove();
+  let price = $('#price-input').val();
+  let qty = $('#qty').val();
+
+  $('.modal-close').hide();
 
   /* AJAX request for adding item to cart */
   $.ajax({
@@ -111,11 +111,15 @@ function cartAdd(id) {
     },
     success: function () {
       $('.cart-btn').addClass('clicked');
+      $('#checkout-popup').css('width', '100vw');
+      $('#checkout-popup').css('height', '100vh');
       $('#location-popup').focus();
       $('#location-popup').attr('data-toggle', '1');
       $('#location-popup').css('transform', 'scale(1)');
     },
-    error: function (e) {
+    error: function () {
+      $('#checkout-popup').css('width', '100vw');
+      $('#checkout-popup').css('height', '100vh');
       $('#location-popup').focus();
       $('#location-popup').attr('data-toggle', '1');
       $('#location-popup').css('transform', 'scale(1)');
@@ -126,6 +130,15 @@ function cartAdd(id) {
   $('#location-popup').on('focusout', function() {
     remInnerModal();
   })
+}
+
+function remInnerModal() {
+  $('#checkout-popup').css('width', 0);
+  $('#checkout-popup').css('height', 0);
+  $('.modal-close').show();
+  $('#location-popup').attr('data-toggle', '0');
+  $('.cart-btn').removeClass('clicked');
+  $('#location-popup').css('transform', 'scale(0)');
 }
 
 /*==================== Add product to favorites ====================*/

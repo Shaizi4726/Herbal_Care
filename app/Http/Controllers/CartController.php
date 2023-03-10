@@ -27,14 +27,18 @@ class CartController extends Controller
   {
     $request->validate([
       'product_id' => 'required',
-      'form_id' => 'required',
       'price' => 'required',
       'size' => 'required',
       'qty' => 'required',
     ]);
 
-    $product = Product::with('attrs.form')->where('id', $request->product_id)->first();
-    $attr = $product->attrs->where('form_id', $request->form_id)->where('size', $request->size)->first();
+    if($request->form_id) {
+      $product = Product::with('attrs.form')->where('id', $request->product_id)->first();
+      $attr = $product->attrs->where('form_id', $request->form_id)->where('size', $request->size)->first();
+    } else {
+      $product = Product::with('attrs')->where('id', $request->product_id)->first();
+      $attr = $product->attrs->where('price', $request->price)->where('size', $request->size)->first();
+    }
 
     if ($request->qty < 1) {
       return response()->json(['error' => 'Invalid Quantity Value. Quantity must be positive integer'], 404);
@@ -64,7 +68,9 @@ class CartController extends Controller
         $cart->user_id = auth()->user()->id;
         $cart->product_id = $product->id;
         $cart->attr_id = $attr->id;
-        $cart->form = $attr->form->name;
+        if($request->form_id) {
+          $cart->form = $attr->form->name;
+        }
         $cart->price = $attr->price;
         $cart->size = $attr->size;
         $cart->quantity = $request->qty;
@@ -100,7 +106,9 @@ class CartController extends Controller
         $cart->user_id = Session::get('_token');
         $cart->product_id = $product->id;
         $cart->attr_id = $attr->id;
-        $cart->form = $attr->form->name;
+        if($request->form_id) {
+          $cart->form = $attr->form->name;
+        }
         $cart->price = $attr->price;
         $cart->size = $attr->size;
         $cart->quantity = $request->qty;

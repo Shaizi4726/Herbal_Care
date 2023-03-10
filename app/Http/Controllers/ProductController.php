@@ -282,7 +282,7 @@ class ProductController extends Controller
             $imageName=time().'_'.$file->getClientOriginalName();
             $request['product_id']=$id;
             $request['name']=$imageName;
-            $file->move(\public_path("/images"),$imageName);            
+            $file->move(\public_path("/images/products"),$imageName);            
             ProductImage::create($request->all());
         }
     }  

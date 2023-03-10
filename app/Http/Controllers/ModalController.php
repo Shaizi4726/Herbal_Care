@@ -33,7 +33,7 @@ class ModalController extends Controller
     $content = "";
 
     $content .= <<<EOD
-      <div id="modal" class="modal">
+      <div id="modal" class="modal" tab-index="-1">
         <button type="button" class="btn close modal-close" id="close-btn" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
     
         <div class="modal-content">
@@ -44,7 +44,7 @@ class ModalController extends Controller
 
     foreach($images as $img) {
       $content .= <<<EOD
-        <li><img src="/images$img" alt="Product Image"></li>
+        <li><img src="/images/products$img" alt="Product Image"></li>
       EOD;
     }
 
@@ -123,51 +123,28 @@ class ModalController extends Controller
     }
 
     $content .= <<<EOD
-            </div>
-          </div>
+                  </div>
+                </div>
 
-          <input type="hidden" name="price-input" id="price-input" value="">
+                <input type="hidden" name="price-input" id="price-input" value="">
 
-          <div class="qty-manage" id="qty-manage">
-            <input type="button" value="-" class="qty-minus minus qty-control" field="quantity" disabled>
-            <input type="number" name="quantity" id="qty" class="qty" min="1" value="1" oninput="this.value = Math.abs(this.value)">
-            <input type="button" value="+" class="qty-plus plus qty-control" field="quantity">
-          </div>
+                <div class="qty-manage" id="qty-manage">
+                  <input type="button" value="-" class="qty-minus minus qty-control" field="quantity" disabled>
+                  <input type="number" name="quantity" id="qty" class="qty" min="1" value="1" oninput="this.value = Math.abs(this.value)">
+                  <input type="button" value="+" class="qty-plus plus qty-control" field="quantity">
+                </div>
 
-          <div class="cart-btn-div" onclick="cartAdd($product->id)">
-            <button id="modal-cart-btn" class="cart-btn">
-              <span class="add-to-cart">Add to Cart</span>
-              <span class="added">Added</span>
-              <i class="fas fa-shopping-cart"></i>
-              <i class="fas fa-box"></i>
-            </button>
-          </div>
-        </div>
-            
-        <a href="/product-detail/$product->slug" class="modal-view-link btn" id="modal-view-link"><i class="fa-solid fa-circle-info" id="product-details-icon"></i>VIEW PRODUCT DETAILS</a>
-      </div>
-
-      <div id="location-popup" class="ch-popup" data-toggle="0" tabindex="-1">
-        <button type="button" class="btn close close-inner" id="inner-close-btn" onclick="remInnerModal()">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-        <button id="page-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="remInnerModal()">Stay on Page</button>
-        <button id="shop-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="location.href = '/home'">Continue Shopping</button>
-    EOD;
-
-    if (Auth::check()) {
-      $content .= <<<EOD
-        <button id="chkt-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="location.href = '/checkout'">Checkout</button>
-      EOD;
-    } else {
-      $content .= <<<EOD
-        <button id="chkt-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="chOptions()">Checkout</button>
-        <button id="guest-chkt-btn" class="btn btn-submit popup-btn chkt-btn collapse" onclick="location.href = '/checkout'">Checkout as Guest</button>
-        <button id="login-chkt-btn" class="btn btn-submit popup-btn chkt-btn collapse" onclick="location.href = '/user/login?checkout=1'">Login to Checkout</button>
-      EOD;
-    }
-
-    $content .= <<<EOD
+                <div class="cart-btn-div" onclick="cartAdd($product->id)">
+                  <button id="modal-cart-btn" class="cart-btn">
+                    <span class="add-to-cart">Add to Cart</span>
+                    <span class="added">Added</span>
+                    <i class="fas fa-shopping-cart"></i>
+                    <i class="fas fa-box"></i>
+                  </button>
+                </div>
+              </div>
+                  
+              <a href="/product-detail/$product->slug" class="modal-view-link btn" id="modal-view-link"><i class="fa-solid fa-circle-info" id="product-details-icon"></i>VIEW PRODUCT DETAILS</a>
             </div>
           </div>
         </div>

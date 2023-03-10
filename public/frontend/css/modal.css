@@ -8,40 +8,35 @@
 
 @media screen and (min-width: 768px) {
   .modal-container {
-    background-color: rgba(44, 84, 47, 0.5);
     position: fixed;
-    visibility: collapse;
     width: 100%;
     height: 100%;
     top: 0;
     left: 0;
     z-index: 20;
     overflow: hidden;
+    transform: scale(0);
     transform-origin: center;
     transition: all 800ms ease-in-out;
   }
 
   .modal {
     position: relative;
-    top: 2.5rem;
+    top: 7.5vh;
     margin: auto;
     background-color: #faf9f6;
     width: 95vw;
-    height: 92vh;
+    height: 85vh;
     overflow-x: hidden;
     box-shadow: 0 5px 10px 2px rgba(44, 84, 47, 0.5);
   }
 
   .modal .close {
-      position: absolute;
-      right: 1rem;
-      top: 0;
-      width: 30px;
-      z-index: 10;
-  }
-
-  .ch-popup .close-inner {
-    top: -0.5em;
+    position: absolute;
+    right: 1rem;
+    top: 0;
+    width: 30px;
+    z-index: 10;
   }
 
   .modal-view-link {

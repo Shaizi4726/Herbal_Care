@@ -15,40 +15,39 @@ function showModal(id, productId) {
     },
     success: function(response) {
       $('#modal-container').html(response);
+      $('#modal').focus();
 
       $(body).css('height', '90vh');
       $(body).css('overflow', 'hidden');
-      $(el).css('visibility', 'visible');
       $(el).css('transform', 'scale(1)');
-      $(el).css('opacity', 1);
 
       shazoom();
       $('#' + id).removeAttr('disabled');
 
       /* Actions when size is not checked */
-      if($("[name='product-size']:checked").val() == undefined) {
+      if($('[name="product-size"]:checked').val() == undefined) {
         $('.cart-btn-div').css('width', 0);
-        $(".plus").attr('disabled', true);
-        $("input.qty").attr('disabled', true);
+        $('.plus').attr('disabled', true);
+        $('input.qty').attr('disabled', true);
       }
 
       price(productId);
 
       /* Actions when form is changed */
-      $("input[name='product-form']").on('change', function() {
+      $('input[name="product-form"]').on('change', function() {
         let formId = $(this).val();
         
         createSizes(productId, formId);
 
         $('.cart-btn-div').css('width', 0);
         $('input.qty').val('1');
+        $('.plus').attr('disabled', true);
         $('input.qty').attr('disabled', true)
         $('.minus').attr('disabled', true);
-        $('.plus').attr('disabled', true);
       });
     
       /* Enable minus button when value of input quantity is greater than 1 and vice versa */
-      $('input.qty').on('change', () => {
+      $('input.qty').on('change', function() {
         if ($('input.qty').val() > 1)
           $('.minus').removeAttr('disabled');
         else
@@ -56,19 +55,25 @@ function showModal(id, productId) {
       });
 
       /* Plus button function */
-      $('.plus').on('click', function(e) {
+      $('.plus').on('click', function() {
         let qtyinput = $(this).prev('input.qty');
         let val = parseInt(qtyinput.val());
         qtyinput.val( val+1 ).trigger('change');
       });
       
       /* Minus button function */
-      $('.minus').on('click', function(e) {
+      $('.minus').on('click', function() {
         let qtyinput = $(this).next('input.qty');
         var val = parseInt(qtyinput.val());
         if (val > 1) {
           qtyinput.val( val-1 ).trigger('change');
         }
+      });
+
+      $('#modal-container').on('click', function (event) {
+        if ($(event.target).is('#modal-container')) {
+          closeModal();
+        }     
       });
     },
     error: function() {
@@ -91,16 +96,7 @@ function closeModal() {
   $(body).css('height', 'auto');
   $(body).css('overflow', 'auto');
   $(el).css('transform', 'scale(0)');
-  $(el).css('opacity', 0);
   setTimeout(function() {
     $('#modal').remove();
-}, 1000);
-}
-
-function remInnerModal() {
-  let close = $(`<button type="button" class="btn close modal-close" id="close-btn" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>`);
-  $('.modal').prepend(close);
-  $('#location-popup').attr('data-toggle', '0');
-  $('.cart-btn').removeClass('clicked');
-  $('#location-popup').css('transform', 'scale(0)');
+  }, 1000);
 }

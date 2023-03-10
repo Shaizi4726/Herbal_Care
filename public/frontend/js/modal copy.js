@@ -26,7 +26,7 @@ function showModal(id, product, sizes, images, forms, minprice, maxprice, auth) 
             <ul class="img-ul">
               ${
                 images.map(item =>
-                `<li><img src="/images${item}" alt=""></li>`
+                `<li><img src="/images/products${item}" alt=""></li>`
               ).join('')}
             </ul>
           </div>

@@ -12,7 +12,7 @@
         <div class="img-box">
           <ul class="img-ul">
             @foreach($product->images as $image)
-              <li><img src="{{('/images'.$image->name)}}"/></li>	
+              <li><img src="{{('/images/products'.$image->name)}}"/></li>	
             @endforeach										
           </ul>
         </div>
@@ -43,7 +43,7 @@
 					@endif
         @endfor
           
-        <a href="#" class="total-review">({{$product->reviews->count()}}) Review</a>
+        <a href="#reviews" class="total-review">({{$product->reviews->count()}}) Review</a>
           
         <div id="modal-form">
           @php
@@ -76,7 +76,7 @@
                     <input type="radio" id="{{$form->name}}" name="product-form" value="{{$form->id}}" checked>
                     <label for="{{$form->name}}">{{$form->name}}</label>
                   @else
-                    <input type="radio" id="{{$form->name}}" name="product-form" value="{{$form->id}}" checked>
+                    <input type="radio" id="{{$form->name}}" name="product-form" value="{{$form->id}}">
                     <label for="{{$form->name}}">{{$form->name}}</label>
                   @endif
                 @endforeach
@@ -85,7 +85,7 @@
           @endif
           <div class="price-size-container modal-radio" id="price-size">
             <div class="prices" id="price">
-              @if($minprice==$maxprice)
+              @if($minprice == $maxprice)
                 <h4>AED {{$minprice}}</h4>
               @else
                 <h4>AED {{$minprice}} - AED {{$maxprice}}</h4>
@@ -98,40 +98,43 @@
               @endforeach
             </div>
           </div>
-            <input type="hidden" name="price-input" id="price-input" value="">
-            <div class="qty-manage" id="qty-manage">
-              <input type="button" value="-" class="qty-minus minus qty-control" field="quantity" disabled>
-              <input type="number" name="quantity" value="1" min="1" oninput="this.value = Math.abs(this.value)" class="qty">
-              <input type="button" value="+" class="qty-plus plus qty-control" field="quantity">
-            </div>
-            <div class="cart-btn-div">
-              <button form="modal-cart-form" id="detail-cart-btn" class="cart-btn">
-                <span class="add-to-cart">Add to Cart</span>
-                <span class="added">Added</span>
-                <i class="fas fa-shopping-cart"></i>
-                <i class="fas fa-box"></i>
-              </button>
-            </div>
+          <input type="hidden" name="price-input" id="price-input" value="">
+          <div class="qty-manage" id="qty-manage">
+            <input type="button" value="-" class="qty-minus minus qty-control" field="quantity" disabled>
+            <input type="number" name="quantity" id="qty" class="qty" value="1" min="1" oninput="this.value = Math.abs(this.value)" disabled>
+            <input type="button" value="+" class="qty-plus plus qty-control" field="quantity" disabled>
+          </div>
+          <div class="cart-btn-div" onclick="cartAdd({{$product->id}})">
+            <button form="modal-cart-form" id="detail-cart-btn" class="cart-btn">
+              <span class="add-to-cart">Add to Cart</span>
+              <span class="added">Added</span>
+              <i class="fas fa-shopping-cart"></i>
+              <i class="fas fa-box"></i>
+            </button>
           </div>
         </div>
+      </div>
         
-        <section class="popup-section" id="ch-popup-sec">
-          <div id="location-popup" class="ch-popup">
-            <button id="page-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="location.reload()">Stay on Page</button>
-            <button id="shop-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="location.href = `<?= route('home')?>`">Continue Shopping</button>
-            @auth
-              <button id="chkt-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="location.href = `<?= route('checkout')?>`">Checkout</button>
-            @else
-              <button id="chkt-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="chOptions()">Checkout</button>
-            @endauth
-            <button id="guest-chkt-btn" class="btn btn-submit popup-btn chkt-btn collapse" onclick="location.href = `<?= route('checkout')?>`">Checkout as Guest</button>
-            <button id="login-chkt-btn" class="btn btn-submit popup-btn chkt-btn collapse" onclick="location.href = `<?= route('login.form')?>?checkout=1`">Login to Checkout</button>
-          </div>
-        </section>
 		</div>
 	</section>
+  <section id="checkout-popup" class="checkout-popup">
+    <div id="location-popup" class="ch-popup" data-toggle="0" tabindex="-1">
+      <button type="button" class="btn close close-inner" id="inner-close-btn" onclick="remInnerModal()">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <button id="page-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="remInnerModal()">Stay on Page</button>
+      <button id="shop-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="location.href = '/home'">Continue Shopping</button>
+      @auth
+        <button id="chkt-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="location.href = '/checkout'">Checkout</button>
+      @else
+        <button id="chkt-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="chOptions()">Checkout</button>
+        <button id="guest-chkt-btn" class="btn btn-submit popup-btn chkt-btn collapse" onclick="location.href = '/checkout'">Checkout as Guest</button>
+        <button id="login-chkt-btn" class="btn btn-submit popup-btn chkt-btn collapse" onclick="location.href = '/user/login?checkout=1'">Login to Checkout</button>
+      @endauth
+    </div>
+  </section>
   
-	<section class="details reviews">
+	<section class="details reviews"> 
 		@php
 			$benefits = explode('@', $product->benefit);
 		@endphp
@@ -252,7 +255,7 @@
 	</section>
   
 
-	<!-- Start Most Popular -->
+	<!-- Start Related Products -->
 	<section class="products-area related-products">
 		<div class="section-title">
 			<h2>Related Products</h2>
@@ -269,14 +272,16 @@
                 $wishlist = $relproduct->wishlists()->where('user_id', Auth()->user()->id)->get();
 						@endphp
 						<div class="product-card {{$relproduct->id}}-card carousel-cell">
-							<img class="product-image" src="{{$relproduct->photo}}" alt="product image">
+              <a href="{{route('product-detail', $relproduct->slug)}}">
+							  <img class="product-image" src="{{$relproduct->photo}}" alt="product image">
+              </a>
 
 							<div class="meta-detail">
 								<h3 class="product-title">{{$relproduct->name}}</h3>
                 @if($minprice==$maxprice)
-                  <p class="price">AED <span class="value">{{number_format($min_price,2)}}</span></p>
+                  <p class="price">AED <span class="value">{{number_format($min_price, 2)}}</span></p>
                 @else
-                  <p class="price">AED <span class="value">{{number_format($min_price,2)}}</span> - AED <span class="value">{{number_format($maxprice,2)}}</span></p>
+                  <p class="price">AED <span class="value">{{number_format($min_price, 2)}}</span> - AED <span class="value">{{number_format($max_price, 2)}}</span></p>
                 @endif							
               </div>
 							<div class="prod-detail-link">
@@ -303,6 +308,13 @@
 @push('scripts')
 	<script src="{{asset('frontend/js/product-detail.js')}}"></script>
 	<script>
+    /* Actions when size is not checked */
+    if($('[name="product-size"]:checked').val() == undefined) {
+      $('.cart-btn-div').css('width', 0);
+      $('.plus').attr('disabled', true);
+      $('input.qty').attr('disabled', true);
+    }
+
 		price(<?= $product->id ?>);
 
 		window.onload = function() {
@@ -310,25 +322,25 @@
         shazoom();
 
 				/* Actions when form is changed */
-				$("[name|='product-form']").change(() => {
-					let formId = $("[name|='product-form']:checked").val();
+				$('[name="product-form"]').on('change', function() {
+					let formId = $('[name="product-form"]:checked').val();
+
           createSizes(<?= $product->id ?>, formId);
-					if($("[name|='product-size']:checked").val() == undefined) {
-						$(".plus").attr('disabled', true);
-						$('.add-list').hide();
-						$("input.qty").val('1');
-						$("input.qty").prop('disabled', true)
-						$('.minus').prop('disabled', true);
-					}
+
+          $('.cart-btn-div').css('width', 0);
+          $('input.qty').val('1');
+          $('.plus').attr('disabled', true);
+          $('input.qty').attr('disabled', true)
+          $('.minus').attr('disabled', true);
 					price(<?= $product->id ?>);
 				})
 
 				/* Enable minus button when value of input quantity is greater than 1 and vice versa */
-				$('input.qty').change(() => {
+				$('input.qty').on('change', function() {
 					if ($('input.qty').val() > 1)
-						$('.minus').prop('disabled', false);
+						$('.minus').removeAttr('disabled');
 					else
-						$('.minus').prop('disabled', true);
+						$('.minus').attr('disabled', true);
 				})
 			})
 		}
