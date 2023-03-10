@@ -76,7 +76,7 @@ class ProductController extends Controller
         // 'status'=>'required|in:active,inactive'
           
     ]);
-    dd($request->all());   
+    
     $data=$request->all(); 
     
     $slug=Str::slug($request->name);
