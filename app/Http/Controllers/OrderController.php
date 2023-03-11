@@ -525,5 +525,120 @@ class OrderController extends Controller
     } while (Order::where("order_no", $code)->first());
 
     return $code;
-  }  
+  } 
+
+  // Income chart
+  public function incomeChart(Request $request){
+    $year=\Carbon\Carbon::now()->year;
+    // dd($year);
+    $items=Order::with(['order_items'])->whereYear('created_at',$year)->where('status','completed')->get()
+        ->groupBy(function($d){
+            return \Carbon\Carbon::parse($d->created_at)->format('m');
+        });
+        // dd($items);
+    $result=[];
+    foreach($items as $month=>$item_collections){
+      //dd($items);
+        foreach($item_collections as $item){
+            $amount=$item->order_items->sum('total');
+            //dd($amount);
+            $m=intval($month);
+            // return $m;
+            isset($result[$m]) ? $result[$m] += $amount :$result[$m]=$amount;
+        }
+    }
+    $data=[];
+    //dd($data);
+    for($i=1; $i <=12; $i++){
+        $monthName=date('F', mktime(0,0,0,$i,1));
+        $data[$monthName] = (!empty($result[$i]))? number_format((float)($result[$i]), 2, '.', '') : 0.0;
+    }
+    return $data;
 }
+// dashboard Show Order Count
+  public static function countActiveOrder(){
+    $data=Order::count();
+    if($data){
+        return $data;
+    }
+    return 0;
+  } 
+//Dashboard show total amount of order
+  public static function amountOrder(){
+    $data=OrderItem::get();
+    if($data){
+        return $data->sum('total');
+    }
+    return 0;
+  } 
+  // dashboard Show Delevered
+  public static function countActiveDelevered(){
+    $data=Shipping::where('status','delivered')->count();
+    if($data){
+        return $data;
+    }
+    return 0;
+  } 
+
+  // dashboard Show Processe
+  public static function countActiveProcessed(){
+    $data=Shipping::where('status','processed')->count();
+    if($data){
+      return $data;
+    }
+    return 0;
+  } 
+
+  // dashboard Show Shipped
+  public static function countActiveShipped(){
+    $data=Shipping::where('status','shipped')->count();
+    if($data){
+        return $data;
+    }
+    return 0;
+  } 
+
+  // dashboard Show Ordered
+  public static function countActiveOrdered(){
+    $data=Shipping::where('status','ordered')->count();
+    if($data){
+        return $data;
+    }
+    return 0;
+  } 
+  // dashboard Show Cancelled
+  public static function countActiveCancelled(){
+    $data=CancelItem::count();
+    if($data){
+        return $data;
+    }
+    return 0;
+  } 
+  //Cancelled Amount
+  public static function amountCance(){
+    $data=CancelItem::get();
+    if($data){
+        return $data->sum('total');
+    }
+    return 0;
+  } 
+  // dashboard Show Returned
+  public static function countActiveReturned(){
+    $data=ReturnItem::count();
+    //dd($data);
+    if($data){
+        return $data;
+    }
+    return 0;
+  } 
+  //Returned Amount
+  public static function amountReturn(){
+    $data=ReturnItem::get();
+    if($data){
+        return $data->sum('total');
+    }
+    return 0;
+  } 
+
+}
+?>

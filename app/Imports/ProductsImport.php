@@ -76,7 +76,7 @@ class ProductsImport implements ToCollection, WithHeadingRow, WithChunkReading, 
           ]);
         }
 
-      if($forms[0] !== "")
+      if($forms[0] !== "") {
         $i = 0;
         foreach ($forms as $form) {
           $product->forms()->sync($form, false);
@@ -95,6 +95,21 @@ class ProductsImport implements ToCollection, WithHeadingRow, WithChunkReading, 
 
           $i++;
         }
+      }
+      else {
+        for ($j=0; $j<$sizes_len; $j++) {
+          $product->attrs()->create([
+            'form_id' => NULL,
+            'size' => $sizes[$j],
+            'price' => $prices[$j],
+            'sku' => $row['plu']."_".$sizes[$j],
+            'discount' => $discounts[$j],
+            'stock' => $stocks[$j],
+            'status' => $row['status']         
+          ]);
+        }
+        $i++;
+      }
     }
   }
 

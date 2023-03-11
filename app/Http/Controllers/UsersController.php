@@ -156,5 +156,12 @@ class UsersController extends Controller
             return redirect()->back();
         }
     }
+    public static function countActiveUser(){
+        $data=User::count();
+        if($data){
+            return $data;
+        }
+        return 0;
+    } 
 
 }

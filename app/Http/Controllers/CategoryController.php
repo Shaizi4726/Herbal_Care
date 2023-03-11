@@ -128,6 +128,12 @@ class CategoryController extends Controller
         else{
             return response()->json(['status'=>true,'msg'=>'','data'=>$child_cat]);
         }
+    }
+    public static function countActiveCategory(){
+        $data=Category::where('status','active')->count();
+        if($data){
+            return $data;
+        }
+        return 0;
     }    
-
 }

@@ -107,6 +107,8 @@ Route::post('/coupon-store','CouponController@couponStore')->name('coupon-store'
 Route::match(['get','post'], '/stripe', 'StripeController@payment')->name('stripe.post');
 Route::get('cancel', 'PayPalController@cancel')->name('payment.cancel');
 Route::get('payment/success', 'PayPalController@success')->name('payment.success');
+//Export
+Route::get('/export-products','ExportController@export')->name('export-products');
 //ProductAttribute
 Route::match(['get','post'], '/admin/product/edit-attributes/{id}','ProductController@editAttributes')->name('editAttribute');
 
@@ -150,6 +152,7 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     Route::resource('/product','ProductController');
     //import product
     Route::resource('/productImport','ProductImportController');
+    
     // Ajax for sub category
     Route::get('/category/{id}/child','CategoryController@getChildByParent');
 

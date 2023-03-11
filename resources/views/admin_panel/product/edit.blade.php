@@ -243,8 +243,12 @@
             @foreach($product['attrs'] as $attribute)
               <tr>
                 <td><input type="hidden" name="idAttr" form="edit{{$attribute->id}}" value="{{$attribute->id}}">{{$attribute->flu}}</td>
-                <td>{{$attribute->sku}}</td>                                        
-                <td>{{$attribute->form->name}}</td>
+                <td>{{$attribute->sku}}</td>
+                @if($attribute->form)                                        
+                  <td>{{$attribute->form->name}}</td>
+                @else
+                  <td></td>
+                @endif
                 <td>{{$attribute->size}} </td>
                 <td><input type="float" form="edit{{$attribute->id}}" name="price" value="{{$attribute->price}}" style="width:80px;"></td>
                 <td><input type="float" form="edit{{$attribute->id}}" name="discount" value="{{$attribute->discount}}" style="width:80px;"></td>

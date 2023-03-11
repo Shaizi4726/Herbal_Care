@@ -63,7 +63,11 @@
                                 <input type="file" name="file" />
                                 <button type="submit" class="btn btn-primary" style="margin-top:10px;">Import</button>
                             </div>
-                    </form>                    
+                    </form> 
+                        <a class="btn btn-warning"
+                             href="{{ route('export-products') }}">
+                              Export User Data
+                      </a>                   
                 </div>
             </div>
         </div>
@@ -135,7 +139,7 @@
                             @method('delete')
                             <button class="btn btn-danger btn-sm dltBtn" data-id="{{$product->id}}" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
                         </form>
-                    </td>
+                    </td>                        
                 </tr>
             @endforeach
           </tbody>

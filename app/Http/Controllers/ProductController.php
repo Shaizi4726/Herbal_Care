@@ -15,6 +15,7 @@ use App\Models\Coupon;
 use App\Models\Form;
 use App\Models\ProductImage;
 use App\Imports\ProductsImport;
+use App\Exports\ProductsExport;
 use Illuminate\Support\Facades\File;
 
 use Illuminate\Support\Str;
@@ -418,4 +419,12 @@ class ProductController extends Controller
         return redirect()->back()->with('flash_message_success','Products Attributes has been update successfully');
          
       }
+      public static function countActiveProduct(){
+        $data=Product::where('status','active')->count();
+        if($data){
+            return $data;
+        }
+        return 0;
+    }
+
 }

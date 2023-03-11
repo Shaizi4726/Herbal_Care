@@ -117,4 +117,11 @@ class SubCategoryController extends Controller
         }
         return redirect()->route('subcategory.index');
     }
+    public static function countActiveSubCategory(){
+        $data=SubCategory::where('status','active')->count();
+        if($data){
+            return $data;
+        }
+        return 0;
+    }   
 }
