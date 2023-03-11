@@ -393,8 +393,7 @@
                   caretPadding: 10,
                   callbacks: {
                     label: function(tooltipItem, chart) {
-                      var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || ''; 
-                      console.log(data_values);                  
+                      var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';               
                       return datasetLabel + ': $' + number_format(tooltipItem.yLabel);
                     }
                   }

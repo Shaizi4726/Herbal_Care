@@ -16,6 +16,7 @@ use App\Models\Form;
 use App\Models\ProductImage;
 use App\Imports\ProductsImport;
 use App\Exports\ProductsExport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\File;
 
 use Illuminate\Support\Str;
@@ -425,6 +426,10 @@ class ProductController extends Controller
             return $data;
         }
         return 0;
+    }
+
+    public function exportProducts(Request $request){
+        return Excel::download(new ProductsExport, 'products.xlsx');
     }
 
 }

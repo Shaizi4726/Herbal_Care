@@ -63,19 +63,21 @@
                                 <input type="file" name="file" />
                                 <button type="submit" class="btn btn-primary" style="margin-top:10px;">Import</button>
                             </div>
-                    </form> 
-                        <a class="btn btn-warning"
-                             href="{{ route('export-products') }}">
-                              Export User Data
-                      </a>                   
+                    </form>                    
                 </div>
             </div>
+            <div class="card-body">   
+                <a class="btn btn-success"
+                    href="{{ route('export-products') }}">
+                    Export User Data
+                </a>                                      
+            </div>
         </div>
-    </div>
+    </div>  
 </div>
-<div class="card-header py-3">
-    <h6 class="m-0 font-weight-bold text-primary float-left">Product Lists</h6>
-    <a href="{{route('product.create')}}" class="btn btn-primary btn-sm float-right" data-toggle="tooltip" data-placement="bottom" title="Add User"><i class="fas fa-plus"></i> Add Product</a>
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary float-left">Product Lists</h6>
+        <a href="{{route('product.create')}}" class="btn btn-primary btn-sm float-right" data-toggle="tooltip" data-placement="bottom" title="Add User"><i class="fas fa-plus"></i> Add Product</a>
     </div>
     <div class="card-body">
       <div class="table-responsive">
@@ -149,6 +151,7 @@
           <h6 class="text-center">No Products found!!! Please create Product</h6>
         @endif
       </div>
+
     </div>
 </div>
 @endsection

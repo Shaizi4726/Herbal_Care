@@ -108,7 +108,7 @@ Route::match(['get','post'], '/stripe', 'StripeController@payment')->name('strip
 Route::get('cancel', 'PayPalController@cancel')->name('payment.cancel');
 Route::get('payment/success', 'PayPalController@success')->name('payment.success');
 //Export
-Route::get('/export-products','ExportController@export')->name('export-products');
+Route::get('/export-products','ProductController@exportProducts')->name('export-products');
 //ProductAttribute
 Route::match(['get','post'], '/admin/product/edit-attributes/{id}','ProductController@editAttributes')->name('editAttribute');
 
