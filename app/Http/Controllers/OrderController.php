@@ -447,7 +447,7 @@ class OrderController extends Controller
         $item = $order->order_items->where('id', $id)->first();
         $properties = collect($item->toArray())->only(['order_id', 'product_id', 'form', 'size', 'price', 'quantity', 'total'])->all();
         
-        $return = new CancelItem;
+        $return = new ReturnItem;
         $return->fill($properties);
 
         $order->payment->returned += $return->total;

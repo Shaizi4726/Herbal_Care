@@ -169,9 +169,11 @@
             <div id="order-action" class="action">
               <input type="hidden" id="order" name="order" value="{{$order->id}}">
               @if($cancel == 1)
-                <button id="cancel" class="btn btn-submit item-cancel action-btn" disabled>Cancel</button>
+                <button id="cancel" class="btn btn-submit item-cancel action-btn" disabled>Remove Selected Item</button>
+                <a href="{{route('home')}}" class="btn btn-submit home-btn action-btn">Home Page</a>
               @elseif($return == 1)
-                <button id="return" class="btn btn-submit item-return action-btn" disabled>Return</button>
+                <button id="return" class="btn btn-submit item-return action-btn" disabled>Return Selected Item</button>
+                <a href="{{route('home')}}" class="btn btn-submit home-btn action-btn">Home Page</a>
               @endif
             </div>
             <div class="summary">
@@ -191,11 +193,25 @@
     </div>
   @endif
 
-  <div class="tracking-order-section order-details-section">
-    <div class="img-container">
-      <img src="{{asset('images/order-detail.png')}}" class="tracking-order-main-img" id="tracking-order-main-img">
+  <section id="reason-popup" class="reason-popup">
+    <div id="popup" class="popup reason-div" data-toggle="0" tabindex="-1">
+      <button type="button" class="btn close" id="close-btn" onclick="removePopup()">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <ul id="reasons-list">
+        <li class="reason">Change of Mind</li>
+        <li class="reason">Product Damaged</li>
+        <li class="reason">No Longer Needed</li>
+        <li class="reason">Other</li>
+      </ul>
     </div>
-    <div class="track-order-container order-details-container">
+  </section>
+
+  <div class="order-details-section">
+    <div class="img-container">
+      <img src="{{asset('images/order-detail.png')}}" class="orders-detail-main-img" id="order-details-main-img">
+    </div>
+    <div class="order-details-container">
       <h2>Order Details</h2>
       <p>Enter the order number in the input box below and check details of the order. Order number would be given at the invoice slip.</p>
       <div class="form-group">

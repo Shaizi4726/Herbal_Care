@@ -115,6 +115,7 @@
   .shazoom .exzoom_zoom_outer {
     display: none;
   }
+
 }
 
 .shazoom .exzoom_img_ul_outer {
@@ -138,4 +139,11 @@
 
 .shazoom .exzoom_img_ul_outer .img-ul li img {
   width: 100%;
+}
+
+@media  screen and (min-width: 768px) {
+  .shazoom {
+    width: 15em;
+    margin: 2em 0 0 1em;
+  }
 }

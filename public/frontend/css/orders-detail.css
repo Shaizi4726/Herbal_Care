@@ -29,6 +29,18 @@ thead {
   margin: 0;
 }
 
+.action {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+.action .action-btn {
+  height: 3em;
+  margin: 1em 0;
+}
+
 .success-container {
   margin: 1em;
 }
@@ -90,7 +102,7 @@ thead {
   z-index: 1;
 }
 
-.reason-list {
+.reasons-list {
   margin: 0 1em;
   text-align: left;
 }
@@ -198,6 +210,10 @@ input {
     width: 7.5em;
   }
 
+  .action .action-btn {
+    width: 11.5em;
+  }
+
   .submit-detail .btn-submit {
     width: 12em;
   }
@@ -226,6 +242,15 @@ input {
 
   .orders-table .btn-submit {
     width: 7em;
+  }
+
+  .action {
+    flex-direction: row;
+  }
+
+  .action .action-btn {
+    margin: 0 1em;
+    width: 11.5em;
   }
 
   .order-details-section {

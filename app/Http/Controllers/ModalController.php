@@ -63,7 +63,7 @@ class ModalController extends Controller
 
       <div class="modal-details-container">
         <div class="product-modal-detail">
-          <h1 id="product-name" class="title">$product->name</h1>
+          <h1 id="product-name" class="title product-title">$product->name</h1>
 
           <div id="modal-form">
     EOD;

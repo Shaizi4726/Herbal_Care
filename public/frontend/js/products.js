@@ -1,4 +1,4 @@
-function sort(el, slug, subslug) {
+function sort(el, slug, subslug, search, query) {
   let content = $(el).html();
   let value = $(el).attr('data');
 
@@ -14,7 +14,9 @@ function sort(el, slug, subslug) {
     data: {
       slug: slug,
       subslug: subslug,
-      value: value
+      value: value,
+      search: search,
+      que: query
     },
     success: function(response) {
       $('#products-catalog').html(response);

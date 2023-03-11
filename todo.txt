@@ -1,21 +1,18 @@
-remove add list button and direct add to cart
-modals
-add precautions in details page
+Product details page (Remove Selected Items, Back to Home)
 FAQ Page
 Terms & Conditions Page
 Privacy Policy Page
-Mobile Popup Offers
-Search Backend
 Coupon Validation Backend, Coupon reversal in return or cancel
-product form with flu
-after verification verify page cant be accessed
+Mobile Popup Offers
 Payment Methods, Social Media Links
 zoom cart image on hover
-add to cart data using post method
 Forgot Password Page
 aboutUs Check Email Validation backend
-username and password with verify email
+Send username and password in the verify email
 link address with google map
 quickview on related products
+product form with flu
+Search Suggestion List
+after verification verify page shouldn't be accessed
 
 Coupon would become invalid on return or cancellation / Coupon applied items are not applicable for return or cancellation

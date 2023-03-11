@@ -1,14 +1,14 @@
 ﻿/*==================== BASE CSS ====================*/
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    font-family: Poppins, Verdana, Tahoma, sans-serif;
-    background-color: #faf9f6;
-    overflow-x: hidden;
+  font-family: Poppins, Verdana, Tahoma, sans-serif;
+  background-color: #faf9f6;
+  overflow-x: hidden;
 }
 
 .title, h1, h2 {
@@ -121,9 +121,9 @@ input[type="button"] {
 }
 
 .meta-detail {
-    padding: 0 0.5em;
-    height: 4em;
-    font-size: 0.8em;
+  padding: 0 0.5em;
+  height: 4em;
+  font-size: 0.8em;
 }
 
 .price .value {
@@ -183,8 +183,8 @@ input[type="button"] {
 .cart-btn {
   position: relative;
   display: inline-block;
-	width: 13.7em;
-  height: 3.2em;
+	width: 12em;
+  height: 2.8em;
   border: 1px solid #2c542f;
 	border-radius: 10px;
 	color: #2c542f;
@@ -375,7 +375,7 @@ input[type="button"] {
   background-color: #faf9f6;
   list-style-type: none;
   display: inline-block;
-  width: 5em;
+  width: 4.3em;
   border: 1px solid #2c542f;
   border-radius: 5px;
   position: relative;
@@ -383,10 +383,10 @@ input[type="button"] {
 }
 
 .sizes-list, .forms-list {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    margin: 0.5em 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 0.5em 0;
 }
 
 .qty-manage {
@@ -469,23 +469,10 @@ input[type="button"] {
   border-radius: 0;
 }
 
-.modal-shopping-list {
-  border-radius: 5px;
-  height: auto;
-  padding: 0.5vw;
-  color: #2c542f;
-  background-color: #f2f4e6;
-  box-shadow: 0 5px 10px 2px rgba(44, 84, 47, 0.5);
-}
-
 @media screen and (max-width: 480px) {
   table {
     margin: auto;
     font-size: 0.8em;
-  }
-
-  .modal-shopping-list {
-    flex: 80%;
   }
 }
 
@@ -549,7 +536,7 @@ input[type="button"] {
   .overlay {
     position: absolute;
     left: 1.75em;
-    bottom: 8.95em;
+    bottom: 8.55em;
     width: 200px;
     height: 200px;
   }
@@ -573,7 +560,7 @@ input[type="button"] {
   .modal-content {
     display: flex;
     position: absolute;
-    top: 2rem;
+    top: 4rem;
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
@@ -588,6 +575,10 @@ input[type="button"] {
     width: calc(100% - 320px);
   }
 
+  .product-title {
+    font-size: 1.7em;
+  }
+
   #price {
     margin: 0.3em;
   }
@@ -597,20 +588,6 @@ input[type="button"] {
     font-weight: bold;
     padding: 0.5em;
     position: relative;
-  }
-
-  .modal-shopping-list {
-    position: relative;
-    top: 20px;
-    margin-bottom: 2em;
-  }
-
-  .modal-shopping-list td {
-    font-size: 0.8em;
-  }
-
-  #list-sze, #list-amt {
-    width: 6em;
   }
 
   .ch-popup {

@@ -12,7 +12,7 @@
   @if(count($banners)>0)
     <section id="slider" class="slider">         
       <ul id="carousel-wrap" class="carousel-wrap">
-        @foreach($banners as $key=>$banner)                                    
+        @foreach($banners as $banner)                                    
           <li>
             <picture>
               <source media="(min-width: 768px)" srcset="{{$banner->photo_desktop}}">
@@ -59,12 +59,12 @@
               </div>
 
               <div class="meta-detail">
-                <h3 class="product-title">{{$product->name}}</h3>
-              @if($minprice==$maxprice)
-                <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span></p>
-              @else
-                <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span> - AED <span class="value">{{number_format($maxprice,2)}}</span></p>
-              @endif
+                <h3 class="card-product-title">{{$product->name}}</h3>
+                @if($minprice==$maxprice)
+                  <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span></p>
+                @else
+                  <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span> - AED <span class="value">{{number_format($maxprice,2)}}</span></p>
+                @endif
               </div>
               <div class="prod-detail-link">
                 <a href="{{route('product-detail', $product->slug)}}" class="btn btn-submit detail-link"> Product Details </a>
@@ -110,7 +110,7 @@
               </div>
 
               <div class="meta-detail">
-                <h3 class="product-title">{{$product->name}}</h3>
+                <h3 class="card-product-title">{{$product->name}}</h3>
               @if($minprice==$maxprice)
                 <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span></p>
               @else
@@ -160,7 +160,7 @@
               </div>
 
               <div class="meta-detail">
-                <h3 class="product-title">{{$product->name}}</h3>
+                <h3 class="card-product-title">{{$product->name}}</h3>
               @if($minprice==$maxprice)
                 <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span></p>
               @else
@@ -216,7 +216,7 @@
                   </div>
 
                   <div class="meta-detail">
-                    <h3 class="product-title">{{$product->name}}</h3>
+                    <h3 class="card-product-title">{{$product->name}}</h3>
                   @if($minprice==$maxprice)
                     <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span></p>
                   @else

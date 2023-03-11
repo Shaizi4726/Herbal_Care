@@ -40,11 +40,11 @@ Route::get('password-resets', 'FrontendController@PassResetForm')->name('passwor
 // Frontend Main Pages
 Route::get('/','FrontendController@home')->name('home')->middleware('account.verified');
 Route::get('/home', 'FrontendController@home')->middleware('account.verified');
-Route::get('/about-us','FrontendController@aboutUs')->name('about-us')->middleware('account.verified');
+Route::view('/about-us','frontend.pages.about-us')->name('about-us')->middleware('account.verified');
 Route::get('/contact','FrontendController@contact')->name('contact')->middleware('account.verified');
 Route::get('product-detail/{slug}','FrontendController@product_detail')->name('product-detail')->middleware('account.verified');
-Route::match(['get','post'],'/product/search','FrontendController@productSearch')->name('product.search')->middleware('account.verified');
-Route::match(['get','post'],'product-sort/','FrontendController@productSort')->name('product-sort')->middleware('account.verified');
+Route::match(['get','post'], '/product/search', 'FrontendController@product_search')->name('product.search')->middleware('account.verified');
+Route::match(['get','post'], 'product-sort/','FrontendController@productSort')->name('product-sort')->middleware('account.verified');
 Route::get('/product-cat/{slug}','FrontendController@productCat')->name('product-cat')->middleware('account.verified');
 Route::get('/product-cat/{slug}/{subslug}','FrontendController@productSubCat')->name('product-subcat')->middleware('account.verified');
 Route::get('/product-brand/{slug}','FrontendController@productBrand')->name('product-brand')->middleware('account.verified');

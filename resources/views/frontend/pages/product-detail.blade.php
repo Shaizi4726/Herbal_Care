@@ -136,7 +136,9 @@
   
 	<section class="details reviews"> 
 		@php
-			$benefits = explode('@', $product->benefit);
+			$benefits = explode('@', $product->benefits);
+			$descriptions = explode('$', $product->description);
+			$precautions = explode('@', $product->precautions);
 		@endphp
 		
 		<div class="details-review-div">
@@ -149,7 +151,7 @@
 			<div class="tab-panel collapse" id="description">
 				@if ($benefits[0])
 					<h3>
-						 Benefits:
+						Benefits:
 					</h3>
 					<ul class="benefits">
 						@foreach ($benefits as $benefit)
@@ -157,21 +159,24 @@
 						@endforeach
 					</ul>
 				@endif
-				@if ($product->description)
+				@if ($descriptions[0])
 					<h3>
 						Description:
 					</h3>
-					<p class="desc-para">{{$product->description}}</p>
+          @foreach($descriptions as $description)
+					  <p class="desc-para">{{$description}}</p>
+          @endforeach
 				@endif
-				<h3>
-					Precautions:
-				</h3>
-				<ul class="precautions">
-					<li>We recommend that you consult with a quaified healthcare pracitioner before using herbal products, particularly if you are pregnant, nursing, or on any medication.</li> 
-					<li>This information has not been evaluated by the Food and Drug Administration.</li>
-					<li>This product is not intended to diagnose, treat, cure, or prevent any disease.</li> 
-					<li>For educational purpose only.</li>
-				</ul>
+        @if ($precautions[0])
+          <h3>
+            Precautions:
+          </h3>
+          <ul class="precautions">
+            @foreach($precautions as $precaution)
+              <li>{{$precaution}}</li>
+            @endforeach
+          </ul>
+        @endif
 			</div>
 			<!-- End Description Tab -->
 

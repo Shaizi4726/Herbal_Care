@@ -44,7 +44,7 @@ function price(id) {
   $("[name='product-size']").on('change', () => {
     let form = $("[name='product-form']:checked").val();
     let size = $("input[name='product-size']:checked").val();
-    $('.cart-btn-div').css('width', '13.5em');
+    $('.cart-btn-div').css('width', '10em');
     $('input.qty').val(1);
     $('.plus').removeAttr('disabled');
     $('input.qty').removeAttr('disabled');

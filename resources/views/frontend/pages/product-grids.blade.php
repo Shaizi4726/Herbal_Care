@@ -2,8 +2,8 @@
 @section('title','HERB || PRODUCT PAGE')
 
 @push('styles')
-    <link href="{{asset('frontend/css/products.css')}}" rel="stylesheet">
-    <link href="{{asset('frontend/css/modal.css')}}" rel="stylesheet">
+  <link href="{{asset('frontend/css/products.css')}}" rel="stylesheet">
+  <link href="{{asset('frontend/css/modal.css')}}" rel="stylesheet">
 @endpush
 
 @section('main-content')
@@ -11,14 +11,14 @@
     <span>Sort by: </span>
     <span id="selected-sort" class="selected-sort dropdown-toggle">Random</span>
     <ul id="sorting-list" class="sorting-list collapse">
-      <li class="selected sort-list-item" data="rand" onclick="sort(this, '{{$slug}}', '{{$subslug}}')">Random</li>
-      <li class="sort-list-item" data="a-z" onclick="sort(this, '{{$slug}}', '{{$subslug}}')">A to Z</li>
-      <li class="sort-list-item" data="z-a" onclick="sort(this, '{{$slug}}', '{{$subslug}}')">Z to A</li>
-      <li class="sort-list-item" data="low-prc" onclick="sort(this, '{{$slug}}', '{{$subslug}}')">Low Price</li>
-      <li class="sort-list-item" data="hgh-prc" onclick="sort(this, '{{$slug}}', '{{$subslug}}')">High Price</li>
-      <li class="sort-list-item" data="new" onclick="sort(this, '{{$slug}}', '{{$subslug}}')">New</li>
-      <li class="sort-list-item" data="popular" onclick="sort(this, '{{$slug}}', '{{$subslug}}')">Popular</li>
-      <li class="sort-list-item" data="trending" onclick="sort(this, '{{$slug}}', '{{$subslug}}')">Trending</li>
+      <li class="selected sort-list-item" data="rand" onclick="sort(this, '{{$slug}}', '{{$subslug}}', '{{$search}}', '{{$que}}')">Random</li>
+      <li class="sort-list-item" data="a-z" onclick="sort(this, '{{$slug}}', '{{$subslug}}', '{{$search}}', '{{$que}}')">A to Z</li>
+      <li class="sort-list-item" data="z-a" onclick="sort(this, '{{$slug}}', '{{$subslug}}', '{{$search}}', '{{$que}}')">Z to A</li>
+      <li class="sort-list-item" data="low-prc" onclick="sort(this, '{{$slug}}', '{{$subslug}}', '{{$search}}', '{{$que}}')">Low Price</li>
+      <li class="sort-list-item" data="hgh-prc" onclick="sort(this, '{{$slug}}', '{{$subslug}}', '{{$search}}', '{{$que}}')">High Price</li>
+      <li class="sort-list-item" data="new" onclick="sort(this, '{{$slug}}', '{{$subslug}}', '{{$search}}', '{{$que}}')">New</li>
+      <li class="sort-list-item" data="popular" onclick="sort(this, '{{$slug}}', '{{$subslug}}', '{{$search}}', '{{$que}}')">Popular</li>
+      <li class="sort-list-item" data="trending" onclick="sort(this, '{{$slug}}', '{{$subslug}}', '{{$search}}', '{{$que}}')">Trending</li>
     </ul>
   </div>
 
@@ -54,24 +54,10 @@
   
       <div id="products-catalog" class="products catalog">
         @if($products->count() > 0)
-            @foreach($products as $product)
+          @foreach($products as $product)
             @php
               $minprice = $product->attrs()->min('price');
               $maxprice = $product->attrs()->max('price');
-              $images = $product->images()->pluck('name');
-              $forms = $product->forms()->get(['form_id', 'name']);
-              $prod = $product->where('id', $product->id)->first(['id', 'name', 'slug', 'photo']);
-
-              $sizes = array();
-              foreach ($forms as $form) {
-                ${$form->name . "sizes"} = $product->attrs()->where('form_id', $form->form_id)->pluck('size');
-                $sizes[$form->name] =  ${$form->name . "sizes"};
-              }
-              
-              if(count($forms) == 0)
-                $sizes = $product->attrs()->pluck('size');
-              
-              $sizes = json_encode($sizes);
 
               if($auth)
                 $wishlist = $product->wishlists()->where('user_id', Auth::user()->id)->get();
@@ -81,7 +67,7 @@
                 <img class="product-image" src="{{$product->photo}}" alt="product image">
                 
                 <div class="overlay">
-                  <button id="product{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, {{$prod}}, {{$sizes}}, {{$images}}, {{$forms}}, {{$minprice}}, {{$maxprice}}, {{$auth}})"> 
+                  <button id="product{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, {{$product->id}})"> 
                     <i class="fa-regular fa-eye"></i>
                     <p>Quick View</p>
                   </button>
@@ -107,13 +93,29 @@
                 <button class="btn favbtn" onclick="window.location.href = '/user/login';"><i class="fa-regular fa-heart fav"></i></button>
               @endauth
                 </div>
-                </div>
+              </div>
             @endforeach
         @else
           <p class="no-product">There is no product in this category.</p>
         @endif
       </div>
       <div class="modal-container" id="modal-container"></div>
+      <section id="checkout-popup" class="checkout-popup">
+        <div id="location-popup" class="ch-popup" data-toggle="0" tabindex="-1">
+          <button type="button" class="btn close close-inner" id="inner-close-btn" onclick="remInnerModal()">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+          <button id="page-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="remInnerModal()">Stay on Page</button>
+          <button id="shop-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="location.href = '/home'">Continue Shopping</button>
+          @auth
+            <button id="chkt-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="location.href = '/checkout'">Checkout</button>
+          @else
+            <button id="chkt-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="chOptions()">Checkout</button>
+            <button id="guest-chkt-btn" class="btn btn-submit popup-btn chkt-btn collapse" onclick="location.href = '/checkout'">Checkout as Guest</button>
+            <button id="login-chkt-btn" class="btn btn-submit popup-btn chkt-btn collapse" onclick="location.href = '/user/login?checkout=1'">Login to Checkout</button>
+          @endauth
+        </div>
+      </section>
   </section>
 @endsection
 
