@@ -37,7 +37,7 @@
               <div class="cart-page-item-quantity">
                 <h4>Quantity: </h4>
                 <input type="button" value="-" class="qty-minus minus qty-control" field="quantity">
-						    <input type="number" name="item_quantity" value="{{$cart->quantity}}" min="1" oninput="this.value = Math.abs(this.value)" onchange="updateCartData(<?= $cart->id ?>, this.value)" class="qty item-quantity">
+						    <input type="number" name="item_quantity" class="qty item-quantity" value="{{$cart->quantity}}" min="1" oninput="this.value = Math.abs(this.value)" onchange="updateCartData(<?= $cart->id ?>, this.value)">
 						    <input type="button" value="+" class="qty-plus plus qty-control" field="quantity">
               </div>
             </div>

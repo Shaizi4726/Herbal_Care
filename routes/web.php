@@ -48,6 +48,9 @@ Route::match(['get','post'], 'product-sort/','FrontendController@productSort')->
 Route::get('/product-cat/{slug}','FrontendController@productCat')->name('product-cat')->middleware('account.verified');
 Route::get('/product-cat/{slug}/{subslug}','FrontendController@productSubCat')->name('product-subcat')->middleware('account.verified');
 Route::get('/product-brand/{slug}','FrontendController@productBrand')->name('product-brand')->middleware('account.verified');
+Route::view('/faq', 'frontend.pages.faq')->name('faq');
+Route::view('/privacy-policy', 'frontend.pages.privacy-policy')->name('privacy-policy');
+Route::view('/terms-and-conditions', 'frontend.pages.terms-and-conditions')->name('terms-and-conditions');
 
 // Create Modal
 Route::get('/create-modal','ModalController@create_modal')->name('create-modal')->middleware('account.verified');

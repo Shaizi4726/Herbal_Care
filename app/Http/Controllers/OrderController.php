@@ -104,17 +104,17 @@ class OrderController extends Controller
     
     if(Auth::check()) {
       if(empty(CartItem::where('user_id', Auth()->user()->id)->get()))
-      return back();
+        return back();
     }
     else { 
       if(empty(Session::get('cart')))
-      return back();
+        return back();
     }
     
     $order = new Order();
     $order->order_no = 'HC-' . $this->generateUniqueCode();
     if(Auth::check())
-    $order->user_id = $request->user()->id;
+      $order->user_id = $request->user()->id;
     $order->fname = $request->fname;
     $order->lname = $request->lname;
     $order->cname = $request->cname;
@@ -127,15 +127,15 @@ class OrderController extends Controller
     $order->landmark = $request->landmark;
     $order->save();
     
-    $order_id = Order::where('order_no', $order->order_no)->pluck('id')[0];
+    $order_id = Order::where('order_no', $order->order_no)->pluck('id')->first();
     $subtotal = Helper::CartAmount();
     $tax = Helper::totalCartTax();
     $total = Helper::totalCartAmount();
     
-    if($total > 100)
-    $shipping = 0;
+    if($total > 200)
+      $shipping = 0;
     else {
-      $shipping = City::where('id', $request->city)->pluck('shipping')[0];
+      $shipping = City::where('id', $request->city)->pluck('shipping')->first();
       $total += $shipping;
     }
     
@@ -209,8 +209,7 @@ class OrderController extends Controller
     
     // Notification::send(Auth()->user(), new StatusNotification('Order Placed'));
     $req = new Request;
-    $req->id = 1;
-    $pdf = $this->sale_invoice($req);
+    $pdf = $this->sale_invoice($order_id);  
     (new MailController)->send_mail($request->email, $pdf);
     
     request()->session()->flash('success','Your product successfully placed in order');
@@ -367,6 +366,7 @@ class OrderController extends Controller
 
         $cancel = new CancelItem;
         $cancel->fill($properties);
+        $cancel->reason = $request->reason;
 
         $order->payment->cancelled += $cancel->total;
         $order->payment->total -= $cancel->total;
@@ -386,13 +386,14 @@ class OrderController extends Controller
 
         $cancel = new CancelItem;
         $cancel->fill($properties);
+        $cancel->reason = $request->reason;
 
         $order->payment->cancelled += $cancel->total;
         $order->payment->total -= $cancel->total;
         $order->payment->subtotal = $order->payment->total / 1.05;
         $order->payment->tax = $order->payment->total - $order->payment->subtotal;
 
-        if($order->payment->total < 100) {
+        if($order->payment->total < 200) {
           $order->payment->shipping = $order->shipping->city->shipping;
           $order->payment->total += $order->payment->shipping;
         }
@@ -420,13 +421,14 @@ class OrderController extends Controller
         
         $return = new ReturnItem;
         $return->fill($properties);
+        $return->reason = $request->reason;
 
         $order->payment->returned += $return->total;
         $order->payment->total -= $return->total;
         $order->payment->subtotal = $order->payment->total / 1.05;
         $order->payment->tax = $order->payment->total - $order->payment->subtotal;
 
-        if($order->payment->total < 100) {
+        if($order->payment->total < 200) {
           $order->payment->shipping = $order->shipping->city->shipping;
           $order->payment->total += $order->payment->shipping;
         }
@@ -449,6 +451,7 @@ class OrderController extends Controller
         
         $return = new ReturnItem;
         $return->fill($properties);
+        $return->reason = $request->reason;
 
         $order->payment->returned += $return->total;
         $order->payment->total -= $return->total;
@@ -466,7 +469,7 @@ class OrderController extends Controller
           }
         } */
 
-        if($order->payment->total < 100) {
+        if($order->payment->total < 200) {
           $order->payment->shipping = $order->shipping->city->shipping;
           $order->payment->total += $order->payment->shipping;
         }

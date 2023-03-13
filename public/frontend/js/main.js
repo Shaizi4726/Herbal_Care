@@ -23,11 +23,11 @@ $('.minus').on('click', function (e) {
 });
 
 /* Enable minus button when value of input quantity is greater than 1 and vice versa */
-$('input.qty').on('change', () => {
+$('input.qty').on('change', function() {
   if ($('input.qty').val() > 1)
-    $('.minus').removeAttr('disabled');
+    $(this).prev('minus').removeAttr('disabled');
   else
-    $('.minus').attr('disabled', true);
+    $(this).prev('minus').attr('disabled', true);
 });
 
 $(function () {

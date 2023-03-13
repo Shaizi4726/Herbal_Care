@@ -20,14 +20,13 @@
 				<hr>
 				<ul>
 					<li><a href="{{route('about-us')}}">About Us</a></li>
-					<li><a href="#">Faq</a></li>
-					<li><a href="#">Terms & Conditions</a></li>
-					<li><a href="#">Privacy Policy</a></li>
-					<li><a href="#">Help</a></li>
+					<li><a href="{{route('faq')}}">Faq</a></li>
+					<li><a href="{{route('terms-and-conditions')}}">Terms & Conditions</a></li>
+					<li><a href="{{route('privacy-policy')}}">Privacy Policy</a></li>
 				</ul>
 			</div>
 
-			<div class="footer-cust-serv">
+			<!-- <div class="footer-cust-serv">
 				<h3>Customer Service</h3>
 				<hr>
 				<ul>
@@ -37,11 +36,10 @@
 					<li><a href="#">Shipping</a></li>
 					<li><a href="{{route('contact')}}">Contact Us</a></li>
 				</ul>
-			</div>
+			</div> -->
 
 			<div class="footer-loc">
-				<div>
-				<h3></h3></div>
+				<h3>Address</h3></div>
 				<hr>
 				<div>
 				<ul>
@@ -49,7 +47,6 @@
 					<li>@foreach($settings as $data) {{$data->email}} @endforeach</li>
 					<li>@foreach($settings as $data) {{$data->phone}} @endforeach</li>
 				</ul>
-</div>
 			</div>
 		</div>
 	</div>

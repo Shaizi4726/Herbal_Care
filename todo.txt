@@ -1,4 +1,3 @@
-Product details page (Remove Selected Items, Back to Home)
 FAQ Page
 Terms & Conditions Page
 Privacy Policy Page

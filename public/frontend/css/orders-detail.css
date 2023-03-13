@@ -92,29 +92,66 @@ thead {
   width: 100%;
 }
 
-.reason-div {
+.popup {
+  width: 0;
+  height: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 20;
+  overflow: hidden;
+}
+
+.popup-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  position: relative;
+  top: 10%;
   color: #2c542f;
   background-color: #f2f4e6;
-  text-align: center;
+  width: 90vw;
+  box-shadow: 0 5px 10px 2px rgba(44, 84, 47, 0.5);
+  padding: 1em 0;
+  transform: scale(0);
+  transform-origin: center;
+  overflow: hidden;
+  z-index: 20;
+  transition: transform 1s ease-in-out;
+}
+
+.popup-div .close {
   position: absolute;
-  left: 5%;
-  width: 90%;
-  z-index: 1;
+  right: 0.3em;
+  top: -0.5em;
+  width: 20px;
+  z-index: 10;
+}
+
+.popup-div p {
+  text-align: justify;
+  margin: 1em;
+}
+
+.pop-btn {
+  width: 10em;
 }
 
 .reasons-list {
-  margin: 0 1em;
+  margin: 1em;
   text-align: left;
 }
 
-.reason-list li {
+.reasons-list li {
   font-size: 0.8em;
   line-height: 2em;
   margin-bottom: 0.5em;
   padding: 0.5em;
 }
 
-.reason-list li:hover {
+.reasons-list li:hover {
   color: #fff;
   background-color: #2c542f;
 }
@@ -214,6 +251,16 @@ input {
     width: 11.5em;
   }
 
+  .popup-div {
+    width: 75vw;
+  }
+
+  .action-btns {
+    width: 75%;
+    display: flex;
+    justify-content: space-between;
+  }
+
   .submit-detail .btn-submit {
     width: 12em;
   }
@@ -258,6 +305,10 @@ input {
     flex-direction: row-reverse;
     justify-content: space-between;
     align-items: center;
+  }
+
+  .popup-div {
+    width: 60vw;
   }
 
   .img-container {

@@ -81,7 +81,7 @@
           <div class="address">
             <div class="billing">
               @php 
-                $city = App\Models\City::with('state', 'country')->where('id', $order->city_id)->get()[0];
+                $city = App\Models\City::with('state', 'country')->where('id', $order->city_id)->first();
               @endphp
               <h3>Billing Address</h3>
               @if($order->cname == null)
@@ -116,18 +116,6 @@
             $j = 0;
           @endphp
           @if (count($items) !== 0)
-            <div id="reason-div" class="reason-div collapse">
-              <h2>Reason</h2>
-              <button type="button" class="btn close" id="close-btn"><i class="fa-solid fa-xmark"></i></button>
-              <ul class="reason-list">
-                <li id="mind-change" class="reason-item">Change of Mind</li>
-                <li id="damaged" class="reason-item">Damaged or Defective Product</li>
-                <li id="no-need" class="reason-item">No Longer Needed</li>
-                <li id="wrong-product" class="reason-item">Shipped Wrong Product</li>
-                <li id="other">Other</li>
-                <textarea name="reason" id="other-text" class="collapse" cols="30" rows="10"></textarea>
-              </ul>
-            </div>
             <table>
               <thead>
                 <tr>
@@ -159,7 +147,7 @@
                   <td>{{$item->quantity}}</td>
                   <td>{{$item->total}}</td>
                   @if($return != 0 || $cancel != 0)
-                    <td><input type="checkbox" name="item_checkbox" class="btn btn-submit item-checkbox" value="{{$item->id}}"></td>
+                    <td><input type="checkbox" name="item_checkbox" class="btn btn-submit item-checkbox" data-total="{{$item->total}}" value="{{$item->id}}"></td>
                   @endif
                 </tr>
               @endforeach
@@ -168,11 +156,13 @@
           <div class="summary-container">
             <div id="order-action" class="action">
               <input type="hidden" id="order" name="order" value="{{$order->id}}">
+              <input type="hidden" id="tax" name="tax" value="{{$order->payment->tax}}">
+              <input type="hidden" id="total" name="total" value="{{$order->payment->subtotal}}">
               @if($cancel == 1)
-                <button id="cancel" class="btn btn-submit item-cancel action-btn" disabled>Remove Selected Item</button>
+                <button id="action" class="btn btn-submit item-cancel action-btn" disabled>Remove Selected Item</button>
                 <a href="{{route('home')}}" class="btn btn-submit home-btn action-btn">Home Page</a>
               @elseif($return == 1)
-                <button id="return" class="btn btn-submit item-return action-btn" disabled>Return Selected Item</button>
+                <button id="action" class="btn btn-submit item-return action-btn" disabled>Return Selected Item</button>
                 <a href="{{route('home')}}" class="btn btn-submit home-btn action-btn">Home Page</a>
               @endif
             </div>
@@ -193,17 +183,45 @@
     </div>
   @endif
 
-  <section id="reason-popup" class="reason-popup">
-    <div id="popup" class="popup reason-div" data-toggle="0" tabindex="-1">
+  <section id="reason-popup" class="popup">
+    <div id="reason-div" class="popup-div">
+      <h2>Reason</h2>
       <button type="button" class="btn close" id="close-btn" onclick="removePopup()">
         <i class="fa-solid fa-xmark"></i>
       </button>
-      <ul id="reasons-list">
-        <li class="reason">Change of Mind</li>
-        <li class="reason">Product Damaged</li>
-        <li class="reason">No Longer Needed</li>
-        <li class="reason">Other</li>
+      <input type="hidden" name="reason" id="reason" value="">
+      <ul class="reasons-list">
+        <li id="mind-change" class="reason-item">Change of Mind</li>
+        <li id="damaged-defective" class="reason-item">Damaged or Defective Product</li>
+        <li id="no-need" class="reason-item">No Longer Needed</li>
+        <li id="wrong-product" class="reason-item">Shipped Wrong Product</li>
+        <li id="other" class="reason-item other-reason">Other</li>
       </ul>
+
+      <textarea name="reason-text" id="other-text" class="collapse" cols="30" rows="10"></textarea>
+      <div class="action-btns">
+        <button class="btn btn-submit pop-btn" onclick="removePopup()">Back</button>
+        @if($cancel == 1)
+          <button id="continue-cancel" class="btn btn-submit pop-btn" disabled>Continue</button>
+        @elseif($return == 1)
+          <button id="continue-return" class="btn btn-submit pop-btn" disabled>Continue</button>
+        @endif
+      </div>
+    </div>
+  </section>
+
+  <section id="warning-popup" class="popup">
+    <div id="warning-div" class="popup-div">
+      <h2>Warning</h2>
+      <button type="button" class="btn close" id="close-btn" onclick="removePopup()">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <p>Your order value will breach the minimum free shipping limit (i.e AED 200.00) therefore shipping charges would be added to total charges.</p>
+
+      <div class="action-btns">
+        <button class="btn btn-submit pop-btn" onclick="removePopup()">Back</button>
+        <button id="continue" class="btn btn-submit pop-btn">Continue</button>
+      </div>
     </div>
   </section>
 

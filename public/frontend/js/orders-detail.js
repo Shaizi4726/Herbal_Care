@@ -11,17 +11,11 @@ $('#order-data').on('click', function() {
 $('#all-checkbox').on('change', function() {
   if(this.checked) {
     $('.item-checkbox').prop('checked', true);
-    if($('#cancel'))
-      $('#cancel').removeAttr('disabled');
-    if($('#return'))
-      $('#return').removeAttr('disabled');
+    $('#action').removeAttr('disabled');
   }
   else {
     $('.item-checkbox').prop('checked', false);
-    if($('#cancel'))
-      $('#cancel').attr('disabled', true);
-    if($('#return'))
-      $('#return').attr('disabled', true);
+    $('#action').attr('disabled', true);
   }
 });
 
@@ -29,87 +23,155 @@ $('.item-checkbox').on('change', function() {
   if(! this.checked) {
     $('#all-checkbox').prop('checked', false);
   } else {
-    if($('#cancel'))
-      $('#cancel').removeAttr('disabled');
-    if($('#return'))
-      $('#return').removeAttr('disabled');
+    $('#action').removeAttr('disabled');
   }
 
   if($('.item-checkbox:checked').length == $('.item-checkbox').length)
     $('#all-checkbox').prop('checked', true);
 
   if($('.item-checkbox:not(:checked)').length == $('.item-checkbox').length) {
-    if($('#cancel'))
-      $('#cancel').attr('disabled', true);
-    if($('#return'))
-      $('#return').attr('disabled', true);
+    $('#action').attr('disabled', true);
   }
 });
 
-if($('#cancel')) {
-  $('#cancel').on('click', function() {
-    let order_id = $('#order').val();
-    let all = 0;
-    let items = new Array();
+$('#action').on('click', function() {
+  let total = Number($('#total').val()) + Number($('#tax').val());
+  if($('#all-checkbox').prop('checked')) {
+    total = 0;
+  }
+  else {
+    $('input:checkbox[name=item_checkbox]:checked').each(function() {
+      total = total - $(this).attr('data-total');
+    });
+  }
 
-    if($('#all-checkbox').prop('checked')) {
-      all = 1;
+  if(total < 200) {
+    if($(this).hasClass('item-cancel') && total == 0) {
+      $('#reason-popup').css('width', '100%');
+      $('#reason-popup').css('height', '100%');
+      $('#reason-div').css('transform', 'scale(1)');
+      $(body).css('height', '90vh');
+      $(body).css('overflow', 'hidden');
+    } else {
+      $('#warning-popup').css('width', '100%');
+      $('#warning-popup').css('height', '100%');
+      $('#warning-div').css('transform', 'scale(1)');
+      $(body).css('height', '90vh');
+      $(body).css('overflow', 'hidden');
+
+      $('#continue').on('click', function() {
+        removePopup();
+        $('#reason-popup').css('width', '100%');
+        $('#reason-popup').css('height', '100%');
+        $('#reason-div').css('transform', 'scale(1)');
+        $(body).css('height', '90vh');
+        $(body).css('overflow', 'hidden');
+      })
     }
-    else {
-      $('input:checkbox[name=item_checkbox]:checked').each(function() {
-        items.push($(this).val());
-      });
-    }
+  } else {
+    $('#reason-popup').css('width', '100%');
+    $('#reason-popup').css('height', '100%');
+    $('#reason-div').css('transform', 'scale(1)');
+    $(body).css('height', '90vh');
+    $(body).css('overflow', 'hidden');
+  }
+});
 
-    /* AJAX request to cancel items from order */
-    $.ajax({
-      type: 'get',
-      url: '/order-cancel',
-      data: {
-        id: order_id,
-        all: all,
-        items: items
-      },
-      success: function(response) {
-        location.reload();
-      },
-      error: function() {
-        alert("An error occured while cancel operation");
-      }                
-    }); 
-  });
-}
+$('.reason-item').on('click', function() {
+  $('.reason-item').css('color', '#2c542f'),
+  $('.reason-item').css('background-color', '#f2f4e6');
+  $(this).css('color', '#fff');
+  $(this).css('background-color', '#2c542f');
+  $('#reason').val($(this).attr('id'));
 
-if($('#return')) {
-  $('#return').on('click', function() {
-    let order_id = $('#order').val();
-    let all = 0;
-    let items = new Array();
+  $('.pop-btn').removeAttr('disabled');
 
-    if($('#all-checkbox').prop('checked')) {
-      all = 1;
-    }
-    else {
-      $('input:checkbox[name=item_checkbox]:checked').each(function() {
-        items.push($(this).val());
-      });
-    }
+  if($(this).attr('id') == 'other')
+    $('#other-text').removeClass('collapse');
+  else
+    $('#other-text').addClass('collapse');
+});
 
-    /* AJAX request to cancel items from order */
-    $.ajax({
-      type: 'get',
-      url: '/order-return',
-      data: {
-        id: order_id,
-        all: all,
-        items: items
-      },
-      success: function(response) {
-        location.reload();
-      },
-      error: function() {
-        alert("An error occured while cancel operation");
-      }                
-    }); 
-  });
+$('#continue-cancel').on('click', function() {
+  let order_id = $('#order').val();
+  let all = 0;
+  let items = new Array();
+  let reason = $('#reason').val();
+  if(reason == 'other') {
+    if($('#other-text').val() != '')
+      reason = $('#other-text').val();
+  }
+
+  if($('#all-checkbox').prop('checked')) {
+    all = 1;
+  }
+  else {
+    $('input:checkbox[name=item_checkbox]:checked').each(function() {
+      items.push($(this).val());
+    });
+  }
+
+  /* AJAX request to cancel items from order */
+  $.ajax({
+    type: 'get',
+    url: '/order-cancel',
+    data: {
+      id: order_id,
+      all: all,
+      items: items,
+      reason: reason
+    },
+    success: function(response) {
+      location.reload();
+    },
+    error: function() {
+      alert("An error occured while cancel operation");
+    }                
+  }); 
+});
+
+$('#continue-return').on('click', function() {
+  let order_id = $('#order').val();
+  let all = 0;
+  let items = new Array();
+  let reason = $('#reason').val();
+  if(reason == 'other') {
+    if($('#other-text').val() != '')
+      reason = $('#other-text').val();
+  }
+
+  if($('#all-checkbox').prop('checked')) {
+    all = 1;
+  }
+  else {
+    $('input:checkbox[name=item_checkbox]:checked').each(function() {
+      items.push($(this).val());
+    });
+  }
+
+  /* AJAX request to cancel items from order */
+  $.ajax({
+    type: 'get',
+    url: '/order-return',
+    data: {
+      id: order_id,
+      all: all,
+      items: items,
+      reason: reason
+    },
+    success: function(response) {
+      location.reload();
+    },
+    error: function() {
+      alert("An error occured while cancel operation");
+    }                
+  }); 
+});
+
+function removePopup() {
+  $('.popup-div').css('transform', 'scale(0)');
+  $('.popup').css('width', '0');
+  $('.popup').css('height', '0');
+  $(body).css('height', 'auto');
+  $(body).css('overflow', 'auto');
 }
