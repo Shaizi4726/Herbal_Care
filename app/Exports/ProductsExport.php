@@ -1,60 +1,17 @@
 <?php
 
 namespace App\Exports;
-class ProductsExport implements 
-    FromCollection
-    ShouldAutoSize,
-    WithMapping,
-    WithHeadings,
-    WithEvents,
-    FromQuery,
-    WithCustomStartCell,
-    WithTitle
+
+use App\Models\Product;
+use Maatwebsite\Excel\Concerns\FromCollection;
+
+class ProductsExport implements FromCollection
 {
-    use Exportable;
-
-    private $year;
-
-    private $month;
-
-    public function __construct(int $year, int $month)
+    /**
+    * @return \Illuminate\Support\Collection
+    */
+    public function collection()
     {
-        $this->year = $year;
-        $this->month = $month;
+        return Product::select('plu','name','sci_name','other_name','minprice','promotion','status')->get();
     }
-
-    public function query()
-    {
-        return  Product::query()->with('categories');
-    }
-
-    public function map($product): array
-    {
-        return [
-            $product->id,
-            $product->name,
-            $product->categories->name,
-            $product->created_at
-        ];
-    }
-
-    public function headings(): array
-    {
-        return [
-            '#',
-            'Name',
-            'Category',
-            'Created At'
-        ];
-    }
-    public function startCell(): string
-    {
-        return 'A1';
-    }
-
-    public function title(): string
-    {
-        return DateTime::createFromFormat('!m', $this->month)->format('F');
-    }
-
 }

@@ -412,7 +412,6 @@ class ProductController extends Controller
       public function editAttributes(Request $request){
         //dd($request->all());
         $data = $request->all();
-    //   echo "<pre>"; print_r($data); die;
         
         ProductAttribute::where(['id'=>$data['idAttr']])->update(['price'=>$data['price'],
         'discount'=>$data['discount'],'stock'=>$data['stock']]);

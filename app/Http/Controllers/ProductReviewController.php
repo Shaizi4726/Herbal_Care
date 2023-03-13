@@ -17,8 +17,7 @@ class ProductReviewController extends Controller
      */
     public function index()
     {
-        $reviews=ProductReview::with('user_info')->paginate(10);
-        
+        $reviews=ProductReview::with('user')->paginate(10);
         return view('admin_panel.review.index')->with('reviews',$reviews);
     }
 
@@ -43,39 +42,35 @@ class ProductReviewController extends Controller
         $this->validate($request,[
             'rate'=>'required|numeric|min:1'
         ]);
-        $product_info=Product::getProductBySlug($request->slug);
-        // $productReview = ProductReview::where('product_id')->where('user_id')->get();
-        //  return $product_info;
-        // return $request->all();
-        $data=$request->all();
+        $product=Product::where('slug',$request->slug)->first();
         
-        $data['product_id']=$product_info->id;
-        $data['plu']=$product_info->plu;
-        $data['user_id']=$request->user()->id;
-        $data['status']='active';
-        $productReview = ProductReview::getPreviousReview($product_info->id);
-        //dd($data);
+        $productReview = ProductReview::where(['user_id'=> auth()->user()->id , 'product_id'=>$product->id])->first();
         
         if(!$productReview){
-            $status=ProductReview::create($data);
+            $review = ProductReview::create([
+                'user_id' => auth()->user()->id,
+                'product_id' => $product->id,
+                'rating' => $request->rate,
+                'review' => $request->review
+            ]);
+           
+            $review->save();
+
+
             $user=User::where('role','admin')->get();
             $details=[
-                'name'=>'New Product Rating!',
-                'actionURL'=>route('product-detail',$product_info->slug),
+                'name'=> 'New Product Rating!',
+                'actionURL'=>route('product-detail',$product->slug),
                 'fas'=>'fa-star'
             ];
             Notification::send($user,new StatusNotification($details));
-            if($status){
-                request()->session()->flash('success','Thank you for your feedback');
-            }
-            else{
-                request()->session()->flash('error','Something went wrong! Please try again!!');
-            }
+           
         }
         else{
-        //    dd($productReview);
-        $status=$productReview->fill($data)->update();
+            $productReview->rating = $request->rate;
+            $productReview->review = $request->review;
             
+            $productReview->save();
         }
         return redirect()->back();
     }

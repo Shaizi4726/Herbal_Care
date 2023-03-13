@@ -15,7 +15,7 @@
         <tr>
           <th scope="col">S.N.</th>
           <th scope="col">Time</th>
-          <th scope="col">Title</th>
+          <th scope="col">Name</th>
           <th scope="col">Action</th>
         </tr>
       </thead>
@@ -25,7 +25,7 @@
         <tr class="@if($notification->unread()) bg-light border-left-light @else border-left-success @endif">
           <td scope="row">{{$loop->index +1}}</td>
           <td>{{$notification->created_at->format('F d, Y h:i A')}}</td>
-          <td>{{$notification->data['title']}}</td>
+          <td>{{$notification->data['name']}}</td>
           <td>
             <a href="{{route('admin.notification', $notification->id) }}" class="btn btn-primary btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="view" data-placement="bottom"><i class="fas fa-eye"></i></a>
             <form method="POST" action="{{ route('notification.delete', $notification->id) }}">
@@ -39,7 +39,7 @@
         @endforeach
       </tbody>
     </table>
-    {!! $notifications->withQueryString()->links('pagination::bootstrap-5') !!}
+
     @else
       <h2>Notifications Empty!</h2>
     @endif
@@ -47,6 +47,7 @@
 </div>
 @endsection
 @push('styles')
+
   <link href="{{asset('admin_panel/vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
 

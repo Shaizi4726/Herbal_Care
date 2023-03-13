@@ -228,26 +228,22 @@
 					@foreach($product->reviews as $data)
 						<div class="single-rating">
 							<div class="rating-author"> 
-								@if($data->user_info['photo'])
-									<img src="{{$data->user_info['photo']}}" alt="User Photo" width="50" height="50"> 
-								@else 
-									<img src="{{asset('admin_panel/img/avatar.png')}}" alt="Profile Pic" width="50" height="50"> 
-								@endif 
-								<h4>{{$data->user_info['name']}}</h4>
+								
+								<h4>{{$data->user['fname']}}</h4>
 							</div>
 
 							<div class="rating-des">
 								<div class="ratings">
 									<ul class="rating"> 
 										@for($i=1; $i<=5; $i++) 
-											@if($data->rate>=$i) 
+											@if($data->rating>=$i) 
 												<li> <i class="fa-solid fa-star"></i> </li> 
 											@else 
 												<li> <i class="fa-regular fa-star"></i> </li> 
 											@endif 
 										@endfor 
 									</ul>
-									<span class="rate-count"> ( {{$data->rate}} ) </span>
+									<span class="rate-count"> ( {{$data->rating}} ) </span>
 								</div>
 								<p>{{$data->review}}</p>
 							</div>
