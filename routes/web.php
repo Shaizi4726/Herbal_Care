@@ -34,7 +34,9 @@ Route::get('user/logout','FrontendController@logout')->name('user.logout');
 Route::get('/logout','FrontendController@logout')->name('logout');
 
 // Reset password
-Route::view('password-reset', 'auth.passwords.old-reset')->name('password.reset'); 
+Route::view('password-reset', 'auth.passwords.old-reset')->name('password.reset');
+Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.update');
 Route::get('password-resets', 'FrontendController@PassResetForm')->name('password.resets');
 
 // Frontend Main Pages
