@@ -281,7 +281,7 @@ class ProductController extends Controller
     if($request->hasFile("images")){
         $files=$request->file("images");
         foreach($files as $file){
-            $imageName=time().'_'.$file->getClientOriginalName();
+            $imageName='/'.$file->getClientOriginalName();
             $request['product_id']=$id;
             $request['name']=$imageName;
             $file->move(\public_path("/images/products"),$imageName);            
