@@ -39,14 +39,16 @@
 			</div> -->
 
 			<div class="footer-loc">
-				<h3>Address</h3></div>
-				<hr>
-				<div>
-				<ul>
-					<li>@foreach($settings as $data) {{$data->address}} @endforeach</li>
-					<li>@foreach($settings as $data) {{$data->email}} @endforeach</li>
-					<li>@foreach($settings as $data) {{$data->phone}} @endforeach</li>
-				</ul>
+        <div>
+          <h3>Address</h3></div>
+          <hr>
+          <div>
+          <ul>
+            <li>@foreach($settings as $data) {{$data->address}} @endforeach</li>
+            <li>@foreach($settings as $data) {{$data->email}} @endforeach</li>
+            <li>@foreach($settings as $data) {{$data->phone}} @endforeach</li>
+          </ul>
+        </div>
 			</div>
 		</div>
 	</div>
@@ -61,11 +63,11 @@
 		<!-- Features -->
     <div class="features" >
 			<div class="feature1" >
-				<h4><i class="fa-solid fa-rocket"></i> Free Shipping<br>Over AED 100.00</h4>
+				<h4><i class="fa-solid fa-rocket"></i> Free Shipping<br>Over AED 200.00</h4>
 			</div>
 												
 			<div class="feature2">
-				<h4><i class="fa-solid fa-clock-rotate-left"></i> Free Return<br>Within 30 days</h4>
+				<h4><i class="fa-solid fa-clock-rotate-left"></i> Free Return<br>Within 15 days</h4>
 			</div>
 										
 			<div class="feature3">

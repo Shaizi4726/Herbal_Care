@@ -43,13 +43,16 @@ class WishlistController extends Controller
             return $fav_counts;
           }  
           
-          public function wishlist_delete(Request $request){
-            
-            $wishlist = Wishlist::where('product_id', $request->id)->delete();
-            request()->session()->flash('success','Wishlist successfully removed');
-            $user_id = auth()->user()->id;
-            $fav_counts = Wishlist::where('user_id', $user_id)->count('product_id');
-      
-            return $fav_counts;
+    public function wishlist_delete(Request $request) {
+      $wishlist = Wishlist::where('product_id', $request->id)->delete();
+      request()->session()->flash('success','Wishlist successfully removed');
+      $user_id = auth()->user()->id;
+      $fav_counts = Wishlist::where('user_id', $user_id)->count('product_id');
+
+      if($request->reload == 1) {
+        return back();
+      }
+
+      return $fav_counts;
     }     
 }

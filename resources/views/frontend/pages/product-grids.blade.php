@@ -36,8 +36,11 @@
                   @endphp
                   
                   @if(count($subcats) != 0)
-                    <li class="dropdown-toggle"><a href="{{route('product-cat', $cat->slug)}}">{{$cat->name}}</a></li>
-                    <ul class="subcat-menu">
+                    <li class="dropdown-toggle">
+                      <a href="{{route('product-cat', $cat->slug)}}">{{$cat->name}}</a>
+                      <button class="btn btn-dropdown"><i class="fa-solid fa-caret-down"></i></button>
+                    </li>
+                    <ul class="subcat">
                       @foreach($subcats as $subcat)
                         <li><a href="{{route('product-subcat', [$cat->slug, $subcat->slug])}}">{{$subcat->name}}</li>
                       @endforeach
@@ -106,7 +109,6 @@
             <i class="fa-solid fa-xmark"></i>
           </button>
           <button id="page-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="remInnerModal()">Stay on Page</button>
-          <button id="shop-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="location.href = '/home'">Continue Shopping</button>
           @auth
             <button id="chkt-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="location.href = '/checkout'">Checkout</button>
           @else

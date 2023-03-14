@@ -31,9 +31,9 @@
         <i class="fa-solid fa-cart-shopping" id="cart-icon"></i>
 
         @auth
-          <div class="items-count"><span>{{count(Helper::getAllProductFromCart())}}</span></div></a>
+          <div class="items-count"><span class="cart-count">{{count(Helper::getAllProductFromCart())}}</span></div></a>
         @else
-          <div class="items-count"><span>{{count(Helper::getAllProductFromCart())}}</span></div></a>
+          <div class="items-count"><span class="cart-count">{{count(Helper::getAllProductFromCart())}}</span></div></a>
         @endauth
       </button>
     </div>      
@@ -129,7 +129,7 @@
       <button id="desktop-cart-btn" class="btn header-icon items-menu-btn">
         <a href="{{route('cart')}}" class="header-icon">
         <i class="fa-solid fa-cart-shopping" id="cart-icon"></i>
-        <div class="items-count"><span style="position: relative;top: 0.14em;">{{count(Helper::getAllProductFromCart())}}</span></div></a>
+        <div class="items-count"><span class="cart-count" style="position: relative;top: 0.14em;">{{count(Helper::getAllProductFromCart())}}</span></div></a>
             <div class="collapse shopping-item">
               <div class="dropdown-cart-header">
                 <span>{{count(Helper::getAllProductFromCart())}} Items</span>

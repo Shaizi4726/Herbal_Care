@@ -119,11 +119,10 @@
 	</section>
   <section id="checkout-popup" class="checkout-popup">
     <div id="location-popup" class="ch-popup" data-toggle="0" tabindex="-1">
-      <button type="button" class="btn close close-inner" id="inner-close-btn" onclick="remInnerModal()">
+      <button type="button" class="btn close close-inner" id="inner-close-btn" onclick="location.reload()">
         <i class="fa-solid fa-xmark"></i>
       </button>
-      <button id="page-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="remInnerModal()">Stay on Page</button>
-      <button id="shop-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="location.href = '/home'">Continue Shopping</button>
+      <button id="page-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="location.reload()">Stay on Page</button>
       @auth
         <button id="chkt-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="location.href = '/checkout'">Checkout</button>
       @else
@@ -263,7 +262,7 @@
 		</div>
 
 		<div class="products">
-			<div class="product-slider carousel hero-slider"  data-flickity='{ "autoPlay": 1000, "contain": true, "pageDots": false, "initialIndex": 2 }'>
+			<div class="product-slider carousel hero-slider"  data-flickity='{ "autoPlay": 3000, "contain": true, "pageDots": false, "initialIndex": 2 }'>
 				@foreach($relproducts as $relproduct)
 					@if($relproduct->id !== $product->id)
 						@php
@@ -343,6 +342,10 @@
 					else
 						$('.minus').attr('disabled', true);
 				})
+
+        $('#location-popup').on('focusout', function() {
+          location.reload();
+        })
 			})
 		}
 	</script>

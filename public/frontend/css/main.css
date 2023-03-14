@@ -58,11 +58,6 @@ tfoot tr {
   color: #f2f4e6;
 }
 
-.dropdown-toggle::after {
-  content: '\25BC';
-  font-size: 0.8em;
-}
-
 .error {
   background-color: red;
   color: white;
@@ -573,10 +568,6 @@ input[type="button"] {
     flex-wrap: wrap;
     justify-content: space-evenly;
     width: calc(100% - 320px);
-  }
-
-  .product-title {
-    font-size: 1.7em;
   }
 
   #price {

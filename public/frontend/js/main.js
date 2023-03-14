@@ -109,13 +109,14 @@ function cartAdd(id) {
       size: size,
       qty: qty
     },
-    success: function () {
+    success: function (resp) {
       $('.cart-btn').addClass('clicked');
       $('#checkout-popup').css('width', '100vw');
       $('#checkout-popup').css('height', '100vh');
       $('#location-popup').focus();
       $('#location-popup').attr('data-toggle', '1');
       $('#location-popup').css('transform', 'scale(1)');
+      $('.cart-count').html(resp);
     },
     error: function () {
       $('#checkout-popup').css('width', '100vw');
@@ -165,7 +166,7 @@ function fav(ico, id) {
     el.classList.remove('fa-solid');
     $(`.${id}-card .fa-heart`).addClass('fa-regular');
 
-    /* AJAX request for adding shopping list items to cart */
+    /* AJAX request for deleting wishlist item */
     $.ajax({
       type: 'get',
       url: '/wishlist-delete/',

@@ -39,7 +39,7 @@
           <h2> Popular Items </h2>
         </div>
       
-        <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false, "autoPlay": 1500}'>
+        <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false, "autoPlay": 3000}'>
           @foreach($pop_products as $product)
             @php
               $minprice = $product->attrs()->min('price');
@@ -90,7 +90,7 @@
           <h2> Trending Items </h2>
         </div>
       
-        <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false, "autoPlay": 1500}'>
+        <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false, "autoPlay": 3000}'>
           @foreach($trn_products as $product)
             @php
               $minprice = $product->attrs()->min('price');
@@ -140,7 +140,7 @@
           <h2> New Items </h2>
         </div>
       
-        <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false, "autoPlay": 1500}'>
+        <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false, "autoPlay": 3000}'>
           @foreach($new_products as $product)
             @php
               $minprice = $product->attrs()->min('price');
@@ -252,7 +252,6 @@
           <i class="fa-solid fa-xmark"></i>
         </button>
         <button id="page-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="remInnerModal()">Stay on Page</button>
-        <button id="shop-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="location.href = '/home'">Continue Shopping</button>
         @auth
           <button id="chkt-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="location.href = '/checkout'">Checkout</button>
         @else

@@ -209,7 +209,8 @@ class OrderController extends Controller
     
     // Notification::send(Auth()->user(), new StatusNotification('Order Placed'));
     $req = new Request;
-    $pdf = $this->sale_invoice($order_id);  
+    $req->id = $order_id;
+    $pdf = $this->sale_invoice($req);  
     (new MailController)->send_mail($request->email, $pdf);
     
     request()->session()->flash('success','Your product successfully placed in order');
@@ -489,7 +490,7 @@ class OrderController extends Controller
 
   // Sale invoice generate
   public function sale_invoice(Request $request) {
-    $order = Order::with('order_items', 'payment', 'shipping')->where('id', $request->id)->get()[0];
+    $order = Order::with('order_items', 'payment', 'shipping')->where('id', $request->id)->first();
     $file_name = $order->order_no.'-'.$order->fname.'.pdf';
     
     $pdf = PDF::loadview('frontend.order.sale-invoice', compact('order'));

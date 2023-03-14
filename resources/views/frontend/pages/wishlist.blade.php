@@ -2,8 +2,8 @@
 @section('title','HERB || PRODUCT PAGE')
 
 @push('styles')
-    <link href="{{asset('frontend/css/products.css')}}" rel="stylesheet">
-    <link href="{{asset('frontend/css/modal.css')}}" rel="stylesheet">
+  <link href="{{asset('frontend/css/products.css')}}" rel="stylesheet">
+  <link href="{{asset('frontend/css/modal.css')}}" rel="stylesheet">
 @endpush
 
 @section('main-content')
@@ -51,7 +51,8 @@
                     @endif                  
                   </div>
                   <div class="prod-detail-link">
-                      <a href="{{route('product-detail', $product->slug)}}" class="btn btn-submit detail-link"> Product Details </a>
+                    <a href="{{route('product-detail', $product->slug)}}" class="btn btn-submit detail-link"> Product Details </a>
+                    <button class="remove-btn btn"><a href="{{route('wishlist-delete', ['id' => $product->id, 'reload' => 1])}}"> Remove </a></button>
                   </div>
                 </div>
             @endforeach

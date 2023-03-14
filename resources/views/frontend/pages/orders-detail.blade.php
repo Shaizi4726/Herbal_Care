@@ -21,7 +21,7 @@
               <th>Name</th>
               <th>Amount</th>
               <th>Status</th>
-              <th>Sale Invoice</th>
+              <th>Sale Order</th>
               @if ($completed == 1)
                 <th>Tax Invoice</th>
               @endif

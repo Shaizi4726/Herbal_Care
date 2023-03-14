@@ -22,7 +22,7 @@
     <div class="address">
       <div class="billing">
         @php 
-          $city = App\Models\City::with('state', 'country')->where('id', $order->city_id)->get()[0];
+          $city = App\Models\City::with('state', 'country')->where('id', $order->city_id)->first();
         @endphp
         <h3>Billing Address</h3>
         @if($order->cname == null)

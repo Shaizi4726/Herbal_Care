@@ -119,6 +119,10 @@ class CartController extends Controller
         Session::put('id', $id);
       }
     }
+
+    $count = count(Helper::getAllProductFromCart());
+    
+    return $count;
   }
 
   public function cartDelete(Request $request)
