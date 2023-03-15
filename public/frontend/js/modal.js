@@ -17,8 +17,8 @@ function showModal(id, productId) {
       $('#modal-container').html(response);
       $('#modal').focus();
 
-      $(body).css('height', '90vh');
-      $(body).css('overflow', 'hidden');
+      $('body').css('height', '90vh');
+      $('body').css('overflow', 'hidden');
       $(el).css('transform', 'scale(1)');
 
       shazoom();
@@ -81,7 +81,7 @@ function showModal(id, productId) {
     }                
   });
 
-  $(body).on('keydown', function(event) {
+  $('body').on('keydown', function(event) {
     if(event.key == "Escape") {
       if($('#location-popup').attr('data-toggle') == 1)
         remInnerModal();
@@ -93,8 +93,8 @@ function showModal(id, productId) {
 
 /*==================== Remove modal from DOM ====================*/
 function closeModal() {
-  $(body).css('height', 'auto');
-  $(body).css('overflow', 'auto');
+  $('body').css('height', 'auto');
+  $('body').css('overflow', 'auto');
   $(el).css('transform', 'scale(0)');
   setTimeout(function() {
     $('#modal').remove();

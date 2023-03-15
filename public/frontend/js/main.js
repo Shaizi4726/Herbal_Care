@@ -1,3 +1,13 @@
+$('.search-term').typeahead({
+  source: function (query, process) {
+    return $.get('/autocomplete-search', {
+      query: query
+    }, function (data) {
+      return process(data);
+    });
+  }
+});
+
 
 /*==================== Exzoom function ====================*/
 var shazoom = function () {

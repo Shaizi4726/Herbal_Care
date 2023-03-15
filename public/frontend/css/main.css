@@ -21,6 +21,7 @@ ul li, ol li {
 
 a {
   text-decoration: none;
+  color: #000;
 }
 
 hr {
@@ -88,6 +89,15 @@ input[type="button"] {
 
 .phone-div p {
   margin: 0.2em 1em 0 1em;
+}
+
+.typeahead {
+  background-color: #faf9f6;
+  position: absolute;
+  border-radius: 10px;
+  padding: 1em;
+  margin-top: 0.5em;
+  z-index: 10;
 }
 
 /*==================== Product Cards ====================*/

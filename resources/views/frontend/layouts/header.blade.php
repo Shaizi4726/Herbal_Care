@@ -17,7 +17,7 @@
       <button id="menu-btn" class="btn header-icon" onclick="showMenu()"><i class="fa-solid fa-bars icon" id="bars-icon"></i></button>                                       
       <form method="post" action="{{route('product.search')}}" class="search-form">
         @csrf
-        <input type="search" name="search" class="form-controller search-term" placeholder="Search Products...">                                                                
+        <input type="search" name="search" class="form-controller search-term" placeholder="Search Products..." autocomplete="off">                                                                
         <button type="submit" class="btn search-btn" value="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
       </form>
       <button id="mob-fav-btn" class="btn fav-btn header-icon">
@@ -65,7 +65,7 @@
             @if(Auth::user()->role=='admin')
               <li><i class="fa-solid fa-user-tie d-user-icon"></i><a class="user-nav" href="{{route('admin')}}"  target="_blank">@if(Auth::user()->fname){{Auth::user()->fname}} {{Auth::user()->lname}}@else{{Auth::user()->company_name}}@endif</a></li>
             @else 
-              <li><i class="fa-solid fa-user d-user-icon"></i><a class="user-nav" href="{{route('user')}}"  target="_blank">@if(Auth::user()->fname){{Auth::user()->fname}} {{Auth::user()->lname}}@else{{Auth::user()->company_name}}@endif</a></li>
+              <li><i class="fa-solid fa-user d-user-icon"></i>@if(Auth::user()->fname){{Auth::user()->fname}} {{Auth::user()->lname}}@else{{Auth::user()->company_name}}@endif</li>
             @endif
               <li><i class="fa-solid fa-right-from-bracket d-user-icon"></i><a class="user-nav" href="{{route('user.logout')}}">Logout</a></li>
           @else
@@ -90,22 +90,21 @@
             @endphp
 
             @if ($subcat->count() > 0)
-            <li class="submenu-dropdown">
-              <a href="{{route('product-cat', $cat->slug)}}" class="dropdown-item"> {{$cat->name}}</a>
-          
-              <ul class="collapse cat-submenu">
-                @foreach ($subcat as $sub_menu)
-                <li>
-                  <a href="{{route('product-subcat', [$cat->slug, $sub_menu->slug])}}" class="dropdown-item"> {{$sub_menu->name}}</a>
-                </li>
-                @endforeach
-              </ul>
-            </li>
-
+              <li class="submenu-dropdown">
+                <a href="{{route('product-cat', $cat->slug)}}" class="dropdown-item"> {{$cat->name}} </a>
+            
+                <ul class="collapse cat-submenu">
+                  @foreach ($subcat as $sub_menu)
+                    <li>
+                      <a href="{{route('product-subcat', [$cat->slug, $sub_menu->slug])}}" class="dropdown-item"> {{$sub_menu->name}}</a>
+                    </li>
+                  @endforeach
+                </ul>
+              </li>
             @else
-            <li>
-              <a href="{{route('product-cat', $cat->slug)}}" class="dropdown-item"> {{$cat->name}} </a>
-            </li>
+              <li>
+                <a href="{{route('product-cat', $cat->slug)}}" class="dropdown-item"> {{$cat->name}} </a>
+              </li>
             @endif
             @endforeach
           </ul>
@@ -115,7 +114,7 @@
       <div class="search-bar">                                        
         <form method="post" action="{{route('product.search')}}" class="search-form">
           @csrf
-          <input type="search" name="search" class="form-controller search-term" placeholder="Search Products...">                                                                
+          <input type="search" name="search" class="form-controller search-term" placeholder="Search Products..." autocomplete="off">                                                                
           <button type="submit" class="btn search-btn" value="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
         </form>
       </div>
@@ -210,9 +209,9 @@
       <li><i class="fa-solid fa-location-dot"></i><a class="user-nav" href="{{route('order.track')}}" >Track Order</a></li>
       @auth 
         @if(Auth::user()->role=='admin')
-          <li><i class="fa-solid fa-user-tie"></i><a class="user-nav" href="{{route('admin')}}"  target="_blank">@if(Auth::user()->fname){{Auth::user()->fname}}@else{{Auth::user()->company_name}}@endif</a></li>
+          <li><i class="fa-solid fa-user-tie"></i><a class="user-nav" href="{{route('admin')}}"  target="_blank">@if(Auth::user()->fname){{Auth::user()->fname}} {{Auth::user()->lname}}@else{{Auth::user()->company_name}}@endif</a></li>
         @else 
-          <li><i class="fa-solid fa-user"></i><a class="user-nav" href="{{route('user')}}"  target="_blank">@if(Auth::user()->fname){{Auth::user()->fname}}@else{{Auth::user()->company_name}}@endif</a></li>
+          <li><i class="fa-solid fa-user"></i>@if(Auth::user()->fname){{Auth::user()->fname}} {{Auth::user()->lname}}@else{{Auth::user()->company_name}}@endif</li>
         @endif
           <li><i class="fa-solid fa-right-from-bracket"></i><a class="user-nav" href="{{route('user.logout')}}">Logout</a></li>
       @else

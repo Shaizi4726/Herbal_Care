@@ -1,3 +1,13 @@
+.active {
+  background-color: #2c542f;
+  color: #fff;
+}
+
+.active a {
+  background-color: #2c542f;
+  color: #fff !important;
+}
+
 .products-catalog {
   display: flex;
   flex-flow: row nowrap;

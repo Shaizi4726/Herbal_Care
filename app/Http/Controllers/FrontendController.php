@@ -202,7 +202,6 @@ class FrontendController extends Controller
     return view('frontend.pages.product-grids')->with(['products' => $products, 'cats' => $categories, 'slug' => $request->slug, 'subslug' => $request->subslug, 'search' => null, 'que' => null]);
   }
 
-
   // Login
   public function login(Request $request){
     return view('frontend.pages.login')->with('checkout', $request->checkout);
@@ -296,4 +295,23 @@ class FrontendController extends Controller
       $proAttr = DB::table('product_attributes')->where('product_id', $request->id)->where('size', $request->size)->where('form_id', $request->form)->first();   
     return $proAttr->price;
   }
+
+  public function autocomplete_search(Request $request)
+  {
+    $query = $request->get('query');
+    $data = array();
+    $filterResult = Product::where('sci_name', 'LIKE', '%'. $query. '%')->pluck('sci_name');
+    foreach($filterResult as $result)
+      $data[] = $result;
+    $filterResult = Product::where('other_name', 'LIKE', '%'. $query. '%')->pluck('other_name');
+    foreach($filterResult as $result) {
+      $result = explode(',', $result);
+      foreach ($result as $res)
+        $data[] = $res;
+    }
+    $filterResult = Product::where('name','like','%'.$query.'%')->pluck('name');
+    foreach($filterResult as $result)
+      $data[] = $result;
+    return response()->json($data);
+  } 
 }

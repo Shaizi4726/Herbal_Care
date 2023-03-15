@@ -39,6 +39,8 @@ Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail'
 Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.update');
 Route::get('password-resets', 'FrontendController@PassResetForm')->name('password.resets');
 
+Route::get('/autocomplete-search', 'FrontendController@autocomplete_search')->name('search-suggestion');
+
 // Frontend Main Pages
 Route::get('/','FrontendController@home')->name('home')->middleware('account.verified');
 Route::get('/home', 'FrontendController@home')->middleware('account.verified');

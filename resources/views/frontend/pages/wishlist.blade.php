@@ -8,59 +8,57 @@
 
 @section('main-content')
   <section class="products-catalog">
-    @php
-      $auth = Auth::check();
-    @endphp
-      <div id="products-catalog" class="products catalog">
-        @if($products->count() > 0)
-          @foreach($products as $product)
-            @php
-              $minprice = $product->attrs()->min('price');
-              $maxprice = $product->attrs()->max('price');
-              $images = $product->images()->pluck('name');
-              $forms = $product->forms()->get(['form_id', 'name']);
-              $prod = $product->where('id', $product->id)->first(['id', 'name', 'slug', 'photo']);
-
-              $sizes = array();
-              foreach ($forms as $form) {
-                ${$form->name . "sizes"} = $product->attrs()->where('form_id', $form->form_id)->pluck('size');
-                $sizes[$form->name] =  ${$form->name . "sizes"};
-              }
-              
-              if(count($forms) == 0)
-                $sizes = $product->attrs()->pluck('size');
-              
-              $sizes = json_encode($sizes);
-            @endphp
-                <div class="product-card {{$product->id}}-card carousel-cell">
-                  <img class="product-image" src="{{$product->photo}}" alt="product image">
-                  
-                  <div class="overlay">
-                    <button id="product{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, {{$prod}}, {{$sizes}}, {{$images}}, {{$forms}}, {{$minprice}}, {{$maxprice}}, {{$auth}})"> 
-                      <i class="fa-regular fa-eye"></i>
-                      <p>Quick View</p>
-                    </button>
-                  </div>
-
-                  <div class="meta-detail">
-                    <h3 class="product-title">{{$product->name}}</h3>
-                    @if($minprice==$maxprice)
-                      <p class="price">AED <span class="value">{{number_format($product->minprice,2)}}</span></p>
-                    @else
-                      <p class="price">AED <span class="value">{{number_format($product->minprice,2)}}</span> - AED <span class="value">{{number_format($maxprice,2)}}</span></p>
-                    @endif                  
-                  </div>
-                  <div class="prod-detail-link">
-                    <a href="{{route('product-detail', $product->slug)}}" class="btn btn-submit detail-link"> Product Details </a>
-                    <button class="remove-btn btn"><a href="{{route('wishlist-delete', ['id' => $product->id, 'reload' => 1])}}"> Remove </a></button>
-                  </div>
+    <div id="products-catalog" class="products catalog">
+      @if($products->count() > 0)
+        @foreach($products as $product)
+          @php
+            $minprice = $product->attrs()->min('price');
+            $maxprice = $product->attrs()->max('price');
+          @endphp
+              <div class="product-card {{$product->id}}-card carousel-cell">
+                <img class="product-image" src="{{$product->photo}}" alt="product image">
+                
+                <div class="overlay">
+                  <button id="product{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, {{$product->id}})"> 
+                    <i class="fa-regular fa-eye"></i>
+                    <p>Quick View</p>
+                  </button>
                 </div>
-            @endforeach
+
+                <div class="meta-detail">
+                  <h3 class="product-title">{{$product->name}}</h3>
+                  @if($minprice==$maxprice)
+                    <p class="price">AED <span class="value">{{number_format($product->minprice,2)}}</span></p>
+                  @else
+                    <p class="price">AED <span class="value">{{number_format($product->minprice,2)}}</span> - AED <span class="value">{{number_format($maxprice,2)}}</span></p>
+                  @endif                  
+                </div>
+                <div class="prod-detail-link">
+                  <a href="{{route('product-detail', $product->slug)}}" class="btn btn-submit detail-link"> Product Details </a>
+                  <button class="remove-btn btn"><a href="{{route('wishlist-delete', ['id' => $product->id, 'reload' => 1])}}"> Remove </a></button>
+                </div>
+              </div>
+          @endforeach
+      @else
+        <p class="no-product">There is no product in the wishlist.</p>
+      @endif
+    </div>
+    <div class="modal-container" id="modal-container"></div>
+    <section id="checkout-popup" class="checkout-popup">
+      <div id="location-popup" class="ch-popup" data-toggle="0" tabindex="-1">
+        <button type="button" class="btn close close-inner" id="inner-close-btn" onclick="remInnerModal()">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+        <button id="page-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="remInnerModal()">Stay on Page</button>
+        @auth
+          <button id="chkt-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="location.href = '/checkout'">Checkout</button>
         @else
-          <p class="no-product">There is no product in the wishlist.</p>
-        @endif
+          <button id="chkt-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="chOptions()">Checkout</button>
+          <button id="guest-chkt-btn" class="btn btn-submit popup-btn chkt-btn collapse" onclick="location.href = '/checkout'">Checkout as Guest</button>
+          <button id="login-chkt-btn" class="btn btn-submit popup-btn chkt-btn collapse" onclick="location.href = '/user/login?checkout=1'">Login to Checkout</button>
+        @endauth
       </div>
-      <div class="modal-container" id="modal-container"></div>
+    </section>
   </section>
 @endsection
 
