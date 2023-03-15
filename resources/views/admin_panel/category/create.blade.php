@@ -5,7 +5,7 @@
 <div class="card">
     <h5 class="card-header">Add Category</h5>
     <div class="card-body">
-      <form method="post" action="{{route('subcategory.store')}}">
+      <form method="post" action="{{route('category.store')}}">
         {{csrf_field()}}
         <div class="form-group">
           <label for="inputName" class="col-form-label">Name <span class="text-danger">*</span></label>

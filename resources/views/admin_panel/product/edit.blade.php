@@ -59,6 +59,9 @@
         <span class="text-danger">{{$message}}</span>
         @enderror
       </div>
+      @php
+        $coupons = DB::table('coupons')->where('effect','product')->orderBy('id','DESC')->get();
+      @endphp
       <div class="form-group">
         <label for="coupon_id">Coupon</label>
          

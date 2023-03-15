@@ -46,7 +46,7 @@
                 <tr>
                     <td>{{$order->id}}</td>
                     <td>{{$order->order_no}}</td>
-                    <td>{{$order->first_name}} {{$order->last_name}}</td>
+                    <td>{{$order->fname}} {{$order->lname}}</td>
                     <td>{{$order->email}}</td>
                     <td>{{$order->quantity}}</td>
                     @if(!empty($city))

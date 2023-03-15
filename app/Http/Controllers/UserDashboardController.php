@@ -89,13 +89,13 @@ class UserDashboardController extends Controller
     }
     // Product Review
     public function productReviewIndex(){
-        $reviews=ProductReview::getAllUserReview();
+        $reviews=ProductReview::with('user')->paginate(10);
         return view('user.review.index')->with('reviews',$reviews);
     }
 
     public function productReviewEdit($id)
     {
-        $review=ProductReview::find($id);
+        $review=ProductReview::with('user')->find($id);
         // return $review;
         return view('user.review.edit')->with('review',$review);
     }
