@@ -68,7 +68,7 @@ class SubCategoryController extends Controller
      */
     public function edit($id)
     {
-        $subcategory=SubCategory::find($id);
+        $subcategory=SubCategory::with('coupon')->find($id);
         //dd($category);
         if(!$subcategory){
             request()->session()->flash('error','category not found');

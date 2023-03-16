@@ -77,7 +77,10 @@
             <div class="form-group" id='coupon_id'>
               <label for="coupon_id">Coupon</label>
               <select name="coupon_id" class="form-control">
-                  <option value="">--Select any Coupon--</option>
+                  @if($user->coupon)
+                    <option value="">{{$user->coupon->code }}</option>
+                  @endif
+                  <option value="">--Select Coupon --</option>
                   @foreach($coupons as $key=>$coupon)
                     <option value='{{$coupon->id}}'>{{$coupon->code}}</option>
                   @endforeach

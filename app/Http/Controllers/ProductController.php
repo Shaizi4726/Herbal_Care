@@ -197,7 +197,7 @@ class ProductController extends Controller
    */
   public function edit($id)
   {   
-    $product=Product::findOrFail($id);
+    $product=Product::with('coupon')->findOrFail($id);
     $category=Category::get();
     $procat=ProductCategory::get();
     $brand=Brand::get();

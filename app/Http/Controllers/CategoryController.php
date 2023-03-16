@@ -67,7 +67,7 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        $category=Category::find($id);
+        $category=Category::with('coupon')->find($id);
         //dd($category);
         if(!$category){
             request()->session()->flash('error','category not found');

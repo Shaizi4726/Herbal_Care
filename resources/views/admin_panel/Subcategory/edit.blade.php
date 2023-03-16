@@ -30,10 +30,15 @@
         @php
             $coupons = DB::table('coupons')->where('effect','subcategory')->orderBy('id','DESC')->get();
         @endphp
+ 
         <div class="form-group" id='ccoupon_id'>
           <label for="coupon_id">Coupon</label>
           <select name="coupon_id" class="form-control">
-            <option value="">--Select any coupon--</option>
+            @if($subcategory->coupon)
+              <option value="">{{$subcategory->coupon->code }}</option>
+            @endif
+            <option value="">--Select Coupon --</option>
+            
             @foreach($coupons as $key=>$coupon)
               <option value='{{$coupon->id}}'>{{$coupon->code}}</option>
             @endforeach

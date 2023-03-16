@@ -67,7 +67,10 @@
          
         <div class="coupon">
           <select name="coupon_id" id="coupon_id" class="form-control">
-            <option value="">--Select Coupon--</option>           
+            @if($product->coupon)
+              <option value="">{{$product->coupon->code }}</option>
+            @endif
+            <option value="">--Select Coupon --</option>           
             @foreach($coupons as $coupon)
               <option value="{{$coupon->id}}">{{$coupon->code}}</option>
             @endforeach             

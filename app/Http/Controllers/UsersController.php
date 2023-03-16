@@ -95,7 +95,7 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        $user=User::findOrFail($id);
+        $user=User::with('coupon')->findOrFail($id);
         return view('admin_panel.users.edit')->with('user',$user);
     }
 
