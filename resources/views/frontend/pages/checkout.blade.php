@@ -2,7 +2,7 @@
 @section('title','HERB ||Checkout page')
 
 @push('styles')
-<link href="{{asset('frontend/css/checkout.css')}}" rel="stylesheet">
+  <link href="{{asset('frontend/css/checkout.css')}}" rel="stylesheet">
 @endpush
 
 @section('main-content')
@@ -13,6 +13,7 @@
   $states = DB::table('states')->where('country_id', '784')->get();
   $subtotal = Helper::CartAmount();
   $tax = Helper::totalCartTax();
+  $discount = Helper::total_discount();
   $total = Helper::totalCartAmount();
 @endphp
 
@@ -391,24 +392,13 @@
 
   <div class="order-summary">
     <div class="sums-summary">
-      @php
-        
-
-        if(session()->has('coupon')){
-          $total = $total-Session::get('coupon')['value'];
-        }
-      @endphp
-
       <div class="summary-title-container">
         <h2>Order Summary</h2>
       </div>
       <div class="coupon">
         <h4>Have Coupon?</h4>
-        <form action="{{route('coupon-store')}}" method="POST">
-          @csrf
-          <input name="code" placeholder="Enter Coupon Code">
-          <button class="btn coupon-btn">Apply</button>
-        </form>
+        <input name="code" id="coupon-code" placeholder="Enter Coupon Code">
+        <button id="coupon-apply" class="btn coupon-btn">Apply</button>
       </div>
       <div class="cart-totals">
         <div class="cart-total-value">
@@ -419,13 +409,10 @@
           <h4 class="tax"> VAT(5%): </h4>
           <p id="tax-value">AED {{number_format($tax, 2)}}</p>
         </div>
-        
-        @if(session()->has('coupon'))
-          <div class="cart-coupon-value">
-            <h4 id="coupon" data-price="{{Session::get('coupon')['value']}}"> Discount :</h4>
-            <p id="coupon-value">AED {{number_format(Session::get('coupon')['value'],2)}}</p>
-          </div>
-        @endif
+        <div class="cart-total-value">
+          <h4 class="discount"> Discount: </h4>
+          <p id="discount-value">AED {{number_format($discount, 2)}}</p>
+        </div>
       </div>
      
       <div class="cart-total-value grand-total">
@@ -440,14 +427,14 @@
     </div>
     <div class="cart" id="cart-summary">
       @php
-      $cart_products = Helper::getAllProductFromCart();
+        $cart_products = Helper::getAllProductFromCart();
       @endphp
 
       @if($cart_products)
       <div class="summary-title-container">
         <h2>Cart Summary</h2>
       </div>
-      @foreach($cart_products as $key=>$cart)
+      @foreach($cart_products as $cart)
       <div class="cart-item">
         <img src="{{$cart->product['photo']}}" alt="product photo" class="cart-product-img zoom-img">
         <div class="cart-item-meta">

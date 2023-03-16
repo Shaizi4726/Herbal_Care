@@ -19,7 +19,7 @@ class OrderItem extends Model
    *
    * @var array
    */
-  protected $fillable = ['order_id', 'product_id', 'form', 'size', 'price', 'quantity', 'subtotal', 'tax', 'total'];
+  protected $fillable = ['order_id', 'product_id', 'form', 'size', 'price', 'quantity', 'subtotal', 'tax', 'discount', 'total', 'coupon_id'];
   
   /**
    * Get the order that owns the order item.
@@ -35,5 +35,13 @@ class OrderItem extends Model
   public function product()
   {
     return $this->belongsTo(Product::class, 'product_id');
+  }
+
+  /**
+   * Get the coupon that owns the cart item.
+   */
+  public function coupon()
+  {
+    return $this->belongsTo(Coupon::class, 'coupon_id');
   }
 }

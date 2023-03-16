@@ -71,6 +71,8 @@ Route::get('/states', 'StateController@getStates');
 Route::get('/cities', 'CityController@getCities');
 
 Route::get('/checkout','CartController@checkout')->name('checkout');
+Route::get('/apply-coupon','CouponController@coupon_apply')->name('coupon-apply');
+
 // Wishlist
 Route::get('/wishlist', 'WishlistController@wishlist')->name('wishlist');
 Route::get('wishlist-add/','WishlistController@wishlist_add')->name('add-to-wishlist')->middleware('user');

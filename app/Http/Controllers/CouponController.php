@@ -5,6 +5,8 @@ use App\Models\Coupon;
 use App\User;
 use Illuminate\Http\Request;
 use App\Models\CartItem;
+use Auth;
+
 class CouponController extends Controller
 {
   /**
@@ -12,8 +14,7 @@ class CouponController extends Controller
    *
    * @return \Illuminate\Http\Response
    */
-  public function index()
-  {
+  public function index() {
     $coupon=Coupon::with('products')->orderBy('id','DESC')->paginate('10');
     return view('admin_panel.coupon.index')->with('coupons',$coupon);
   }
@@ -23,8 +24,7 @@ class CouponController extends Controller
    *
    * @return \Illuminate\Http\Response
    */
-  public function create()
-  {
+  public function create() {
     return view('admin_panel.coupon.create');
   }
 
@@ -166,6 +166,94 @@ class CouponController extends Controller
   }
 
   public function coupon_apply(Request $request) {
-    
+    $coupon_code = strtoupper($request->coupon_code);
+    $coupon = Coupon::where('code', $coupon_code)->first();
+    $discount = 0;
+
+    if(Auth::check()) {
+      $cart_items = CartItem::where('user_id', Auth()->user()->id)->get();
+      foreach($cart_items as $cart) {
+        if($cart->coupon_id) {
+          return response()->json('Coupon already applied on this order', 400);
+        }
+      }
+
+      if(!$coupon) {
+        return response()->json('Invalid Coupon', 400);
+      }
+
+      if($coupon->effect == 'product') {
+        $carts = CartItem::with('product')->where('user_id', Auth()->user()->id)->get();
+        foreach($carts as $cart) {
+          if($cart->product->coupon_id == $coupon->id) {
+            if($coupon->type == 'percent') {
+              $cart->discount = $cart->total * $coupon->value / 100;
+              $discount += $cart->discount;
+              $cart->total = $cart->total - $cart->discount;
+              $cart->coupon_id = $coupon->id;
+            }
+            $cart->save();
+          }
+        }
+      } elseif($coupon->effect == 'category') {
+        $carts = CartItem::with('product.categories')->where('user_id', Auth()->user()->id)->get();
+        foreach($carts as $cart) {
+          foreach($cart->product->categories as $category) {
+            if($category->coupon_id == $coupon->id) {
+              if($coupon->type == 'percent') {
+                $cart->discount = $cart->total * $coupon->value / 100;
+                $discount += $cart->discount;
+                $cart->total = $cart->total - $cart->discount;
+                $cart->coupon_id = $coupon->id;
+              }
+              $cart->save();
+            }
+          }
+        }
+      } elseif($coupon->effect == 'subcategory') {
+        $carts = CartItem::with('product.subcat')->where('user_id', Auth()->user()->id)->get();
+        foreach($carts as $cart) {
+          foreach($cart->product->subcat as $subcat) {
+            if($subcat->coupon_id == $coupon->id) {
+              if($coupon->type == 'percent') {
+                $cart->discount = $cart->total * $coupon->value / 100;
+                $discount += $cart->discount;
+                $cart->total = $cart->total - $cart->discount;
+                $cart->coupon_id = $coupon->id;
+              }
+              $cart->save();
+            }
+          }
+        }
+      } elseif($coupon->effect == 'user') {
+        $carts = CartItem::with('user')->where('user_id', Auth()->user()->id)->get();
+        foreach($carts as $cart) {
+          if($cart->user->coupon_id == $coupon->id) {
+            if($coupon->type == 'percent') {
+              $cart->discount = $cart->total * $coupon->value / 100;
+              $discount += $cart->discount;
+              $cart->total = $cart->total - $cart->discount;
+              $cart->coupon_id = $coupon->id;
+            }
+            $cart->save();
+          }
+        }
+      } elseif($coupon->effect == 'all') {
+        $carts = CartItem::where('user_id', Auth()->user()->id)->get();
+        foreach($carts as $cart) {
+          if($coupon->type == 'percent') {
+            $cart->discount = $cart->total * $coupon->value / 100;
+            $discount += $cart->discount;
+            $cart->total = $cart->total - $cart->discount;
+            $cart->coupon_id = $coupon->id;
+          }
+          $cart->save();
+        }
+      }
+      return back();
+    }
+    else {
+      return response()->json('Please register to apply coupon.', 400);
+    }
   }
 }

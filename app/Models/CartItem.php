@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -19,7 +20,7 @@ class CartItem extends Model
    *
    * @var array
    */
-  protected $fillable = ['user_id', 'product_id', 'attr_id', 'form', 'size', 'price', 'quantity', 'subtotal', 'tax', 'total'];
+  protected $fillable = ['user_id', 'product_id', 'attr_id', 'form', 'size', 'price', 'quantity', 'subtotal', 'tax', 'discount', 'total', 'coupon_id'];
 
   /**
    * Get the user that owns the cart item.
@@ -43,5 +44,13 @@ class CartItem extends Model
   public function attr()
   {
     return $this->belongsTo(ProductAttribute::class, 'attr_id');
+  }
+
+  /**
+   * Get the coupon that owns the cart item.
+   */
+  public function coupon()
+  {
+    return $this->belongsTo(Coupon::class, 'coupon_id');
   }
 }

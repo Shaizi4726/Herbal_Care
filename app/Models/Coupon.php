@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Models;
-use App\User;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -62,6 +62,20 @@ class Coupon extends Model
   {
     return $this->hasMany(User::class, 'coupon_id');
   }
+  
+  /**
+   * Get the cart items for the coupon.
+  */
+  public function cart_items()
+  {
+    return $this->hasMany(CartItem::class, 'coupon_id');
+  }
 
-
+  /**
+   * Get the order items for the coupon.
+  */
+  public function order_items()
+  {
+    return $this->hasMany(OrderItem::class, 'coupon_id');
+  }
 }

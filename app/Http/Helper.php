@@ -87,8 +87,7 @@ class Helper
   }
 
   // Total cart tax
-  public static function totalCartTax()
-  {
+  public static function totalCartTax() {
     if (Auth::check()) {
       $user_id = auth()->user()->id;
       return CartItem::where('user_id', $user_id)->sum('tax');
@@ -100,6 +99,17 @@ class Helper
         $sum += $item->tax;
       }
       return $sum;
+    }
+  }
+
+  // Total cart tax
+  public static function total_discount()
+  {
+    if (Auth::check()) {
+      $user_id = auth()->user()->id;
+      return CartItem::where('user_id', $user_id)->sum('discount');
+    } else {
+      return 0;
     }
   }
 }

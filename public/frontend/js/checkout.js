@@ -172,7 +172,26 @@ $(function() {
     let vale = $('#account-no').val();
     vale = vale.split(" ").join("");
     $('#account-no').val(vale);
-  }) 
+  })
+  
+  $('#coupon-apply').on('click', function() {
+    let coupon = $('#coupon-code').val();
+
+    /* AJAX request for applying coupon */
+    $.ajax({
+      type: 'get',
+      url: '/apply-coupon',
+      data: {
+        coupon_code: coupon,
+      },
+      success: function (resp) {
+        location.reload();
+      },
+      error: function (error) {
+        $('.cart-totals').append('<div class="error">' + error.responseText + '</div>')
+      }
+    });
+  })
 });
 
 function cardNum(el, event) {

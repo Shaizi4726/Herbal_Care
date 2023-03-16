@@ -26,9 +26,11 @@ return new class extends Migration
       $table->string('size');
       $table->float('price');
       $table->integer('quantity');
-      $table->float('subtotal');
       $table->float('tax');
+      $table->float('discount')->nullable();
       $table->float('total');
+      $table->unsignedBigInteger('coupon_id')->nullable();
+      $table->foreign('coupon_id')->references('id')->on('coupons')->onDelete('SET NULL');
       $table->timestamps();
     });
   }
