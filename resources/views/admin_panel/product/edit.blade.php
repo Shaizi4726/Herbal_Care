@@ -138,7 +138,7 @@
         {{-- {{$brands}} --}}       
         <div class="brand">
           <select name="brand_id" id="brand_id" class="form-control">
-            <option value="">--Select Brand--</option>
+            <option value="">{--Select Brand--}</option>
             @foreach($brands as $brand)
               <option value="{{$brand->id}}" {{(($product->brand_id==$brand->id)? 'selected':'')}}>{{$brand->name}}</option>
             @endforeach
@@ -173,8 +173,8 @@
       <div class="form-group">
         <label for="promotion">promotion</label>
         <select name="promotion" class="form-control">
-          <option value="{{$product->promotion}}">{{$product->promotion}}</option>
-          <option value="default" {{(($product->promotion=='default')? 'selected':'')}}>Default</option>
+          
+          <option value="popular" {{(($product->promotion=='popular')? 'selected':'')}}>Popular</option>
           <option value="new" {{(($product->promotion=='new')? 'selected':'')}}>New</option>
           <option value="trending" {{(($product->promotion=='trending')? 'selected':'')}}>Trending</option>
         </select>
