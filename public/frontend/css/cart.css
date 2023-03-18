@@ -1,6 +1,6 @@
 .page-title {
   font-size: 3.5vw;
-  color: #2c542f;
+  color: #7c8e7b;
   text-align: center;
 }
 
@@ -67,7 +67,7 @@ h4, p {
 .cart-summary {
   width: 95vw;
   font-size: 2vw;
-  color: #2c542f;
+  color: #7c8e7b;
   background-color: #f2f4e6;
   margin: 1em auto;
   padding: 0.3em;
@@ -82,7 +82,7 @@ h4, p {
 
 .coupon {
   margin: 0.5em auto;
-  border-bottom: 2px solid #2c542f;
+  border-bottom: 2px solid #7c8e7b;
   padding: 1em;
   width: 90%;
 }
@@ -102,7 +102,7 @@ h4, p {
   height: 2em;
   padding-left: 0.5em;
   outline: none;
-  border: 1px solid #2c542f;
+  border: 1px solid #7c8e7b;
 }
 
 .coupon-btn {
@@ -112,7 +112,7 @@ h4, p {
   height: 2em;
   width: 10vw;
   margin: -1em;
-  border: 1px solid #2c542f;
+  border: 1px solid #7c8e7b;
 }
 
 .cart-totals {
@@ -130,7 +130,7 @@ h4, p {
   width: 90%;
   padding: 1em;
   margin: auto;
-  border-top: 2px solid #2c542f;
+  border-top: 2px solid #7c8e7b;
 }
 
 .btn-checkout {
@@ -140,7 +140,7 @@ h4, p {
   font-weight: bold;
   line-height: 10vw;
   height: 10vw;
-  background-color: #2c542f;
+  background-color: #7c8e7b;
   color: #faf9f6;
   width: 100%;
 }

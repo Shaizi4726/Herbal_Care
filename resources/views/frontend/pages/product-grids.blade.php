@@ -9,10 +9,10 @@
 @section('main-content')
   <div class="sorts product-sorts" id="product-sorts">
     <span>Sort by: </span>
-    <span id="selected-sort" class="selected-sort dropdown-toggle">Random</span>
+    <span id="selected-sort" class="selected-sort dropdown-toggle">A to Z</span>
     <ul id="sorting-list" class="sorting-list collapse">
-      <li class="selected sort-list-item" data="rand" onclick="sort(this, '{{$slug}}', '{{$subslug}}', '{{$search}}', '{{$que}}')">Random</li>
-      <li class="sort-list-item" data="a-z" onclick="sort(this, '{{$slug}}', '{{$subslug}}', '{{$search}}', '{{$que}}')">A to Z</li>
+      <li class="sort-list-item" data="rand" onclick="sort(this, '{{$slug}}', '{{$subslug}}', '{{$search}}', '{{$que}}')">Random</li>
+      <li class="selected sort-list-item" data="a-z" onclick="sort(this, '{{$slug}}', '{{$subslug}}', '{{$search}}', '{{$que}}')">A to Z</li>
       <li class="sort-list-item" data="z-a" onclick="sort(this, '{{$slug}}', '{{$subslug}}', '{{$search}}', '{{$que}}')">Z to A</li>
       <li class="sort-list-item" data="low-prc" onclick="sort(this, '{{$slug}}', '{{$subslug}}', '{{$search}}', '{{$que}}')">Low Price</li>
       <li class="sort-list-item" data="hgh-prc" onclick="sort(this, '{{$slug}}', '{{$subslug}}', '{{$search}}', '{{$que}}')">High Price</li>

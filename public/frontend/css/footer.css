@@ -24,7 +24,7 @@ footer {
 }
 
 .footer-about {
-  background-color: #2c542f;
+  background-color: #7c8e7b;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -43,14 +43,14 @@ footer {
 }
 
 .footer-menu {
-  background-color: #2c542f;
+  background-color: #7c8e7b;
   text-align: center;
   padding: 10px;
   margin-bottom: 0.3em;
 }
 
 .copyright {
-  background-color: #2c542f;
+  background-color: #7c8e7b;
   text-align: center;
   padding: 10px 0;
 }
@@ -74,7 +74,8 @@ footer {
   }
 
   .features {
-    color: #2c542f;
+    color: #f2f4e6;
+    background-color: #7c8e7b;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -85,7 +86,7 @@ footer {
     flex-direction: row;
     justify-content: center;
     align-items: flex-start;
-    background-color: #2c542f;
+    background-color: #7c8e7b;
     margin-bottom: 0.3em;
     padding: 0 20px;
     position: relative;

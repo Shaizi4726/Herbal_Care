@@ -28,7 +28,7 @@
     </div>
     <div class="signing-form-container">
       <a href="{{route('home')}}"><img src="{{asset('images/logo_green.png')}}" alt="Website Logo" class="signing-web-logo"></a>
-      <h1 class="signing-web-title"><a href="{{route('home')}}">The Herb Room</a></h1>
+      <h1 class="signing-web-title"><a href="{{route('home')}}">HerbalCare</a></h1>
       <h2>Sign In</h2>
       
       <!-- Form -->

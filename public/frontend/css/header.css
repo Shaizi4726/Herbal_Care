@@ -1,11 +1,4 @@
 /*==================== Mobile Header ====================*/
-.sticky {
-  position: fixed;
-  top: 0;
-  z-index: 10;
-  width: 100%;
-}
-
 #desktop-header {
   display: none;
 }
@@ -17,7 +10,7 @@
 /*========== Topbar ==========*/
 .topbar {
   color: #f2f4e6;
-  background-color: #2c542f;
+  background-color: #7c8e7b;
   position: relative;
 }
 
@@ -48,6 +41,13 @@
   color: #f2f4e6;
 }
 
+.sticky {
+  position: fixed;
+  top: 0;
+  z-index: 10;
+  width: 100%;
+}
+
 #menu-btn {
   top: 0.75em;
   left: 0.75em;
@@ -67,7 +67,7 @@
   position: relative;
   bottom: 2.1em;
   right: 1.4em;
-  color: #2c542f;
+  color: #7c8e7b;
   font-size: 0.4em;
 }
 
@@ -78,7 +78,7 @@
 
 /*========== Search Bar ==========*/
 .search-bar {
-  background-color: #2c542f;
+  background-color: #7c8e7b;
 }
 
 .search-form {
@@ -94,13 +94,13 @@
 
 .search-term {
   width: 100%;
-  border: 2px solid #ffffff;
+  border: 2px solid #fff;
   border-right: none;
   padding: 0.2em;
   height: 2.5em;
   font-size: 0.6em;
   border-radius: 5px 0 0 5px;
-  color: #2c542f;
+  color: #7c8e7b;
   margin-bottom: 1em;
 }
 
@@ -112,7 +112,7 @@
   width: 30%;
   height: 2.5em;
   background-color: #f2f4e6;
-  color: #2c542f;
+  color: #7c8e7b;
   border-radius: 0 5px 5px 0;
   cursor: pointer;
   font-size: 0.6em;
@@ -167,7 +167,7 @@
   position: relative;
   bottom: 9.5em;
   right: 5em;
-  color: #2c542f;
+  color: #7c8e7b;
   font-size: 0.1em;
 }  
 
@@ -199,7 +199,7 @@
 }
 
 .close {
-  color: #2c542f;
+  color: #7c8e7b;
   position: relative;
   top: 0.85em;
   font-size: 40px;
@@ -217,7 +217,7 @@
 }
 
 .menu a {
-  color: #2c542f;
+  color: #7c8e7b;
 }
 
 .mob-nav {
@@ -226,7 +226,7 @@
 }
 
 .list-main a {
-  color: #2c542f;
+  color: #7c8e7b;
   padding: 20px;
   width: 80%;
 }
@@ -250,7 +250,7 @@
 #shop .cat-menu li a {
   font-size: 14px;
   font-weight: bold;
-  color: #2c542f;
+  color: #7c8e7b;
 }
 
 @media only screen and (min-width: 480px) {
@@ -312,7 +312,7 @@
     width: 1.5em;
     bottom: 2.8em;
     right: 2em;
-    color: #2c542f;
+    color: #7c8e7b;
     font-size: 0.3em;
   }
 
@@ -349,7 +349,7 @@
 
   .header-content {
     flex-direction: row;
-    background-color: #2c542f;
+    background-color: #7c8e7b;
     justify-content: space-between;
     margin-bottom: 0.5em;
   }
@@ -385,7 +385,7 @@
   }
 
   .list-main {
-    color: #2c542f;
+    color: #7c8e7b;
     background-color: #f2f4e6;
     margin: 1em;
     padding: 0.3em 0;
@@ -398,7 +398,7 @@
   }
 
   .list-main a {
-    color: #2c542f;
+    color: #7c8e7b;
     font-size: 14px;
     font-weight: bold;
     padding: 5px;
@@ -407,7 +407,7 @@
 
   .list-main li:hover, .list-main li:hover a {
     color: #f2f4e6;
-    background-color: #2c542f;
+    background-color: #7c8e7b;
   }
 
   .d-user-icon {
@@ -416,7 +416,7 @@
 
   /*========== Menubar ==========*/
   .menu-bar {
-    background-color: #2c542f;
+    background-color: #7c8e7b;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -469,12 +469,12 @@
   }
   
   #shop .cat-menu li {
-    color: #2c542f;
+    color: #7c8e7b;
     line-height: 2.5;
   }
   
   #shop .cat-menu li:hover {
-    background-color: #2c542f; 
+    background-color: #7c8e7b; 
   }
   
   #shop .cat-menu li:hover > a {
@@ -560,7 +560,7 @@
   }
 
   .shopping-item {
-    color: #2c542f;
+    color: #7c8e7b;
     font-size: 0.6em;
     font-weight: 900;
     top: 2.6em;
@@ -570,7 +570,7 @@
   }
 
   .shopping-item a {
-    color: #2c542f;
+    color: #7c8e7b;
     font-size: 0.9em;
     font-weight: 900;
   }
@@ -582,7 +582,7 @@
     justify-content: space-between;
     align-items: center;
     height: 4em;
-    border-bottom: 2px dashed #2c542f;
+    border-bottom: 2px dashed #7c8e7b;
     padding: 0.8em;
     margin: 0 0.5em;
   }
@@ -611,7 +611,7 @@
 
   .shopping-list li:last-child {
     padding-bottom: 20px;
-    border-bottom: 1px dashed #2c542f;
+    border-bottom: 1px dashed #7c8e7b;
   }
 
   .product-det {
@@ -639,9 +639,9 @@
   /* Animated Checkout Button */
   div.anim-checkout-btn {
     position: relative;
-    color: #2c542f;
+    color: #7c8e7b;
     display: block;
-    border: 2px solid #2c542f;
+    border: 2px solid #7c8e7b;
     border-radius: 10px;
     width: 12em;
     height: 3em;
@@ -660,7 +660,7 @@
   div.hover {
     width: 12em;
     height: 3em;
-    background-color: #2c542f;
+    background-color: #7c8e7b;
     position: absolute;
     left: -13em;
     border-radius: 8px;

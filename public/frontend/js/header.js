@@ -24,7 +24,7 @@ function menu() {
 
 // Sticky Header
 window.onscroll = function() {myFunction()};
-var header = document.getElementById("desktop-menu");
+var header = document.getElementById("desktop-header");
 var mobHeader = document.getElementById("search");
 var desCatMenu = document.getElementById("desktop-cat-menu");
 var mobCartButton = document.getElementById("mob-cart-btn");

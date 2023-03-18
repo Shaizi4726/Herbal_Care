@@ -77,7 +77,7 @@ class Color
         "khaki" => "F0E68C",
         "lavender" => "E6E6FA",
         "lavenderblush" => "FFF0F5",
-        "lawngreen" => "7CFC00",
+        "lawngreen" => "#7c8e7b",
         "lemonchiffon" => "FFFACD",
         "lightblue" => "ADD8E6",
         "lightcoral" => "F08080",

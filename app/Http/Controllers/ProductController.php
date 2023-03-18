@@ -339,17 +339,16 @@ class ProductController extends Controller
    */
   public function destroy($id)
   {
-    //dd($id);
-      $product=Product::findOrFail($id);
-      $status=$product->delete();
-      
-      if($status){
-          request()->session()->flash('success','Product successfully deleted');
-      }
-      else{
-          request()->session()->flash('error','Error while deleting product');
-      }
-      return redirect()->route('product.index');
+    $product=Product::findOrFail($id);
+    $status=$product->delete();
+    
+    if($status){
+        request()->session()->flash('success','Product successfully deleted');
+    }
+    else{
+        request()->session()->flash('error','Error while deleting product');
+    }
+    return redirect()->route('product.index');
   }
  
 

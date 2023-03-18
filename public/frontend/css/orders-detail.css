@@ -20,7 +20,7 @@ table {
 thead {
   top: -0.1em;
   position: sticky;
-  background-color: #2c542f;
+  background-color: #7c8e7b;
   color: #fff;
   height: 3em;
 }
@@ -60,7 +60,7 @@ thead {
 }
 
 #order-no, #status {
-  color: #2c542f;
+  color: #7c8e7b;
 }
 
 .status {
@@ -110,7 +110,7 @@ thead {
   margin: auto;
   position: relative;
   top: 10%;
-  color: #2c542f;
+  color: #7c8e7b;
   background-color: #f2f4e6;
   width: 90vw;
   box-shadow: 0 5px 10px 2px rgba(44, 84, 47, 0.5);
@@ -153,7 +153,7 @@ thead {
 
 .reasons-list li:hover {
   color: #fff;
-  background-color: #2c542f;
+  background-color: #7c8e7b;
 }
 
 textarea {

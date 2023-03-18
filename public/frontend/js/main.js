@@ -8,6 +8,13 @@ $('.search-term').typeahead({
   }
 });
 
+$('.search-term').on('keydown', function(event) {
+  if(event.key == 'Enter') {
+    setTimeout(function() {
+      $('.search-form').submit();
+    }, 250);
+  }
+});
 
 /*==================== Exzoom function ====================*/
 var shazoom = function () {
@@ -47,7 +54,6 @@ $(function () {
     event.preventDefault();
   });
 });
-
 
 /*==================== Request product price from database ====================*/
 function price(id) {
@@ -126,7 +132,10 @@ function cartAdd(id) {
       $('#location-popup').focus();
       $('#location-popup').attr('data-toggle', '1');
       $('#location-popup').css('transform', 'scale(1)');
-      $('.cart-count').html(resp);
+      $('.cart-count').html(resp[0]);
+      $('.cart-count-header').html(resp[0] + ' Items');
+      $('.shopping-list').html(resp[1]);
+      $('.total-amount').html('AED ' + resp[2]);
     },
     error: function () {
       $('#checkout-popup').css('width', '100vw');

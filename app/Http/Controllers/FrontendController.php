@@ -66,6 +66,8 @@ class FrontendController extends Controller
     }
 
     $sort_by = $request->value;
+
+    $products = $products->sortBy('name');
       
     if ($sort_by) {
       if($sort_by == 'a-z')
@@ -165,7 +167,7 @@ class FrontendController extends Controller
   }
 
   public function product_search(Request $request) {
-    $products = Product::orwhere('name','like','%'.$request->search.'%')->orwhere('slug','like','%'.$request->search.'%')->orwhere('sci_name','like','%'.$request->search.'%')->orwhere('other_name','like','%'.$request->search.'%')->orwhere('description','like','%'.$request->search.'%')->get();
+    $products = Product::orwhere('name','like','%'.$request->search.'%')->orwhere('slug','like','%'.$request->search.'%')->orwhere('sci_name','like','%'.$request->search.'%')->orwhere('other_name','like','%'.$request->search.'%')->orwhere('description','like','%'.$request->search.'%')->orderBy('name')->get();
     $categories = Category::get();
 
     return view('frontend.pages.product-grids')->with(['products' => $products, 'cats' => $categories, 'slug' => null, 'subslug' => null, 'search' => 1, 'que' => $request->search]);
@@ -183,21 +185,17 @@ class FrontendController extends Controller
   }
 
   public function productCat(Request $request) {
-    $category = Category::with('products')->where('slug', $request->slug)->get();
-    
-    $products = $category->pluck('products');
-    foreach($products as $product)
-      $products = $product;
-    
-    $categories = Category::get();
+    $category = Category::with('products')->where('slug', $request->slug)->first();
+    $products = $category->products->sortBy('name');
+    $categories = Category::where('status', 'active')->get();
 
     return view('frontend.pages.product-grids')->with(['products' => $products, 'cats' => $categories, 'slug' => $request->slug, 'subslug' => $request->subslug, 'search' => null, 'que' => null]);
   }
 
   public function productSubCat(Request $request){
-    $subcat=SubCategory::with('products')->where('slug', $request->subslug)->get();
-    $products=$subcat[0]->products()->get();
-    $categories = Category::get();
+    $subcat = SubCategory::with('products')->where('slug', $request->subslug)->first();
+    $products = $subcat->products()->orderBy('name')->get();
+    $categories = Category::where('status', 'active')->get();
 
     return view('frontend.pages.product-grids')->with(['products' => $products, 'cats' => $categories, 'slug' => $request->slug, 'subslug' => $request->subslug, 'search' => null, 'que' => null]);
   }

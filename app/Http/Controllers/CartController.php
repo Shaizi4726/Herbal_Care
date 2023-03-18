@@ -41,11 +41,11 @@ class CartController extends Controller
     }
 
     if ($request->qty < 1) {
-      return response()->json(['error' => 'Invalid Quantity Value. Quantity must be positive integer'], 404);
+      return response()->json('Invalid Quantity Value. Quantity must be positive integer', 400);
 
     } else if (empty($product)) {
 
-      return response()->json(['error' => 'Invalid Product. No such product'], 404);
+      return response()->json('Invalid Product. No such product', 400);
 
     } else if (Auth::check()) {
 
@@ -120,9 +120,35 @@ class CartController extends Controller
       }
     }
 
+    $carts = Helper::getAllProductFromCart();
     $count = count(Helper::getAllProductFromCart());
-    
-    return $count;
+    $total = number_format(Helper::totalCartAmount(), 2);
+    $content = '';
+    foreach($carts as $cart) {
+      $price = number_format($cart->price, 2);
+      $content .= <<<EOD
+        <li>
+          <div class="product-det">
+            <h4><a class="prod-name" href="/product-detail/{$cart->product->slug}" target="_blank">{$cart->product->name}</a></h4>
+            <p class="font">
+      EOD;
+
+      if($cart->form) {
+        $content .= <<<EOD
+        {$cart->form} - 
+        EOD;
+      }
+      
+      $content .= <<<EOD
+      {$cart->size}</p>
+            <p class="font">$cart->quantity x $price AED</p>
+            <a href="/cart-delete/$cart->id" class="remove font" title="Remove"><i class="fa-regular fa-trash-can"></i> Remove Item</a>
+          </div>
+          <a class="cart-img" href="#"><img src="{$cart->product->photo}" alt="product photo"></a>
+        </li>
+      EOD;
+    }
+    return [$count, $content, $total];
   }
 
   public function cartDelete(Request $request)
@@ -156,9 +182,16 @@ class CartController extends Controller
   {
     $total;
     if (Auth::check()) {
-      $cart = CartItem::find($request->id);
+      $cart = CartItem::with('coupon')->find($request->id);
       $cart->quantity = $request->qty;
       $cart->total = $cart->price * $request->qty;
+      if($cart->coupon) {
+        if($cart->coupon->type == 'percent') {
+          $cart->discount = $cart->total * $cart->coupon->value / 100;
+          $cart->total = $cart->total - $cart->discount;
+          $cart->coupon_id = $cart->coupon->id;
+        }
+      }
       $cart->subtotal = ($cart->total) / 1.05;
       $cart->tax = $cart->total - $cart->subtotal;
       $cart->save();

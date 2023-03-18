@@ -98,6 +98,5 @@ function closeModal() {
   $(el).css('transform', 'scale(0)');
   setTimeout(function() {
     $('#modal').remove();
-    location.reload();
   }, 1000);
 }

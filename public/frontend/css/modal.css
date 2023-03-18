@@ -55,15 +55,15 @@
   a.modal-view-link::before{
     top: -2.5%;
     left: -1%;
-    border-top: 2px solid #2c542f;
-    border-left: 2px solid #2c542f;	
+    border-top: 2px solid #7c8e7b;
+    border-left: 2px solid #7c8e7b;	
   }
 
   a.modal-view-link::after{
     bottom: -2.5%;
     right: -1%;
-    border-bottom: 2px solid #2c542f;
-    border-right: 2px solid #2c542f;
+    border-bottom: 2px solid #7c8e7b;
+    border-right: 2px solid #7c8e7b;
   }
 
   a.modal-view-link:hover::before, a.modal-view-link:hover::after{
@@ -74,7 +74,7 @@
 
   #product-details-icon {
     font-size: 24px;
-    color: #2c542f;
+    color: #7c8e7b;
     padding-right: 0.5em;
     text-align: center;
   }

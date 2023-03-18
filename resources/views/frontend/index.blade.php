@@ -59,7 +59,7 @@
               </div>
 
               <div class="meta-detail">
-                <h3 class="card-product-title">{{$product->name}}</h3>
+                <h4 class="card-product-title">{{$product->name}}</h4>
                 @if($minprice==$maxprice)
                   <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span></p>
                 @else
@@ -110,7 +110,7 @@
               </div>
 
               <div class="meta-detail">
-                <h3 class="card-product-title">{{$product->name}}</h3>
+                <h4 class="card-product-title">{{$product->name}}</h4>
               @if($minprice==$maxprice)
                 <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span></p>
               @else
@@ -160,7 +160,7 @@
               </div>
 
               <div class="meta-detail">
-                <h3 class="card-product-title">{{$product->name}}</h3>
+                <h4 class="card-product-title">{{$product->name}}</h4>
               @if($minprice==$maxprice)
                 <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span></p>
               @else
@@ -216,7 +216,7 @@
                   </div>
 
                   <div class="meta-detail">
-                    <h3 class="card-product-title">{{$product->name}}</h3>
+                    <h4 class="card-product-title">{{$product->name}}</h4>
                   @if($minprice==$maxprice)
                     <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span></p>
                   @else

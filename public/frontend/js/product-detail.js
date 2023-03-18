@@ -14,7 +14,9 @@ function showDetail(btn) {
   }
 }
 
-$(body).on('keydown', function(event) {
-  if($('#location-popup').attr('data-toggle') == 1)
-    remInnerModal();
+$('body').on('keydown', function(event) {
+  if(event.key == "Escape") {
+    if($('#location-popup').attr('data-toggle') == 1)
+      remInnerModal();
+  }
 });

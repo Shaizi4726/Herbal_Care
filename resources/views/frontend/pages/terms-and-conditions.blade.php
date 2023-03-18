@@ -14,7 +14,7 @@
 				padding: 10px;
 				margin-top: 10px;
 				margin-bottom: 10px;
-				background: #2c542f;
+				background: #7c8e7b;
 				border-radius: 10px;
 				color: #faf9f6;
 			}
@@ -29,7 +29,7 @@
 				padding: 10px;
 				font-size: large;
 				font-family: Verdana, Geneva, Tahoma, sans-serif;
-				color: #2c542f;
+				color: #7c8e7b;
 				background: #faf9f6;
 				border-radius: 10px;
 			}

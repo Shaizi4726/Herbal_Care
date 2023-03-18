@@ -78,10 +78,10 @@ $('#action').on('click', function() {
 });
 
 $('.reason-item').on('click', function() {
-  $('.reason-item').css('color', '#2c542f'),
+  $('.reason-item').css('color', '#7c8e7b'),
   $('.reason-item').css('background-color', '#f2f4e6');
   $(this).css('color', '#fff');
-  $(this).css('background-color', '#2c542f');
+  $(this).css('background-color', '#7c8e7b');
   $('#reason').val($(this).attr('id'));
 
   $('.pop-btn').removeAttr('disabled');

@@ -9,7 +9,7 @@
 
 .details-review-btn {
   font-size: 1em;
-  background-color: #2c542f;
+  background-color: #7c8e7b;
   color: #faf9f6;
   width: 8rem;
   height: 2rem;
@@ -28,14 +28,14 @@
 
 .details-review-btn:hover {
   background-color: #f2f4e6;
-  color: #2c542f;
+  color: #7c8e7b;
   transform: translate(0, 0.3em);
   transform: scale(0.95);
 }
 
 .active-details-review {
   background-color: #f2f4e6;
-  color: #2c542f;
+  color: #7c8e7b;
   font-weight: bold;
   font-size: 1.2em;
 }
@@ -144,7 +144,7 @@
   margin-top: 0.25em;
   font-size: 1.2em;
   font-weight: bold;
-  color: #2c542f;
+  color: #7c8e7b;
 }
 
 a.review-auth-link {
