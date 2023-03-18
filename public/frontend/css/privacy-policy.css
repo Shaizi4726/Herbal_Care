@@ -36,3 +36,15 @@ display: none;
 .accordion.active .accordion__answer {
 display: block;
 }
+.action .action-btn {
+    height: 3em;
+    margin: 1em 0;
+  }
+  .action .action-btn {
+    width: 11.5em;
+  }
+
+  .action .action-btn {
+    margin: 0 1em;
+    width: 11.5em;
+  }

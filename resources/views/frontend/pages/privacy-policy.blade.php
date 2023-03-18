@@ -42,6 +42,15 @@
 		.accordion.active .accordion__answer {
 			display: block;
 		}
+		.btn-submit{
+			height: 3em;
+    		margin: 1em 0;
+			width: 11.5em;
+			background-color:#7c8e7b;
+			position: absolute;
+			left:40%;
+			right:50%;
+		}
 	</style>
 </head>
 <body>
@@ -57,9 +66,10 @@
 					<li>We may hold and process personal data that you provide to us in accordance with the Personal Data Protection Law No.45 of 2021 (PDPL).</li><br>
 					<li>The information that we collect and store relating to you is primarily used to enable us to provide our services to you, and to meet our contractual commitments to you</li><br>
 				</ol>
+				
 			</div>			
 		</div>
-		
+			<button class="btn btn-submit"><a href="{{route('home')}}">Home Page</a></button>
 		</div>
 	</div>
 </body>

@@ -42,6 +42,15 @@
 			.accordion.active .accordion__answer {
 				display: block;
 			}
+			.btn-submit{
+			height: 3em;
+    		margin: 1em 0;
+			width: 11.5em;
+			background-color:#7c8e7b;
+			position: absolute;
+			left:40%;
+			right:50%;
+		}
 		</style>
 	</head>
 	<body>
@@ -84,5 +93,6 @@
 				</div>			
 			</div>
 		</div>
+		<button class="btn btn-submit"><a href="{{route('home')}}">Home Page</a></button>
 	</body>
 </html>
