@@ -39,7 +39,7 @@
               <option value="category" {{(($coupon->effect=='category') ? 'selected' : '')}}>Category</option>
               <option value="subcategory" {{(($coupon->effect=='subcategory') ? 'selected' : '')}}>Subcategory</option>
               <option value="user" {{(($coupon->effect=='user') ? 'selected' : '')}}>User</option>
-              <option value="order" {{(($coupon->effect=='order') ? 'selected' : '')}}>Order</option>
+              <option value="order" {{(($coupon->effect=='all') ? 'selected' : '')}}>All</option>
             </select>
             @error('type')
               <span class="text-danger">{{$message}}</span>
