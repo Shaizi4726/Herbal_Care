@@ -45,7 +45,7 @@ Route::get('/autocomplete-search', 'FrontendController@autocomplete_search')->na
 Route::get('/','FrontendController@home')->name('home')->middleware('account.verified');
 Route::get('/home', 'FrontendController@home')->middleware('account.verified');
 Route::view('/about-us','frontend.pages.about-us')->name('about-us')->middleware('account.verified');
-Route::get('/contact','FrontendController@contact')->name('contact')->middleware('account.verified');
+Route::view('/contact','frontend.pages.contact')->name('contact')->middleware('account.verified');
 Route::get('product-detail/{slug}','FrontendController@product_detail')->name('product-detail')->middleware('account.verified');
 Route::match(['get','post'], '/product/search', 'FrontendController@product_search')->name('product.search')->middleware('account.verified');
 Route::match(['get','post'], 'product-sort/','FrontendController@productSort')->name('product-sort')->middleware('account.verified');

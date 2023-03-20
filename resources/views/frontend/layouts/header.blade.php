@@ -109,7 +109,7 @@
             </ul>
           </div>
         </li>
-        <li><a href="{{route('home')}}" class="nav-link desktop-nav">Contact Us</a></li>
+        <li><a href="{{route('contact')}}" class="nav-link desktop-nav">Contact Us</a></li>
       </ul>
 
       <div class="search-bar">                                        

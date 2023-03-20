@@ -251,41 +251,42 @@
     <div class="fixed-banner-container">
       <img src="{{asset('images/fixed banner.jpg')}}" alt=""> 
     </div>
-    <h2>Visit Our Stores</h2>
-    <div class="store-card carousel-cell">
-      <img class="product-image" src="{{$product->photo}}" alt="product image">
-      
-      <div class="overlay">
-        <button id="trn{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, {{$product->id}})"> 
-          <i class="fa-regular fa-eye"></i>
-          <p>Quick View</p>
-        </button>
-      </div>
 
-      <div class="meta-detail">
-        <h4 class="card-product-title">{{$product->name}}</h4>
-      @if($minprice==$maxprice)
-        <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span></p>
-      @else
-        <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span> - AED <span class="value">{{number_format($maxprice,2)}}</span></p>
-      @endif              </div>
-      <div class="prod-detail-link">
-        <a href="{{route('product-detail', $product->slug)}}" class="btn btn-submit detail-link"> Product Details </a>
-        
-        @auth
-          @if(count($wishlist) != 0)
-            <button class="btn favbtn" onclick="fav(this, {{$product->id}})"><i class="fa-solid fa-heart fav"></i></button>
-          @else
-            <button class="btn favbtn" onclick="fav(this, {{$product->id}})"><i class="fa-regular fa-heart fav"></i></button>
-          @endif
-        @else
-          <button class="btn favbtn" onclick="window.location.href = 'user/login';"><i class="fa-regular fa-heart fav"></i></button>
-        @endauth
+    <h2 class="center-title">Visit Our Stores</h2>
+
+    <div class="store-carousel">
+      <div class="store-card">
+        <img class="store-img" src="{{asset('images/satwa.jpg')}}" alt="store image">
+
+        <div class="meta-detail">
+          <h3 class="card-store-title">SATWA</h3>
+        </div>
+        <div class="learn-more-link">
+          <a href="{{route('contact')}}#satwa" class="btn btn-submit detail-link"> Learn More </a>
+        </div>
+      </div>
+      <div class="store-card">
+        <img class="store-img" src="{{asset('images/meena-bazar.jpg')}}" alt="store image">
+
+        <div class="meta-detail">
+          <h3 class="card-store-title">MEENA BAZAAR</h3>
+        </div>
+        <div class="learn-more-link">
+          <a href="{{route('contact')}}#meena-bazaar" class="btn btn-submit detail-link"> Learn More </a>
+        </div>
+      </div>
+      <div class="store-card">
+        <img class="store-img" src="{{asset('images/rolla.jpg')}}" alt="store image">
+
+        <div class="meta-detail">
+          <h3 class="card-store-title">ROLLA St.</h3>
+        </div>
+        <div class="learn-more-link">
+          <a href="{{route('contact')}}#rolla" class="btn btn-submit detail-link"> Learn More </a>
+        </div>
       </div>
     </div>
-      
-    </div>
-
+    
     <div id="modal-container" class="modal-container"></div>
     <section id="checkout-popup" class="checkout-popup">
       <div id="location-popup" class="ch-popup" data-toggle="0" tabindex="-1">

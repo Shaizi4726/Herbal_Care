@@ -439,6 +439,11 @@
   #desktop-menu .menu li {
     margin: 0.5em 0;
   }
+  
+  #desktop-menu .shop-menu li {
+    padding: 0.4em 0;
+    margin: 0;
+  }
 
   #desktop-menu .menu a {
     color: #f2f4e6;
@@ -455,9 +460,9 @@
   .shop-menu {
     width: 20em;
     position: absolute;
-    top: 7rem;
-    left: 10.5rem;
-    padding: 2em 0;
+    top: 9.2rem;
+    left: 10rem;
+    padding: 0 0 2em;
     margin: -3.5em -2em;
     z-index: 2;
   }

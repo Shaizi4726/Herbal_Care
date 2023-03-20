@@ -106,7 +106,7 @@ $('#continue-cancel').on('click', function() {
     all = 1;
   }
   else {
-    $('input:checkbox[name=item_checkbox]:checked').each(function() {
+    $('input[name=item_checkbox]:checked').each(function() {
       items.push($(this).val());
     });
   }
@@ -144,12 +144,12 @@ $('#continue-return').on('click', function() {
     all = 1;
   }
   else {
-    $('input:checkbox[name=item_checkbox]:checked').each(function() {
+    $('input[name=item_checkbox]:checked').each(function() {
       items.push($(this).val());
     });
   }
 
-  /* AJAX request to cancel items from order */
+  /* AJAX request to return items from order */
   $.ajax({
     type: 'get',
     url: '/order-return',
@@ -163,7 +163,7 @@ $('#continue-return').on('click', function() {
       location.reload();
     },
     error: function() {
-      alert("An error occured while cancel operation");
+      alert("An error occured while return operation");
     }                
   }); 
 });

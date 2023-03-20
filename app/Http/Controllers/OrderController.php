@@ -367,44 +367,47 @@ class OrderController extends Controller
   // Cancel order items
   public function cancel_order(Request $request) {
     $order = Order::with('payment', 'order_items', 'shipping.city')->where('id', $request->id)->first();
-
+    
     if($request->all == 1) {
       $order->status = 'cancelled';
       foreach($order->order_items as $item) {
         $properties = collect($item->toArray())->only(['order_id', 'product_id', 'form', 'size', 'price', 'quantity', 'discount', 'total'])->all();
-
+        
         $cancel = new CancelItem;
         $cancel->fill($properties);
         $cancel->reason = $request->reason;
-
+        
         $order->payment->cancelled += $cancel->total;
-
+        $order->payment->subtotal -= $item->subtotal;
+        $order->payment->tax -= $item->tax;
+        $order->payment->discount -= $item->discount;
+        $order->payment->total = $order->payment->subtotal + $order->payment->tax - $order->payment->discount;
+        
         $cancel->save();
         $item->delete();
       }
-
+      
       $order->save();
     } else {
       foreach($request->items as $id) {
         $item = $order->order_items->where('id', $id)->first();
         $properties = collect($item->toArray())->only(['order_id', 'product_id', 'form', 'size', 'price', 'quantity', 'discount', 'total'])->all();
-
+        
         $cancel = new CancelItem;
         $cancel->fill($properties);
         $cancel->reason = $request->reason;
-
+        
         $order->payment->cancelled += $cancel->total;
+        $order->payment->subtotal -= $item->subtotal;
+        $order->payment->tax -= $item->tax;
+        $order->payment->discount -= $item->discount;
+        $order->payment->total = $order->payment->subtotal + $order->payment->tax - $order->payment->discount;
         
         $cancel->save();
         $item->delete();
       }
     }
-
-    $order->payment->subtotal = $order->order_items->sum(subtotal);
-    $order->payment->tax = $order->order_items->sum(tax);
-    $order->payment->discount = $order->order_items->sum(discount);
-    $order->payment->total = $order->order_items->sum(total);
-
+    
     if($order->payment->total > 0 && $order->payment->total < 200) {
       $order->payment->shipping = $order->shipping->city->shipping;
     } else {
@@ -434,6 +437,10 @@ class OrderController extends Controller
         $return->reason = $request->reason;
 
         $order->payment->returned += $return->total;
+        $order->payment->subtotal -= $item->subtotal;
+        $order->payment->tax -= $item->tax;
+        $order->payment->discount -= $item->discount;
+        $order->payment->total = $order->payment->subtotal + $order->payment->tax - $order->payment->discount;
 
         $return->save();
         $item->delete();
@@ -450,16 +457,15 @@ class OrderController extends Controller
         $return->reason = $request->reason;
 
         $order->payment->returned += $return->total;
+        $order->payment->subtotal -= $item->subtotal;
+        $order->payment->tax -= $item->tax;
+        $order->payment->discount -= $item->discount;
+        $order->payment->total = $order->payment->subtotal + $order->payment->tax - $order->payment->discount;
         
         $return->save();
         $item->delete();
       }
     }
-
-    $order->payment->subtotal = $order->order_items->sum(subtotal);
-    $order->payment->tax = $order->order_items->sum(tax);
-    $order->payment->discount = $order->order_items->sum(discount);
-    $order->payment->total = $order->order_items->sum(total);
 
     if($order->payment->total > 0 && $order->payment->total < 200) {
       $order->payment->shipping = $order->shipping->city->shipping;
