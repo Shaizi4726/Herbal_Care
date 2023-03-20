@@ -75,7 +75,7 @@
 						<li>Products must be returned with the original packaging, sealed and unopened. If the product have been used, damaged or the original packaging is opened, we will decline the refunds.</li><br>
 						<li>Return of product should be initiated within 15 days of receiving the Products.</li><br>
 						<li>Your refund will reflect the total amount you paid for the product(s) you are returning. However, you will not be refunded any original shipping costs you may have paid for the delivery of the product(s) to you.</li><br>
-						<li><b>Return of partial or full order :</b> If on return, the value of invoice goes below the limit of free delivery (i.e. AED. 200.00), the shipping fee will be charged and deducted from the refundable amount.  </li><br>
+						<li><b>Return of partial or full order :</b> If on return, the value of invoice goes below the limit of free delivery (i.e. AED. 100.00), the shipping fee will be charged and deducted from the refundable amount.  </li><br>
 						<p><i>Please remember that in order for us to process your return, the process will initiate once we receive the returned goods in our warehouse and inspect the goods with the reason as provided by you.</i></p>
 					</ol>						
 					</ol>

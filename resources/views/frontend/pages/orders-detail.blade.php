@@ -126,6 +126,7 @@
                   <th>Size</th>
                   <th>Price</th>
                   <th>Qty</th>
+                  <th>Discount</th>
                   <th>Amount</th>
                   @if($return != 0 || $cancel != 0)
                     <th><input type="checkbox" name="all" id="all-checkbox" class="btn btn-submit all-checkbox" value="{{$order->id}}"></th>
@@ -143,9 +144,10 @@
                   <td>{{$item->product->name}}</td>
                   <td>{{$item->form}}</td>
                   <td>{{$item->size}}</td>
-                  <td>{{$item->price}}</td>
+                  <td>{{number_format($item->price, 2)}}</td>
                   <td>{{$item->quantity}}</td>
-                  <td>{{$item->total}}</td>
+                  <td>{{number_format($item->discount, 2)}}</td>
+                  <td>{{number_format($item->total, 2)}}</td>
                   @if($return != 0 || $cancel != 0)
                     <td><input type="checkbox" name="item_checkbox" class="btn btn-submit item-checkbox" data-total="{{$item->total}}" value="{{$item->id}}"></td>
                   @endif
@@ -169,6 +171,7 @@
             <div class="summary">
               <h5>Subtotal: </h5><span class="value">AED {{number_format($order->payment->subtotal, 2)}}</span><br/>
               <h5>VAT Amount: </h5><span class="value">AED {{number_format($order->payment->tax, 2)}}</span><br/>
+              <h5>Discount: </h5><span class="value">AED {{number_format($order->payment->Discount, 2)}}</span><br/>
               <h5>Shipping: </h5><span class="value">AED {{number_format($order->payment->shipping, 2)}}</span><br/>
               <hr/>
               <h4>Grand Total: </h4><span class="value">AED {{number_format($order->payment->total, 2)}}</span><br/>
@@ -216,7 +219,7 @@
       <button type="button" class="btn close" id="close-btn" onclick="removePopup()">
         <i class="fa-solid fa-xmark"></i>
       </button>
-      <p>Your order value will breach the minimum free shipping limit (i.e AED 200.00) therefore shipping charges would be added to total charges.</p>
+      <p>Your order value will breach the minimum free shipping limit (i.e AED 100.00) therefore shipping charges would be added to total charges.</p>
 
       <div class="action-btns">
         <button class="btn btn-submit pop-btn" onclick="removePopup()">Back</button>

@@ -41,6 +41,10 @@
 						    <input type="button" value="+" class="qty-plus plus qty-control" field="quantity">
               </div>
             </div>
+            <div class="cart-discount">
+              <h4>Discount: </h4>
+              <p class="cart-discount">AED {{number_format($cart->discount, 2)}}</p>
+            </div>
             <div class="cart-page-item-data">
               <h4>Total: </h4> 
               <p id="{{$cart->id}}-total">AED {{number_format($cart->total, 2)}}</p>
@@ -58,6 +62,7 @@
       @php
         $subtotal = Helper::CartAmount();
         $tax = Helper::totalCartTax();
+        $discount = Helper::total_discount();
         $total_amount = Helper::totalCartAmount();
       @endphp
 
@@ -73,8 +78,12 @@
         <div class="cart-total-value">
           <h4 class="tax"> VAT(5%): </h4>
           <p id="tax-value">AED {{number_format($tax, 2)}}</p>
-          </div>
         </div>
+        <div class="cart-total-value">
+          <h4 class="discount"> Discount: </h4>
+          <p id="discount-value">AED {{number_format($discount, 2)}}</p>
+        </div>
+      </div>
         <div class="cart-total-value grand-total">
           <h4 class="total"> Grand Total: </h4>
           <p id="grand-total-value">AED {{number_format($total_amount, 2)}}</p>

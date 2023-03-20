@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Order @if($order)- {{$order->order_no}} @endif</title>
+    <title>Order @if($order)- {{$order->order_no}}@endif</title>
 
     <link rel="stylesheet" href="{{public_path('frontend/css/pdf.css')}}">
   </head>
@@ -22,7 +22,7 @@
     <div class="address">
       <div class="billing">
         @php 
-          $city = App\Models\City::with('state', 'country')->where('id', $order->city_id)->get()[0];
+          $city = App\Models\City::with('state', 'country')->where('id', $order->city_id)->first();
         @endphp
         <h3>Billing Address</h3>
         @if($order->cname == null)
@@ -72,6 +72,7 @@
             <th scope="col" class="col-3">AMOUNT<br/><span>(EXCLUDING VAT)</span></th>
             <th scope="col" class="col-3">VAT %</th>
             <th scope="col" class="col-3">VAT AMOUNT</th>
+            <th scope="col" class="col-3">Discount</th>
             <th scope="col" class="col-3">AMOUNT<br/><span>(INCLUDING VAT)</span></th>
           </tr>
         </thead>
@@ -79,7 +80,7 @@
        
         @foreach($order->order_items as $order_item)
         @php 
-          $product=DB::table('products')->select('name')->where('id',$order_item->product_id)->get()[0];
+          $product=DB::table('products')->select('name')->where('id',$order_item->product_id)->first();
           $i++;
         @endphp
           <tr>
@@ -90,11 +91,12 @@
             <td>{{$order_item->form}}</td>
             <td>{{$order_item->size}}</td>
             <td>{{$order_item->quantity}}</td>
-            <td>AED {{number_format($order_item->price,2)}}</td>
-            <td>AED {{number_format($order_item->subtotal,2)}}</td>
+            <td>AED {{number_format($order_item->price, 2)}}</td>
+            <td>AED {{number_format($order_item->subtotal, 2)}}</td>
             <td>5%</td>
-            <td>AED {{number_format($order_item->tax,2)}}</td>
-            <td>AED {{number_format($order_item->total,2)}}</td>
+            <td>AED {{number_format($order_item->tax, 2)}}</td>
+            <td>AED {{number_format($order_item->discount, 2)}}</td>
+            <td>AED {{number_format($order_item->total, 2)}}</td>
           </tr>
         @endforeach
         </tbody>
@@ -104,6 +106,7 @@
             <th scope="col">AED {{number_format($order->payment->subtotal, 2)}}</th>
             <th scope="col"></th>
             <th scope="col">AED {{number_format($order->payment->tax, 2)}}</th>        
+            <th scope="col">AED {{number_format($order->payment->discount, 2)}}</th>        
             <th scope="col">AED {{number_format($sum, 2)}}</th>        
           </tr>
         </tfoot>
@@ -111,6 +114,7 @@
       <div class="summary clearfix">
         <h5>Subtotal: </h5><span class="value">AED {{number_format($order->payment->subtotal, 2)}}</span><br/>
         <h5>VAT Amount: </h5><span class="value">AED {{number_format($order->payment->tax, 2)}}</span><br/>
+        <h5>Discount: </h5><span class="value">AED {{number_format($order->payment->discount, 2)}}</span><br/>
         <h5>Shipping: </h5><span class="value">AED {{number_format($order->payment->shipping, 2)}}</span><br/>
         <hr/>
         <h4>Grand Total: </h4><span class="value">AED {{number_format($order->payment->total, 2)}}</span><br/>

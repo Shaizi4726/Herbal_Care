@@ -63,7 +63,7 @@
 		<!-- Features -->
     <div class="features" >
 			<div class="feature1" >
-				<h4><i class="fa-solid fa-rocket"></i> Free Shipping<br>Over AED 200.00</h4>
+				<h4><i class="fa-solid fa-rocket"></i> Free Shipping<br>Over AED 100.00</h4>
 			</div>
 												
 			<div class="feature2">

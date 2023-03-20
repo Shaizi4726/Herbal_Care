@@ -72,6 +72,7 @@
             <th scope="col" class="col-3">AMOUNT<br/><span>(EXCLUDING VAT)</span></th>
             <th scope="col" class="col-3">VAT %</th>
             <th scope="col" class="col-3">VAT AMOUNT</th>
+            <th scope="col" class="col-3">Discount</th>
             <th scope="col" class="col-3">AMOUNT<br/><span>(INCLUDING VAT)</span></th>
           </tr>
         </thead>
@@ -93,8 +94,9 @@
             <td>AED {{number_format($order_item->price,2)}}</td>
             <td>AED {{number_format($order_item->subtotal,2)}}</td>
             <td>5%</td>
-            <td>AED {{number_format($order_item->tax,2)}}</td>
-            <td>AED {{number_format($order_item->total,2)}}</td>
+            <td>AED {{number_format($order_item->tax, 2)}}</td>
+            <td>AED {{number_format($order_item->discount, 2)}}</td>
+            <td>AED {{number_format($order_item->total, 2)}}</td>
           </tr>
         @endforeach
         </tbody>
@@ -104,6 +106,7 @@
             <th scope="col">AED {{number_format($order->payment->subtotal, 2)}}</th>
             <th scope="col"></th>
             <th scope="col">AED {{number_format($order->payment->tax, 2)}}</th>        
+            <th scope="col">AED {{number_format($order->payment->discount, 2)}}</th>        
             <th scope="col">AED {{number_format($sum, 2)}}</th>        
           </tr>
         </tfoot>
@@ -111,6 +114,7 @@
       <div class="summary clearfix">
         <h5>Subtotal: </h5><span class="value">AED {{number_format($order->payment->subtotal, 2)}}</span><br/>
         <h5>VAT Amount: </h5><span class="value">AED {{number_format($order->payment->tax, 2)}}</span><br/>
+        <h5>Discount: </h5><span class="value">AED {{number_format($order->payment->discount, 2)}}</span><br/>
         <h5>Shipping: </h5><span class="value">AED {{number_format($order->payment->shipping, 2)}}</span><br/>
         <hr/>
         <h4>Grand Total: </h4><span class="value">AED {{number_format($order->payment->total, 2)}}</span><br/>

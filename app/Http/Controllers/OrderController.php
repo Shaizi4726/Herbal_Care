@@ -133,7 +133,7 @@ class OrderController extends Controller
     $discount = Helper::total_discount();
     $total = Helper::totalCartAmount();
     
-    if($total > 200)
+    if($total > 100)
       $shipping = 0;
     else {
       $shipping = City::where('id', $request->city)->pluck('shipping')->first();
@@ -408,7 +408,7 @@ class OrderController extends Controller
       }
     }
     
-    if($order->payment->total > 0 && $order->payment->total < 200) {
+    if($order->payment->total > 0 && $order->payment->total < 100) {
       $order->payment->shipping = $order->shipping->city->shipping;
     } else {
       $order->payment->shipping = 0;
@@ -467,7 +467,7 @@ class OrderController extends Controller
       }
     }
 
-    if($order->payment->total > 0 && $order->payment->total < 200) {
+    if($order->payment->total > 0 && $order->payment->total < 100) {
       $order->payment->shipping = $order->shipping->city->shipping;
     } else {
       $order->payment->shipping = 0;
