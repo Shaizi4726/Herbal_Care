@@ -25,5 +25,5 @@
 	</section>
 	<!-- End About Us -->
 
-	@include('frontend.layouts.newsletter')
+	
 @endsection
