@@ -1,8 +1,8 @@
 .page-title {
   font-size: 30px;
-  color: #7c8e7b;
+  color: #000;
   text-align: center;
-  margin: 0.2em 0;
+  margin: 1em 0;
 }
 
 p {
@@ -39,7 +39,7 @@ fieldset {
 }
 
 fieldset legend {
-  color: #7c8e7b;
+  color: #000;
   font-weight: bold;
   font-size: 16px;
   padding: 0.5em;
@@ -154,7 +154,7 @@ label {
 .sums-summary, .cart {
   width: 95vw;
   font-size: 2vw;
-  color: #7c8e7b;
+  color: #000;
   background-color: #f2f4e6;
   margin: 1em auto;
   padding: 0.3em;
@@ -171,10 +171,6 @@ label {
   border-bottom: 2px solid #7c8e7b;
   padding: 1em;
   width: 90%;
-}
-
-.coupon h4 {
-  display: block;
 }
 
 .coupon form {
@@ -204,6 +200,11 @@ label {
 .order-summary h4, .order-summary p {
   display: inline-block;
   margin: 0;
+}
+
+
+.coupon h4 {
+  display: block;
 }
 
 .cart-totals {

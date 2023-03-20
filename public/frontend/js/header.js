@@ -26,7 +26,7 @@ function menu() {
 window.onscroll = function() {myFunction()};
 var header = document.getElementById("desktop-header");
 var mobHeader = document.getElementById("search");
-var desCatMenu = document.getElementById("desktop-cat-menu");
+// var desCatMenu = document.getElementById("desktop-cat-menu");
 var mobCartButton = document.getElementById("mob-cart-btn");
 var mobFavButton = document.getElementById("mob-fav-btn");
 var menuButton = document.getElementById("menu-btn");
@@ -36,14 +36,14 @@ function myFunction() {
   if (window.pageYOffset > sticky) {
     header.classList.add("sticky");
     mobHeader.classList.add("sticky");
-    desCatMenu.classList.add("cat-sticky")
+    // desCatMenu.classList.add("cat-sticky")
     mobCartButton.classList.add("mob-sticky");
     mobFavButton.classList.add("mob-sticky");
     menuButton.classList.add("mob-sticky");
   } else {
     header.classList.remove("sticky");
     mobHeader.classList.remove("sticky");
-    desCatMenu.classList.remove("cat-sticky");
+    // desCatMenu.classList.remove("cat-sticky");
     mobCartButton.classList.remove("mob-sticky");
     mobFavButton.classList.remove("mob-sticky");
     menuButton.classList.remove("mob-sticky");

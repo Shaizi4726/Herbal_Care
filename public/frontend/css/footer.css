@@ -1,13 +1,13 @@
 footer {
   width: 100%;
-  color: #f2f4e6;
+  color: #fff;
   background-color: #f2f4e6;
   overflow: hidden;
   margin-top: 1rem;
 }
 
 .footer-top a {
-  color: #f2f4e6;
+  color: #fff;
   cursor: pointer;
 }
 
@@ -56,7 +56,7 @@ footer {
 }
 
 .copyright a {
-  color: #f2f4e6;
+  color: #fff;
 }
 
 @media only screen and (min-width: 768px) {
@@ -84,12 +84,11 @@ footer {
   .footer-top {
     display: flex;
     flex-direction: row;
-    justify-content: center;
-    align-items: flex-start;
+    justify-content: space-between;
+    align-items: center;
     background-color: #7c8e7b;
     margin-bottom: 0.3em;
     padding: 0 20px;
-    position: relative;
   }
 
   .logo {
@@ -102,7 +101,7 @@ footer {
 
   .footer-about {
     margin-bottom: 0;
-    width: 30%;
+    flex: 35%;
   }
 
   .footer-menu li {
@@ -113,15 +112,21 @@ footer {
   .footer-menu {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    flex: 50%;
   }
 
   .footer-top hr {
     display: none;
   }
 
+  .footer-info {
+    flex: 40%;
+    text-align: center;
+    margin-left: 1em;
+  }
+
   .footer-loc {
-    width: 30%;
+    width: 60%;
     overflow-wrap: break-word;
     white-space: normal;
   }

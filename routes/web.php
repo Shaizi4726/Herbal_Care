@@ -51,6 +51,7 @@ Route::match(['get','post'], '/product/search', 'FrontendController@product_sear
 Route::match(['get','post'], 'product-sort/','FrontendController@productSort')->name('product-sort')->middleware('account.verified');
 Route::get('/product-cat/{slug}','FrontendController@productCat')->name('product-cat')->middleware('account.verified');
 Route::get('/product-cat/{slug}/{subslug}','FrontendController@productSubCat')->name('product-subcat')->middleware('account.verified');
+Route::get('/products','FrontendController@products')->name('products')->middleware('account.verified');
 Route::get('/product-brand/{slug}','FrontendController@productBrand')->name('product-brand')->middleware('account.verified');
 Route::view('/faq', 'frontend.pages.faq')->name('faq');
 Route::view('/privacy-policy', 'frontend.pages.privacy-policy')->name('privacy-policy');
@@ -108,7 +109,7 @@ Route::post('/subscribe','FrontendController@subscribe')->name('subscribe');
 Route::resource('/review','ProductReviewController');
 Route::post('product/{slug}/review','ProductReviewController@store')->name('review.store');
 // Coupon
-Route::post('/coupon-store','CouponController@couponStore')->name('coupon-store');
+Route::post('/coupon-store', 'CouponController@couponStore')->name('coupon-store');
 // Payment
 // Route::get('payment', 'PayPalController@payment')->name('payment');
 // Route::get('cancel', 'PayPalController@cancel')->name('payment.cancel');

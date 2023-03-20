@@ -1,6 +1,7 @@
 .page-title {
   font-size: 3.5vw;
-  color: #7c8e7b;
+  margin: 1em 0;
+  color: #000;
   text-align: center;
 }
 
@@ -67,7 +68,7 @@ h4, p {
 .cart-summary {
   width: 95vw;
   font-size: 2vw;
-  color: #7c8e7b;
+  color: #000;
   background-color: #f2f4e6;
   margin: 1em auto;
   padding: 0.3em;

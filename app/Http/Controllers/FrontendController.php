@@ -60,9 +60,11 @@ class FrontendController extends Controller
       $subcat=SubCategory::with('products')->where('slug', $request->subslug)->get();
       $products=$subcat[0]->products()->get();
 
-    } else {
+    } else if ($request->slug) {
       $category = Category::with('products')->where('slug', $request->slug)->get();
       $products = $category->pluck('products')[0];
+    } else {
+      $products = Product::get();
     }
 
     $sort_by = $request->value;
@@ -70,6 +72,8 @@ class FrontendController extends Controller
     $products = $products->sortBy('name');
       
     if ($sort_by) {
+      if($sort_by == 'rand')
+        $products = $products->sortBy('id');
       if($sort_by == 'a-z')
         $products = $products->sortBy('name');
       else if($sort_by == 'z-a')
@@ -184,6 +188,13 @@ class FrontendController extends Controller
     }
   }
 
+  public function products(Request $request) {
+    $products = Product::orderBy('name')->get();
+    $categories = Category::where('status', 'active')->get();
+
+    return view('frontend.pages.product-grids')->with(['products' => $products, 'cats' => $categories, 'slug' => null, 'subslug' => null, 'search' => null, 'que' => null]);
+  }
+
   public function productCat(Request $request) {
     $category = Category::with('products')->where('slug', $request->slug)->first();
     $products = $category->products->sortBy('name');
@@ -212,7 +223,7 @@ class FrontendController extends Controller
     else
       $remember = false;
 
-    if(Auth::attempt(['email' => $data['email'], 'password' => $data['password'],'status'=>'active'], $remember)){
+    if(Auth::attempt(['email' => $data['email'], 'password' => $data['password'],'status'=>'active'], $remember)) {
       $cart_items = Session::get('cart');
 
       foreach($cart_items as $item) {
@@ -224,12 +235,26 @@ class FrontendController extends Controller
           $subtotal = $item->subtotal;
           $tax = $item->tax;
           $already_cart->quantity += $quantity;
-          $already_cart->total += $total;
+          $already_cart->total += $total + $already_cart->discount;
+          if($already_cart->coupon) {
+            if($already_cart->coupon->type == 'percent') {
+              $already_cart->discount = $already_cart->total * $already_cart->coupon->value / 100;
+              $already_cart->total = $already_cart->total - $already_cart->discount;
+            }
+          }
           $already_cart->subtotal += $subtotal;
           $already_cart->tax += $tax;
           $already_cart->save();
 
         } else {
+          $product = Product::with('categories', 'subcat')->where('id', $item->product_id)->first();
+          $carts = CartItem::with('coupon')->where('user_id', Auth()->user()->id)->get();
+          $coupon = null;
+          foreach($carts as $cart_item) {
+            if($cart_item->coupon) {
+              $coupon = $cart_item->coupon;
+            }
+          }
 
           $cart = new CartItem;
           $cart->user_id = auth()->user()->id;
@@ -242,6 +267,51 @@ class FrontendController extends Controller
           $cart->total = $item->total;
           $cart->subtotal = $item->subtotal;
           $cart->tax = $item->tax;
+          if($coupon) {
+            if($coupon->effect == 'product') {
+              if($product->coupon_id == $coupon->id) {
+                if($coupon->type == 'percent') {
+                  $cart->discount = $cart->total * $coupon->value / 100;
+                  $cart->total = $cart->total - $cart->discount;
+                  $cart->coupon_id = $coupon->id;
+                }
+              }
+            } elseif($coupon->effect == 'category') {
+              foreach($product->categories as $category) {
+                if($category->coupon_id == $coupon->id) {
+                  if($coupon->type == 'percent') {
+                    $cart->discount = $cart->total * $coupon->value / 100;
+                    $cart->total = $cart->total - $cart->discount;
+                    $cart->coupon_id = $coupon->id;
+                  }
+                }
+              }
+            } elseif($coupon->effect == 'subcategory') {
+              foreach($product->subcat as $subcat) {
+                if($subcat->coupon_id == $coupon->id) {
+                  if($coupon->type == 'percent') {
+                    $cart->discount = $cart->total * $coupon->value / 100;
+                    $cart->total = $cart->total - $cart->discount;
+                    $cart->coupon_id = $coupon->id;
+                  }
+                }
+              }
+            } elseif($coupon->effect == 'user') {
+              if(Auth()->user()->coupon_id == $coupon->id) {
+                if($coupon->type == 'percent') {
+                  $cart->discount = $cart->total * $coupon->value / 100;
+                  $cart->total = $cart->total - $cart->discount;
+                  $cart->coupon_id = $coupon->id;
+                }
+              }
+            } elseif($coupon->effect == 'all') {
+              if($coupon->type == 'percent') {
+                $cart->discount = $cart->total * $coupon->value / 100;
+                $cart->total = $cart->total - $cart->discount;
+                $cart->coupon_id = $coupon->id;
+              }
+            }
+          }
           $cart->save();
         }
       }

@@ -28,13 +28,9 @@
 
       <button id="mob-cart-btn" class="btn header-icon items-menu-btn">
         <a href="{{route('cart')}}">
-        <i class="fa-solid fa-cart-shopping" id="cart-icon"></i>
-
-        @auth
-          <div class="items-count"><span class="cart-count">{{count(Helper::getAllProductFromCart())}}</span></div></a>
-        @else
-          <div class="items-count"><span class="cart-count">{{count(Helper::getAllProductFromCart())}}</span></div></a>
-        @endauth
+          <i class="fa-solid fa-cart-shopping" id="cart-icon"></i>
+          <div class="items-count"><span class="cart-count">{{count(Helper::getAllProductFromCart())}}</span></div>
+        </a>
       </button>
     </div>      
   </div>      
@@ -81,34 +77,39 @@
         <li><a href="{{route('home')}}" class="nav-link desktop-nav">Home</a></li>
         <li><a href="{{route('about-us')}}" class="nav-link desktop-nav">About</a></li>
         <li id = "shop">
-          <a href="#" class="nav-link desktop-nav dropdown-toggle">Shop</a>
-          <ul class="collapse cat-menu" id="desktop-cat-menu">
-            @foreach ($categories as $cat)
+          <a href="{{route('products')}}" class="nav-link desktop-nav dropdown-toggle">Shop</a>
+          <div class="collapse shop-menu">
+            <ul class="cat-menu" id="desktop-cat-menu">
+              @foreach ($categories as $cat)
 
-            @php
-              $subcat = $cat->subcat()->get();
-            @endphp
+              @php
+                $subcat = $cat->subcat()->get();
+              @endphp
 
-            @if ($subcat->count() > 0)
-              <li class="submenu-dropdown">
-                <a href="{{route('product-cat', $cat->slug)}}" class="dropdown-item"> {{$cat->name}} </a>
-            
-                <ul class="collapse cat-submenu">
-                  @foreach ($subcat as $sub_menu)
-                    <li>
-                      <a href="{{route('product-subcat', [$cat->slug, $sub_menu->slug])}}" class="dropdown-item"> {{$sub_menu->name}}</a>
-                    </li>
-                  @endforeach
-                </ul>
-              </li>
-            @else
-              <li>
-                <a href="{{route('product-cat', $cat->slug)}}" class="dropdown-item"> {{$cat->name}} </a>
-              </li>
-            @endif
-            @endforeach
-          </ul>
+              @if ($subcat->count() > 0)
+                <li class="submenu-dropdown">
+                  <a href="{{route('product-cat', $cat->slug)}}" class="dropdown-item"> {{$cat->name}} </a>
+              
+                  <div class="collapse submenu">
+                    <ul class="cat-submenu">
+                      @foreach ($subcat as $sub_menu)
+                        <li>
+                          <a href="{{route('product-subcat', [$cat->slug, $sub_menu->slug])}}" class="dropdown-item"> {{$sub_menu->name}}</a>
+                        </li>
+                      @endforeach
+                    </ul>
+                  </div>
+                </li>
+              @else
+                <li>
+                  <a href="{{route('product-cat', $cat->slug)}}" class="dropdown-item"> {{$cat->name}} </a>
+                </li>
+              @endif
+              @endforeach
+            </ul>
+          </div>
         </li>
+        <li><a href="{{route('home')}}" class="nav-link desktop-nav">Contact Us</a></li>
       </ul>
 
       <div class="search-bar">                                        

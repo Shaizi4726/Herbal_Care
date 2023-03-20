@@ -26,6 +26,7 @@ return new class extends Migration
       $table->string('size');
       $table->float('price');
       $table->integer('quantity');
+      $table->float('discount')->nullable();
       $table->float('total');
       $table->string('reason')->nullable();
       $table->timestamps();

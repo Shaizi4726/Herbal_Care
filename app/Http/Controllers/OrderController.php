@@ -130,6 +130,7 @@ class OrderController extends Controller
     $order_id = Order::where('order_no', $order->order_no)->pluck('id')->first();
     $subtotal = Helper::CartAmount();
     $tax = Helper::totalCartTax();
+    $discount = Helper::total_discount();
     $total = Helper::totalCartAmount();
     
     if($total > 200)
@@ -149,6 +150,7 @@ class OrderController extends Controller
     $payment->subtotal = $subtotal;
     $payment->tax = $tax;
     $payment->shipping = $shipping;
+    $payment->discount = $discount;
     $payment->total = $total;
     $payment->save();
     
@@ -196,6 +198,12 @@ class OrderController extends Controller
       $order_item->quantity = $cart->quantity;
       $order_item->subtotal = $cart->subtotal;
       $order_item->tax = $cart->tax;
+      if(Auth::check()) {
+        $order_item->discount = $cart->discount;
+        $order_item->coupon_id = $cart->coupon_id;
+        $order->coupon_id = $cart->coupon_id;
+        $order->save();
+      }
       $order_item->total = $cart->total;
       $order_item->save();
     }
@@ -363,84 +371,71 @@ class OrderController extends Controller
     if($request->all == 1) {
       $order->status = 'cancelled';
       foreach($order->order_items as $item) {
-        $properties = collect($item->toArray())->only(['order_id', 'product_id', 'form', 'size', 'price', 'quantity', 'total'])->all();
+        $properties = collect($item->toArray())->only(['order_id', 'product_id', 'form', 'size', 'price', 'quantity', 'discount', 'total'])->all();
 
         $cancel = new CancelItem;
         $cancel->fill($properties);
         $cancel->reason = $request->reason;
 
         $order->payment->cancelled += $cancel->total;
-        $order->payment->total -= $cancel->total;
-        $order->payment->subtotal = $order->payment->total / 1.05;
-        $order->payment->tax = $order->payment->total - $order->payment->subtotal;
-        $order->payment->shipping = 0;
 
         $cancel->save();
-        $order->payment->save();
         $item->delete();
       }
+
       $order->save();
     } else {
       foreach($request->items as $id) {
         $item = $order->order_items->where('id', $id)->first();
-        $properties = collect($item->toArray())->only(['order_id', 'product_id', 'form', 'size', 'price', 'quantity', 'total'])->all();
+        $properties = collect($item->toArray())->only(['order_id', 'product_id', 'form', 'size', 'price', 'quantity', 'discount', 'total'])->all();
 
         $cancel = new CancelItem;
         $cancel->fill($properties);
         $cancel->reason = $request->reason;
 
         $order->payment->cancelled += $cancel->total;
-        $order->payment->total -= $cancel->total;
-        $order->payment->subtotal = $order->payment->total / 1.05;
-        $order->payment->tax = $order->payment->total - $order->payment->subtotal;
-
-        if($order->payment->total < 200) {
-          $order->payment->shipping = $order->shipping->city->shipping;
-          $order->payment->total += $order->payment->shipping;
-        }
-
-        if($order->payment->status == 'paid') {
-          $refund = $order->payment->cancelled - $order->payment->shipping;
-          $order->payment->refund = $refund;
-        }
         
         $cancel->save();
         $item->delete();
-        $order->payment->save();
       }
     }
+
+    $order->payment->subtotal = $order->order_items->sum(subtotal);
+    $order->payment->tax = $order->order_items->sum(tax);
+    $order->payment->discount = $order->order_items->sum(discount);
+    $order->payment->total = $order->order_items->sum(total);
+
+    if($order->payment->total > 0 && $order->payment->total < 200) {
+      $order->payment->shipping = $order->shipping->city->shipping;
+    } else {
+      $order->payment->shipping = 0;
+    }
+
+    if($order->payment->status == 'paid') {
+      $refund = $order->payment->cancelled - $order->payment->shipping;
+      $order->payment->refund = $refund;
+    }
+
+    $order->payment->total += $order->payment->shipping;
+    $order->payment->save();
   }
 
   // Return order items
   public function return_order(Request $request) {
-    $order = Order::with('payment', 'order_items', 'shipping.city', 'coupon.products')->where('id', $request->id)->first();
+    $order = Order::with('payment', 'order_items', 'shipping.city')->where('id', $request->id)->first();
 
     if($request->all == 1) {
       $order->status = 'returned';
       foreach($order->order_items as $item) {
-        $properties = collect($item->toArray())->only(['order_id', 'product_id', 'form', 'size', 'price', 'quantity', 'total'])->all();
-        
+        $properties = collect($item->toArray())->only(['order_id', 'product_id', 'form', 'size', 'price', 'quantity', 'discount', 'total'])->all();
+
         $return = new ReturnItem;
         $return->fill($properties);
         $return->reason = $request->reason;
 
         $order->payment->returned += $return->total;
-        $order->payment->total -= $return->total;
-        $order->payment->subtotal = $order->payment->total / 1.05;
-        $order->payment->tax = $order->payment->total - $order->payment->subtotal;
-
-        if($order->payment->total < 200) {
-          $order->payment->shipping = $order->shipping->city->shipping;
-          $order->payment->total += $order->payment->shipping;
-        }
-
-        if($order->payment->status == 'paid') {
-          $refund = $order->payment->returned - $order->payment->shipping;
-          $order->payment->refund = $refund;
-        }
 
         $return->save();
-        $order->payment->save();
         $item->delete();
       }
 
@@ -448,44 +443,37 @@ class OrderController extends Controller
     } else {
       foreach($request->items as $id) {
         $item = $order->order_items->where('id', $id)->first();
-        $properties = collect($item->toArray())->only(['order_id', 'product_id', 'form', 'size', 'price', 'quantity', 'total'])->all();
-        
+        $properties = collect($item->toArray())->only(['order_id', 'product_id', 'form', 'size', 'price', 'quantity', 'discount', 'total'])->all();
+
         $return = new ReturnItem;
         $return->fill($properties);
         $return->reason = $request->reason;
 
         $order->payment->returned += $return->total;
-        $order->payment->total -= $return->total;
-        $order->payment->subtotal = $order->payment->total / 1.05;
-        $order->payment->tax = $order->payment->total - $order->payment->subtotal;
-
-        /* if($order->coupon_id != null) {
-          if($order->coupon->effect == 'product') {
-            $products = $order->coupon->products;
-            foreach($products as $product) {
-              if($product->id == $item->product_id) {
-                $order->payment->discount = 0;
-              }
-            }
-          }
-        } */
-
-        if($order->payment->total < 200) {
-          $order->payment->shipping = $order->shipping->city->shipping;
-          $order->payment->total += $order->payment->shipping;
-        }
-
-        if($order->payment->status == 'paid') {
-          $refund = $order->payment->returned - $order->payment->shipping;
-          $order->payment->refund = $refund;
-        }
-
-        $return->save();
-        $order->payment->save();
         
+        $return->save();
         $item->delete();
       }
     }
+
+    $order->payment->subtotal = $order->order_items->sum(subtotal);
+    $order->payment->tax = $order->order_items->sum(tax);
+    $order->payment->discount = $order->order_items->sum(discount);
+    $order->payment->total = $order->order_items->sum(total);
+
+    if($order->payment->total > 0 && $order->payment->total < 200) {
+      $order->payment->shipping = $order->shipping->city->shipping;
+    } else {
+      $order->payment->shipping = 0;
+    }
+
+    if($order->payment->status == 'paid') {
+      $refund = $order->payment->returned - $order->payment->shipping;
+      $order->payment->refund = $refund;
+    }
+
+    $order->payment->total += $order->payment->shipping;
+    $order->payment->save();
   }
 
   // Sale invoice generate

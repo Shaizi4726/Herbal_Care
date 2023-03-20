@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use App\Models\Product;
 use App\Models\Wishlist;
 use App\Models\ProductAttribute;
+
 class WishlistController extends Controller
 {
     protected $product = null;
@@ -15,6 +17,7 @@ class WishlistController extends Controller
     }
 
     public function wishlist() {
+      $products = new Collection();
       if(Auth::check()) {
         $wishlists = Wishlist::with('product')->where('user_id', Auth::user()->id)->get();
         $products = $wishlists->pluck('product');

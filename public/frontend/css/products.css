@@ -2,7 +2,7 @@
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-around;
-  align-items: stretch;
+  align-items: flex-start;
   clear: both;
 }
 
@@ -90,6 +90,7 @@
   }
   
   .categories-menu {
+    width: 100%;
     padding: 1em;
   }
   

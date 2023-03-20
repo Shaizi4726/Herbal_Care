@@ -16,7 +16,7 @@
           <li>
             <picture>
               <source media="(min-width: 768px)" srcset="{{$banner->photo_desktop}}">
-              <source media="(min-width: 420px)" srcset="{{$banner->photo_tablet}}">
+              <source media="(min-width: 480px)" srcset="{{$banner->photo_tablet}}">
               <img class="slide-img" src="{{$banner->photo_mobile}}" alt="Slider Image">
             </picture>
           </li>
@@ -185,6 +185,9 @@
     @endif
 
     @if($categories)
+      <div class="fixed-banner-container">
+        <img src="{{asset('images/fixed banner.jpg')}}" alt=""> 
+      </div>
       @foreach($categories as $cat)
         @php
           $product_cat = $cat->products()->limit(9)->get();
@@ -244,6 +247,44 @@
         @endif
       @endforeach
     @endif
+
+    <div class="fixed-banner-container">
+      <img src="{{asset('images/fixed banner.jpg')}}" alt=""> 
+    </div>
+    <h2>Visit Our Stores</h2>
+    <div class="store-card carousel-cell">
+      <img class="product-image" src="{{$product->photo}}" alt="product image">
+      
+      <div class="overlay">
+        <button id="trn{{$product->id}}" class="btn btn-quick-view" title="Quick View" onclick="showModal(id, {{$product->id}})"> 
+          <i class="fa-regular fa-eye"></i>
+          <p>Quick View</p>
+        </button>
+      </div>
+
+      <div class="meta-detail">
+        <h4 class="card-product-title">{{$product->name}}</h4>
+      @if($minprice==$maxprice)
+        <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span></p>
+      @else
+        <p class="price">AED <span class="value">{{number_format($minprice,2)}}</span> - AED <span class="value">{{number_format($maxprice,2)}}</span></p>
+      @endif              </div>
+      <div class="prod-detail-link">
+        <a href="{{route('product-detail', $product->slug)}}" class="btn btn-submit detail-link"> Product Details </a>
+        
+        @auth
+          @if(count($wishlist) != 0)
+            <button class="btn favbtn" onclick="fav(this, {{$product->id}})"><i class="fa-solid fa-heart fav"></i></button>
+          @else
+            <button class="btn favbtn" onclick="fav(this, {{$product->id}})"><i class="fa-regular fa-heart fav"></i></button>
+          @endif
+        @else
+          <button class="btn favbtn" onclick="window.location.href = 'user/login';"><i class="fa-regular fa-heart fav"></i></button>
+        @endauth
+      </div>
+    </div>
+      
+    </div>
 
     <div id="modal-container" class="modal-container"></div>
     <section id="checkout-popup" class="checkout-popup">

@@ -60,7 +60,7 @@ thead {
 }
 
 #order-no, #status {
-  color: #7c8e7b;
+  color: #000;
 }
 
 .status {
@@ -110,7 +110,7 @@ thead {
   margin: auto;
   position: relative;
   top: 10%;
-  color: #7c8e7b;
+  color: #000;
   background-color: #f2f4e6;
   width: 90vw;
   box-shadow: 0 5px 10px 2px rgba(44, 84, 47, 0.5);

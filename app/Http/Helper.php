@@ -50,24 +50,6 @@ class Helper
     }
   }
 
-  // Total cart amount with tax
-  public static function totalCartAmount()
-  {
-    if (Auth::check()) {
-      $user_id = auth()->user()->id;
-      return CartItem::where('user_id', $user_id)->sum('total');
-    } else {
-      $cart_items = Session::get('cart');
-      $sum = 0;
-
-      foreach ($cart_items as $item) {
-        $sum += $item->total;
-      }
-
-      return $sum;
-    }
-  }
-
   //Total cart amount without tax
   public static function CartAmount()
   {
@@ -110,6 +92,24 @@ class Helper
       return CartItem::where('user_id', $user_id)->sum('discount');
     } else {
       return 0;
+    }
+  }
+
+  // Total cart amount with tax
+  public static function totalCartAmount()
+  {
+    if (Auth::check()) {
+      $user_id = auth()->user()->id;
+      return CartItem::where('user_id', $user_id)->sum('total');
+    } else {
+      $cart_items = Session::get('cart');
+      $sum = 0;
+
+      foreach ($cart_items as $item) {
+        $sum += $item->total;
+      }
+
+      return $sum;
     }
   }
 }

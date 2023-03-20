@@ -19,7 +19,7 @@ class ReturnItem extends Model
    *
    * @var array
    */
-  protected $fillable = ['order_id', 'product_id', 'form', 'size', 'price', 'quantity', 'total', 'reason'];
+  protected $fillable = ['order_id', 'product_id', 'form', 'size', 'price', 'quantity', 'discount', 'total', 'reason'];
   
   /**
    * Get the order that owns the order item.
