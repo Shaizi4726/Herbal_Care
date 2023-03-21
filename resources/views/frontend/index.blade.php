@@ -289,7 +289,7 @@
     
     <div id="modal-container" class="modal-container"></div>
     <section id="checkout-popup" class="checkout-popup">
-      <div id="location-popup" class="ch-popup" data-toggle="0" tabindex="-1">
+      <div id="location-popup" class="ch-popup" data-toggle="0">
         <button type="button" class="btn close close-inner" id="inner-close-btn" onclick="remInnerModal()">
           <i class="fa-solid fa-xmark"></i>
         </button>

@@ -45,7 +45,7 @@ $('#action').on('click', function() {
     });
   }
 
-  if(total < 200) {
+  if(total < 100) {
     if($(this).hasClass('item-cancel') && total == 0) {
       $('#reason-popup').css('width', '100%');
       $('#reason-popup').css('height', '100%');

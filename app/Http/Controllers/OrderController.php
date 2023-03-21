@@ -467,7 +467,7 @@ class OrderController extends Controller
       }
     }
 
-    if($order->payment->total > 0 && $order->payment->total < 100) {
+    if($order->payment->total >= 0 && $order->payment->total < 100) {
       $order->payment->shipping = $order->shipping->city->shipping;
     } else {
       $order->payment->shipping = 0;

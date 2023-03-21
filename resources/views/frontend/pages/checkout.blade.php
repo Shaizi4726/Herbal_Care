@@ -409,19 +409,21 @@
           <h4 class="tax"> VAT(5%): </h4>
           <p id="tax-value">AED {{number_format($tax, 2)}}</p>
         </div>
+        @auth
+          <div class="cart-total-value">
+            <h4 class="discount"> Discount: </h4>
+            <p id="discount-value">AED {{number_format($discount, 2)}}</p>
+          </div>
+        @endauth
         <div class="cart-total-value">
-          <h4 class="discount"> Discount: </h4>
-          <p id="discount-value">AED {{number_format($discount, 2)}}</p>
+          <h4 class="shopping"> Shipping: </h4>
+          <p id="shipping-value">AED 0.00</p>
         </div>
       </div>
      
       <div class="cart-total-value grand-total">
         <h4 class="total"> Grand Total: </h4>
-        @if(session()->has('coupon'))
-          <p id="grand-total-value">AED {{number_format($total, 2)}}</p>
-        @else
-          <p id="grand-total-value">AED {{number_format($total, 2)}}</p>
-        @endif
+        <p id="grand-total-value" data-total={{$total}}>AED {{number_format($total, 2)}}</p>
       </div>
       <input type="submit" form="order-form" class="btn btn-checkout" value="Place Order">
     </div>
