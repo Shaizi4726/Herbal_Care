@@ -30,13 +30,21 @@ $(function() {
   });
 
   $('[name|=shipping_option]').on('change', function() {
+    let total = parseFloat($('#grand-total-value').attr('data-total'));
+
     if(this.value == 'different') {
       $('#shipping-details').toggleClass('collapse');
       $('#cart-summary').css('max-height', '+=25em');
       let shipping = parseFloat($('#shipping-city-name').attr('data-shipping'));
-      let total = parseFloat($('#grand-total-value').attr('data-total')) + shipping;
+
+      if(total > 100) {
+        shipping = 0;
+      }
+
+      total += shipping;
+
       if(shipping) {
-        $('#shipping-value').html(shipping.toFixed(2));
+        $('#shipping-value').html('AED ' + shipping.toFixed(2));
         $('#grand-total-value').html('AED ' + total.toFixed(2));
       }
     }
@@ -47,8 +55,14 @@ $(function() {
         $('#cart-summary').css('max-height', '-=25em');
         $('#shipping-city').val(undefined);
         let shipping = parseFloat($('#city-name').attr('data-shipping'));
-        let total = parseFloat($('#grand-total-value').attr('data-total')) + shipping;
-        $('#shipping-value').html(shipping.toFixed(2));
+
+        if(total > 100) {
+          shipping = 0;
+        }
+  
+        total += shipping;
+        
+        $('#shipping-value').html('AED ' + shipping.toFixed(2));
         $('#grand-total-value').html('AED ' + total.toFixed(2));
       }
     }
@@ -388,14 +402,20 @@ function state(el) {
 function city(el) {
   let id = $(el).attr('data-city');
   let shipping = parseFloat($(el).attr('data-shipping'));
-  let total = parseFloat($('#grand-total-value').attr('data-total')) + shipping;
+  let total = parseFloat($('#grand-total-value').attr('data-total'));
+
+  if(total > 100) {
+    shipping = 0;
+  }
+
+  total += shipping;
 
   if ($(el).hasClass('shipping')) {
     $('#shipping-city-name').html($(el).html());
     $('#shipping-city-name').css('color', '#000');
     $('#shipping-city-name').attr('data-shipping', shipping);
     $('#shipping-city').val(id);
-    $('#shipping-value').html(shipping.toFixed(2));
+    $('#shipping-value').html('AED ' + shipping.toFixed(2));
     $('#grand-total-value').html('AED ' + total.toFixed(2));
   } else {
     $('#city-name').html($(el).html());
@@ -403,7 +423,7 @@ function city(el) {
     $('#city-name').attr('data-shipping', shipping);
     $('#city').val(id);
     if(! $('#shipping-city').val()) {
-      $('#shipping-value').html(shipping.toFixed(2));
+      $('#shipping-value').html('AED ' + shipping.toFixed(2));
       $('#grand-total-value').html('AED ' + total.toFixed(2));
     }
   }

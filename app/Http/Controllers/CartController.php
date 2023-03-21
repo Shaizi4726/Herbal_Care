@@ -49,6 +49,7 @@ class CartController extends Controller
     } else if (Auth::check()) {
       $already_cart = CartItem::with('coupon')->where(['user_id' => auth()->user()->id, 'product_id' => $product->id, 'attr_id' => $attr->id])->first();
       $order = Order::where('user_id', auth()->user()->id)->first();
+      $discount = 0;
 
       if ($already_cart) {
         $quantity = $request->qty;
@@ -57,18 +58,21 @@ class CartController extends Controller
         $tax = $total - $subtotal;
         $already_cart->quantity += $quantity;
         $already_cart->total += $total + $already_cart->discount;
-        if($already_cart->coupon) {
-          if($already_cart->coupon->type == 'percent') {
-            $already_cart->discount = $already_cart->total * $already_cart->coupon->value / 100;
-            $already_cart->total -= $already_cart->discount;
-          }
-        }
 
         if(! $order) {
-          $already_cart->discount += $already_cart->total / 10;
-          $already_cart->total -= $already_cart->total / 10;
+          $discount += $already_cart->total / 10;
+          $already_cart->total -= $discount;
         }
 
+        if($already_cart->coupon) {
+          if($already_cart->coupon->type == 'percent') {
+            $coupon_discount = $already_cart->total * $already_cart->coupon->value / 100;
+            $discount += $coupon_discount;
+            $already_cart->total -= $coupon_discount;
+          }
+        }
+        
+        $already_cart->discount = $discount;
         $already_cart->subtotal += $subtotal;
         $already_cart->tax += $tax;
         $already_cart->save();
@@ -76,6 +80,8 @@ class CartController extends Controller
       } else {
         $carts = CartItem::with('coupon')->where('user_id', Auth()->user()->id)->get();
         $coupon = null;
+        $discount = 0;
+
         foreach($carts as $cart_item) {
           if($cart_item->coupon) {
             $coupon = $cart_item->coupon;
@@ -95,12 +101,19 @@ class CartController extends Controller
         $cart->total = $attr->price * $cart->quantity;
         $cart->subtotal = $cart->total / 1.05;
         $cart->tax = $cart->total - $cart->subtotal;
+        
+        if(!$order) {
+          $discount += $cart->total / 10;
+          $cart->total -= $cart->total / 10;
+        }
+
         if($coupon) {
           if($coupon->effect == 'product') {
             if($product->coupon_id == $coupon->id) {
               if($coupon->type == 'percent') {
-                $cart->discount = $cart->total * $coupon->value / 100;
-                $cart->total -= $cart->discount;
+                $coupon_discount = $cart->total * $coupon->value / 100;
+                $discount += $coupon_discount;
+                $cart->total -= $coupon_discount;
                 $cart->coupon_id = $coupon->id;
               }
             }
@@ -108,8 +121,9 @@ class CartController extends Controller
             foreach($product->categories as $category) {
               if($category->coupon_id == $coupon->id) {
                 if($coupon->type == 'percent') {
-                  $cart->discount = $cart->total * $coupon->value / 100;
-                  $cart->total -= $cart->discount;
+                  $coupon_discount = $cart->total * $coupon->value / 100;
+                  $discount += $coupon_discount;
+                  $cart->total -= $coupon_discount;
                   $cart->coupon_id = $coupon->id;
                 }
               }
@@ -118,8 +132,9 @@ class CartController extends Controller
             foreach($product->subcat as $subcat) {
               if($subcat->coupon_id == $coupon->id) {
                 if($coupon->type == 'percent') {
-                  $cart->discount = $cart->total * $coupon->value / 100;
-                  $cart->total -= $cart->discount;
+                  $coupon_discount = $cart->total * $coupon->value / 100;
+                  $discount += $coupon_discount;
+                  $cart->total -= $coupon_discount;
                   $cart->coupon_id = $coupon->id;
                 }
               }
@@ -127,24 +142,23 @@ class CartController extends Controller
           } elseif($coupon->effect == 'user') {
             if(Auth()->user()->coupon_id == $coupon->id) {
               if($coupon->type == 'percent') {
-                $cart->discount = $cart->total * $coupon->value / 100;
-                $cart->total -= $cart->discount;
+                $coupon_discount = $cart->total * $coupon->value / 100;
+                $discount += $coupon_discount;
+                $cart->total -= $coupon_discount;
                 $cart->coupon_id = $coupon->id;
               }
             }
           } elseif($coupon->effect == 'all') {
             if($coupon->type == 'percent') {
-              $cart->discount = $cart->total * $coupon->value / 100;
-              $cart->total -= $cart->discount;
+              $coupon_discount = $cart->total * $coupon->value / 100;
+              $discount += $coupon_discount;
+              $cart->total -= $coupon_discount;
               $cart->coupon_id = $coupon->id;
             }
           }
         }
 
-        if(!$order) {
-          $cart->discount += $cart->total / 10;
-          $cart->total -= $cart->total / 10;
-        }
+        $cart->discount = $discount;
         $cart->save();
       }
       
@@ -251,25 +265,30 @@ class CartController extends Controller
     if (Auth::check()) {
       $cart = CartItem::with('coupon')->find($request->id);
       $order = Order::where('user_id', auth()->user()->id)->first();
+      $discount = 0;
       
       $cart->quantity = $request->qty;
       $cart->total = $cart->price * $request->qty;
       $cart->subtotal = ($cart->total) / 1.05;
       $cart->tax = $cart->total - $cart->subtotal;
-      if($cart->coupon) {
-        if($cart->coupon->type == 'percent') {
-          $cart->discount = $cart->total * $cart->coupon->value / 100;
-          $cart->total -= $cart->discount;
-        }
-      }
+
       if(!$order) {
-        $cart->discount += $cart->total / 10;
+        $discount += $cart->total / 10;
         $cart->total -= $cart->total / 10;
       }
-      $cart->save();
 
+      if($cart->coupon) {
+        if($cart->coupon->type == 'percent') {
+          $coupon_discount = $cart->total * $cart->coupon->value / 100;
+          $discount += $coupon_discount;
+          $cart->total -= $coupon_discount;
+        }
+      }
+      
+      $cart->discount = $discount;
+      $cart->save();
       $total = $cart->total;
-      $discount = $cart->discount;
+
     } else {
       $cart_items = Session::get('cart');
       $found = null; 

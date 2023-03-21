@@ -187,9 +187,9 @@ class CouponController extends Controller
         foreach($carts as $cart) {
           if($cart->product->coupon_id == $coupon->id) {
             if($coupon->type == 'percent') {
-              $cart->discount = $cart->total * $coupon->value / 100;
-              $discount += $cart->discount;
-              $cart->total = $cart->total - $cart->discount;
+              $coupon_discount = $cart->total * $coupon->value / 100;
+              $cart->discount += $coupon_discount;
+              $cart->total -= $coupon_discount;
               $cart->coupon_id = $coupon->id;
             }
             $cart->save();
@@ -201,9 +201,9 @@ class CouponController extends Controller
           foreach($cart->product->categories as $category) {
             if($category->coupon_id == $coupon->id) {
               if($coupon->type == 'percent') {
-                $cart->discount = $cart->total * $coupon->value / 100;
-                $discount += $cart->discount;
-                $cart->total = $cart->total - $cart->discount;
+                $coupon_discount = $cart->total * $coupon->value / 100;
+                $cart->discount += $coupon_discount;
+                $cart->total -= $coupon_discount;
                 $cart->coupon_id = $coupon->id;
               }
               $cart->save();
@@ -216,9 +216,9 @@ class CouponController extends Controller
           foreach($cart->product->subcat as $subcat) {
             if($subcat->coupon_id == $coupon->id) {
               if($coupon->type == 'percent') {
-                $cart->discount = $cart->total * $coupon->value / 100;
-                $discount += $cart->discount;
-                $cart->total = $cart->total - $cart->discount;
+                $coupon_discount = $cart->total * $coupon->value / 100;
+                $cart->discount += $coupon_discount;
+                $cart->total -= $coupon_discount;
                 $cart->coupon_id = $coupon->id;
               }
               $cart->save();
@@ -230,9 +230,9 @@ class CouponController extends Controller
         foreach($carts as $cart) {
           if($cart->user->coupon_id == $coupon->id) {
             if($coupon->type == 'percent') {
-              $cart->discount = $cart->total * $coupon->value / 100;
-              $discount += $cart->discount;
-              $cart->total = $cart->total - $cart->discount;
+              $coupon_discount = $cart->total * $coupon->value / 100;
+              $cart->discount += $coupon_discount;
+              $cart->total -= $coupon_discount;
               $cart->coupon_id = $coupon->id;
             }
             $cart->save();
@@ -242,9 +242,9 @@ class CouponController extends Controller
         $carts = CartItem::where('user_id', Auth()->user()->id)->get();
         foreach($carts as $cart) {
           if($coupon->type == 'percent') {
-            $cart->discount = $cart->total * $coupon->value / 100;
-            $discount += $cart->discount;
-            $cart->total = $cart->total - $cart->discount;
+            $coupon_discount = $cart->total * $coupon->value / 100;
+            $cart->discount += $coupon_discount;
+            $cart->total -= $coupon_discount;
             $cart->coupon_id = $coupon->id;
           }
           $cart->save();
