@@ -1,13 +1,11 @@
+offer 10% on first order after register
 Refund bank account number for cod
 Mobile Popup Offers
 Payment Methods, Social Media Links
 zoom cart image on hover
 Forgot Password Page
-aboutUs Check Email Validation backend
 Send username and password in the verify email
-link address with google map
+link customer address with google map 
 quickview on related products
 product form with flu
 after verification verify page shouldn't be accessed
-
-Coupon would become invalid on return or cancellation / Coupon applied items are not applicable for return or cancellation

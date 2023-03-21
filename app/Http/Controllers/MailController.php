@@ -11,7 +11,7 @@ class MailController extends Controller
   public function send_mail($email, $pdf)
   {
     $data["email"] = $email;
-    $data["title"] = env('APP_NAME');
+    $data["title"] = env('APP_NAME', 'HerbalCare');
     $data["body"] = "This is test mail with pdf attachment";
 
     Mail::send('frontend.order.mail', $data, function($message)use($data, $pdf) {

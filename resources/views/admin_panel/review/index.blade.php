@@ -44,7 +44,7 @@
                 <tr>
                     <td>{{$review->id}}</td>
                     <td>{{$review->user->fname}}</td>
-                    <td>{{$review->product->title}}</td>
+                    <td>{{$review->product->name}}</td>
                     <td>{{$review->review}}</td>
                     <td>
                      <ul style="list-style:none">
@@ -77,7 +77,7 @@
             @endforeach
           </tbody>
         </table>
-        {!! $reviews->withQueryString()->links('pagination::bootstrap-5'<span style="float:right">{{$reviews->links()}}</span>
+        
         @else
           <h6 class="text-center">No reviews found!!!</h6>
         @endif
