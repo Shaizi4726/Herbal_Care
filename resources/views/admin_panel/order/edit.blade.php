@@ -46,10 +46,28 @@
       </div>      
     </div>
     <button type="submit" class="btn btn-primary" >Update</button> 
-  </div>   
+  </div>  
 </form>
-  
 
+@if($order->payment->refund)
+
+<form id="refund" action="{{route('order.update',$order->id)}}">
+  <div class="card">
+    <h5 class="card-header">Payment Refund</h5>
+    <div class="card-body">
+      <div class="form-group">
+        <label for="refund" class="col-form-label">Refund </label>
+        <input id="refund" type="number" name="refund" value="{{$order->payment->refund}}">
+        @error('refond')
+          <span class="text-danger">{{$message}}</span>
+        @enderror
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary" >Refund</button> 
+  </div>
+</form>
+
+@endif  
 @endsection
 
 @push('styles')
