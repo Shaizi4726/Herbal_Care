@@ -190,7 +190,7 @@
 					<h4>Your Rating</h4>
 
 					@auth 
-						<form class="form" method="post" action="{{route('review.store',$product->slug)}}"> 
+						<form class="form" method="post" action="{{route('review.store', $product->slug)}}"> 
 							@csrf 
 							<div class="rate">
 								<input type="radio" id="star5" name="rate" value="5" />

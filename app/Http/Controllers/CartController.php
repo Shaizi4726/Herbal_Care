@@ -315,9 +315,4 @@ class CartController extends Controller
     $total_amount = Helper::totalCartAmount();
     return [$discount, $total, $subtotal, $tax, $total_discount, $total_amount];
   }
-
-  public function checkout(Request $request)
-  {
-    return view('frontend.pages.checkout');
-  }
 }

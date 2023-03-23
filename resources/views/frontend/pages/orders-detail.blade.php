@@ -94,6 +94,16 @@
                 <h5>Email: </h5><span class="value">{{$order->email}}</span><br/>
                 <h5>Address: </h5><span class="value">{{$order->address}}, {{$city->name}},<br>{{$city->state->name}}, {{$city->country->name}}</span><br/>
             </div>
+              
+            <a href="{{route('sale.pdf', ['id' => $order->id, 'download' => 1])}}"> 
+              <button id="{{$order->id}}-sale-invoice" class="btn btn-submit sale-invoice" data-order="{{$order->order_no}}">Sale Order</button>
+            </a>
+            
+            @if ($completed == 1)
+              <a href="{{route('tax.pdf', ['id' => $order->id, 'download' => 1])}}">
+                <button id="{{$order->id}}tax-invoice" class="btn btn-submit tax-invoice" data-order="{{$order->order_no}}">Tax Invoice</button>
+              </a>
+            @endif
             <div class="shipping">
               @php 
                 $shipping_city = App\Models\City::with('state', 'country')->where('id', $order->shipping->city_id)->get()[0];

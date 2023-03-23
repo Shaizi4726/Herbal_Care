@@ -48,11 +48,11 @@ Route::view('/about-us','frontend.pages.about-us')->name('about-us')->middleware
 Route::view('/contact','frontend.pages.contact')->name('contact')->middleware('account.verified');
 Route::get('product-detail/{slug}','FrontendController@product_detail')->name('product-detail')->middleware('account.verified');
 Route::match(['get','post'], '/product/search', 'FrontendController@product_search')->name('product.search')->middleware('account.verified');
-Route::match(['get','post'], 'product-sort/','FrontendController@productSort')->name('product-sort')->middleware('account.verified');
+Route::match(['get','post'], '/sort','FrontendController@productSort')->name('product-sort')->middleware('account.verified');
 Route::get('/product-cat/{slug}','FrontendController@productCat')->name('product-cat')->middleware('account.verified');
 Route::get('/product-cat/{slug}/{subslug}','FrontendController@productSubCat')->name('product-subcat')->middleware('account.verified');
 Route::get('/products','FrontendController@products')->name('products')->middleware('account.verified');
-Route::get('/product-brand/{slug}','FrontendController@productBrand')->name('product-brand')->middleware('account.verified');
+Route::view('/checkout', 'frontend.pages.checkout')->name('checkout');
 Route::view('/faq', 'frontend.pages.faq')->name('faq');
 Route::view('/privacy-policy', 'frontend.pages.privacy-policy')->name('privacy-policy');
 Route::view('/terms-and-conditions', 'frontend.pages.terms-and-conditions')->name('terms-and-conditions');
@@ -71,7 +71,6 @@ Route::view('/cart', 'frontend.pages.cart')->name('cart');
 Route::get('/states', 'StateController@getStates');
 Route::get('/cities', 'CityController@getCities');
 
-Route::get('/checkout','CartController@checkout')->name('checkout');
 Route::get('/apply-coupon','CouponController@coupon_apply')->name('coupon-apply');
 
 // Wishlist
@@ -80,10 +79,6 @@ Route::get('wishlist-add/','WishlistController@wishlist_add')->name('add-to-wish
 Route::get('wishlist-delete/','WishlistController@wishlist_delete')->name('wishlist-delete');
 Route::post('/order','OrderController@store')->name('order');
 Route::get('/income','OrderController@incomeChart')->name('product.order.income');
-// Route::get('/user/chart','AdminController@userPieChart')->name('user.piechart');
-Route::get('/product-grids','FrontendController@productGrids')->name('product-grids');
-Route::get('/product-lists','FrontendController@productLists')->name('product-lists');
-Route::match(['get','post'],'/sort','FrontendController@productSort')->name('shop.filter');
 
 // Order invoices
 Route::get('sale/{id}/order/{download?}', 'OrderController@sale_invoice')->name('sale.pdf');
@@ -103,22 +98,14 @@ Route::get('/order-return', 'OrderController@return_order')->name('order-return'
 // cancel item or order
 Route::get('/order-cancel', 'OrderController@cancel_order')->name('order-cancel');
 
-// NewsLetter
-Route::post('/subscribe','FrontendController@subscribe')->name('subscribe');
 // Product Review
 Route::resource('/review','ProductReviewController');
-Route::post('product/{slug}/review','ProductReviewController@store')->name('review.store');
+Route::post('product/{slug}/review', 'ProductReviewController@store')->name('review.store');
 // Coupon
 Route::post('/coupon-store', 'CouponController@couponStore')->name('coupon-store');
 // Payment
-// Route::get('payment', 'PayPalController@payment')->name('payment');
-// Route::get('cancel', 'PayPalController@cancel')->name('payment.cancel');
-// Route::get('payment/success', 'PayPalController@success')->name('payment.success');
 Route::match(['get','post'], '/stripe', 'StripeController@payment')->name('stripe.post');
-Route::get('cancel', 'PayPalController@cancel')->name('payment.cancel');
-Route::get('payment/success', 'PayPalController@success')->name('payment.success');
-//Export
-Route::get('/export-products','ProductController@exportProducts')->name('export-products');
+
 //ProductAttribute
 Route::match(['get','post'], '/admin/product/edit-attributes/{id}','ProductController@editAttributes')->name('editAttribute');
 
@@ -130,15 +117,10 @@ Route::match(['get','post'], 'admin/product/delete-category/{id}','ProductContro
 //Delete Brand
 Route::match(['get','post'], 'admin/product/delete-brand/{id}','ProductController@deleteBrand')->name('delete-brand');
 
-Route::match(['get','post'], '/get-product-price','FrontendController@getProductPrice');
-Route::match(['get','post'], '/get-product-form','ProductController@getProductForm');
-Route::match(['get','post'], '/get-product-size','FrontendController@getProductSize');
 // Backend section start
 Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     Route::get('/','AdminController@index')->name('admin');
-    Route::get('/file-manager',function(){
-        return view('admin_panel.layouts.file-manager');
-    })->name('file-manager');
+    Route::view('/file-manager', 'admin_panel.layouts.file-manager')->name('file-manager');
     // user route
     Route::resource('users','UsersController');
     // Banner
@@ -162,9 +144,6 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     Route::resource('/product','ProductController');
     //import product
     Route::resource('/productImport','ProductImportController');
-    
-    // Ajax for sub category
-    Route::get('/category/{id}/child','CategoryController@getChildByParent');
 
     // Order
     Route::resource('/order','OrderController');
@@ -185,39 +164,8 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     Route::post('change-password', 'AdminController@changPasswordStore')->name('change.password');
 });
 
-
-
-
-// User section start
-Route::group(['prefix'=>'/user','middleware'=>['user']],function(){
-    Route::get('/','UserDashboardController@index')->name('user');
-     // Profile
-     Route::get('/profile','UserDashboardController@profile')->name('user-profile');
-     Route::post('/profile/{id}','UserDashboardController@profileUpdate')->name('user-profile-update');
-    //  Order
-    Route::get('/order',"UserDashboardController@orderIndex")->name('user.order.index');
-    Route::get('/order/show/{id}',"UserDashboardController@orderShow")->name('user.order.show');
-    Route::delete('/order/delete/{id}','UserDashboardController@userOrderDelete')->name('user.order.delete');
-    // Product Review
-    Route::get('/user-review','UserDashboardController@productReviewIndex')->name('user.productreview.index');
-    Route::delete('/user-review/delete/{id}','UserDashboardController@productReviewDelete')->name('user.productreview.delete');
-    Route::get('/user-review/edit/{id}','UserDashboardController@productReviewEdit')->name('user.productreview.edit');
-    Route::patch('/user-review/update/{id}','UserDashboardController@productReviewUpdate')->name('user.productreview.update');
-    
-    // Post comment
-    Route::get('user-post/comment','UserDashboardController@userComment')->name('user.post-comment.index');
-    Route::delete('user-post/comment/delete/{id}','UserDashboardController@userCommentDelete')->name('user.post-comment.delete');
-    Route::get('user-post/comment/edit/{id}','UserDashboardController@userCommentEdit')->name('user.post-comment.edit');
-    Route::patch('user-post/comment/udpate/{id}','UserDashboardController@userCommentUpdate')->name('user.post-comment.update');
-    
-    // Password Change
-    Route::get('change-password', 'UserDashboardController@changePassword')->name('user.change.password.form');
-    Route::post('change-password', 'UserDashboardController@changPasswordStore')->name('change.password');
-
-});
-
 Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
-    \UniSharp\LaravelFilemanager\Lfm::routes();
+  \UniSharp\LaravelFilemanager\Lfm::routes();
 });
 
 Route::get('/email', 'MailController@send_mail')->name('send_mail');

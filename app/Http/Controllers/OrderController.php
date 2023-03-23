@@ -44,7 +44,12 @@ class OrderController extends Controller
     $current_month = Carbon::now()->month;
     $current_year = Carbon::now()->year;
     $current_date = Carbon::now()->toDateString();
-      
+
+    $request->request->add(['total' => 200, 'order_id' => 123]);
+    if($request['pay_mthd'] == 'op') {
+      $req = (new StripeController)->payment($request);
+    }
+
     $this->validate($request, [
       'cust_type' => 'required|string'
     ]);
@@ -140,7 +145,7 @@ class OrderController extends Controller
       $total += $shipping;
     }
     
-    $request->request->add(['total' => $total]);
+    $request->request->add(['total' => $total, 'order_id' => $order_id]);
     
     $payment = new Payment();
     $payment->order_id = $order_id;
@@ -335,15 +340,19 @@ class OrderController extends Controller
   }
 
   public function order_details (Request $request) {
-    $order = Order::with('order_items.product', 'shipping')->where('order_no', $request->id)->get();
+    $order = Order::with('order_items.product', 'shipping')->where('order_no', $request->id)->first();
+    $completed = 0;
 
-    if(count($order) != 0) {
-      $order = $order[0];
+    if($order) {
       $shipping = $order->shipping;
 
       $cancel = 1;
       $return = 0;
       $date = Carbon::now()->subDays(15)->toDateString();
+
+      if($order->status == 'completed') {
+        $completed = 1;
+      }
       
       if($shipping->shipped != null ) {
         $cancel = 0;
@@ -361,7 +370,7 @@ class OrderController extends Controller
       $order = -1;
     }
 
-    return view('frontend.pages.orders-detail')->with(['orders' => 0, 'order' => $order, 'return' => $return, 'cancel' => $cancel, 'completed' => 0]);
+    return view('frontend.pages.orders-detail')->with(['orders' => 0, 'order' => $order, 'return' => $return, 'cancel' => $cancel, 'completed' => $completed]);
   }
 
   // Cancel order items
@@ -440,6 +449,7 @@ class OrderController extends Controller
         $order->payment->subtotal -= $item->subtotal;
         $order->payment->tax -= $item->tax;
         $order->payment->discount -= $item->discount;
+        $order->payment->shipping = $order->shipping->city->shipping;
         $order->payment->total = $order->payment->subtotal + $order->payment->tax - $order->payment->discount;
 
         $return->save();

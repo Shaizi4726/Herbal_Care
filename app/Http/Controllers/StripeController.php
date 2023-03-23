@@ -18,22 +18,50 @@ class StripeController extends Controller
     Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 
     $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
-    $token = $stripe->tokens->create([
-      'card' => [
-        'number' => $request->account_no,
-        'exp_month' => $request->expiry_month,
-        'exp_year' => $request->expiry_year,
-        'cvc' => $request->cvv_cvc,
-      ],
-    ]);
-    
-    $payment = Stripe\Charge::create ([
-      "amount" => $request->total * 100,
-      "currency" => "aed",
-      "source" => $token,
-      "description" => "Stripe Payment Test"
-    ]);
+    try {
+      $token = $stripe->tokens->create([
+        'card' => [
+          'number' => $request->account_no,
+          'exp_month' => $request->expiry_month,
+          'exp_year' => $request->expiry_year,
+          'cvc' => $request->cvv_cvc
+        ],
+      ]);
+      
+      $payment = $stripe->charges->create ([
+        "amount" => $request->total * 100,
+        "currency" => "aed",
+        "source" => $token,
+        "metadata" => ["name" => $request->account_name, "order_id" => $request->order_id],
+        "description" => "Online Payment"
+      ]);
+      
+      dd($payment);
+      $ch = $stripe->charges->retrieve(
+        $payment->id,
+      );
 
-    return $payment;
+
+      $message = "Your payment was successful";
+    } catch(\Stripe\Exception\CardException $e) {
+      $message = "A payment error occurred: {$e->getError()->message}";
+      dd($e);
+    } catch (\Stripe\Exception\RateLimitException $e) {
+      $message = "Too many attempts occured.";
+    } catch (\Stripe\Exception\InvalidRequestException $e) {
+      $message = "An invalid request occurred.";
+      dd($e);
+    } catch (\Stripe\Exception\AuthenticationException $e) {
+      $message = "Unable to Authenticate.";
+    } catch (\Stripe\Exception\ApiConnectionException $e) {
+      $message = "Connection problem.";
+    } catch (\Stripe\Exception\ApiErrorException $e) {
+      $message = "Sorry for inconvenience. API error occured.";
+    } catch (Exception $e) {
+      $message = "Another problem occurred, maybe unrelated to Stripe.";
+    }
+    
+    dd($message);
+    return $message;
   } 
 }

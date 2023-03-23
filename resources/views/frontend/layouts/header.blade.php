@@ -61,7 +61,7 @@
             @if(Auth::user()->role=='admin')
               <li><i class="fa-solid fa-user-tie d-user-icon"></i><a class="user-nav" href="{{route('admin')}}"  target="_blank">@if(Auth::user()->fname){{Auth::user()->fname}} {{Auth::user()->lname}}@else{{Auth::user()->company_name}}@endif</a></li>
             @else 
-              <li><i class="fa-solid fa-user d-user-icon"></i> @if(Auth::user()->fname) {{Auth::user()->fname}} {{Auth::user()->lname}}@else{{Auth::user()->company_name}}@endif</li>
+              <li><i class="fa-solid fa-user d-user-icon"></i><a class="user-nav" href="javascript:void(0);">@if(Auth::user()->fname) {{Auth::user()->fname}} {{Auth::user()->lname}}@else{{Auth::user()->company_name}}@endif</a></li>
             @endif
               <li><i class="fa-solid fa-right-from-bracket d-user-icon"></i><a class="user-nav" href="{{route('user.logout')}}">Logout</a></li>
           @else
@@ -212,7 +212,7 @@
         @if(Auth::user()->role=='admin')
           <li><i class="fa-solid fa-user-tie"></i><a class="user-nav" href="{{route('admin')}}"  target="_blank">@if(Auth::user()->fname){{Auth::user()->fname}} {{Auth::user()->lname}}@else{{Auth::user()->company_name}}@endif</a></li>
         @else 
-          <li><i class="fa-solid fa-user"></i>@if(Auth::user()->fname){{Auth::user()->fname}} {{Auth::user()->lname}}@else{{Auth::user()->company_name}}@endif</li>
+          <li><i class="fa-solid fa-user"></i><a class="user-nav" href="javascript:void(0);">@if(Auth::user()->fname) {{Auth::user()->fname}} {{Auth::user()->lname}}@else{{Auth::user()->company_name}}@endif</a></li>
         @endif
           <li><i class="fa-solid fa-right-from-bracket"></i><a class="user-nav" href="{{route('user.logout')}}">Logout</a></li>
       @else

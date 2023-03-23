@@ -29,7 +29,7 @@
 			padding: 10px;
 			font-size: large;
 			font-family: Verdana, Geneva, Tahoma, sans-serif;
-			color: #7c8e7b;
+			color: #000;
 			background: #faf9f6;
 			border-radius: 10px;
 		}

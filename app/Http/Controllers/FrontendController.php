@@ -177,17 +177,6 @@ class FrontendController extends Controller
     return view('frontend.pages.product-grids')->with(['products' => $products, 'cats' => $categories, 'slug' => null, 'subslug' => null, 'search' => 1, 'que' => $request->search]);
   }
 
-  public function productBrand(Request $request){
-    $products=Brand::getProductByBrand($request->slug);
-    $recent_products=Product::where('status','active')->orderBy('id','DESC')->limit(3)->get();
-
-    if(request()->is('herb.loc/product-grids')){
-      return view('frontend.pages.product-lists')->with('products',$products->products)->with('recent_products',$recent_products);
-    } else {
-      return view('frontend.pages.product-grids')->with('products',$products->products)->with('recent_products',$recent_products);
-    }
-  }
-
   public function products(Request $request) {
     $products = Product::orderBy('name')->get();
     $categories = Category::where('status', 'active')->get();
