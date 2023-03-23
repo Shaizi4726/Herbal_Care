@@ -46,10 +46,35 @@
       </div>      
     </div>
     <button type="submit" class="btn btn-primary" >Update</button> 
-  </div>   
+  </div>  
 </form>
-  
 
+<?php if($order->payment->refund): ?>
+
+<form id="refund" action="<?php echo e(route('order.update',$order->id)); ?>">
+  <div class="card">
+    <h5 class="card-header">Payment Refund</h5>
+    <div class="card-body">
+      <div class="form-group">
+        <label for="refund" class="col-form-label">Refund </label>
+        <input id="refund" type="number" name="refund" value="<?php echo e($order->payment->refund); ?>">
+        <?php $__errorArgs = ['refond'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+          <span class="text-danger"><?php echo e($message); ?></span>
+        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary" >Refund</button> 
+  </div>
+</form>
+
+<?php endif; ?>  
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startPush('styles'); ?>
