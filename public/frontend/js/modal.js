@@ -15,8 +15,6 @@ function showModal(id, productId) {
     },
     success: function(response) {
       $('#modal-container').html(response);
-      $('#modal').focus();
-
       $('body').css('height', '90vh');
       $('body').css('overflow', 'hidden');
       $(el).css('transform', 'scale(1)');

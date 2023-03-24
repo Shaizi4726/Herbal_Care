@@ -1,20 +1,30 @@
 <header class="header web-header" id="header">
   <!-- Topbar -->
+  @php
+    $settings = DB::table('settings')->first();
+    $categories = Helper::getAllCategories();
+  @endphp 
   <div class="topbar" id="mob-header">
-    <div class="header-content header-logo-title">
-      @php 
-        $data = DB::table('settings')->first(); 
-      @endphp
+    <div class="header-content">
+      <button id="menu-btn" class="btn header-icon" onclick="showMenu()"><i class="fa-solid fa-bars icon" id="bars-icon"></i></button>                                       
 
-      <a href="{{route('home')}}" class="header-logo">
-        <img src="{{$data->logo}}" alt="logo">
-      </a>
+      <div class="header-logo-title">
+        <a href="{{route('home')}}" class="header-logo website-logo">
+          <img src="{{$settings->logo}}" alt="logo">
+        </a>
 
-      <h2 class="header-title">HerbalCare</h2>
+        <h1 class="header-title website-title">HerbalCare</h1>
+      </div>
+
+      <button id="mob-cart-btn" class="btn header-icon items-menu-btn">
+        <a href="{{route('cart')}}">
+          <i class="fa-solid fa-cart-shopping" id="cart-icon"></i>
+          <div class="items-count"><span class="cart-count">{{count(Helper::getAllProductFromCart())}}</span></div>
+        </a>
+      </button>
     </div>
 
     <div class="search-bar" id= "search">
-      <button id="menu-btn" class="btn header-icon" onclick="showMenu()"><i class="fa-solid fa-bars icon" id="bars-icon"></i></button>                                       
       <form method="post" action="{{route('product.search')}}" class="search-form">
         @csrf
         <input type="search" name="search" class="form-controller search-term" placeholder="Search Products..." autocomplete="off">                                                                
@@ -25,24 +35,69 @@
         <i class="fa-solid fa-heart" id="fav-icon"></i>
         <div class="items-count"><span class="fav-qty">{{Helper::favCount()}}</span></div></a>
       </button>
-
-      <button id="mob-cart-btn" class="btn header-icon items-menu-btn">
-        <a href="{{route('cart')}}">
-          <i class="fa-solid fa-cart-shopping" id="cart-icon"></i>
-          <div class="items-count"><span class="cart-count">{{count(Helper::getAllProductFromCart())}}</span></div>
-        </a>
-      </button>
     </div>      
-  </div>      
+  </div>
+  
+  <nav class="nav" id="mob-nav">
+    <button type="button" class="btn close" id="close-btn" onclick="closeMenu()"><i class="fa-solid fa-xmark"></i></button>                  
+    <div class="navbar-content">
+      <ul class="menu">
+        <li><a href="{{route('home')}}" class="nav-link mob-nav">Home</a></li>
+        <li><a href="{{route('about-us')}}" class="nav-link mob-nav">About</a></li>
+        <li id="shop">
+          <a onclick="menu()" class="nav-link mob-nav dropdown-toggle">Shop</a>
+          <i id="shop-dropdown-icon" class="bx bxs-down-arrow"></i>
+          <ul class="collapse cat-menu" id="mob-cat-menu">
+            @foreach ($categories as $cat)
+              @php
+                $subcat = $cat->subcat()->get();
+              @endphp
+
+              @if ($subcat->count() > 0)
+                <li class="submenu-dropdown">
+                  <a href="{{route('product-cat', $cat->slug)}}" class="dropdown-item"> {{$cat->name}}</a>
+
+                  <ul class="cat-submenu">
+                    @foreach ($subcat as $sub_menu)
+                    <li>
+                      <a href="{{route('product-subcat', [$cat->slug, $sub_menu->slug])}}" class="dropdown-item"> {{$sub_menu->name}}</a>
+                    </li>
+                    @endforeach
+                  </ul>
+                </li>
+              @else
+                <li>
+                  <a href="{{route('product-cat', $cat->slug)}}" class="dropdown-item"> {{$cat->name}} </a>
+                </li>
+              @endif
+            @endforeach
+          </ul>
+        </li>
+      </ul>
+      <hr>
+    
+      <ul class="list-main">
+        <li><i class="fa-solid fa-clipboard"></i></i><a class="user-nav" href="{{route('orders-detail')}}">Order Details</a></li>
+        <li><i class="fa-solid fa-location-dot"></i><a class="user-nav" href="{{route('order.track')}}" >Track Order</a></li>
+        @auth 
+          @if(Auth::user()->role=='admin')
+            <li><i class="fa-solid fa-user-tie"></i><a class="user-nav" href="{{route('admin')}}"  target="_blank">@if(Auth::user()->fname){{Auth::user()->fname}} {{Auth::user()->lname}}@else{{Auth::user()->company_name}}@endif</a></li>
+          @else 
+            <li><i class="fa-solid fa-user"></i><a class="user-nav" href="javascript:void(0);">@if(Auth::user()->fname) {{Auth::user()->fname}} {{Auth::user()->lname}}@else{{Auth::user()->company_name}}@endif</a></li>
+          @endif
+            <li><i class="fa-solid fa-right-from-bracket"></i><a class="user-nav" href="{{route('user.logout')}}">Logout</a></li>
+        @else
+          <li><i class="fa-solid fa-right-to-bracket"></i><a class="user-nav" href="{{route('login.form')}}">Login</a></li>
+          <li><i class="fa-solid fa-user-plus"></i><a class="user-nav" href="{{route('register.form')}}">Register</a></li>
+        @endauth
+      </ul>    
+    </div>
+  </nav>
   
   <div class="topbar" id="desktop-header">
     <div class="header-content">
-      <div id="header-logo" class="header-logo">
-        @php
-          $settings= DB::table('settings')->get();
-          $categories = Helper::getAllCategories();
-        @endphp                    
-        <a href="{{route('home')}}"><img src="@foreach($settings as $data) {{$data->logo}} @endforeach" alt="logo" width="50" height="50"></a>
+      <div id="header-logo" class="header-logo">                   
+        <a href="{{route('home')}}"><img src="{{$settings->logo}}" alt="logo" width="50" height="50"></a>
       </div>
 
       <div class="header-title-div">
@@ -165,61 +220,3 @@
     </nav>
   </div> 
 </header>
-
-<nav class="nav" id="mob-nav">
-  <button type="button" class="btn close" id="close-btn" onclick="closeMenu()"><i class="fa-solid fa-xmark"></i></button>                  
-  <div class="navbar-content">
-    <ul class="menu">
-      <li><a href="{{route('home')}}" class="nav-link mob-nav">Home</a></li>
-      <li><a href="{{route('about-us')}}" class="nav-link mob-nav">About</a></li>
-      <li id="shop">
-        <a onclick="menu()" class="nav-link mob-nav dropdown-toggle">Shop</a>
-        <ul class="collapse cat-menu" id="mob-cat-menu">
-          @foreach ($categories as $cat)
-
-          @php
-            $subcat = $cat->subcat()->get();
-          @endphp
-
-          @if ($subcat->count() > 0)
-          <li class="submenu-dropdown">
-            <a href="{{route('product-cat', $cat->slug)}}" class="dropdown-item"> {{$cat->name}}</a>
-
-            <ul class="collapse cat-submenu">
-              @foreach ($subcat as $sub_menu)
-              <li>
-                <a href="{{route('product-subcat', [$cat->slug, $sub_menu->slug])}}" class="dropdown-item"> {{$sub_menu->name}}</a>
-              </li>
-              @endforeach
-            </ul>
-          </li>
-
-          @else
-          <li>
-            <a href="{{route('product-cat', $cat->slug)}}" class="dropdown-item"> {{$cat->name}} </a>
-          </li>
-          @endif
-          @endforeach
-        </ul>
-      </li>
-    </ul>
-    <hr>
-  
-    <ul class="list-main">
-      <li><i class="fa-solid fa-clipboard"></i></i><a class="user-nav" href="{{route('orders-detail')}}">Order Details</a></li>
-      <li><i class="fa-solid fa-location-dot"></i><a class="user-nav" href="{{route('order.track')}}" >Track Order</a></li>
-      @auth 
-        @if(Auth::user()->role=='admin')
-          <li><i class="fa-solid fa-user-tie"></i><a class="user-nav" href="{{route('admin')}}"  target="_blank">@if(Auth::user()->fname){{Auth::user()->fname}} {{Auth::user()->lname}}@else{{Auth::user()->company_name}}@endif</a></li>
-        @else 
-          <li><i class="fa-solid fa-user"></i><a class="user-nav" href="javascript:void(0);">@if(Auth::user()->fname) {{Auth::user()->fname}} {{Auth::user()->lname}}@else{{Auth::user()->company_name}}@endif</a></li>
-        @endif
-          <li><i class="fa-solid fa-right-from-bracket"></i><a class="user-nav" href="{{route('user.logout')}}">Logout</a></li>
-      @else
-        <li><i class="fa-solid fa-right-to-bracket"></i><a class="user-nav" href="{{route('login.form')}}">Login</a></li>
-        <li><i class="fa-solid fa-user-plus"></i><a class="user-nav" href="{{route('register.form')}}">Register</a></li>
-      @endauth
-    </ul>    
-  </div>
-</nav>
-

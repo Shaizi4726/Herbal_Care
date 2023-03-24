@@ -3,6 +3,12 @@
   top: 0;
 }
 
+.subtitle {
+  display: inline-block;
+  font-size: 0.95em;
+  margin-right: 0.5em;
+}
+
 .details-review-div {
   text-align: center;
 }
@@ -21,7 +27,7 @@
 .ch-popup .close {
   position: absolute;
   right: 1rem;
-  top: 0;
+  top: -0.1em;
   width: 30px;
   z-index: 10;
 }

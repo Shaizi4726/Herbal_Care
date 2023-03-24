@@ -9,98 +9,83 @@
 
 /*========== Topbar ==========*/
 .topbar {
-  color: #f2f4e6;
+  color: #fff;
   background-color: #7c8e7b;
   position: relative;
 }
 
 .header-content {
   display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-icon {
+  color: #fff;
+  font-size: 1.5em;
+  height: 1.3em;
+}
+
+.header-icon a {
+  color: #fff;
+}
+
+#menu-btn {
+  margin-left: 0.5em;
+}
+
+.header-logo-title {
+  display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.header-logo img {
-  margin-top: 0.5em;
-  width: 3em;
-  height: 1.5em;
+.website-logo img {
+  width: 3.5em;
+  height: 1.75em;
+  margin-top: 0.8em;
 }
 
-.header-title {
+.website-title {
+  font-size: 1.3em;
   letter-spacing: 0.1em;
 }
 
-.header-icon {
-  color: #f2f4e6;
-  font-size: 1.5em;
-  height: 1.3em;
-  position: absolute;
-}
-
-.header-icon a {
-  color: #f2f4e6;
-}
-
-.sticky {
-  position: fixed;
-  top: 0;
-  z-index: 10;
-  width: 100%;
-}
-
-#menu-btn {
-  top: 0.75em;
-  left: 0.75em;
-}
-
-#mob-cart-btn {
-  top: 0.75em;
-  right: 0.5em;
-}
-
 .items-count {
-  height: 1.2em;
-  width: 1.2em;
   display: inline-block;
-  background-color: #f2f4e6;
+  color: #000;
+  background-color: #fff;
+  font-size: 0.4em;
+  width: 1.2em;
+  height: 1.2em;
   border-radius: 50%;
   position: relative;
   bottom: 2.1em;
   right: 1.4em;
-  color: #000;
-  font-size: 0.4em;
 }
 
 .items-count span {
   position: relative;
-  bottom: 0.02em;
 }
 
 /*========== Search Bar ==========*/
-.search-bar {
-  background-color: #7c8e7b;
-}
-
 .search-form {
   display: flex;
-  width: 50%;
+  width: 60%;
   margin: 0.5em auto;
   transition: 0.5s ease-in-out;
 }
 
-.search-form:hover {
-  width: 55%;
-}
-
 .search-term {
-  width: 100%;
-  border: 2px solid #fff;
-  border-right: none;
-  padding: 0.2em;
-  height: 2.5em;
-  font-size: 0.6em;
-  border-radius: 5px 0 0 5px;
   color: #000;
+  font-size: 0.7em;
+  width: 100%;
+  height: 2.5em;
+  border-right: none;
+  border: 2px solid #fff;
+  border-radius: 5px 0 0 5px;
+  padding: 0.2em;
   margin-bottom: 1em;
 }
 
@@ -109,20 +94,19 @@
 }
 
 .search-btn {
+  color: #000;
+  background-color: #f2f4e6;
+  font-size: 0.7em;
   width: 30%;
   height: 2.5em;
-  background-color: #f2f4e6;
-  color: #000;
   border-radius: 0 5px 5px 0;
   cursor: pointer;
-  font-size: 0.6em;
   margin-bottom: 1em;
 }
 
 .fav-btn {
-  font-size: 1.5em;
   position: absolute;
-  right: 0.5em;
+  right: 0;
   bottom: 0.25em;
 }
 
@@ -130,81 +114,37 @@
   bottom: 1.9em;
 }
 
-/*========== Sticky Mobile Menu ==========*/
-#search.sticky {
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-}
-
-.sticky .search-form {
-  flex: 40%;
-}
-
-.sticky .search-term {
-  margin-bottom: 0;
-}
-
-.sticky .search-btn {
-  margin-bottom: 0;
-}
-
-.sticky #mob-fav-btn {
-  position: relative;
-  left: 0.8em;
-  top: 0.05em;
-}
-
-.mob-sticky {
-  position: static;
-  font-size: 1.1em;
-  flex: 10%;
-}
-
-.mob-sticky .items-count {
-  height: 5em;
-  width: 5em;
-  position: relative;
-  bottom: 9.5em;
-  right: 5em;
-  color: #000;
-  font-size: 0.1em;
-}  
-
-.mob-sticky .items-count span {
-  position: relative;
-  top: 0.5em;
+.sticky {
+  position: fixed;
+  top: 0; 
+  z-index: 10;
 }
 
 /*========== Mobile Menu Overlay ==========*/
 #mob-nav {
   background-color: #faf9f6;
+  width: 0;
+  height: 100%;
   overflow: auto;
   position: fixed;
   top: 0;
   left: 0;
   z-index: 10;
-  width: 0;
-  height: 100%;
   transition: 0.4s ease-in-out;
-}
-
-.navbar-content {
-  display: flex;
-  align-content: space-around;
-  justify-content: center;
-  flex-wrap: wrap;
-  flex-direction: column;
-  align-items: center;
 }
 
 .close {
   color: #000;
-  position: relative;
-  top: 0.85em;
-  font-size: 40px;
+  font-size: 2.5em;
   width: 25vw;
   height: 10vh;
+}
+
+.navbar-content {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
 .menu {
@@ -212,8 +152,8 @@
 }
 
 .menu li {
-  margin: 30px;
   text-align: center;
+  margin: 1.5em;
 }
 
 .menu a {
@@ -221,23 +161,7 @@
 }
 
 .mob-nav {
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.list-main a {
-  color: #000;
-  padding: 20px;
-  width: 80%;
-}
-
-.list-main li {
-  text-align: left;
-  padding: 10px;
-}
-
-.user-nav{
-  font-size: 14px;
+  font-size: 1.5em;
   font-weight: bold;
 }
 
@@ -247,10 +171,32 @@
   width: 100%;
 }
 
-#shop .cat-menu li a {
-  font-size: 14px;
-  font-weight: bold;
+.cat-menu li a {
   color: #000;
+  font-size: 1em;
+  font-weight: bold;
+}
+
+.cat-submenu li a {
+  font-size: 0.7em;
+}
+
+.list-main li {
+  text-align: left;
+  padding: 0.8em;
+  margin-left: 1em;
+}
+
+.list-main i {
+  font-size: 1.1em;
+}
+
+.list-main a {
+  display: inline-block;
+  color: #000;
+  font-size: 1.1em;
+  font-weight: bold;
+  padding: 0.5em 1.2em;
 }
 
 @media only screen and (min-width: 480px) {

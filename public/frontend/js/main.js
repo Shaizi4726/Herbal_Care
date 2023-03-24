@@ -127,22 +127,22 @@ function cartAdd(id) {
     },
     success: function (resp) {
       $('.cart-btn').addClass('clicked');
-      $('#checkout-popup').css('width', '100vw');
-      $('#checkout-popup').css('height', '100vh');
+      $('body').css('height', '90vh');
+      $('body').css('overflow', 'hidden');
+      $('#checkout-popup').css('transform', 'scale(1)');
       $(".loc-btn").show();
       $(".chkt-btn").addClass('collapse');
       $('#location-popup').attr('data-toggle', '1');
-      $('#location-popup').css('transform', 'scale(1)');
       $('.cart-count').html(resp[0]);
       $('.cart-count-header').html(resp[0] + ' Items');
       $('.shopping-list').html(resp[1]);
       $('.total-amount').html('AED ' + resp[2]);
     },
     error: function () {
-      $('#checkout-popup').css('width', '100vw');
-      $('#checkout-popup').css('height', '100vh');
+      $('body').css('height', '90vh');
+      $('body').css('overflow', 'hidden');
+      $('#checkout-popup').css('transform', 'scale(1)');
       $('#location-popup').attr('data-toggle', '1');
-      $('#location-popup').css('transform', 'scale(1)');
       $('#location-popup').html('<div class="error modal-error">Something went wrong. Please try again...</div>');
     }
   });
@@ -155,12 +155,12 @@ function cartAdd(id) {
 }
 
 function remInnerModal() {
-  $('#checkout-popup').css('width', 0);
-  $('#checkout-popup').css('height', 0);
+  $('body').css('height', 'auto');
+  $('body').css('overflow', 'auto');
+  $('#checkout-popup').css('transform', 'scale(0)');
   $('.modal-close').show();
   $('#location-popup').attr('data-toggle', '0');
   $('.cart-btn').removeClass('clicked');
-  $('#location-popup').css('transform', 'scale(0)');
 }
 
 /*==================== Add product to favorites ====================*/

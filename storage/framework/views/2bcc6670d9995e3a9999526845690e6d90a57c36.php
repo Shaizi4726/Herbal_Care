@@ -1,20 +1,30 @@
 <header class="header web-header" id="header">
   <!-- Topbar -->
+  <?php
+    $settings = DB::table('settings')->first();
+    $categories = Helper::getAllCategories();
+  ?> 
   <div class="topbar" id="mob-header">
-    <div class="header-content header-logo-title">
-      <?php 
-        $data = DB::table('settings')->first(); 
-      ?>
+    <div class="header-content">
+      <button id="menu-btn" class="btn header-icon" onclick="showMenu()"><i class="fa-solid fa-bars icon" id="bars-icon"></i></button>                                       
 
-      <a href="<?php echo e(route('home')); ?>" class="header-logo">
-        <img src="<?php echo e($data->logo); ?>" alt="logo">
-      </a>
+      <div class="header-logo-title">
+        <a href="<?php echo e(route('home')); ?>" class="header-logo website-logo">
+          <img src="<?php echo e($settings->logo); ?>" alt="logo">
+        </a>
 
-      <h2 class="header-title">HerbalCare</h2>
+        <h1 class="header-title website-title">HerbalCare</h1>
+      </div>
+
+      <button id="mob-cart-btn" class="btn header-icon items-menu-btn">
+        <a href="<?php echo e(route('cart')); ?>">
+          <i class="fa-solid fa-cart-shopping" id="cart-icon"></i>
+          <div class="items-count"><span class="cart-count"><?php echo e(count(Helper::getAllProductFromCart())); ?></span></div>
+        </a>
+      </button>
     </div>
 
     <div class="search-bar" id= "search">
-      <button id="menu-btn" class="btn header-icon" onclick="showMenu()"><i class="fa-solid fa-bars icon" id="bars-icon"></i></button>                                       
       <form method="post" action="<?php echo e(route('product.search')); ?>" class="search-form">
         <?php echo csrf_field(); ?>
         <input type="search" name="search" class="form-controller search-term" placeholder="Search Products..." autocomplete="off">                                                                
@@ -25,24 +35,69 @@
         <i class="fa-solid fa-heart" id="fav-icon"></i>
         <div class="items-count"><span class="fav-qty"><?php echo e(Helper::favCount()); ?></span></div></a>
       </button>
-
-      <button id="mob-cart-btn" class="btn header-icon items-menu-btn">
-        <a href="<?php echo e(route('cart')); ?>">
-          <i class="fa-solid fa-cart-shopping" id="cart-icon"></i>
-          <div class="items-count"><span class="cart-count"><?php echo e(count(Helper::getAllProductFromCart())); ?></span></div>
-        </a>
-      </button>
     </div>      
-  </div>      
+  </div>
+  
+  <nav class="nav" id="mob-nav">
+    <button type="button" class="btn close" id="close-btn" onclick="closeMenu()"><i class="fa-solid fa-xmark"></i></button>                  
+    <div class="navbar-content">
+      <ul class="menu">
+        <li><a href="<?php echo e(route('home')); ?>" class="nav-link mob-nav">Home</a></li>
+        <li><a href="<?php echo e(route('about-us')); ?>" class="nav-link mob-nav">About</a></li>
+        <li id="shop">
+          <a onclick="menu()" class="nav-link mob-nav dropdown-toggle">Shop</a>
+          <i id="shop-dropdown-icon" class="bx bxs-down-arrow"></i>
+          <ul class="collapse cat-menu" id="mob-cat-menu">
+            <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+              <?php
+                $subcat = $cat->subcat()->get();
+              ?>
+
+              <?php if($subcat->count() > 0): ?>
+                <li class="submenu-dropdown">
+                  <a href="<?php echo e(route('product-cat', $cat->slug)); ?>" class="dropdown-item"> <?php echo e($cat->name); ?></a>
+
+                  <ul class="cat-submenu">
+                    <?php $__currentLoopData = $subcat; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sub_menu): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <li>
+                      <a href="<?php echo e(route('product-subcat', [$cat->slug, $sub_menu->slug])); ?>" class="dropdown-item"> <?php echo e($sub_menu->name); ?></a>
+                    </li>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                  </ul>
+                </li>
+              <?php else: ?>
+                <li>
+                  <a href="<?php echo e(route('product-cat', $cat->slug)); ?>" class="dropdown-item"> <?php echo e($cat->name); ?> </a>
+                </li>
+              <?php endif; ?>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+          </ul>
+        </li>
+      </ul>
+      <hr>
+    
+      <ul class="list-main">
+        <li><i class="fa-solid fa-clipboard"></i></i><a class="user-nav" href="<?php echo e(route('orders-detail')); ?>">Order Details</a></li>
+        <li><i class="fa-solid fa-location-dot"></i><a class="user-nav" href="<?php echo e(route('order.track')); ?>" >Track Order</a></li>
+        <?php if(auth()->guard()->check()): ?> 
+          <?php if(Auth::user()->role=='admin'): ?>
+            <li><i class="fa-solid fa-user-tie"></i><a class="user-nav" href="<?php echo e(route('admin')); ?>"  target="_blank"><?php if(Auth::user()->fname): ?><?php echo e(Auth::user()->fname); ?> <?php echo e(Auth::user()->lname); ?><?php else: ?><?php echo e(Auth::user()->company_name); ?><?php endif; ?></a></li>
+          <?php else: ?> 
+            <li><i class="fa-solid fa-user"></i><a class="user-nav" href="javascript:void(0);"><?php if(Auth::user()->fname): ?> <?php echo e(Auth::user()->fname); ?> <?php echo e(Auth::user()->lname); ?><?php else: ?><?php echo e(Auth::user()->company_name); ?><?php endif; ?></a></li>
+          <?php endif; ?>
+            <li><i class="fa-solid fa-right-from-bracket"></i><a class="user-nav" href="<?php echo e(route('user.logout')); ?>">Logout</a></li>
+        <?php else: ?>
+          <li><i class="fa-solid fa-right-to-bracket"></i><a class="user-nav" href="<?php echo e(route('login.form')); ?>">Login</a></li>
+          <li><i class="fa-solid fa-user-plus"></i><a class="user-nav" href="<?php echo e(route('register.form')); ?>">Register</a></li>
+        <?php endif; ?>
+      </ul>    
+    </div>
+  </nav>
   
   <div class="topbar" id="desktop-header">
     <div class="header-content">
-      <div id="header-logo" class="header-logo">
-        <?php
-          $settings= DB::table('settings')->get();
-          $categories = Helper::getAllCategories();
-        ?>                    
-        <a href="<?php echo e(route('home')); ?>"><img src="<?php $__currentLoopData = $settings; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?> <?php echo e($data->logo); ?> <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>" alt="logo" width="50" height="50"></a>
+      <div id="header-logo" class="header-logo">                   
+        <a href="<?php echo e(route('home')); ?>"><img src="<?php echo e($settings->logo); ?>" alt="logo" width="50" height="50"></a>
       </div>
 
       <div class="header-title-div">
@@ -165,62 +220,4 @@
     </nav>
   </div> 
 </header>
-
-<nav class="nav" id="mob-nav">
-  <button type="button" class="btn close" id="close-btn" onclick="closeMenu()"><i class="fa-solid fa-xmark"></i></button>                  
-  <div class="navbar-content">
-    <ul class="menu">
-      <li><a href="<?php echo e(route('home')); ?>" class="nav-link mob-nav">Home</a></li>
-      <li><a href="<?php echo e(route('about-us')); ?>" class="nav-link mob-nav">About</a></li>
-      <li id="shop">
-        <a onclick="menu()" class="nav-link mob-nav dropdown-toggle">Shop</a>
-        <ul class="collapse cat-menu" id="mob-cat-menu">
-          <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-
-          <?php
-            $subcat = $cat->subcat()->get();
-          ?>
-
-          <?php if($subcat->count() > 0): ?>
-          <li class="submenu-dropdown">
-            <a href="<?php echo e(route('product-cat', $cat->slug)); ?>" class="dropdown-item"> <?php echo e($cat->name); ?></a>
-
-            <ul class="collapse cat-submenu">
-              <?php $__currentLoopData = $subcat; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sub_menu): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-              <li>
-                <a href="<?php echo e(route('product-subcat', [$cat->slug, $sub_menu->slug])); ?>" class="dropdown-item"> <?php echo e($sub_menu->name); ?></a>
-              </li>
-              <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-            </ul>
-          </li>
-
-          <?php else: ?>
-          <li>
-            <a href="<?php echo e(route('product-cat', $cat->slug)); ?>" class="dropdown-item"> <?php echo e($cat->name); ?> </a>
-          </li>
-          <?php endif; ?>
-          <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-        </ul>
-      </li>
-    </ul>
-    <hr>
-  
-    <ul class="list-main">
-      <li><i class="fa-solid fa-clipboard"></i></i><a class="user-nav" href="<?php echo e(route('orders-detail')); ?>">Order Details</a></li>
-      <li><i class="fa-solid fa-location-dot"></i><a class="user-nav" href="<?php echo e(route('order.track')); ?>" >Track Order</a></li>
-      <?php if(auth()->guard()->check()): ?> 
-        <?php if(Auth::user()->role=='admin'): ?>
-          <li><i class="fa-solid fa-user-tie"></i><a class="user-nav" href="<?php echo e(route('admin')); ?>"  target="_blank"><?php if(Auth::user()->fname): ?><?php echo e(Auth::user()->fname); ?> <?php echo e(Auth::user()->lname); ?><?php else: ?><?php echo e(Auth::user()->company_name); ?><?php endif; ?></a></li>
-        <?php else: ?> 
-          <li><i class="fa-solid fa-user"></i><a class="user-nav" href="javascript:void(0);"><?php if(Auth::user()->fname): ?> <?php echo e(Auth::user()->fname); ?> <?php echo e(Auth::user()->lname); ?><?php else: ?><?php echo e(Auth::user()->company_name); ?><?php endif; ?></a></li>
-        <?php endif; ?>
-          <li><i class="fa-solid fa-right-from-bracket"></i><a class="user-nav" href="<?php echo e(route('user.logout')); ?>">Logout</a></li>
-      <?php else: ?>
-        <li><i class="fa-solid fa-right-to-bracket"></i><a class="user-nav" href="<?php echo e(route('login.form')); ?>">Login</a></li>
-        <li><i class="fa-solid fa-user-plus"></i><a class="user-nav" href="<?php echo e(route('register.form')); ?>">Register</a></li>
-      <?php endif; ?>
-    </ul>    
-  </div>
-</nav>
-
 <?php /**PATH D:\XAMPP\htdocs\herbalcare\resources\views/frontend/layouts/header.blade.php ENDPATH**/ ?>

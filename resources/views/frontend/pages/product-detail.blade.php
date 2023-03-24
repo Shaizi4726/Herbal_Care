@@ -28,7 +28,9 @@
       <div class="product-modal-detail">
         <h1 class="title">{{$product->name}}</h1>
         @if($product->sci_name)
-          <h4 class="subtitle">Scientific Name: {{$product->sci_name}}</h4>
+          <div class="subtitle-div">
+            <h4 class="subtitle">Scientific Name: </h4><span class="normal">{{$product->sci_name}}</span>
+          </div>
         @endif
         
 				@php
