@@ -19,7 +19,7 @@ class Payment extends Model
    *
    * @var array
    */
-  protected $fillable = ['order_id', 'account_no', 'method', 'status', 'subtotal', 'tax', 'shipping', 'discount', 'cancelled', 'returned', 'refund', 'total'];
+  protected $fillable = ['order_id', 'charge_id', 'account_no', 'method', 'status', 'subtotal', 'tax', 'shipping', 'discount', 'cancelled', 'returned', 'refund', 'total'];
   
   /**
    * Get the order that owns the payment.

@@ -20,12 +20,13 @@ return new class extends Migration
       $table->id();
       $table->unsignedBigInteger('order_id');
       $table->foreign('order_id')->references('id')->on('orders')->onDelete('CASCADE');
-      $table->unsignedBigInteger('product_id')->nullable();
-      $table->foreign('product_id')->references('id')->on('products')->onDelete('SET NULL');
+      $table->unsignedBigInteger('product_id');
+      $table->foreign('product_id')->references('id')->on('products')->onDelete('CASCADE');
       $table->string('form')->nullable();
       $table->string('size');
       $table->float('price');
       $table->integer('quantity');
+      $table->float('subtotal');
       $table->float('tax');
       $table->float('discount')->nullable();
       $table->float('total');

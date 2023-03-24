@@ -22,7 +22,7 @@ return new class extends Migration
       $table->foreign('user_id')->references('id')->on('users')->onDelete('CASCADE');
       $table->unsignedBigInteger('product_id');
       $table->foreign('product_id')->references('id')->on('products')->onDelete('CASCADE');
-      $table->unsignedBigInteger('atrr_id');
+      $table->unsignedBigInteger('attr_id');
       $table->foreign('attr_id')->references('id')->on('product_attributes')->onDelete('CASCADE');
       $table->string('form')->nullable();
       $table->string('size');

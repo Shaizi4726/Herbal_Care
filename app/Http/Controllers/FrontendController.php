@@ -54,15 +54,15 @@ class FrontendController extends Controller
 
   public function productSort(Request $request) {
     if($request->search) {
-      $products = Product::orwhere('name','like','%'.$request->que.'%')->orwhere('slug','like','%'.$request->que.'%')->orwhere('sci_name','like','%'.$request->que.'%')->orwhere('other_name','like','%'.$request->que.'%')->orwhere('description','like','%'.$request->que.'%')->get();
+      $products = Product::orwhere('name','like','%'.$request->que.'%')->orwhere('slug','like','%'.$request->que.'%')->orwhere('sci_name','like','%'.$request->que.'%')->orwhere('other_name','like','%'.$request->que.'%')->get();
 
     } else if ($request->subslug) {
-      $subcat=SubCategory::with('products')->where('slug', $request->subslug)->get();
-      $products=$subcat[0]->products()->get();
+      $subcat=SubCategory::with('products')->where('slug', $request->subslug)->first();
+      $products=$subcat->products()->get();
 
     } else if ($request->slug) {
-      $category = Category::with('products')->where('slug', $request->slug)->get();
-      $products = $category->pluck('products')[0];
+      $category = Category::with('products')->where('slug', $request->slug)->first();
+      $products = $category->products;
     } else {
       $products = Product::get();
     }
@@ -160,7 +160,6 @@ class FrontendController extends Controller
             EOD;
         }
       } 
-
     } else {
 
       $content = <<<EOD
@@ -212,7 +211,7 @@ class FrontendController extends Controller
     else
       $remember = false;
 
-    if(Auth::attempt(['email' => $data['email'], 'password' => $data['password'],'status'=>'active'], $remember)) {
+    if(Auth::attempt(['email' => $request->email, 'password' => $request->password, 'status'=>'active'], $remember)) {
       $cart_items = Session::get('cart');
 
       foreach($cart_items as $item) {

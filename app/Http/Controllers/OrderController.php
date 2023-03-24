@@ -45,11 +45,6 @@ class OrderController extends Controller
     $current_year = Carbon::now()->year;
     $current_date = Carbon::now()->toDateString();
 
-    $request->request->add(['total' => 200, 'order_id' => 123]);
-    if($request['pay_mthd'] == 'op') {
-      $req = (new StripeController)->payment($request);
-    }
-
     $this->validate($request, [
       'cust_type' => 'required|string'
     ]);
@@ -150,18 +145,22 @@ class OrderController extends Controller
     $payment = new Payment();
     $payment->order_id = $order_id;
     $payment->account_name = $request->account_name;
-    $payment->account_no = $request->account_no;
     $payment->method = $request->pay_mthd;
     $payment->subtotal = $subtotal;
     $payment->tax = $tax;
     $payment->shipping = $shipping;
     $payment->discount = $discount;
     $payment->total = $total;
-    $payment->save();
     
     if($request['pay_mthd'] == 'op') {
-      $req = (new StripeController)->payment($request);
+      $response = (new StripeController)->payment($request);
+      $pay = $response[0];
+      $message = $response[1];
+      $payment->charge_id = $pay->id;
+      $payment->account_no = $pay->source->last4;
     }
+
+    $payment->save();
     
     $shippings = new Shipping();
     $shippings->order_id = $order_id;

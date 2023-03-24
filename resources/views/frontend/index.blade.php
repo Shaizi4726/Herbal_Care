@@ -253,7 +253,11 @@
     @endif
 
     <div class="fixed-banner-container">
-      <img src="{{asset('images/fixed banner.jpg')}}" alt=""> 
+      <picture>
+        <source media="(min-width: 768px)" srcset="{{asset('images/desktop.jpg')}}">
+        <source media="(min-width: 480px)" srcset="{{asset('images/tablet.jpg')}}">
+        <img class="slide-img" src="{{asset('images/mobile.jpg')}}" alt="Fixed Banner Image">
+      </picture>
     </div>
 
     <h2 class="center-title">Visit Our Stores</h2>

@@ -18,9 +18,9 @@
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Category</div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800">{{\App\http\Controllers\CategoryController::countActiveCategory()}}</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800">{{\App\Http\Controllers\CategoryController::countActiveCategory()}}</div>
                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">SubCategory</div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800">{{\App\http\Controllers\SubCategoryController::countActiveSubCategory()}}</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800">{{\App\Http\Controllers\SubCategoryController::countActiveSubCategory()}}</div>
               </div>
               <div class="col-auto">
                 <i class="fas fa-sitemap fa-2x text-gray-300"></i>
@@ -37,7 +37,7 @@
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Products</div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800">{{\App\http\Controllers\ProductController::countActiveProduct()}}</div>               
+                <div class="h5 mb-0 font-weight-bold text-gray-800">{{\App\Http\Controllers\ProductController::countActiveProduct()}}</div>               
               </div>
               <div class="col-auto">
                 <i class="fas fa-cubes fa-2x text-gray-300"></i>
@@ -57,7 +57,7 @@
                 <div class="text-xs font-weight-bold text-blue text-uppercase mb-1">User</div>
                 <div class="row no-gutters align-items-center">
                   <div class="col-auto">
-                    <div class="h5 mb-0 mr-3 font-weight-bold text-blue-800">{{\App\http\Controllers\UsersController::countActiveUser()}}</div>
+                    <div class="h5 mb-0 mr-3 font-weight-bold text-blue-800">{{\App\Http\Controllers\UsersController::countActiveUser()}}</div>
                   </div>
                   
                 </div>
@@ -76,9 +76,9 @@
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Order</div>
-                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{\App\http\Controllers\OrderController::countActiveOrder()}}</div>
+                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{\App\Http\Controllers\OrderController::countActiveOrder()}}</div>
                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Total</div>
-                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{\App\http\Controllers\OrderController::amountOrder()}}</div>
+                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{\App\Http\Controllers\OrderController::amountOrder()}}</div>
                 <div class="row no-gutters align-items-center">
                   <div class="col-auto">
                   </div>
@@ -103,7 +103,7 @@
                 <div class="row no-gutters align-items-center">
                   <div class="col-auto">
                   </div>
-                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{\App\http\Controllers\OrderController::countActiveOrdered()}}</div>
+                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{\App\Http\Controllers\OrderController::countActiveOrdered()}}</div>
                 </div>
               </div>
               <div class="col-auto">
@@ -123,7 +123,7 @@
                 <div class="row no-gutters align-items-center">
                   <div class="col-auto">
                   </div>
-                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{\App\http\Controllers\OrderController::countActiveProcessed()}}</div>
+                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{\App\Http\Controllers\OrderController::countActiveProcessed()}}</div>
                 </div>
               </div>
               <div class="col-auto">
@@ -143,7 +143,7 @@
                 <div class="row no-gutters align-items-center">
                   <div class="col-auto">
                   </div>
-                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{\App\http\Controllers\OrderController::countActiveShipped()}}</div>
+                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{\App\Http\Controllers\OrderController::countActiveShipped()}}</div>
                 </div>
               </div>
               <div class="col-auto">             
@@ -163,7 +163,7 @@
                 <div class="row no-gutters align-items-center">
                   <div class="col-auto">
                   </div>
-                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{\App\http\Controllers\OrderController::countActiveDelevered()}}</div>
+                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{\App\Http\Controllers\OrderController::countActiveDelevered()}}</div>
                 </div>
               </div>
               <div class="col-auto">
@@ -180,9 +180,9 @@
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Cancelled</div>
-                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{\App\http\Controllers\OrderController::countActiveCancelled()}}</div>
+                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{\App\Http\Controllers\OrderController::countActiveCancelled()}}</div>
                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Total Cancelled</div>
-                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{\App\http\Controllers\OrderController::amountCance()}}</div>
+                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{\App\Http\Controllers\OrderController::amountCance()}}</div>
                 <div class="row no-gutters align-items-center">
                   <div class="col-auto">
                   </div>                  
@@ -202,9 +202,9 @@
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Returned</div>
-                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{\App\http\Controllers\OrderController::countActiveReturned()}}</div>
+                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{\App\Http\Controllers\OrderController::countActiveReturned()}}</div>
                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Total Returned</div>
-                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{\App\http\Controllers\OrderController::amountReturn()}}</div>
+                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{\App\Http\Controllers\OrderController::amountReturn()}}</div>
                 <div class="row no-gutters align-items-center">
                   <div class="col-auto">
                   </div>

@@ -35,22 +35,16 @@ class StripeController extends Controller
         "metadata" => ["name" => $request->account_name, "order_id" => $request->order_id],
         "description" => "Online Payment"
       ]);
-      
-      dd($payment);
-      $ch = $stripe->charges->retrieve(
-        $payment->id,
-      );
-
 
       $message = "Your payment was successful";
+
+      return [$payment, $message];
     } catch(\Stripe\Exception\CardException $e) {
       $message = "A payment error occurred: {$e->getError()->message}";
-      dd($e);
     } catch (\Stripe\Exception\RateLimitException $e) {
       $message = "Too many attempts occured.";
     } catch (\Stripe\Exception\InvalidRequestException $e) {
       $message = "An invalid request occurred.";
-      dd($e);
     } catch (\Stripe\Exception\AuthenticationException $e) {
       $message = "Unable to Authenticate.";
     } catch (\Stripe\Exception\ApiConnectionException $e) {
@@ -61,7 +55,6 @@ class StripeController extends Controller
       $message = "Another problem occurred, maybe unrelated to Stripe.";
     }
     
-    dd($message);
-    return $message;
-  } 
+    return [null, $message];
+  }
 }

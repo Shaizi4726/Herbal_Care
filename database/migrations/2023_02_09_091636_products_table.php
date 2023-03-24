@@ -27,7 +27,7 @@ return new class extends Migration
       $table->longText('description')->nullable();
       $table->longText('precautions')->nullable();
       $table->string('photo')->nullable();
-      $table->set('promotion', ['popular', 'new', 'trending'])->default('new');
+      $table->set('promotion', ['popular', 'new', 'trending'])->nullable();
       $table->enum('status', ['active', 'inactive'])->default('active');
       $table->float('minprice');
       $table->unsignedBigInteger('coupon_id')->nullable();

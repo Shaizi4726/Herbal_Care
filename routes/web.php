@@ -100,7 +100,7 @@ Route::get('/order-cancel', 'OrderController@cancel_order')->name('order-cancel'
 
 // Product Review
 Route::resource('/review','ProductReviewController');
-Route::post('product/{slug}/review', 'ProductReviewController@store')->name('review.store');
+Route::post('product/{slug}/review','ProductReviewController@store')->name('review.store');
 // Coupon
 Route::post('/coupon-store', 'CouponController@couponStore')->name('coupon-store');
 // Payment
@@ -117,10 +117,14 @@ Route::match(['get','post'], 'admin/product/delete-category/{id}','ProductContro
 //Delete Brand
 Route::match(['get','post'], 'admin/product/delete-brand/{id}','ProductController@deleteBrand')->name('delete-brand');
 
+Route::match(['get','post'], '/get-product-price','FrontendController@getProductPrice');
+
 // Backend section start
 Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     Route::get('/','AdminController@index')->name('admin');
-    Route::view('/file-manager', 'admin_panel.layouts.file-manager')->name('file-manager');
+    Route::get('/file-manager',function(){
+        return view('admin_panel.layouts.file-manager');
+    })->name('file-manager');
     // user route
     Route::resource('users','UsersController');
     // Banner
@@ -144,7 +148,7 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     Route::resource('/product','ProductController');
     //import product
     Route::resource('/productImport','ProductImportController');
-
+    
     // Order
     Route::resource('/order','OrderController');
     // city
@@ -165,7 +169,7 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
 });
 
 Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
-  \UniSharp\LaravelFilemanager\Lfm::routes();
+    \UniSharp\LaravelFilemanager\Lfm::routes();
 });
 
 Route::get('/email', 'MailController@send_mail')->name('send_mail');

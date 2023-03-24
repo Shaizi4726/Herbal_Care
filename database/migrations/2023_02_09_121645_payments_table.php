@@ -21,6 +21,7 @@ return new class extends Migration
       $table->unsignedBigInteger('order_id')->nullable();
       $table->foreign('order_id')->references('id')->on('orders')->onDelete('SET NULL');
       $table->string('account_name')->nullable();
+      $table->string('charge_id')->nullable();
       $table->unsignedBigInteger('account_no')->nullable();
       $table->enum('method', ['cod', 'op'])->default('cod');
       $table->enum('status', ['paid', 'unpaid'])->default('unpaid');
