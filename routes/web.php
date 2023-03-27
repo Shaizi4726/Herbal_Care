@@ -129,6 +129,8 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     Route::resource('users','UsersController');
     // Banner
     Route::resource('banner','BannerController');
+    // Banner
+    Route::resource('fixed','FixedBannerController');
     // Brand
     Route::resource('brand','BrandController');
     // Profile
