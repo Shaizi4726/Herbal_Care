@@ -102,15 +102,6 @@ input[type="button"] {
   margin: 0.2em 1em 0 1em;
 }
 
-.typeahead {
-  background-color: #fff;
-  position: absolute;
-  border-radius: 10px;
-  padding: 1em;
-  margin-top: 0.5em;
-  z-index: 10;
-}
-
 /*==================== Product Cards ====================*/
 .product-slider {
   cursor: default;

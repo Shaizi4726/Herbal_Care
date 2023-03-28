@@ -33,7 +33,7 @@
           <i class="fas fa-fw fa-chart-area"></i>
           <span>Media Manager</span></a>
     </li> -->
-
+<!--Banner -->
     <li class="nav-item">
       <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
         <i class="fas fa-image"></i>
@@ -44,6 +44,20 @@
           <h6 class="collapse-header">Banner Options:</h6>
           <a class="collapse-item" href="<?php echo e(route('banner.index')); ?>">Banners</a>
           <a class="collapse-item" href="<?php echo e(route('banner.create')); ?>">Add Banners</a>
+        </div>
+      </div>
+    </li>
+<!-- fixed Banner -->
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFixedBanner" aria-expanded="true" aria-controls="collapseFixedBanner">
+        <i class="fas fa-image"></i>
+        <span>Fixed Banners</span>
+      </a>
+      <div id="collapseFixedBanner" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+          <h6 class="collapse-header">Banner Options:</h6>
+          <a class="collapse-item" href="<?php echo e(route('fixed.index')); ?>">Fixed Banners</a>
+          <a class="collapse-item" href="<?php echo e(route('fixed.create')); ?>">Add Fixed Banners</a>
         </div>
       </div>
     </li>

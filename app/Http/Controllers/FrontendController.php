@@ -54,15 +54,16 @@ class FrontendController extends Controller
 
   public function productSort(Request $request) {
     if($request->search) {
-      $products = Product::orwhere('name','like','%'.$request->que.'%')->orwhere('slug','like','%'.$request->que.'%')->orwhere('sci_name','like','%'.$request->que.'%')->orwhere('other_name','like','%'.$request->que.'%')->get();
+      $products = Product::orwhere('name','like','%'.$request->que.'%')->orwhere('sci_name','like','%'.$request->que.'%')->orwhere('other_name','like','%'.$request->que.'%')->get();
 
     } else if ($request->subslug) {
-      $subcat=SubCategory::with('products')->where('slug', $request->subslug)->first();
-      $products=$subcat->products()->get();
+      $subcat = SubCategory::with('products')->where('slug', $request->subslug)->first();
+      $products = $subcat->products()->get();
 
     } else if ($request->slug) {
       $category = Category::with('products')->where('slug', $request->slug)->first();
-      $products = $category->products;
+      $products = $category->products()->get();
+
     } else {
       $products = Product::get();
     }
@@ -170,7 +171,7 @@ class FrontendController extends Controller
   }
 
   public function product_search(Request $request) {
-    $products = Product::orwhere('name','like','%'.$request->search.'%')->orwhere('slug','like','%'.$request->search.'%')->orwhere('sci_name','like','%'.$request->search.'%')->orwhere('other_name','like','%'.$request->search.'%')->orwhere('description','like','%'.$request->search.'%')->orderBy('name')->get();
+    $products = Product::orwhere('name','like','%'.$request->search.'%')->orwhere('sci_name','like','%'.$request->search.'%')->orwhere('other_name','like','%'.$request->search.'%')->orderBy('name')->get();
     $categories = Category::get();
 
     return view('frontend.pages.product-grids')->with(['products' => $products, 'cats' => $categories, 'slug' => null, 'subslug' => null, 'search' => 1, 'que' => $request->search]);
@@ -205,8 +206,7 @@ class FrontendController extends Controller
   }
     
   public function loginSubmit(Request $request) {
-    $data= $request->all();
-    if (array_key_exists('remember', $data))
+    if ($request->remember)
       $remember = true;
     else
       $remember = false;
@@ -215,8 +215,8 @@ class FrontendController extends Controller
       $cart_items = Session::get('cart');
 
       foreach($cart_items as $item) {
-        $already_cart = CartItem::with('coupon')->where(['user_id' => auth()->user()->id, 'product_id' => $item->product_id, 'attr_id' => $item->attr_id])->first();
-        $order = Order::where('user_id', auth()->user()->id)->first();
+        $already_cart = CartItem::with('coupon')->where(['user_id' => Auth()->user()->id, 'product_id' => $item->product_id, 'attr_id' => $item->attr_id])->first();
+        $order = Order::where('user_id', Auth()->user()->id)->first();
         $discount = 0;
   
         if ($already_cart) {
@@ -257,7 +257,7 @@ class FrontendController extends Controller
           }
   
           $cart = new CartItem;
-          $cart->user_id = auth()->user()->id;
+          $cart->user_id = Auth()->user()->id;
           $cart->product_id = $item->product_id;
           $cart->attr_id = $item->attr_id;
           if($item->form) {
@@ -333,10 +333,10 @@ class FrontendController extends Controller
 
       Session::pull('cart');
       Session::pull('id');
-        Session::put('user', $data['email']);
-        if($request->checkout == 1)
-          return redirect()->route('checkout');
-        return redirect()->route('home');
+      Session::put('user', $request->email);
+      if($request->checkout == 1)
+        return redirect()->route('checkout');
+      return redirect()->route('home');
     } else {
       request()->session()->flash('error','Invalid email and password pleas try again!');
       return redirect()->back();
@@ -351,10 +351,8 @@ class FrontendController extends Controller
   }
 
   public function PassResetForm(Request $request){
-    return view('auth.passwords.reset')->with('request',$request);
+    return view('auth.passwords.reset')->with('request', $request);
   }
-
-
 
   public function getProductprice(Request $request) {
     if($request->form == null)
@@ -364,22 +362,22 @@ class FrontendController extends Controller
     return $proAttr->price;
   }
 
-  public function autocomplete_search(Request $request)
-  {
-    $query = $request->get('query');
+  public function autocomplete_search(Request $request) {
     $data = array();
-    $filterResult = Product::where('sci_name', 'LIKE', '%'. $query. '%')->pluck('sci_name');
-    foreach($filterResult as $result)
-      $data[] = $result;
-    $filterResult = Product::where('other_name', 'LIKE', '%'. $query. '%')->pluck('other_name');
-    foreach($filterResult as $result) {
-      $result = explode(',', $result);
-      foreach ($result as $res)
-        $data[] = $res;
+    $products = Product::get();
+    foreach($products as $product) {
+      array_push($data, $product->name);
+      array_push($data, $product->sci_name);
+      $results = explode('^', $product->other_name);
+      foreach ($results as $result) {
+        array_push($data, $result);
+      }
     }
-    $filterResult = Product::where('name','like','%'.$query.'%')->pluck('name');
-    foreach($filterResult as $result)
-      $data[] = $result;
-    return response()->json($data);
-  } 
+
+    $data = array_filter($data, function($value) { return !is_null($value) && $value !== '' && $value !== ' '; });
+    $data = array_unique($data);
+    $data = array_map('trim', $data);
+    sort($data);
+    echo json_encode($data);
+  }
 }

@@ -7,6 +7,10 @@
 <?php $__env->stopPush(); ?>
 
 <?php $__env->startSection('main-content'); ?>
+  <?php
+    $fixed1 = DB::table('fixed_banners')->where('id', 1)->first();
+    $fixed2 = DB::table('fixed_banners')->where('id', 2)->first();
+  ?>
   <!-- <video src="<?php echo e(asset('images/bannert.mp4')); ?>" autoplay muted loop></video> -->
 
   <?php if(count($banners)>0): ?>
@@ -187,9 +191,9 @@
     <?php if($categories): ?>
       <div class="fixed-banner-container">
         <picture>
-          <source media="(min-width: 768px)" srcset="<?php echo e(asset('images/desktop.jpg')); ?>">
-          <source media="(min-width: 480px)" srcset="<?php echo e(asset('images/tablet.jpg')); ?>">
-          <img class="slide-img" src="<?php echo e(asset('images/mobile.jpg')); ?>" alt="Fixed Banner Image">
+          <source media="(min-width: 768px)" srcset="<?php echo e($fixed1->photo_desktop); ?>">
+          <source media="(min-width: 480px)" srcset="<?php echo e($fixed1->photo_tablet); ?>">
+          <img class="slide-img" src="<?php echo e($fixed1->photo_mobile); ?>" alt="Fixed Banner Image">
         </picture>
       </div>
       <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -253,7 +257,11 @@
     <?php endif; ?>
 
     <div class="fixed-banner-container">
-      <img src="<?php echo e(asset('images/fixed banner.jpg')); ?>" alt=""> 
+      <picture>
+        <source media="(min-width: 768px)" srcset="<?php echo e($fixed2->photo_desktop); ?>">
+        <source media="(min-width: 480px)" srcset="<?php echo e($fixed2->photo_tablet); ?>">
+        <img class="slide-img" src="$fixed2->photo_mobile}}" alt="Fixed Banner Image">
+      </picture>
     </div>
 
     <h2 class="center-title">Visit Our Stores</h2>

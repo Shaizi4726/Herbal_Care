@@ -15,7 +15,7 @@ class FixedBannerController extends Controller
     */
     public function index()
     {
-        $banner_fixed=FixedBanner::orderBy('id','DESC')->paginate(10);
+        $banner_fixed=FixedBanner::orderBy('id','ASC')->paginate(10);
         return view('admin_panel.fixed.index')->with('banner_fixeds',$banner_fixed);
     }
 

@@ -7,6 +7,10 @@
 @endpush
 
 @section('main-content')
+  @php
+    $fixed1 = DB::table('fixed_banners')->where('id', 1)->first();
+    $fixed2 = DB::table('fixed_banners')->where('id', 2)->first();
+  @endphp
   <!-- <video src="{{asset('images/bannert.mp4')}}" autoplay muted loop></video> -->
 
   @if(count($banners)>0)
@@ -187,9 +191,9 @@
     @if($categories)
       <div class="fixed-banner-container">
         <picture>
-          <source media="(min-width: 768px)" srcset="{{asset('images/desktop.jpg')}}">
-          <source media="(min-width: 480px)" srcset="{{asset('images/tablet.jpg')}}">
-          <img class="slide-img" src="{{asset('images/mobile.jpg')}}" alt="Fixed Banner Image">
+          <source media="(min-width: 768px)" srcset="{{$fixed1->photo_desktop}}">
+          <source media="(min-width: 480px)" srcset="{{$fixed1->photo_tablet}}">
+          <img class="slide-img" src="{{$fixed1->photo_mobile}}" alt="Fixed Banner Image">
         </picture>
       </div>
       @foreach($categories as $cat)
@@ -254,9 +258,9 @@
 
     <div class="fixed-banner-container">
       <picture>
-        <source media="(min-width: 768px)" srcset="{{asset('images/desktop.jpg')}}">
-        <source media="(min-width: 480px)" srcset="{{asset('images/tablet.jpg')}}">
-        <img class="slide-img" src="{{asset('images/mobile.jpg')}}" alt="Fixed Banner Image">
+        <source media="(min-width: 768px)" srcset="{{$fixed2->photo_desktop}}">
+        <source media="(min-width: 480px)" srcset="{{$fixed2->photo_tablet}}">
+        <img class="slide-img" src="$fixed2->photo_mobile}}" alt="Fixed Banner Image">
       </picture>
     </div>
 

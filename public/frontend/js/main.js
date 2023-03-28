@@ -1,18 +1,48 @@
-$('.search-term').typeahead({
-  source: function (query, process) {
-    return $.get('/autocomplete-search', {
-      query: query
-    }, function (data) {
-      return process(data);
-    });
-  }
-});
+// $('.search-term').typeahead({
+//   source: function (query, process) {
+//     return $.get('/autocomplete-search', {
+//       query: query
+//     }, function (data) {
+//       return process(data);
+//     });
+//   }
+// });
 
-$('.search-term').on('keydown', function(event) {
-  if(event.key == 'Enter') {
-    setTimeout(function() {
-      $('.search-form').submit();
-    }, 250);
+$.typeahead({
+  input: '.search-term',
+  minLength: 1,
+  maxItem: 10,
+  order: 'asc',
+  offset: true,
+  hint: true,
+  highlight: false,
+  href: '/product/search?search={{display}}',
+  cancelButton: false,
+  asyncResult: true,
+  source: {
+    ajax: {
+      url: '/autocomplete-search',
+    }
+  },
+  callback: {
+    onShowLayout: function (node, a, item, event) {
+      $('.search-result').show();
+    },
+    onCancel: function (node, a, item, event) {
+      $('.search-result').hide();
+    },
+  },
+  selector: {
+    container: 'search-form',
+    result: 'search-result',
+    list: 'search-list',
+    group: "search",
+    item: 'search-item',
+    empty: 'empty-search',
+    display: 'search-display',
+    query: 'search-term-div',
+    button: "search-btn",
+    hint: "search-hint"
   }
 });
 

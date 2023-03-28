@@ -25,9 +25,9 @@
     </div>
 
     <div class="search-bar" id= "search">
-      <form method="post" action="<?php echo e(route('product.search')); ?>" class="search-form">
+      <form method="post" action="<?php echo e(route('product.search')); ?>" id="search-form" class="search-form">
         <?php echo csrf_field(); ?>
-        <input type="search" name="search" class="form-controller search-term" placeholder="Search Products..." autocomplete="off">                                                                
+        <input type="search" name="product_search" class="form-controller search-term" placeholder="Search Products..." autocomplete="off">                                                                
         <button type="submit" class="btn search-btn" value="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
       </form>
       <button id="mob-fav-btn" class="btn fav-btn header-icon">
@@ -73,6 +73,7 @@
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
           </ul>
         </li>
+        <li><a href="<?php echo e(route('contact')); ?>" class="nav-link mob-nav">Contact</a></li>
       </ul>
       <hr>
     
@@ -164,7 +165,7 @@
             </ul>
           </div>
         </li>
-        <li><a href="<?php echo e(route('contact')); ?>" class="nav-link desktop-nav">Contact Us</a></li>
+        <li><a href="<?php echo e(route('contact')); ?>" class="nav-link desktop-nav">Contact</a></li>
       </ul>
 
       <div class="search-bar">                                        
