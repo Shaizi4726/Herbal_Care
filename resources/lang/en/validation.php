@@ -51,7 +51,7 @@ return [
         'array' => 'The :attribute must have more than :value items.',
     ],
     'gte' => [
-        'numeric' => 'The :attribute must be greater than or equal :value.',
+        'numeric' => 'The :attribute must be numeric',
         'file' => 'The :attribute must be greater than or equal :value kilobytes.',
         'string' => 'The :attribute must be greater than or equal :value characters.',
         'array' => 'The :attribute must have :value items or more.',
@@ -96,7 +96,7 @@ return [
     'password' => 'The password is incorrect.',
     'present' => 'The :attribute field must be present.',
     'regex' => 'The :attribute format is invalid.',
-    'required' => 'The :attribute field is required.',
+    'required' => 'The :attribute is required.',
     'required_if' => 'The :attribute field is required when :other is :value.',
     'required_unless' => 'The :attribute field is required unless :other is in :values.',
     'required_with' => 'The :attribute field is required when :values is present.',
@@ -131,47 +131,101 @@ return [
 
     'custom' => [
         'cust_type' => [
-          'required' => 'customer type selection is required.',
-          'string' => 'customer type selection must be string'
+          'required' => 'The "customer type selection" is required.',
+          'string' => 'The "customer type selection" must be string'
         ],
 
         'fname' => [
-          'required' => 'first name is required.',
-          'regex' => 'first name must contain
-            <li>at least 2 letter</li>
+          'required' => 'The "first name" is required.',
+          'regex' => 'The "first name" must contain
+            <li>at least 2 letters</li>
+            <li>only spaces and letters</li>'
+        ],
+        
+        'shipping_fname' => [
+          'required' => 'The "first name" is required.',
+          'regex' => 'The "first name" must contain
+            <li>at least 2 letters</li>
             <li>only spaces and letters</li>'
         ],
 
         'lname' => [
-          'required' => 'last name is required.',
-          'regex' => 'last name must contain
+          'required' => 'The "last name" is required.',
+          'regex' => 'The "last name" must contain
+            <li>at least 2 letters</li>
+            <li>only spaces and letters</li>'
+        ],
+        
+        'shipping_lname' => [
+          'required' => 'The "last name" is required.',
+          'regex' => 'The "last name" must contain
             <li>at least 2 letters</li>
             <li>only spaces and letters</li>'
         ],
 
         'cname' => [
-          'required' => 'company name is required.',
+          'required' => 'The "company name" is required.',
+          'string' => 'The "company name" must be string.'
         ],
         
         'trn_no' => [
-          'required' => 'trn number is required.',
-          'numeric' => 'trn number must be numeric.'
-        ],
-
-        'email' => [
-          'required' => 'email is required.',
-          'email' => 'invalid email.',
-          'unique' => 'email already exists.',
-          'exists' => 'account doesn\'t exist with this email'
+          'required' => 'The "trn number" is required.',
+          'regex' => 'The "trn number" must contain at least 15 digits.'
         ],
 
         'password' => [
-          'required' => 'password is required',
-          'confirmed' => 'passwords must match',
-          'regex' => 'password must contain
-          <li>at least 1 letter</li>
-          <li>at least 1 digit</li>
-          <li>at least 1 special character</li>'
+          'regex' => 'The password must contain
+            <li>at least 1 letter</li>
+            <li>at least 1 digit</li>
+            <li>at least 1 special character</li>'
+        ],
+
+        'phone' => [
+          'required' => 'The "phone number" is required.',
+          'regex' => 'The "phone number" must be in uae number format'
+        ],
+        
+        'shipping_phone' => [
+          'required' => 'The "phone number" is required.',
+          'regex' => 'The "phone number" must be in uae number format'
+        ],
+
+        'altphone' =>  [
+          'regex' => 'The optional "phone number" must be in uae number format'
+        ],
+        
+        'shipping_altphone' =>  [
+          'regex' => 'The optional "phone number" must be in uae number format'
+        ],
+
+        'account_no' => [
+          'required' => 'The "card number" is required',
+          'regex' => 'The "card number" is invalid.'
+        ],
+
+        'account_name' => [
+          'required' => 'The "full name" is required.',
+          'regex' => 'The "full name" must contain
+            <li>at least 2 letters</li>
+            <li>only spaces and letters</li>'
+        ],
+        
+        'expiry_month' => [
+          'required' => 'The "expiry month" is required.',
+          'regex' => 'The "expiry month" is invalid.',
+          'gte' => 'The "expiry month" is invalid.'
+        ],
+        
+        'expiry_year' => [
+          'required' => 'The "expiry year" is required.',
+          'regex' => 'The "expiry year" is invalid.',
+          'gte' => 'The "expiry year" is invalid.',
+          'lte' => 'The "expiry year" is invalid.'
+        ],
+
+        'cvv_cvc' => [
+          'required' => 'The "cvv/cvc" is required.',
+          'regex' => 'The "cvv/cvc" is invalid.'
         ]
     ],
 

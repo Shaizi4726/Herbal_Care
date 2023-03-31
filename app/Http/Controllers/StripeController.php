@@ -8,12 +8,7 @@ use Session;
 
 use Illuminate\Http\Request;
 
-class StripeController extends Controller
-{ 
-  public function paymentStripe() {
-    return view('paymentstripe');
-  }
-
+class StripeController extends Controller {
   public function payment(Request $request) {
     Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 
@@ -22,6 +17,7 @@ class StripeController extends Controller
       $token = $stripe->tokens->create([
         'card' => [
           'number' => $request->account_no,
+          'name' => $request->name,
           'exp_month' => $request->expiry_month,
           'exp_year' => $request->expiry_year,
           'cvc' => $request->cvv_cvc

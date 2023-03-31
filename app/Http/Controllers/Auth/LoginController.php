@@ -53,7 +53,7 @@ class LoginController extends Controller
     
   public function loginSubmit(Request $request) {
     $this->validate($request, [
-      'email' => 'required|exists:users',
+      'email' => 'required|email:strict,dns|exists:users',
       'password' => 'required'
     ]);
 
@@ -189,7 +189,7 @@ class LoginController extends Controller
         return redirect()->route('checkout');
       return redirect()->route('home');
     } else {
-      return redirect()->back()->with('error','Invalid email or password. Please try again!');
+      return redirect()->back()->with('error','Incorrect password. Please try again!');
     }
   }
 }

@@ -42,6 +42,7 @@
               <input type="radio" name="cust_type" id="company" value="company">
               <label for="company">Company</label>
             </div>
+
             @if ($errors->get('cust_type'))
               <div class="error">
                 @error('cust_type')
@@ -81,22 +82,25 @@
                   {!! $message !!}
                 @enderror
               </div>
+            @endif
 
-            @elseif ($errors->get('lname'))
+            @if ($errors->get('lname'))
               <div class="error">
                 @error('lname')
                   {!! $message !!}
                 @enderror
               </div>
+            @endif
 
-            @elseif ($errors->get('cname'))
+            @if ($errors->get('cname'))
               <div class="error">
                 @error('cname')
                   {{$message}}
                 @enderror
               </div>
+            @endif
 
-            @elseif ($errors->get('trn_no'))
+            @if ($errors->get('trn_no'))
               <div class="error">
                 @error('trn_no')
                   {{$message}}
@@ -107,6 +111,7 @@
             <div class="form-group">
               <label for="email">Email:<span>*</span></label>
               <input type="email" name="email" id="email" placeholder="Enter Email" value="{{ old('email') }}">
+
               @if ($errors->get('email'))
                 <div class="error">
                   @error('email')

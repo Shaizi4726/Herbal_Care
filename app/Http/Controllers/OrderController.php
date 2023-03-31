@@ -51,8 +51,8 @@ class OrderController extends Controller
     
     if($request['cust_type'] == 'individual') {
       $this->validate($request, [
-        'fname' => 'required|regex:/^[a-zA-Z ].{2,}$/',
-        'lname' => 'required|regex:/^[a-zA-Z ].{2,}$/'
+        'fname' => 'required|regex: /^[a-zA-Z ].{2,}$/',
+        'lname' => 'required|regex: /^[a-zA-Z ].{2,}$/'
       ]);
     } else {
       $this->validate($request, [
@@ -67,32 +67,47 @@ class OrderController extends Controller
       'landmark'=>'nullable|string',
       'country'=>'required|numeric',
       'state'=>'required|numeric',
-      'city'=>'required|numeric',
-      'phone'=>'required|regex:/^(?:50|52|54|55|56|58|1|2|3|4|6|7|8|9)\d{7}$/',
-      'altphone' => 'nullable|regex:/^(?:50|52|54|55|56|58|1|2|3|4|6|7|8|9)\d{7}$/'
+      'city' => 'required|numeric',
+      'phone' => [
+        'required',
+        'regex: /^(?:50|52|54|55|56|58|1|2|3|4|6|7|8|9)( *\d *){7}$/'
+      ],
+      'altphone' => [
+        'nullable',
+        'regex: /^(?:50|52|54|55|56|58|1|2|3|4|6|7|8|9)( *\d *){7}$/'
+      ]
     ]);
     
     if($request['shipping_option'] == 'different') {
       $this->validate($request, [
-        'shipping_fname' => 'required|regex:/^[a-zA-Z ].{2,}$/',
-        'shipping_lname' => 'required|regex:/^[a-zA-Z ].{2,}$/',
+        'shipping_fname' => 'required|regex: /^[a-zA-Z ].{2,}$/',
+        'shipping_lname' => 'required|regex: /^[a-zA-Z ].{2,}$/',
         'shipping_address'=>'required|string',
         'shipping_landmark'=>'nullable|string',
         'shipping_country' => 'required|numeric',
         'shipping_state' => 'required|numeric',
         'shipping_city' => 'required|numeric',
-        'shipping_phone' => 'required|regex:/^(?:50|52|54|55|56|58|1|2|3|4|6|7|8|9)\d{7}$/',
-        'shipping_altphone' => 'nullable|regex:/^(?:50|52|54|55|56|58|1|2|3|4|6|7|8|9)\d{7}$/'
+        'shipping_phone' => [
+          'required',
+          'regex: /^(?:50|52|54|55|56|58|1|2|3|4|6|7|8|9)( *\d *){7}$/'
+        ],
+        'shipping_altphone' => [
+          'nullable',
+          'regex: /^(?:50|52|54|55|56|58|1|2|3|4|6|7|8|9)( *\d *){7}$/'
+        ]
       ]);
     }
     
     if($request['pay_mthd'] == 'op') {
       $this->validate($request, [
-        'account_name' => 'required|regex:/^[a-zA-Z ].{2,}$/',
-        'account_no' => 'required|regex: /^(?:4[0-9]{12}(?:[0-9]{3})?|(?:5[1-5][0-9]{2}|222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12})$/',
-        'cvv_cvc' => 'required|regex: /(?!000)[0-9]{3}/',
-        'expiry_month' => 'required|regex: /(?!00)[0-9]{2}/',
-        'expiry_year' => 'required|regex: /(?!0000)[0-9]{4}/|gte:' . $current_year . '|lte: ' . ($current_year+5) . ''
+        'account_no' => [
+          'required',
+          'regex: /^(?:4(\d *){12}(?:(\d *){3})?|(?:5[1-5](\d *){2}|222[1-9]|22[3-9](\d *)|2[3-6](\d *){2}|27[01](\d *)|2720)(\d *){12})$/'
+        ],
+        'account_name' => 'required|regex: /^[a-zA-Z ].{2,}$/',
+        'cvv_cvc' => 'required|regex: /(?!000)\d{3}/',
+        'expiry_month' => 'required|regex: /(?!00)\d{2}/',
+        'expiry_year' => 'required|regex: /(?!0000)\d{4}/|gte:' . $current_year . '|lte: ' . ($current_year+5) . ''
       ]);
     }
     
@@ -104,11 +119,11 @@ class OrderController extends Controller
     
     if(Auth::check()) {
       if(empty(CartItem::where('user_id', Auth()->user()->id)->get()))
-        return back();
+        return back()->with('error', 'Your cart is empty. Add items to cart for checkout.');
     }
     else { 
       if(empty(Session::get('cart')))
-        return back();
+        return back()->with('error', 'Your cart is empty. Add items to cart for checkout.');
     }
     
     $order = new Order();
@@ -126,8 +141,7 @@ class OrderController extends Controller
     $order->city_id = $request->city;
     $order->landmark = $request->landmark;
     $order->save();
-    
-    $order_id = Order::where('order_no', $order->order_no)->pluck('id')->first();
+
     $subtotal = Helper::CartAmount();
     $tax = Helper::totalCartTax();
     $discount = Helper::total_discount();
@@ -140,10 +154,8 @@ class OrderController extends Controller
       $total += $shipping;
     }
     
-    $request->request->add(['total' => $total, 'order_id' => $order_id]);
-    
     $payment = new Payment();
-    $payment->order_id = $order_id;
+    $payment->order_id = $order->id;
     $payment->account_name = $request->account_name;
     $payment->method = $request->pay_mthd;
     $payment->subtotal = $subtotal;
@@ -153,17 +165,36 @@ class OrderController extends Controller
     $payment->total = $total;
     
     if($request['pay_mthd'] == 'op') {
-      $response = (new StripeController)->payment($request);
+      $req = new Request;
+      $req->account_no = $request->account_no;
+      $req->name = $request->account_name;
+      $req->expiry_month = $request->expiry_month;
+      $req->expiry_year = $request->expiry_year;
+      $req->cvv_cvc = $request->cvv_cvc;
+      $req->total = $total;
+      $req->account_name = $request->account_name;
+      $req->order_id = $order->id;
+
+      $response = (new StripeController)->payment($req);
       $pay = $response[0];
       $message = $response[1];
-      $payment->charge_id = $pay->id;
-      $payment->account_no = $pay->source->last4;
+
+      if($pay) {
+        $payment->charge_id = $pay->id;
+        $payment->account_no = $pay->source->last4;
+        if($pay->status == 'succeeded') {
+          $payment->status = 'paid';
+        }
+      } else {
+        $order->delete();
+        return back()->with('error', $message);
+      }
     }
 
     $payment->save();
     
     $shippings = new Shipping();
-    $shippings->order_id = $order_id;
+    $shippings->order_id = $order->id;
     if($request->shipping_option == 'different') {
       $shippings->fname = $request->shipping_fname;
       $shippings->lname = $request->shipping_lname;
@@ -194,7 +225,7 @@ class OrderController extends Controller
       
     foreach($carts as $cart) {
       $order_item = new OrderItem;
-      $order_item->order_id = $order_id;
+      $order_item->order_id = $order->id;
       $order_item->product_id = $cart->product_id;
       $order_item->form = $cart->form;
       $order_item->size = $cart->size;
@@ -220,13 +251,13 @@ class OrderController extends Controller
     }
     
     // Notification::send(Auth()->user(), new StatusNotification('Order Placed'));
-    $req = new Request;
-    $req->id = $order_id;
-    $pdf = $this->sale_invoice($req);  
-    (new MailController)->send_mail($request->email, $pdf);
-    
-    request()->session()->flash('success','Your product successfully placed in order');
-    return redirect()->route('home');
+    $re = new Request;
+    $re->id = $order->id;
+
+    $sale_pdf = $this->sale_invoice($re);  
+    (new MailController)->send_mail($request->email, $sale_pdf);
+
+    return redirect()->route('home')->with('success', 'Your order is placed successfully.');
   }
   
   /**

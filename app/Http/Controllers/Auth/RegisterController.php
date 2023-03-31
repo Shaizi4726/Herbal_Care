@@ -67,7 +67,7 @@ class RegisterController extends Controller
     } else {
       $this->validate($request, [
         'cname' => 'required|string',
-        'trn_no' => 'required|numeric'
+        'trn_no' => 'required|regex: /^(\d *){15}$/'
       ]);
     }
     

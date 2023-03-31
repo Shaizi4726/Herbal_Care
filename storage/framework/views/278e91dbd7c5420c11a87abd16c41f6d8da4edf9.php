@@ -204,7 +204,7 @@ unset($__errorArgs, $__bag); ?>
     </section>
 
     <script src="https://code.jquery.com/jquery-3.6.2.min.js"></script>
-    <script src="<?php echo e(asset('frontend/js/register.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('frontend/js/register.js')); ?>"></script>
   </body>
 </html>
 <?php /**PATH D:\XAMPP\htdocs\herbalcare\resources\views/frontend/pages/register.blade.php ENDPATH**/ ?>

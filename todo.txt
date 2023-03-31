@@ -16,3 +16,4 @@ Order confirmation page after checkout
 Payment method on sale and tax invoice
 Refund Payment
 footer email and phone
+when to send tax invoice [op: immediately or not]

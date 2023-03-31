@@ -1,5 +1,6 @@
 /*==================== Image Slider ====================*/
 let responsiveSlider = function() {
+  let sliderInterval;
   let sliderWidth = $('#slider').width();
   let items = $('#slider li').length;
   let count = 1;
@@ -20,7 +21,6 @@ let responsiveSlider = function() {
       $('#carousel-wrap').css('left', '-' + count * sliderWidth + 'px');
       count++;
     }
-    clearTimeout(sliderInterval);
   };
 
   let nextSlide = function() {
@@ -33,20 +33,27 @@ let responsiveSlider = function() {
       $('#carousel-wrap').css('left', '0');
       count = 1;
     }
-    clearTimeout(sliderInterval);
   };
 
   $('#slide-next').on('click', function() {
     nextSlide();
+    clearInterval(sliderInterval);
+    startInt();
   });
 
   $('#slide-prev').on('click', function() {
     prevSlide();
+    clearInterval(sliderInterval);
+    startInt();
   });
 
-  const sliderInterval = setInterval(function() {
-    nextSlide();
-  }, 6e3);
+  let startInt = function(){
+    sliderInterval = setInterval(function() {
+      nextSlide();
+    }, 6e3);
+  };
+
+  startInt();
 };
 
 $(window).on('load', function() {
