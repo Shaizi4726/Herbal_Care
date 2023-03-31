@@ -198,7 +198,7 @@
       </div>
       @foreach($categories as $cat)
         @php
-          $product_cat = $cat->products()->limit(9)->get();
+          $product_cat = $cat->products()->inRandomOrder()->limit(9)->get();
         @endphp
 
         @if(count($product_cat) != 0)

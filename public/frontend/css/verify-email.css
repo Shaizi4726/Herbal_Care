@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&family=Vollkorn:wght@400;700;900&display=swap');
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -7,16 +9,30 @@
 body {
   font-family: Poppins, Verdana, Tahoma, sans-serif;
   color: #000;
+  background-color: #f2f4e6;
 }
 
 a {
   text-decoration: none;
-  color: #f2f4e6;
+  color: #fff;
+}
+
+.flash-message {
+  font-size: 0.8em;
+  text-align: center;
+  position: relative;
+  opacity: 1;
+  transition: 5s ease-in-out;
+}
+
+.flash-success {
+  color: #fff;
+  background-color: #4bb543;
 }
 
 .header-content {
   background-color: #7c8e7b;
-  color: #f2f4e6;
+  color: #fff;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -79,7 +95,7 @@ a {
 .btn-submit {
   font-size: 1.3em;
   font-weight: bold;
-  color: #f2f4e6;
+  color: #fff;
   background-color: #7c8e7b;
   width: 45vw;
   border-radius: 0.5em;
@@ -87,6 +103,11 @@ a {
 }
 
 @media screen and (min-width: 480px) {
+  .flash-message {
+    font-size: 1em;
+    padding: 0.3em;
+  }
+
   .header-content {
     height: 4.5em;
     justify-content: space-between;
@@ -126,6 +147,11 @@ a {
 }
 
 @media screen and (min-width: 768px) {
+  .flash-message {
+    font-size: 1.2em;
+    padding: 0.5em;
+  }
+
   .header-title {
     letter-spacing: 0.15em;
   }
@@ -156,6 +182,11 @@ a {
 }
 
 @media screen and (min-width: 1024px) {
+  .flash-message {
+    font-size: 1.4em;
+    padding: 0.7em;
+  }
+
   .header-content {
     height: 5em;
   }
@@ -181,6 +212,11 @@ a {
 }
 
 @media screen and (min-width: 1366px) {
+  .flash-message {
+    font-size: 1.8em;
+    padding: 1em;
+  }
+
   .header-content {
     height: 10vh;
   }

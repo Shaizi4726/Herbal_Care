@@ -198,7 +198,7 @@
       </div>
       <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <?php
-          $product_cat = $cat->products()->limit(9)->get();
+          $product_cat = $cat->products()->inRandomOrder()->limit(9)->get();
         ?>
 
         <?php if(count($product_cat) != 0): ?>

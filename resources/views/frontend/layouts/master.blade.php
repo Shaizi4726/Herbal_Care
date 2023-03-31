@@ -1,16 +1,14 @@
 <!DOCTYPE html>
 <html lang="en-us">
   <head>
-		@php
-			$Products = DB::table('products')->get();
-		@endphp
-
 		@include('frontend.layouts.head')	
   </head>
   <body>
 		<!-- Header -->
 		@include('frontend.layouts.header')
 		<!-- End Header -->
+
+    @include('frontend.layouts.flash-message')
     
     <section id="main-content">
 		  @yield('main-content')

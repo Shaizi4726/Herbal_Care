@@ -1,19 +1,19 @@
-@extends('frontend.layouts.master')
-@section('title','HerbalCare || PRODUCT DETAIL')
 
-@push('styles')
-  <link href="{{asset('frontend/css/product-detail.css')}}" rel="stylesheet">
-@endpush
+<?php $__env->startSection('title','HerbalCare || PRODUCT DETAIL'); ?>
 
-@section('main-content')
+<?php $__env->startPush('styles'); ?>
+  <link href="<?php echo e(asset('frontend/css/product-detail.css')); ?>" rel="stylesheet">
+<?php $__env->stopPush(); ?>
+
+<?php $__env->startSection('main-content'); ?>
   <section id="product-detail" class="modal-content">	
     <div class="shazoom" id="shazoom">
-      @if(count($product->images) != 0)
+      <?php if(count($product->images) != 0): ?>
         <div class="img-box">
           <ul class="img-ul">
-            @foreach($product->images as $image)
-              <li><img src="{{('/images/products'.$image->name)}}"/></li>	
-            @endforeach										
+            <?php $__currentLoopData = $product->images; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $image): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+              <li><img src="<?php echo e(('/images/products'.$image->name)); ?>"/></li>	
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>										
           </ul>
         </div>
         <div class="zoom-nav"></div>
@@ -22,33 +22,33 @@
           <a href="javascript:void(0);" class="zoom-prev-btn"> < </a>
           <a href="javascript:void(0);" class="zoom-next-btn"> > </a>
         </p>
-      @endif
+      <?php endif; ?>
     </div>
 		<div class="modal-details-container">
       <div class="product-modal-detail">
-        <h1 class="title">{{$product->name}}</h1>
-        @if($product->sci_name)
+        <h1 class="title"><?php echo e($product->name); ?></h1>
+        <?php if($product->sci_name): ?>
           <div class="subtitle-div">
-            <h4 class="subtitle">Scientific Name: </h4><span class="normal">{{$product->sci_name}}</span>
+            <h4 class="subtitle">Scientific Name: </h4><span class="normal"><?php echo e($product->sci_name); ?></span>
           </div>
-        @endif
+        <?php endif; ?>
         
-				@php
+				<?php
           $rate=ceil($product->reviews->avg('rate'));
-				@endphp
+				?>
         
-				@for($i=1; $i<=5; $i++)
-          @if($rate>=$i)
+				<?php for($i=1; $i<=5; $i++): ?>
+          <?php if($rate>=$i): ?>
             <i class="fa-solid fa-star"></i>
-					@else 
+					<?php else: ?> 
             <i class="fa-regular fa-star"></i>
-					@endif
-        @endfor
+					<?php endif; ?>
+        <?php endfor; ?>
           
-        <a href="#reviews" class="total-review">({{$product->reviews->count()}}) Review</a>
+        <a href="#reviews" class="total-review">(<?php echo e($product->reviews->count()); ?>) Review</a>
           
         <div id="modal-form">
-          @php
+          <?php
             $forms = $product->forms()->get();
             $images = $product->images()->pluck('name');
             $sizes = array();
@@ -68,36 +68,36 @@
 
             if(Auth::check())
               $wishlist = $product->wishlists()->where('user_id', Auth::user()->id)->get();
-          @endphp
+          ?>
 
-          @if(count($forms) != 0)
+          <?php if(count($forms) != 0): ?>
             <div class="forms modal-radio" id="forms">
               <div id="forms-menu" class="forms-list">
-                @foreach($forms as $form)
-                  @if($form == $forms[0])
-                    <input type="radio" id="{{$form->name}}" name="product-form" value="{{$form->id}}" checked>
-                    <label for="{{$form->name}}">{{$form->name}}</label>
-                  @else
-                    <input type="radio" id="{{$form->name}}" name="product-form" value="{{$form->id}}">
-                    <label for="{{$form->name}}">{{$form->name}}</label>
-                  @endif
-                @endforeach
+                <?php $__currentLoopData = $forms; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $form): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                  <?php if($form == $forms[0]): ?>
+                    <input type="radio" id="<?php echo e($form->name); ?>" name="product-form" value="<?php echo e($form->id); ?>" checked>
+                    <label for="<?php echo e($form->name); ?>"><?php echo e($form->name); ?></label>
+                  <?php else: ?>
+                    <input type="radio" id="<?php echo e($form->name); ?>" name="product-form" value="<?php echo e($form->id); ?>">
+                    <label for="<?php echo e($form->name); ?>"><?php echo e($form->name); ?></label>
+                  <?php endif; ?>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
               </div>
             </div>
-          @endif
+          <?php endif; ?>
           <div class="price-size-container modal-radio" id="price-size">
             <div class="prices" id="price">
-              @if($minprice == $maxprice)
-                <h4>AED {{$minprice}}</h4>
-              @else
-                <h4>AED {{$minprice}} - AED {{$maxprice}}</h4>
-              @endif            
+              <?php if($minprice == $maxprice): ?>
+                <h4>AED <?php echo e($minprice); ?></h4>
+              <?php else: ?>
+                <h4>AED <?php echo e($minprice); ?> - AED <?php echo e($maxprice); ?></h4>
+              <?php endif; ?>            
             </div>
             <div id="sizes-menu" class="sizes-list">
-              @foreach($sizes as $size)
-                <input type="radio" id="{{$size}}" name="product-size" class="product-size" value="{{$size}}">
-                <label for="{{$size}}">{{$size}}</label>
-              @endforeach
+              <?php $__currentLoopData = $sizes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $size): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <input type="radio" id="<?php echo e($size); ?>" name="product-size" class="product-size" value="<?php echo e($size); ?>">
+                <label for="<?php echo e($size); ?>"><?php echo e($size); ?></label>
+              <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
           </div>
           <input type="hidden" name="price-input" id="price-input" value="">
@@ -106,7 +106,7 @@
             <input type="number" name="quantity" id="qty" class="qty" value="1" min="1" oninput="this.value = Math.abs(this.value)" disabled>
             <input type="button" value="+" class="qty-plus plus qty-control" field="quantity" disabled>
           </div>
-          <div class="cart-btn-div" onclick="cartAdd({{$product->id}})">
+          <div class="cart-btn-div" onclick="cartAdd(<?php echo e($product->id); ?>)">
             <button form="modal-cart-form" id="detail-cart-btn" class="cart-btn">
               <span class="add-to-cart">Add to Cart</span>
               <span class="added">Added</span>
@@ -125,23 +125,23 @@
         <i class="fa-solid fa-xmark"></i>
       </button>
       <button id="page-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="remInnerModal()">Stay on Page</button>
-      @auth
+      <?php if(auth()->guard()->check()): ?>
         <button id="chkt-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="location.href = '/checkout'">Checkout</button>
-      @else
+      <?php else: ?>
         <button id="chkt-loc-btn" class="btn btn-submit popup-btn loc-btn" onclick="chOptions()">Checkout</button>
         <button id="guest-chkt-btn" class="btn btn-submit popup-btn chkt-btn collapse" onclick="location.href = '/checkout'">Checkout as Guest</button>
         <button id="login-chkt-btn" class="btn btn-submit popup-btn chkt-btn collapse" onclick="location.href = '/user/login?checkout=1'">Login to Checkout</button>
-      @endauth
+      <?php endif; ?>
     </div>
   </section>
   
 	<section class="details reviews"> 
-		@php
+		<?php
 			$benefits = explode('@', $product->benefits);
 			$descriptions = explode('$', $product->description);
 			$precautions = explode('@', $product->precautions);
 			$packagings = explode('@', $product->packaging_details);
-		@endphp
+		?>
 		
 		<div class="details-review-div">
 			<button id="details-btn" class="btn details-review-btn active-details-review" data-toggle="description" onclick="showDetail(this)">Details</button>
@@ -151,36 +151,36 @@
 		<div class="tab-content" id="tab-content">
 			<!-- Description Tab -->
 			<div class="tab-panel" id="description">
-				@if ($benefits[0])
+				<?php if($benefits[0]): ?>
 					<h3> Benefits: </h3>
 					<ul class="benefits">
-						@foreach ($benefits as $benefit)
-							<li>{{$benefit}}</li>
-						@endforeach
+						<?php $__currentLoopData = $benefits; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $benefit): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+							<li><?php echo e($benefit); ?></li>
+						<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 					</ul>
-				@endif
-				@if ($descriptions[0])
+				<?php endif; ?>
+				<?php if($descriptions[0]): ?>
 					<h3> Description: </h3>
-          @foreach($descriptions as $description)
-					  <p class="desc-para">{{$description}}</p>
-          @endforeach
-				@endif
-        @if ($precautions[0])
+          <?php $__currentLoopData = $descriptions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $description): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+					  <p class="desc-para"><?php echo e($description); ?></p>
+          <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+				<?php endif; ?>
+        <?php if($precautions[0]): ?>
           <h3> Precautions: </h3>
           <ul class="precautions">
-            @foreach($precautions as $precaution)
-              <li>{{$precaution}}</li>
-            @endforeach
+            <?php $__currentLoopData = $precautions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $precaution): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+              <li><?php echo e($precaution); ?></li>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
           </ul>
-        @endif
-        @if ($packagings[0])
+        <?php endif; ?>
+        <?php if($packagings[0]): ?>
           <h3> Packaging Details: </h3>
           <ul class="precautions">
-            @foreach($packagings as $packaging)
-              <li>{{$packaging}}</li>
-            @endforeach
+            <?php $__currentLoopData = $packagings; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $packaging): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+              <li><?php echo e($packaging); ?></li>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
           </ul>
-        @endif
+        <?php endif; ?>
         <h3> Disclaimer: </h3>
         <ul class="precautions">
           <li>The images shown are for illustration purposes only and may not be an exact representation of the product.</li>
@@ -199,9 +199,9 @@
 				<div class="review-inner">
 					<h4>Your Rating</h4>
 
-					@auth 
-						<form class="form" method="post" action="{{route('review.store', $product->slug)}}"> 
-							@csrf 
+					<?php if(auth()->guard()->check()): ?> 
+						<form class="form" method="post" action="<?php echo e(route('review.store', $product->slug)); ?>"> 
+							<?php echo csrf_field(); ?> 
 							<div class="rate">
 								<input type="radio" id="star5" name="rate" value="5" />
 								<label for="star5" title="text">5 stars</label>
@@ -223,41 +223,41 @@
 								<button type="submit" class="btn ">Submit</button>
 							</div>
 						</form> 
-					@else 
+					<?php else: ?> 
 						<p class="review-auth-action"> 
-							You need to <a href="{{route('login.form')}}" class="review-auth-link form-review-btn btn">Login</a> OR <a href="{{route('register.form')}}" class="review-auth-link form-review-btn btn">Register</a>
+							You need to <a href="<?php echo e(route('login.form')); ?>" class="review-auth-link form-review-btn btn">Login</a> OR <a href="<?php echo e(route('register.form')); ?>" class="review-auth-link form-review-btn btn">Register</a>
 						</p>
-					@endauth
+					<?php endif; ?>
 				</div>
 
 				<div class="user-reviews">
 					<div class="prev-reviews">
 						<h3>Reviews</h3>
 					</div>
-					@foreach($product->reviews as $data)
+					<?php $__currentLoopData = $product->reviews; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 						<div class="single-rating">
 							<div class="rating-author"> 
 								
-								<h4>{{$data->user['fname']}}</h4>
+								<h4><?php echo e($data->user['fname']); ?></h4>
 							</div>
 
 							<div class="rating-des">
 								<div class="ratings">
 									<ul class="rating"> 
-										@for($i=1; $i<=5; $i++) 
-											@if($data->rating>=$i) 
+										<?php for($i=1; $i<=5; $i++): ?> 
+											<?php if($data->rating>=$i): ?> 
 												<li> <i class="fa-solid fa-star"></i> </li> 
-											@else 
+											<?php else: ?> 
 												<li> <i class="fa-regular fa-star"></i> </li> 
-											@endif 
-										@endfor 
+											<?php endif; ?> 
+										<?php endfor; ?> 
 									</ul>
-									<span class="rate-count"> ( {{$data->rating}} ) </span>
+									<span class="rate-count"> ( <?php echo e($data->rating); ?> ) </span>
 								</div>
-								<p>{{$data->review}}</p>
+								<p><?php echo e($data->review); ?></p>
 							</div>
 						</div> 
-					@endforeach
+					<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 				</div>
 			</div>
 			<!--/ End Review -->
@@ -265,7 +265,7 @@
 	</section>
   
 
-  @if(count($relproducts) != 0)
+  <?php if(count($relproducts) != 0): ?>
 	<!-- Start Related Products -->
 	<section class="products-area related-products">
 		<div class="section-title">
@@ -274,51 +274,51 @@
 
 		<div class="products">
 			<div class="product-slider carousel hero-slider"  data-flickity='{ "autoPlay": 3000, "contain": true, "pageDots": false, "initialIndex": 2 }'>
-				@foreach($relproducts as $relproduct)
-					@if($relproduct->id !== $product->id)
-						@php
+				<?php $__currentLoopData = $relproducts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $relproduct): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+					<?php if($relproduct->id !== $product->id): ?>
+						<?php
               $min_price = $relproduct->attrs->min('price');
               $max_price = $relproduct->attrs->max('price');
               if(Auth::check())
                 $wishlist = $relproduct->wishlists()->where('user_id', Auth()->user()->id)->get();
-						@endphp
-						<div class="product-card {{$relproduct->id}}-card carousel-cell">
-              <a href="{{route('product-detail', $relproduct->slug)}}">
-							  <img class="product-image" src="{{$relproduct->photo}}" alt="product image">
+						?>
+						<div class="product-card <?php echo e($relproduct->id); ?>-card carousel-cell">
+              <a href="<?php echo e(route('product-detail', $relproduct->slug)); ?>">
+							  <img class="product-image" src="<?php echo e($relproduct->photo); ?>" alt="product image">
               </a>
 
 							<div class="meta-detail">
-								<h3 class="product-title">{{$relproduct->name}}</h3>
-                @if($minprice==$maxprice)
-                  <p class="price">AED <span class="value">{{number_format($min_price, 2)}}</span></p>
-                @else
-                  <p class="price">AED <span class="value">{{number_format($min_price, 2)}}</span> - AED <span class="value">{{number_format($max_price, 2)}}</span></p>
-                @endif							
+								<h3 class="product-title"><?php echo e($relproduct->name); ?></h3>
+                <?php if($minprice==$maxprice): ?>
+                  <p class="price">AED <span class="value"><?php echo e(number_format($min_price, 2)); ?></span></p>
+                <?php else: ?>
+                  <p class="price">AED <span class="value"><?php echo e(number_format($min_price, 2)); ?></span> - AED <span class="value"><?php echo e(number_format($max_price, 2)); ?></span></p>
+                <?php endif; ?>							
               </div>
 							<div class="prod-detail-link">
-								<a href="{{route('product-detail', $relproduct->slug)}}" class="btn btn-submit detail-link"> Product Details </a>
-								@auth
-                  @if(count($wishlist) != 0)
-                    <button class="btn favbtn" onclick="fav(this, {{$relproduct->id}})"><i class="fa-solid fa-heart fav"></i></button>
-                  @else
-                    <button class="btn favbtn" onclick="fav(this, {{$relproduct->id}})"><i class="fa-regular fa-heart fav"></i></button>
-                  @endif
-                @else
+								<a href="<?php echo e(route('product-detail', $relproduct->slug)); ?>" class="btn btn-submit detail-link"> Product Details </a>
+								<?php if(auth()->guard()->check()): ?>
+                  <?php if(count($wishlist) != 0): ?>
+                    <button class="btn favbtn" onclick="fav(this, <?php echo e($relproduct->id); ?>)"><i class="fa-solid fa-heart fav"></i></button>
+                  <?php else: ?>
+                    <button class="btn favbtn" onclick="fav(this, <?php echo e($relproduct->id); ?>)"><i class="fa-regular fa-heart fav"></i></button>
+                  <?php endif; ?>
+                <?php else: ?>
                   <button class="btn favbtn" onclick="window.location.href = '/user/login';"><i class="fa-regular fa-heart fav"></i></button>
-                @endauth
+                <?php endif; ?>
 							</div>
 						</div>
-					@endif
-				@endforeach
+					<?php endif; ?>
+				<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 			</div>
 		</div>
 	</section>
 	<!-- End Related Products -->
-  @endif
-@endsection
+  <?php endif; ?>
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
-	<script src="{{asset('frontend/js/product-detail.js')}}"></script>
+<?php $__env->startPush('scripts'); ?>
+	<script src="<?php echo e(asset('frontend/js/product-detail.js')); ?>"></script>
 	<script>
     /* Actions when size is not checked */
     if($('[name="product-size"]:checked').val() == undefined) {
@@ -357,4 +357,5 @@
 			})
 		}
 	</script>
-@endpush
+<?php $__env->stopPush(); ?>
+<?php echo $__env->make('frontend.layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\XAMPP\htdocs\herbalcare\resources\views/frontend/pages/product-detail.blade.php ENDPATH**/ ?>

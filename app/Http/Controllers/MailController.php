@@ -12,7 +12,7 @@ class MailController extends Controller
   {
     $data["email"] = $email;
     $data["title"] = env('APP_NAME', 'HerbalCare');
-    $data["body"] = "This is test mail with pdf attachment";
+    $data["body"] = "Your order has been successfully placed. Thankyou for your order!";
 
     Mail::send('frontend.order.mail', $data, function($message)use($data, $pdf) {
       $message->to($data["email"])->subject($data["title"]);
@@ -20,6 +20,10 @@ class MailController extends Controller
       $message->attachData($pdf, 'order_details.pdf');         
     });
 
-    echo "Order placed successfully.";
+    Mail::send('frontend.order.mail', $data, function($message)use($data, $pdf) {
+      $message->to("admin@herbalcare.ae")->subject($data["title"]);
+
+      $message->attachData($pdf, 'order_details.pdf');         
+    });
   }
 }

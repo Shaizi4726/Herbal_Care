@@ -15,3 +15,13 @@ $(function() {
     }
   });
 });
+
+$(window).on('load', function() {
+  $('.signing-img-container').css('height', $('.shop-signing').outerHeight());
+  setTimeout(function() {
+    $('.flash-message').css('opacity', 0);
+  }, 5000);
+  setTimeout(function() {
+    $('.flash-message').remove();
+  }, 5500);
+});

@@ -201,6 +201,7 @@ $(function() {
   
   $('#coupon-apply').on('click', function() {
     let coupon = $('#coupon-code').val();
+    $.ajaxSetup({ cache: false });
 
     /* AJAX request for applying coupon */
     $.ajax({
@@ -284,6 +285,8 @@ function country(el, id) {
     $('#cities').html('');
   }
 
+  $.ajaxSetup({ cache: false });
+
   /* AJAX request for getting states for country */
   $.ajax({
     type: 'get',
@@ -352,6 +355,8 @@ function state(el) {
     $('#state-name').css('color', '#000');
     $('#state').val(id);
   }
+
+  $.ajaxSetup({ cache: false });
 
   /* AJAX request for getting cities for state */
   $.ajax({

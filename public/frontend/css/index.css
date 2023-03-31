@@ -1,7 +1,7 @@
 ﻿/*==================== Slider ====================*/
 .slider {
   position: relative;
-  width: 100%;
+  width: 100vw;
   height: 80vh;
   overflow: hidden;
 }
@@ -16,7 +16,6 @@
 
 .slider #slide-prev:hover, .slider #slide-next:hover {
   background-color: rgba(0, 0, 0, 0.5);
-  box-shadow: 0;
 }
 
 .carousel-wrap {
@@ -55,6 +54,10 @@
 /*==================== Categories Content ====================*/
 .title-content {
   margin: 2em 0.5em 0;
+}
+
+.title-content h2 {
+  font-weight: bold;
 }
 
 .fixed-banner-container {

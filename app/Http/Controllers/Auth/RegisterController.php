@@ -54,26 +54,26 @@ class RegisterController extends Controller
    * @param  \Illuminate\Http\Request $request
   */
 
-  public function registerSubmit(Request $request){
+  public function registerSubmit(Request $request) {
     $this->validate($request,[
       'cust_type' => 'required|string',
     ]);
     
     if($request['cust_type'] == 'individual') {
       $this->validate($request, [
-        'fname' => 'required|alpha|min:2',
-        'lname' => 'required|alpha|min:2'
+        'fname' => 'required|regex:/^[a-zA-Z ].{2,}$/',
+        'lname' => 'required|regex:/^[a-zA-Z ].{2,}$/'
       ]);
     } else {
       $this->validate($request, [
-        'cname' => 'required|alpha_dashed',
+        'cname' => 'required|string',
         'trn_no' => 'required|numeric'
       ]);
     }
     
     $this->validate($request, [
       'email' => 'required|email:strict,dns|unique:users',
-      'password' => 'required|confirmed|min:8|regex:/^.*(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^<>\{\}";:.,~!?@#$%^=&*\[\]\(\)¿§«»ω⊙¤°℃℉€¥£¢¡®©0-9_+]).*$/'
+      'password' => 'required|confirmed|regex:/^.*(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[<>\{\}";:.,~!?@#$%^=&*\[\]\(\)¿§«»ω⊙¤°℃℉€¥£¢¡®©_\-+\^]).{8,}$/'
     ]);
     
     $user = User::create([
@@ -90,13 +90,11 @@ class RegisterController extends Controller
       Session::put('user', $request->email);
       Auth::attempt(['email' => $request->email, 'password' => $request->password, 'status'=>'active']);
       event(new Registered($user));
-      request()->session()->flash('success','Successfully registered. Verify your Email to Sign In');
-      return redirect()->route('verification.notice');
+      return redirect()->route('verification.notice')->with('success', 'Thankyou for registration. Please verify your email.');
     }
 
     else{
-      request()->session()->flash('error','Please try again!');
-      return back();
+      return back()->with('error', 'Something went wrong. Please try again!');
     }
   }
 }

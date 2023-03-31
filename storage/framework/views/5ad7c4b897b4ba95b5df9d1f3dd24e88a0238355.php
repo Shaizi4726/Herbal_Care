@@ -1,16 +1,14 @@
 <!DOCTYPE html>
 <html lang="en-us">
   <head>
-		<?php
-			$Products = DB::table('products')->get();
-		?>
-
 		<?php echo $__env->make('frontend.layouts.head', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>	
   </head>
   <body>
 		<!-- Header -->
 		<?php echo $__env->make('frontend.layouts.header', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 		<!-- End Header -->
+
+    <?php echo $__env->make('frontend.layouts.flash-message', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
     
     <section id="main-content">
 		  <?php echo $__env->yieldContent('main-content'); ?>

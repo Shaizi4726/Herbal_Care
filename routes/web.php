@@ -26,12 +26,12 @@ Route::get('/email/verify/{id}/{hash}', 'Auth\VerificationController@emailVerifi
 Route::post('/email/verification-notification', 'Auth\VerificationController@resendEmailVerification')->middleware(['auth', 'throttle:6,1'])->name('verification.resend');
 
 // Login User
-Route::get('/login','FrontendController@login')->name('login.form');
-Route::get('/signin','FrontendController@login')->name('signin.form');
-Route::get('user/login','FrontendController@login')->name('user.login.form');
-Route::post('user/login','FrontendController@loginSubmit')->name('login.submit');
-Route::get('user/logout','FrontendController@logout')->name('user.logout');
-Route::get('/logout','FrontendController@logout')->name('logout');
+Route::get('/login', 'Auth\LoginController@login')->name('login.form');
+Route::redirect('/signin', '/login')->name('signin.form');
+Route::redirect('user/login', '/login')->name('user.login.form');
+Route::post('user/login', 'Auth\LoginController@loginSubmit')->name('login.submit');
+Route::get('user/logout', 'FrontendController@logout')->name('user.logout');
+Route::get('/logout', 'FrontendController@logout')->name('logout');
 
 // Reset password
 Route::view('password-reset', 'auth.passwords.old-reset')->name('password.reset');

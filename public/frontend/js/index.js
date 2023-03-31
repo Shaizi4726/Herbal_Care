@@ -1,56 +1,54 @@
 /*==================== Image Slider ====================*/
-var responsiveSlider = function() {
-  var slider = document.getElementById("slider");
-  var sliderWidth = slider.offsetWidth;
-  var slideList = document.getElementById("carousel-wrap");
-  var count = 1;
-  var items = slideList.querySelectorAll("li").length;
-  var prev = document.getElementById("slide-prev");
-  var next = document.getElementById("slide-next");
+let responsiveSlider = function() {
+  let sliderWidth = $('#slider').width();
+  let items = $('#slider li').length;
+  let count = 1;
 
-  window.addEventListener('resize', function() {
-    sliderWidth = slider.offsetWidth;
+  $(window).on('resize', function() {
+    sliderWidth = $('#slider').width();
   });
-
-  var prevSlide = function() {
+  
+  let prevSlide = function() {
     if(count > 1) {
       count -= 2;
-      slideList.style.left = '-' + count * sliderWidth + 'px';
+      $('#carousel-wrap').css('left', '-' + count * sliderWidth + 'px');
       count++;
     }
-
+    
     else if(count == 1) {
       count = items - 1;
-      slideList.style.left = '-' + count * sliderWidth + 'px';
+      $('#carousel-wrap').css('left', '-' + count * sliderWidth + 'px');
       count++;
     }
+    clearTimeout(sliderInterval);
   };
 
-  var nextSlide = function() {
+  let nextSlide = function() {
     if(count < items) {
-      slideList.style.left = '-' + count * sliderWidth + 'px';
+      $('#carousel-wrap').css('left', '-' + count * sliderWidth + 'px');
       count++;
     }
-
+    
     else if (count == items) {
-      slideList.style.left = '0px';
+      $('#carousel-wrap').css('left', '0');
       count = 1;
     }
+    clearTimeout(sliderInterval);
   };
 
-  next.addEventListener('click', function() {
+  $('#slide-next').on('click', function() {
     nextSlide();
   });
 
-  prev.addEventListener('click', function() {
+  $('#slide-prev').on('click', function() {
     prevSlide();
   });
 
-  setInterval(function() {
+  const sliderInterval = setInterval(function() {
     nextSlide();
-  }, 4000);
+  }, 6e3);
 };
 
-window.onload = function() {
+$(window).on('load', function() {
   responsiveSlider();
-}
+});

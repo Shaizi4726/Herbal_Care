@@ -1,4 +1,6 @@
-﻿/*==================== BASE CSS ====================*/
+﻿@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&family=Vollkorn:wght@400;700;900&display=swap');
+
+/*==================== BASE CSS ====================*/
 * {
   box-sizing: border-box;
   margin: 0;
@@ -239,19 +241,19 @@ input[type="button"] {
   opacity: 0;
 }
 
-.cart-btn.clicked .fa-shopping-cart {
+.clicked .fa-shopping-cart {
   animation: cart 1s ease-in-out forwards;
 }
 
-.cart-btn.clicked .fa-box {
+.clicked .fa-box {
   animation: box 1s ease-in-out forwards;
 }
 
-.cart-btn.clicked span.add-to-cart {
+.clicked span.add-to-cart {
   animation: txt1 1s ease-in-out forwards;
 }
 
-.cart-btn.clicked span.added {
+.clicked span.added {
   animation: txt2 1s ease-in-out forwards;
 }
 
@@ -523,7 +525,7 @@ input[type="button"] {
     color: #000;
     background-color: rgba(215, 200, 157, 0.5);
     width: 200px;
-    height: 0px;
+    height: 0;
     overflow: hidden;
     transition: all 500ms ease-in-out;
     cursor: pointer;

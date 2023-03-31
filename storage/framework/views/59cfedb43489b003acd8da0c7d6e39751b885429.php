@@ -387,26 +387,27 @@ unset($__errorArgs, $__bag); ?>
       <fieldset class="payment-mthd type-selection">
         <legend>Payment Method</legend>
         <div class="form-group">
-          <input type="radio" name="pay_mthd" id="cod-input" value="cod" checked>
-          <label for="cod-input">Cash on Delivery</label>
+          <input type="radio" name="pay_mthd" id="op-input" value="op" checked>
+          <label for="op-input">Online Payment</label>
         </div>
         <div class="form-group">
-          <input type="radio" name="pay_mthd" id="op-input" value="op">
-          <label for="op-input">Online Payment</label>
+          <input type="radio" name="pay_mthd" id="cod-input" value="cod">
+          <label for="cod-input">Cash on Delivery</label>
         </div>
       </fieldset>
 
-      <fieldset class="op-form collapse" id="op-form">
+      <fieldset class="op-form" id="op-form">
         <legend>Online Payment</legend>
-        
-        <div class="form-group">
-          <label for="account-no">Card Number</label>
-          <input type="tel" id="account-no" class="account-no"  name="account_no"  placeholder="4242 4242 4242 4242" onkeypress="cardLen(this, event)" oninput="cardNum(this, event)" autocomplete="on" value="<?php echo e(old('account_num')); ?>">
-        </div>
-        
-        <div class="form-group">
-          <label for="account-name">Full Name</label>
-          <input type="text" id="account-name" class="account-name" name="account_name" placeholder="Full Name (As per Card)" autocomplete="on" value="<?php echo e(old('account_name')); ?>">
+        <div class="fl-bl">
+          <div class="form-group">
+            <label for="account-no">Card Number</label>
+            <input type="tel" id="account-no" class="account-no"  name="account_no"  placeholder="4242 4242 4242 4242" onkeypress="cardLen(this, event)" oninput="cardNum(this, event)" autocomplete="on" value="<?php echo e(old('account_num')); ?>">
+          </div>
+          
+          <div class="form-group">
+            <label for="account-name">Full Name</label>
+            <input type="text" id="account-name" class="account-name" name="account_name" placeholder="Full Name (As per Card)" autocomplete="on" value="<?php echo e(old('account_name')); ?>">
+          </div>
         </div>
 
         <div class="fl-bl">

@@ -30,7 +30,7 @@ class OrderController extends Controller
    */
   public function index()
   {
-    $orders=Order::orderBy('id','DESC')->paginate(10);
+    $orders = Order::orderBy('id','DESC')->paginate(10);
     return view('admin_panel.order.index')->with('orders',$orders);
   }
 
@@ -51,48 +51,48 @@ class OrderController extends Controller
     
     if($request['cust_type'] == 'individual') {
       $this->validate($request, [
-        'fname' => 'required|alpha',
-        'lname' => 'required|alpha'
+        'fname' => 'required|regex:/^[a-zA-Z ].{2,}$/',
+        'lname' => 'required|regex:/^[a-zA-Z ].{2,}$/'
       ]);
     } else {
       $this->validate($request, [
         'cname' => 'required|string',
-        'trn_no' => 'required|numeric'
+        'trn_no' => 'required|regex: /^(\d *){15}$/'
       ]);
     }
     
     $this->validate($request, [
       'email' => 'required|email:strict,dns',
-      'address'=>'nullable|string',
+      'address'=>'required|string',
       'landmark'=>'nullable|string',
-      'country'=>'required|string',
-      'state'=>'nullable|string',
-      'city'=>'nullable|string',
-      'phone'=>'nullable|numeric',
-      'altphone' => 'nullable|numeric'
+      'country'=>'required|numeric',
+      'state'=>'required|numeric',
+      'city'=>'required|numeric',
+      'phone'=>'required|regex:/^(?:50|52|54|55|56|58|1|2|3|4|6|7|8|9)\d{7}$/',
+      'altphone' => 'nullable|regex:/^(?:50|52|54|55|56|58|1|2|3|4|6|7|8|9)\d{7}$/'
     ]);
     
     if($request['shipping_option'] == 'different') {
       $this->validate($request, [
-        'shipping_fname' => 'required|alpha',
-        'shipping_lname' => 'required|alpha',
+        'shipping_fname' => 'required|regex:/^[a-zA-Z ].{2,}$/',
+        'shipping_lname' => 'required|regex:/^[a-zA-Z ].{2,}$/',
         'shipping_address'=>'required|string',
         'shipping_landmark'=>'nullable|string',
-        'shipping_country' => 'required|string',
-        'shipping_state' => 'required|string',
-        'shipping_city' => 'required|string',
-        'shipping_phone' => 'required|numeric',
-        'shipping_altphone' => 'nullable|numeric'
+        'shipping_country' => 'required|numeric',
+        'shipping_state' => 'required|numeric',
+        'shipping_city' => 'required|numeric',
+        'shipping_phone' => 'required|regex:/^(?:50|52|54|55|56|58|1|2|3|4|6|7|8|9)\d{7}$/',
+        'shipping_altphone' => 'nullable|regex:/^(?:50|52|54|55|56|58|1|2|3|4|6|7|8|9)\d{7}$/'
       ]);
     }
     
     if($request['pay_mthd'] == 'op') {
       $this->validate($request, [
-        'account_name' => 'required|string',
-        'account_no' => 'required|digits: 16',
-        'cvv_cvc' => 'required|numeric',
-        'expiry_month' => 'required|digits: 2',
-        'expiry_year' => 'required|digits: 4|gte:' . $current_year . '|lte: ' . ($current_year+5) . ''
+        'account_name' => 'required|regex:/^[a-zA-Z ].{2,}$/',
+        'account_no' => 'required|regex: /^(?:4[0-9]{12}(?:[0-9]{3})?|(?:5[1-5][0-9]{2}|222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12})$/',
+        'cvv_cvc' => 'required|regex: /(?!000)[0-9]{3}/',
+        'expiry_month' => 'required|regex: /(?!00)[0-9]{2}/',
+        'expiry_year' => 'required|regex: /(?!0000)[0-9]{4}/|gte:' . $current_year . '|lte: ' . ($current_year+5) . ''
       ]);
     }
     
