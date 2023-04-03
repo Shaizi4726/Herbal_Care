@@ -17,9 +17,11 @@
     $tax = Helper::totalCartTax();
     $discount = Helper::total_discount();
     $total = Helper::totalCartAmount();
+    $order_success = Session::get('order_success');
+    $order_no = Session::get('order_no');
   ?>
 
-  <?php if($total != 0): ?>
+  <?php if($total != 0 || $order_success): ?>
     <?php if(auth()->guard()->guest()): ?>
       <p class="checkout-para">Please register in order to checkout more quickly.</p>
     <?php endif; ?>
@@ -812,8 +814,8 @@ unset($__errorArgs, $__bag); ?>
       </div>
     </section>
 
-    <section class="loader-section collapse">
-      <div class="loader-container">
+    <section class="loader-section popup-sec collapse">
+      <div class="popup-container loader-container">
         <div class="loader">
           <div class="box box0">
             <div></div>
@@ -846,12 +848,35 @@ unset($__errorArgs, $__bag); ?>
       </div>
     </section>
 
+    <section class="popup-sec order-success collapse">
+      <div class="popup-container">
+        <h3>Your order has been placed!</h3>
+        <i class='bx bxs-check-circle bx-tada'></i>
+        <p>Thankyou for your purchase!</p>
+        <p>Your order number is: <span id="order_no"></span></p>
+        <p>You have received an order confirmation email with details of your order.</p>
+        <a href="<?php echo e(route('home')); ?>" class="btn btn-submit"> Continue Shopping </a>
+      </div>
+    </section>
+
   <?php else: ?>
     <h4>Please add items to cart to proceed further. <a href="<?php echo e(route('home')); ?>">Continue Shopping</a></h4>
   <?php endif; ?>
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startPush('scripts'); ?>
-  <script src="<?php echo e(asset('frontend/js/checkout.js')); ?>"></script>
+<script src="<?php echo e(asset('frontend/js/checkout.js')); ?>"></script>
+
+<?php if($order_success): ?>
+  <script>
+    $(document).ready(function() {
+      $('body').css('height', '90vh');
+      $('body').css('overflow', 'hidden');
+      $('.order-success').removeClass('collapse');
+      $('#order_no').html('<?= $order_no ?>');
+    });
+  </script>
+<?php endif; ?>
+
 <?php $__env->stopPush(); ?>
 <?php echo $__env->make('frontend.layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\XAMPP\htdocs\herbalcare\resources\views/frontend/pages/checkout.blade.php ENDPATH**/ ?>

@@ -266,6 +266,25 @@ label {
   width: 98%;
 }
 
+.order-success h3 {
+  font-size: 1.3em;
+  margin: 1em 0;
+}
+
+.bxs-check-circle {
+  color: #4bb543;
+  font-size: 4em;
+  margin-bottom: 0.3em;
+}
+
+.order-success p {
+  font-size: 1em;
+}
+
+#order-no {
+  font-weight: bold;
+} 
+
 @media screen and (min-width: 768px) {
   .page-title {
     font-size: 40px;

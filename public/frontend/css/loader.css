@@ -1,4 +1,4 @@
-.loader-section {
+.popup-sec {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -13,13 +13,17 @@
   display: none;
 }
 
-.loader-container {
+.popup-container {
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #ffffed;
   width: 95%;
   height: 50%;
+}
+
+.order-success .popup-container {
+  flex-direction: column;
 }
 
 .loader {
@@ -656,7 +660,7 @@
 }
 
 @media screen and (min-width: 480px) {
-  .loader-container {
+  .popup-container {
     width: 85%;
     height: 55%;
   }
@@ -667,7 +671,7 @@
 }
 
 @media screen and (min-width: 768px) {
-  .loader-container {
+  .popup-container {
     width: 75%;
     height: 60%;
   }
@@ -678,7 +682,7 @@
 }
 
 @media screen and (min-width: 1024px) {
-  .loader-container {
+  .popup-container {
     width: 65%;
     height: 65%;
   }
@@ -689,7 +693,7 @@
 }
 
 @media screen and (min-width: 1366px) {
-  .loader-container {
+  .popup-container {
     width: 55%;
     height: 70%;
   }

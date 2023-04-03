@@ -17,9 +17,11 @@
     $tax = Helper::totalCartTax();
     $discount = Helper::total_discount();
     $total = Helper::totalCartAmount();
+    $order_success = Session::get('order_success');
+    $order_no = Session::get('order_no');
   @endphp
 
-  @if($total != 0)
+  @if($total != 0 || $order_success)
     @guest
       <p class="checkout-para">Please register in order to checkout more quickly.</p>
     @endguest
@@ -596,8 +598,8 @@
       </div>
     </section>
 
-    <section class="loader-section collapse">
-      <div class="loader-container">
+    <section class="loader-section popup-sec collapse">
+      <div class="popup-container loader-container">
         <div class="loader">
           <div class="box box0">
             <div></div>
@@ -630,11 +632,34 @@
       </div>
     </section>
 
+    <section class="popup-sec order-success collapse">
+      <div class="popup-container">
+        <h3>Your order has been placed!</h3>
+        <i class='bx bxs-check-circle bx-tada'></i>
+        <p>Thankyou for your purchase!</p>
+        <p>Your order number is: <span id="order-no"></span></p>
+        <p>You have received an order confirmation email with details of your order.</p>
+        <a href="{{route('home')}}" class="btn btn-submit"> Continue Shopping </a>
+      </div>
+    </section>
+
   @else
     <h4>Please add items to cart to proceed further. <a href="{{route('home')}}">Continue Shopping</a></h4>
   @endif
 @endsection
 
 @push('scripts')
-  <script src="{{asset('frontend/js/checkout.js')}}"></script>
+<script src="{{asset('frontend/js/checkout.js')}}"></script>
+
+@if($order_success)
+  <script>
+    $(document).ready(function() {
+      $('body').css('height', '90vh');
+      $('body').css('overflow', 'hidden');
+      $('.order-success').removeClass('collapse');
+      $('#order-no').html('<?= $order_no ?>');
+    });
+  </script>
+@endif
+
 @endpush

@@ -472,7 +472,7 @@
     background-color: #7c8e7b; 
   }
   
-  .shop-menu .cat-menu li:hover > a {
+  #shop .shop-menu .cat-menu li:hover > a {
     color: #fff;
   }
   

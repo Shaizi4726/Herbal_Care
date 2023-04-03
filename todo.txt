@@ -6,15 +6,14 @@ zoom cart image on hover
 Forgot Password Page
 Send username and password in the verify email
 link customer address with google map 
-quickview on related products
+product detail link on images in mobile
 product form with flu
 after verification verify page shouldn't be accessed
-Send invoice after payment on email provided by customer
 Send email on cancellation or return
 change email address on tax invoice and sale order
-Order confirmation page after checkout
 Payment method on sale and tax invoice
 Refund Payment
 footer email and phone
+Send invoice after payment on email provided by customer
 when to send tax invoice [op: immediately or not]
 contact us message form

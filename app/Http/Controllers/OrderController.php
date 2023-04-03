@@ -257,7 +257,7 @@ class OrderController extends Controller
     $sale_pdf = $this->sale_invoice($re);  
     (new MailController)->send_mail($request->email, $sale_pdf);
 
-    return redirect()->route('home')->with('success', 'Your order is placed successfully.');
+    return back()->with(['order_success' => true, 'order_no' => $order->order_no]);
   }
   
   /**
@@ -592,91 +592,6 @@ class OrderController extends Controller
         $data[$monthName] = (!empty($result[$i]))? number_format((float)($result[$i]), 2, '.', '') : 0.0;
     }
     return $data;
-}
-// dashboard Show Order Count
-  public static function countActiveOrder(){
-    $data=Order::count();
-    if($data){
-        return $data;
-    }
-    return 0;
-  } 
-//Dashboard show total amount of order
-  public static function amountOrder(){
-    $data=OrderItem::get();
-    if($data){
-        return $data->sum('total');
-    }
-    return 0;
-  } 
-  // dashboard Show Delevered
-  public static function countActiveDelevered(){
-    $data=Shipping::where('status','delivered')->count();
-    if($data){
-        return $data;
-    }
-    return 0;
-  } 
-
-  // dashboard Show Processe
-  public static function countActiveProcessed(){
-    $data=Shipping::where('status','processed')->count();
-    if($data){
-      return $data;
-    }
-    return 0;
-  } 
-
-  // dashboard Show Shipped
-  public static function countActiveShipped(){
-    $data=Shipping::where('status','shipped')->count();
-    if($data){
-        return $data;
-    }
-    return 0;
-  } 
-
-  // dashboard Show Ordered
-  public static function countActiveOrdered(){
-    $data=Shipping::where('status','ordered')->count();
-    if($data){
-        return $data;
-    }
-    return 0;
-  } 
-  // dashboard Show Cancelled
-  public static function countActiveCancelled(){
-    $data=CancelItem::count();
-    if($data){
-        return $data;
-    }
-    return 0;
-  } 
-  //Cancelled Amount
-  public static function amountCance(){
-    $data=CancelItem::get();
-    if($data){
-        return $data->sum('total');
-    }
-    return 0;
-  } 
-  // dashboard Show Returned
-  public static function countActiveReturned(){
-    $data=ReturnItem::count();
-    //dd($data);
-    if($data){
-        return $data;
-    }
-    return 0;
-  } 
-  //Returned Amount
-  public static function amountReturn(){
-    $data=ReturnItem::get();
-    if($data){
-        return $data->sum('total');
-    }
-    return 0;
-  } 
-
+  }
 }
 ?>
