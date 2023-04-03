@@ -71,7 +71,7 @@ $(function() {
   $('#country-div').on('keypress', function(event) {
     if(event.keyCode == 13)
       $(this).click();
-  })
+  });
 
   $('#country-div').on('click', function() {
     $('#countries').toggleClass('collapse').focus();
@@ -79,12 +79,12 @@ $(function() {
 
   $('#countries').on('focusout', function() {
     $(this).addClass('collapse');
-  })
+  });
 
   $('#state-div').on('keypress', function(event) {
     if(event.keyCode == 13)
       $(this).click();
-  })
+  });
 
   $('#state-div').on('click', function() {
     if($('#states').html() != '')
@@ -93,12 +93,12 @@ $(function() {
 
   $('#states').on('focusout', function() {
     $(this).addClass('collapse');
-  })
+  });
 
   $('#city-div').on('keypress', function(event) {
     if(event.keyCode == 13)
       $(this).click();
-  })
+  });
 
   $('#city-div').on('click', function() {
     if($('#cities').html() != '')
@@ -107,12 +107,12 @@ $(function() {
 
   $('#cities').on('focusout', function() {
     $(this).addClass('collapse');
-  })
+  });
 
   $('#shipping-country-div').on('keypress', function(event) {
     if(event.keyCode == 13)
       $(this).click();
-  })
+  });
 
   $('#shipping-country-div').on('click', function() {
     $('#shipping-countries').toggleClass('collapse').focus();
@@ -120,12 +120,12 @@ $(function() {
 
   $('#shipping-countries').on('focusout', function() {
     $(this).addClass('collapse');
-  })
+  });
 
   $('#shipping-state-div').on('keypress', function(event) {
     if(event.keyCode == 13)
       $(this).click();
-  })
+  });
 
   $('#shipping-state-div').on('click', function() {
     if($('#shipping-states').html() != '')
@@ -134,12 +134,12 @@ $(function() {
 
   $('#shipping-states').on('focusout', function() {
     $(this).addClass('collapse');
-  })
+  });
 
   $('#shipping-city-div').on('keypress', function(event) {
     if(event.keyCode == 13)
       $(this).click();
-  })
+  });
 
   $('#shipping-city-div').on('click', function() {
     if($('#shipping-cities').html() != '')
@@ -148,7 +148,7 @@ $(function() {
 
   $('#shipping-cities').on('focusout', function() {
     $(this).addClass('collapse');
-  })
+  });
 
   $('#expiry-month').on('input', function(event) {
     if(isNaN(Number(this.value)) || this.value > 12) {
@@ -194,10 +194,13 @@ $(function() {
   });
 
   $('#order-form').on('submit', function() {
-    let vale = $('#account-no').val();
-    vale = vale.split(" ").join("");
-    $('#account-no').val(vale);
-  })
+    $('body').css('height', '90vh');
+    $('body').css('overflow', 'hidden');
+    $('.loader-section').removeClass('collapse');
+    let val = $('#account-no').val();
+    val = val.split(" ").join("");
+    $('#account-no').val(val);
+  });
   
   $('#coupon-apply').on('click', function() {
     let coupon = $('#coupon-code').val();

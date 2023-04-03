@@ -1,4 +1,3 @@
-<!-- Start Footer Area -->
 <footer class="footer shop-footer" >
 	<!-- Footer Top -->
 	<div class="footer-top main-footer">				
@@ -59,7 +58,7 @@
 	</div>
 
 	<!-- Fixed Footer -->
-	<div id="footer-fixed" class="footer-fixed fixed-bottom collapse"> 
+	<div id="footer-fixed" class="footer-fixed fixed-bottom"> 
 		<!-- Features -->
     <div class="features" >
 			<div class="feature1" >

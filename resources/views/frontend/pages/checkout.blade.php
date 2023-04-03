@@ -3,6 +3,7 @@
 
 @push('styles')
   <link rel="stylesheet" href="{{asset('frontend/css/checkout.css')}}">
+  <link rel="stylesheet" href="{{asset('frontend/css/loader.css')}}">
 @endpush
 
 @section('main-content')
@@ -594,6 +595,41 @@
         </div>
       </div>
     </section>
+
+    <section class="loader-section collapse">
+      <div class="loader-container">
+        <div class="loader">
+          <div class="box box0">
+            <div></div>
+          </div>
+          <div class="box box1">
+            <div></div>
+          </div>
+          <div class="box box2">
+            <div></div>
+          </div>
+          <div class="box box3">
+            <div></div>
+          </div>
+          <div class="box box4">
+            <div></div>
+          </div>
+          <div class="box box5">
+            <div></div>
+          </div>
+          <div class="box box6">
+            <div></div>
+          </div>
+          <div class="box box7">
+            <div></div>
+          </div>
+          <div class="ground">
+            <div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
   @else
     <h4>Please add items to cart to proceed further. <a href="{{route('home')}}">Continue Shopping</a></h4>
   @endif

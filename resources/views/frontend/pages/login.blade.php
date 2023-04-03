@@ -26,11 +26,11 @@
         @include('frontend.layouts.flash-message')
 
         <!-- Form -->
-        <form class="form" method="post" action="{{route('login.submit')}}">
+        <form class="form" method="post" action="{{route('login.submit')}}" novalidate>
           @csrf
           <div class="form-group">
               <label for="email">Email:<span>*</span></label>
-              <input type="email" name="email" id="email" placeholder="Enter Email" value="{{old('email')}}" required>
+              <input type="email" name="email" id="email" placeholder="Enter Email" value="{{old('email')}}">
               @if ($errors->get('email'))
                 <div class="error">
                   @error('email')
@@ -42,13 +42,13 @@
         
           <div class="form-group">
             <label for="password">Password:<span>*</span></label>
-            <input type="password" name="password" id="password" placeholder="Enter Password" value="{{old('password')}}" required>
+            <input type="password" name="password" id="password" placeholder="Enter Password" value="{{old('password')}}">
           </div>
 
           @if ($errors->get('password'))
             <div class="error">
               @error('password')
-                {$message}
+                {{$message}}
               @enderror
             </div>
           @endif

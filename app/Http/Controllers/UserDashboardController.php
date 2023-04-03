@@ -38,7 +38,7 @@ class UserDashboardController extends Controller
         return view('user.users.profile')->with('profile',$profile);
     }
 
-    public function profileUpdate(Request $request,$id){
+    public function profileUpdate(Request $request, $id){
         // return $request->all();
         $user=User::findOrFail($id);
         $data=$request->all();

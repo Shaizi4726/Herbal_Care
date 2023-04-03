@@ -42,6 +42,7 @@
               <input type="radio" name="cust_type" id="company" value="company">
               <label for="company">Company</label>
             </div>
+
             <?php if($errors->get('cust_type')): ?>
               <div class="error">
                 <?php $__errorArgs = ['cust_type'];
@@ -97,8 +98,9 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
               </div>
+            <?php endif; ?>
 
-            <?php elseif($errors->get('lname')): ?>
+            <?php if($errors->get('lname')): ?>
               <div class="error">
                 <?php $__errorArgs = ['lname'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -112,8 +114,9 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
               </div>
+            <?php endif; ?>
 
-            <?php elseif($errors->get('cname')): ?>
+            <?php if($errors->get('cname')): ?>
               <div class="error">
                 <?php $__errorArgs = ['cname'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -127,8 +130,9 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
               </div>
+            <?php endif; ?>
 
-            <?php elseif($errors->get('trn_no')): ?>
+            <?php if($errors->get('trn_no')): ?>
               <div class="error">
                 <?php $__errorArgs = ['trn_no'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -147,6 +151,7 @@ unset($__errorArgs, $__bag); ?>
             <div class="form-group">
               <label for="email">Email:<span>*</span></label>
               <input type="email" name="email" id="email" placeholder="Enter Email" value="<?php echo e(old('email')); ?>">
+
               <?php if($errors->get('email')): ?>
                 <div class="error">
                   <?php $__errorArgs = ['email'];
