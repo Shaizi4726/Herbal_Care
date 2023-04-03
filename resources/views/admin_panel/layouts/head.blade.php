@@ -6,7 +6,11 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>The Herb Room || DASHBOARD</title>
+    <!-- Title Tag  -->
+<title>@yield('title')</title>
+
+<!-- Favicon -->
+<link rel="icon" type="image/png" href="{{asset('images/favicon.png')}}">
   
     <!-- Custom fonts for this template-->
     <link href="{{asset('admin_panel/vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">

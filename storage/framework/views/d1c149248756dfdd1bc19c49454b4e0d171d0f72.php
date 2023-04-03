@@ -1,8 +1,8 @@
-@extends('admin_panel.layouts.master')
-@section('title','The Herb Room || DASHBOARD')
-@section('main-content')
+
+<?php $__env->startSection('title','The Herb Room || DASHBOARD'); ?>
+<?php $__env->startSection('main-content'); ?>
 <div class="container-fluid">
-    @include('admin_panel.layouts.notification')
+    <?php echo $__env->make('admin_panel.layouts.notification', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
       <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
@@ -17,7 +17,7 @@
           <div class="card-body">
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
-              @php
+              <?php
                 $category = DB::table('categories')->where('status','active')->count();
                 $subcategory = DB::table('sub_categories')->where('status','active')->count();
                 $products = DB::table('products')->where('status','active')->count();
@@ -32,11 +32,11 @@
                 $cancelledAmount = DB::table('cancel_items')->sum('total');
                 $returned = DB::table('return_items')->count();
                 $returnedAmount = DB::table('return_items')->sum('total');
-              @endphp
+              ?>
                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Category</div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800">{{$category}}</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo e($category); ?></div>
                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">SubCategory</div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800">{{$subcategory}}</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo e($subcategory); ?></div>
               </div>
               <div class="col-auto">
                 <i class="fas fa-sitemap fa-2x text-gray-300"></i>
@@ -53,7 +53,7 @@
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Products</div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800">{{$products}}</div>               
+                <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo e($products); ?></div>               
               </div>
               <div class="col-auto">
                 <i class="fas fa-cubes fa-2x text-gray-300"></i>
@@ -73,7 +73,7 @@
                 <div class="text-xs font-weight-bold text-blue text-uppercase mb-1">User</div>
                 <div class="row no-gutters align-items-center">
                   <div class="col-auto">
-                    <div class="h5 mb-0 mr-3 font-weight-bold text-blue-800">{{$users}}</div>
+                    <div class="h5 mb-0 mr-3 font-weight-bold text-blue-800"><?php echo e($users); ?></div>
                   </div>
                   
                 </div>
@@ -92,9 +92,9 @@
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Order</div>
-                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{$orders}}</div>
+                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?php echo e($orders); ?></div>
                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Total</div>
-                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{$amountOrder}}</div>
+                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?php echo e($amountOrder); ?></div>
                 <div class="row no-gutters align-items-center">
                   <div class="col-auto">
                   </div>
@@ -119,7 +119,7 @@
                 <div class="row no-gutters align-items-center">
                   <div class="col-auto">
                   </div>
-                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{$ordered}}</div>
+                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?php echo e($ordered); ?></div>
                 </div>
               </div>
               <div class="col-auto">
@@ -139,7 +139,7 @@
                 <div class="row no-gutters align-items-center">
                   <div class="col-auto">
                   </div>
-                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{$processed}}</div>
+                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?php echo e($processed); ?></div>
                 </div>
               </div>
               <div class="col-auto">
@@ -159,7 +159,7 @@
                 <div class="row no-gutters align-items-center">
                   <div class="col-auto">
                   </div>
-                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{$shipped}}</div>
+                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?php echo e($shipped); ?></div>
                 </div>
               </div>
               <div class="col-auto">             
@@ -179,7 +179,7 @@
                 <div class="row no-gutters align-items-center">
                   <div class="col-auto">
                   </div>
-                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{$delivered}}</div>
+                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?php echo e($delivered); ?></div>
                 </div>
               </div>
               <div class="col-auto">
@@ -196,9 +196,9 @@
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Cancelled</div>
-                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{$cancelled}}</div>
+                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?php echo e($cancelled); ?></div>
                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Total Cancelled</div>
-                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{$cancelledAmount}}</div>
+                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?php echo e($cancelledAmount); ?></div>
                 <div class="row no-gutters align-items-center">
                   <div class="col-auto">
                   </div>                  
@@ -218,9 +218,9 @@
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Returned</div>
-                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{$returned}}</div>
+                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?php echo e($returned); ?></div>
                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Total Returned</div>
-                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{$returnedAmount}}</div>
+                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?php echo e($returnedAmount); ?></div>
                 <div class="row no-gutters align-items-center">
                   <div class="col-auto">
                   </div>
@@ -268,12 +268,12 @@
     <!-- Content Row -->
     
   </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-{{-- pie chart --}}
+
 <script type="text/javascript">
   var analytics = <?php echo $users; ?>
 
@@ -290,9 +290,9 @@
       chart.draw(data, options);
   }
 </script>
-  {{-- line chart --}}
+  
   <script type="text/javascript">
-    const url = "{{route('product.order.income')}}";
+    const url = "<?php echo e(route('product.order.income')); ?>";
     // Set new default font family and font color to mimic Bootstrap's default styling
     Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
     Chart.defaults.global.defaultFontColor = '#858796';
@@ -425,4 +425,5 @@
           });
 
   </script>
-@endpush
+<?php $__env->stopPush(); ?>
+<?php echo $__env->make('admin_panel.layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\Herb_room1\resources\views/admin_panel/index.blade.php ENDPATH**/ ?>

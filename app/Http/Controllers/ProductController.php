@@ -414,13 +414,6 @@ class ProductController extends Controller
         return redirect()->back()->with('flash_message_success','Products Attributes has been update successfully');
          
       }
-      public static function countActiveProduct(){
-        $data=Product::where('status','active')->count();
-        if($data){
-            return $data;
-        }
-        return 0;
-    }
 
     public function exportProducts(Request $request){
         return Excel::download(new ProductsExport, 'products.xlsx');

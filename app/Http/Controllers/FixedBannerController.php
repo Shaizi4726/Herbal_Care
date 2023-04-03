@@ -100,22 +100,4 @@ class FixedBannerController extends Controller
         return redirect()->route('fixed.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $banner_fixed=FixedBanner::findOrFail($id);
-        $status=$banner_fixed->delete();
-        if($status){
-            request()->session()->flash('success','Banner successfully deleted');
-        }
-        else{
-            request()->session()->flash('error','Error occurred while deleting banner');
-        }
-        return redirect()->route('fixed.index');
-    }
 }

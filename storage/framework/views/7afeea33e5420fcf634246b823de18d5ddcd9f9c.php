@@ -138,7 +138,7 @@
 			</div>
 			
 		</div>
-		<button class="btn btn-submit"><a href="{{route('home')}}">Home Page</a></button>
+		<button class="btn btn-submit"><a href="<?php echo e(route('home')); ?>">Home Page</a></button>
 	</div>
 
 	<script>
@@ -156,3 +156,4 @@
 	</script>
 </body>
 </html>
+<?php /**PATH C:\xampp\htdocs\Herb_room1\resources\views/frontend/pages/faq.blade.php ENDPATH**/ ?>
