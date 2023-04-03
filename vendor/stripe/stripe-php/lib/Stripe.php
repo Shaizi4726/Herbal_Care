@@ -58,14 +58,14 @@ class Stripe
     /** @var float Initial delay between retries, in seconds */
     private static $initialNetworkRetryDelay = 0.5;
 
-    const VERSION = '10.5.0';
+    const VERSION = '10.12.0';
 
     /**
      * @return string the API key used for requests
      */
     public static function getApiKey()
     {
-      return self::$apiKey;
+        return self::$apiKey;
     }
 
     /**
@@ -73,7 +73,7 @@ class Stripe
      */
     public static function getClientId()
     {
-      return self::$clientId;
+        return self::$clientId;
     }
 
     /**
@@ -82,11 +82,11 @@ class Stripe
      */
     public static function getLogger()
     {
-      if (null === self::$logger) {
-          return new Util\DefaultLogger();
-      }
+        if (null === self::$logger) {
+            return new Util\DefaultLogger();
+        }
 
-      return self::$logger;
+        return self::$logger;
     }
 
     /**
@@ -95,7 +95,7 @@ class Stripe
      */
     public static function setLogger($logger)
     {
-      self::$logger = $logger;
+        self::$logger = $logger;
     }
 
     /**
@@ -105,7 +105,7 @@ class Stripe
      */
     public static function setApiKey($apiKey)
     {
-      self::$apiKey = $apiKey;
+        self::$apiKey = $apiKey;
     }
 
     /**
@@ -115,7 +115,7 @@ class Stripe
      */
     public static function setClientId($clientId)
     {
-      self::$clientId = $clientId;
+        self::$clientId = $clientId;
     }
 
     /**
@@ -124,7 +124,7 @@ class Stripe
      */
     public static function getApiVersion()
     {
-      return self::$apiVersion;
+        return self::$apiVersion;
     }
 
     /**
@@ -132,7 +132,7 @@ class Stripe
      */
     public static function setApiVersion($apiVersion)
     {
-      self::$apiVersion = $apiVersion;
+        self::$apiVersion = $apiVersion;
     }
 
     /**
@@ -140,7 +140,7 @@ class Stripe
      */
     private static function getDefaultCABundlePath()
     {
-      return \realpath(__DIR__ . '/../data/ca-certificates.crt');
+        return \realpath(__DIR__ . '/../data/ca-certificates.crt');
     }
 
     /**

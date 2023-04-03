@@ -12,6 +12,7 @@
         var file_path = items.map(function (item) {
           return item.url;
         }).join(',');
+        console.log(item);
 
         // set the value of the desired input to image url
         target_input.val('').val(file_path).trigger('change');

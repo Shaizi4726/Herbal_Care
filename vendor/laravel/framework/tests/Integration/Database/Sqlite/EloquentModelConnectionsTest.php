@@ -41,7 +41,7 @@ class EloquentModelConnectionsTest extends TestCase
         Schema::create('child', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->integer('parent_cat');
+            $table->integer('parent_id');
         });
 
         Schema::connection('conn2')->create('parent', function (Blueprint $table) {
@@ -52,7 +52,7 @@ class EloquentModelConnectionsTest extends TestCase
         Schema::connection('conn2')->create('child', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->integer('parent_cat');
+            $table->integer('parent_id');
         });
     }
 
@@ -103,12 +103,12 @@ class ParentModel extends Model
 
     public function children()
     {
-        return $this->hasMany(ChildModel::class, 'parent_cat');
+        return $this->hasMany(ChildModel::class, 'parent_id');
     }
 
     public function childrenDefaultConn2()
     {
-        return $this->hasMany(ChildModelDefaultConn2::class, 'parent_cat');
+        return $this->hasMany(ChildModelDefaultConn2::class, 'parent_id');
     }
 }
 
@@ -120,7 +120,7 @@ class ChildModel extends Model
 
     public function parent()
     {
-        return $this->belongsTo(ParentModel::class, 'parent_cat');
+        return $this->belongsTo(ParentModel::class, 'parent_id');
     }
 }
 
@@ -133,6 +133,6 @@ class ChildModelDefaultConn2 extends Model
 
     public function parent()
     {
-        return $this->belongsTo(ParentModel::class, 'parent_cat');
+        return $this->belongsTo(ParentModel::class, 'parent_id');
     }
 }

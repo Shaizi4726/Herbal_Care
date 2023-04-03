@@ -44,6 +44,13 @@
           @enderror
         </div>
         <div class="form-group">
+          <label for="packaging_details" class="col-form-label">Packaging  Details</label>
+          <textarea class="form-control" id="packaging_details" name="packaging_details">{{old('packaging_details')}}</textarea>
+          @error('packaging_details')
+          <span class="text-danger">{{$message}}</span>
+          @enderror
+        </div>
+        <div class="form-group">
           <label for="description" class="col-form-label">Description</label>
           <textarea class="form-control" id="description" name="description">{{old('description')}}</textarea>
           @error('description')
@@ -158,8 +165,8 @@
             </div>
           </div>
         </div>
-        </div>         
-        <input type="hidden" id="form_count" name="form_count" value="">
+      </div>         
+      <input type="hidden" id="form_count" name="form_count" value="">
       </div>
        <div class="form-group">
           <label for="inputPhoto" class="col-form-label">Photo <span class="text-danger">*</span></label>
@@ -225,10 +232,17 @@
         height: 100
     });
   });
-
+  
   $(document).ready(function() {
     $('#description').summernote({
       placeholder: "Write detail description.....",
+        tabsize: 2,
+        height: 100
+    });
+  });
+  $(document).ready(function() {
+    $('#packaging_details').summernote({
+      placeholder: "Write detail packaging_details.....",
         tabsize: 2,
         height: 100
     });
@@ -298,6 +312,7 @@
     var add_button = $(".category_button");
     
     $(add_button).click(function(e) {
+      
       e.preventDefault();
       if (x < max_fields) {
         x++;
@@ -324,9 +339,10 @@
       } else {
         alert('You Reached the limits')
       }
-      $(`.category_id${x}`).change(function (){         
+      $(`.category_id${x}`).change(function (){    
+       
         var category_id=$(this).val();
-        if(category_id !=null){         
+        if(category_id !=null) {         
           // Ajax call
           $.ajax({        
             url:`/admin/category/"+category_id+"/child`,
@@ -334,7 +350,7 @@
               _token:"{{csrf_token()}}",
               id:category_id
             },
-            type:"GET",
+            type:"POST",
             success:function(response){       
               if(typeof(response) !='object'){
                 response=$.parseJSON(response)            
@@ -372,9 +388,8 @@
   });
  
   $('.category_id').change(function (){ 
-        
     var category_id=$(this).val();
-    console.log(category_id);
+    
     if(category_id !=null){
       //alert(category_id);
       // Ajax call
@@ -384,7 +399,7 @@
           _token:"{{csrf_token()}}",
           id:category_id
         },
-        type:"GET",
+        type:"POST",
         success:function(response){       
           if(typeof(response) !='object'){
             response=$.parseJSON(response)            
@@ -398,6 +413,7 @@
                 html_option +="<option value='"+id+"'>"+name+"</option>"
               });
             }
+     
             else{ 
             }
           }

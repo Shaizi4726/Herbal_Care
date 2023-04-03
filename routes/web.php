@@ -119,6 +119,9 @@ Route::match(['get','post'], 'admin/product/delete-brand/{id}','ProductControlle
 
 Route::match(['get','post'], '/get-product-price','FrontendController@getProductPrice');
 
+//Get SubCategory
+Route::post('/admin/category/{id}/child','CategoryController@getChildByParent');
+
 // Backend section start
 Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     Route::get('/','AdminController@index')->name('admin');
