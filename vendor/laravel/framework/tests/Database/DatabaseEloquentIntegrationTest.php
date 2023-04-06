@@ -97,7 +97,7 @@ class DatabaseEloquentIntegrationTest extends TestCase
             $this->schema($connection)->create('posts', function ($table) {
                 $table->increments('id');
                 $table->integer('user_id');
-                $table->integer('parent_cat')->nullable();
+                $table->integer('parent_id')->nullable();
                 $table->string('name');
                 $table->timestamps();
             });
@@ -911,7 +911,7 @@ class DatabaseEloquentIntegrationTest extends TestCase
     public function testHasOnSelfReferencingBelongsToRelationship()
     {
         $parentPost = EloquentTestPost::create(['name' => 'Parent Post', 'user_id' => 1]);
-        EloquentTestPost::create(['name' => 'Child Post', 'parent_cat' => $parentPost->id, 'user_id' => 2]);
+        EloquentTestPost::create(['name' => 'Child Post', 'parent_id' => $parentPost->id, 'user_id' => 2]);
 
         $results = EloquentTestPost::has('parentPost')->get();
 
@@ -931,7 +931,7 @@ class DatabaseEloquentIntegrationTest extends TestCase
     public function testWhereHasOnSelfReferencingBelongsToRelationship()
     {
         $parentPost = EloquentTestPost::create(['name' => 'Parent Post', 'user_id' => 1]);
-        EloquentTestPost::create(['name' => 'Child Post', 'parent_cat' => $parentPost->id, 'user_id' => 2]);
+        EloquentTestPost::create(['name' => 'Child Post', 'parent_id' => $parentPost->id, 'user_id' => 2]);
 
         $results = EloquentTestPost::whereHas('parentPost', function ($query) {
             $query->where('name', 'Parent Post');
@@ -944,7 +944,7 @@ class DatabaseEloquentIntegrationTest extends TestCase
     public function testWithWhereHasOnSelfReferencingBelongsToRelationship()
     {
         $parentPost = EloquentTestPost::create(['name' => 'Parent Post', 'user_id' => 1]);
-        EloquentTestPost::create(['name' => 'Child Post', 'parent_cat' => $parentPost->id, 'user_id' => 2]);
+        EloquentTestPost::create(['name' => 'Child Post', 'parent_id' => $parentPost->id, 'user_id' => 2]);
 
         $results = EloquentTestPost::withWhereHas('parentPost', function ($query) {
             $query->where('name', 'Parent Post');
@@ -959,8 +959,8 @@ class DatabaseEloquentIntegrationTest extends TestCase
     public function testHasOnNestedSelfReferencingBelongsToRelationship()
     {
         $grandParentPost = EloquentTestPost::create(['name' => 'Grandparent Post', 'user_id' => 1]);
-        $parentPost = EloquentTestPost::create(['name' => 'Parent Post', 'parent_cat' => $grandParentPost->id, 'user_id' => 2]);
-        EloquentTestPost::create(['name' => 'Child Post', 'parent_cat' => $parentPost->id, 'user_id' => 3]);
+        $parentPost = EloquentTestPost::create(['name' => 'Parent Post', 'parent_id' => $grandParentPost->id, 'user_id' => 2]);
+        EloquentTestPost::create(['name' => 'Child Post', 'parent_id' => $parentPost->id, 'user_id' => 3]);
 
         $results = EloquentTestPost::has('parentPost.parentPost')->get();
 
@@ -971,8 +971,8 @@ class DatabaseEloquentIntegrationTest extends TestCase
     public function testWhereHasOnNestedSelfReferencingBelongsToRelationship()
     {
         $grandParentPost = EloquentTestPost::create(['name' => 'Grandparent Post', 'user_id' => 1]);
-        $parentPost = EloquentTestPost::create(['name' => 'Parent Post', 'parent_cat' => $grandParentPost->id, 'user_id' => 2]);
-        EloquentTestPost::create(['name' => 'Child Post', 'parent_cat' => $parentPost->id, 'user_id' => 3]);
+        $parentPost = EloquentTestPost::create(['name' => 'Parent Post', 'parent_id' => $grandParentPost->id, 'user_id' => 2]);
+        EloquentTestPost::create(['name' => 'Child Post', 'parent_id' => $parentPost->id, 'user_id' => 3]);
 
         $results = EloquentTestPost::whereHas('parentPost.parentPost', function ($query) {
             $query->where('name', 'Grandparent Post');
@@ -985,8 +985,8 @@ class DatabaseEloquentIntegrationTest extends TestCase
     public function testWithWhereHasOnNestedSelfReferencingBelongsToRelationship()
     {
         $grandParentPost = EloquentTestPost::create(['name' => 'Grandparent Post', 'user_id' => 1]);
-        $parentPost = EloquentTestPost::create(['name' => 'Parent Post', 'parent_cat' => $grandParentPost->id, 'user_id' => 2]);
-        EloquentTestPost::create(['name' => 'Child Post', 'parent_cat' => $parentPost->id, 'user_id' => 3]);
+        $parentPost = EloquentTestPost::create(['name' => 'Parent Post', 'parent_id' => $grandParentPost->id, 'user_id' => 2]);
+        EloquentTestPost::create(['name' => 'Child Post', 'parent_id' => $parentPost->id, 'user_id' => 3]);
 
         $results = EloquentTestPost::withWhereHas('parentPost.parentPost', function ($query) {
             $query->where('name', 'Grandparent Post');
@@ -1003,7 +1003,7 @@ class DatabaseEloquentIntegrationTest extends TestCase
     public function testHasOnSelfReferencingHasManyRelationship()
     {
         $parentPost = EloquentTestPost::create(['name' => 'Parent Post', 'user_id' => 1]);
-        EloquentTestPost::create(['name' => 'Child Post', 'parent_cat' => $parentPost->id, 'user_id' => 2]);
+        EloquentTestPost::create(['name' => 'Child Post', 'parent_id' => $parentPost->id, 'user_id' => 2]);
 
         $results = EloquentTestPost::has('childPosts')->get();
 
@@ -1014,7 +1014,7 @@ class DatabaseEloquentIntegrationTest extends TestCase
     public function testWhereHasOnSelfReferencingHasManyRelationship()
     {
         $parentPost = EloquentTestPost::create(['name' => 'Parent Post', 'user_id' => 1]);
-        EloquentTestPost::create(['name' => 'Child Post', 'parent_cat' => $parentPost->id, 'user_id' => 2]);
+        EloquentTestPost::create(['name' => 'Child Post', 'parent_id' => $parentPost->id, 'user_id' => 2]);
 
         $results = EloquentTestPost::whereHas('childPosts', function ($query) {
             $query->where('name', 'Child Post');
@@ -1027,7 +1027,7 @@ class DatabaseEloquentIntegrationTest extends TestCase
     public function testWithWhereHasOnSelfReferencingHasManyRelationship()
     {
         $parentPost = EloquentTestPost::create(['name' => 'Parent Post', 'user_id' => 1]);
-        EloquentTestPost::create(['name' => 'Child Post', 'parent_cat' => $parentPost->id, 'user_id' => 2]);
+        EloquentTestPost::create(['name' => 'Child Post', 'parent_id' => $parentPost->id, 'user_id' => 2]);
 
         $results = EloquentTestPost::withWhereHas('childPosts', function ($query) {
             $query->where('name', 'Child Post');
@@ -1042,8 +1042,8 @@ class DatabaseEloquentIntegrationTest extends TestCase
     public function testHasOnNestedSelfReferencingHasManyRelationship()
     {
         $grandParentPost = EloquentTestPost::create(['name' => 'Grandparent Post', 'user_id' => 1]);
-        $parentPost = EloquentTestPost::create(['name' => 'Parent Post', 'parent_cat' => $grandParentPost->id, 'user_id' => 2]);
-        EloquentTestPost::create(['name' => 'Child Post', 'parent_cat' => $parentPost->id, 'user_id' => 3]);
+        $parentPost = EloquentTestPost::create(['name' => 'Parent Post', 'parent_id' => $grandParentPost->id, 'user_id' => 2]);
+        EloquentTestPost::create(['name' => 'Child Post', 'parent_id' => $parentPost->id, 'user_id' => 3]);
 
         $results = EloquentTestPost::has('childPosts.childPosts')->get();
 
@@ -1054,8 +1054,8 @@ class DatabaseEloquentIntegrationTest extends TestCase
     public function testWhereHasOnNestedSelfReferencingHasManyRelationship()
     {
         $grandParentPost = EloquentTestPost::create(['name' => 'Grandparent Post', 'user_id' => 1]);
-        $parentPost = EloquentTestPost::create(['name' => 'Parent Post', 'parent_cat' => $grandParentPost->id, 'user_id' => 2]);
-        EloquentTestPost::create(['name' => 'Child Post', 'parent_cat' => $parentPost->id, 'user_id' => 3]);
+        $parentPost = EloquentTestPost::create(['name' => 'Parent Post', 'parent_id' => $grandParentPost->id, 'user_id' => 2]);
+        EloquentTestPost::create(['name' => 'Child Post', 'parent_id' => $parentPost->id, 'user_id' => 3]);
 
         $results = EloquentTestPost::whereHas('childPosts.childPosts', function ($query) {
             $query->where('name', 'Child Post');
@@ -1068,8 +1068,8 @@ class DatabaseEloquentIntegrationTest extends TestCase
     public function testWithWhereHasOnNestedSelfReferencingHasManyRelationship()
     {
         $grandParentPost = EloquentTestPost::create(['name' => 'Grandparent Post', 'user_id' => 1]);
-        $parentPost = EloquentTestPost::create(['name' => 'Parent Post', 'parent_cat' => $grandParentPost->id, 'user_id' => 2]);
-        EloquentTestPost::create(['name' => 'Child Post', 'parent_cat' => $parentPost->id, 'user_id' => 3]);
+        $parentPost = EloquentTestPost::create(['name' => 'Parent Post', 'parent_id' => $grandParentPost->id, 'user_id' => 2]);
+        EloquentTestPost::create(['name' => 'Child Post', 'parent_id' => $parentPost->id, 'user_id' => 3]);
 
         $results = EloquentTestPost::withWhereHas('childPosts.childPosts', function ($query) {
             $query->where('name', 'Child Post');
@@ -2260,12 +2260,12 @@ class EloquentTestPost extends Eloquent
 
     public function childPosts()
     {
-        return $this->hasMany(self::class, 'parent_cat');
+        return $this->hasMany(self::class, 'parent_id');
     }
 
     public function parentPost()
     {
-        return $this->belongsTo(self::class, 'parent_cat');
+        return $this->belongsTo(self::class, 'parent_id');
     }
 
     public function tags()

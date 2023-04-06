@@ -986,32 +986,32 @@ class DatabasePostgresSchemaGrammarTest extends TestCase
     public function testCompileForeign()
     {
         $blueprint = new Blueprint('users');
-        $blueprint->foreign('parent_cat')->references('id')->on('parents')->onDelete('cascade')->deferrable();
+        $blueprint->foreign('parent_id')->references('id')->on('parents')->onDelete('cascade')->deferrable();
         $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
 
         $this->assertCount(1, $statements);
-        $this->assertSame('alter table "users" add constraint "users_parent_cat_foreign" foreign key ("parent_cat") references "parents" ("id") on delete cascade deferrable', $statements[0]);
+        $this->assertSame('alter table "users" add constraint "users_parent_id_foreign" foreign key ("parent_id") references "parents" ("id") on delete cascade deferrable', $statements[0]);
 
         $blueprint = new Blueprint('users');
-        $blueprint->foreign('parent_cat')->references('id')->on('parents')->onDelete('cascade')->deferrable(false)->initiallyImmediate();
+        $blueprint->foreign('parent_id')->references('id')->on('parents')->onDelete('cascade')->deferrable(false)->initiallyImmediate();
         $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
 
         $this->assertCount(1, $statements);
-        $this->assertSame('alter table "users" add constraint "users_parent_cat_foreign" foreign key ("parent_cat") references "parents" ("id") on delete cascade not deferrable', $statements[0]);
+        $this->assertSame('alter table "users" add constraint "users_parent_id_foreign" foreign key ("parent_id") references "parents" ("id") on delete cascade not deferrable', $statements[0]);
 
         $blueprint = new Blueprint('users');
-        $blueprint->foreign('parent_cat')->references('id')->on('parents')->onDelete('cascade')->deferrable()->initiallyImmediate(false);
+        $blueprint->foreign('parent_id')->references('id')->on('parents')->onDelete('cascade')->deferrable()->initiallyImmediate(false);
         $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
 
         $this->assertCount(1, $statements);
-        $this->assertSame('alter table "users" add constraint "users_parent_cat_foreign" foreign key ("parent_cat") references "parents" ("id") on delete cascade deferrable initially deferred', $statements[0]);
+        $this->assertSame('alter table "users" add constraint "users_parent_id_foreign" foreign key ("parent_id") references "parents" ("id") on delete cascade deferrable initially deferred', $statements[0]);
 
         $blueprint = new Blueprint('users');
-        $blueprint->foreign('parent_cat')->references('id')->on('parents')->onDelete('cascade')->deferrable()->notValid();
+        $blueprint->foreign('parent_id')->references('id')->on('parents')->onDelete('cascade')->deferrable()->notValid();
         $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
 
         $this->assertCount(1, $statements);
-        $this->assertSame('alter table "users" add constraint "users_parent_cat_foreign" foreign key ("parent_cat") references "parents" ("id") on delete cascade deferrable not valid', $statements[0]);
+        $this->assertSame('alter table "users" add constraint "users_parent_id_foreign" foreign key ("parent_id") references "parents" ("id") on delete cascade deferrable not valid', $statements[0]);
     }
 
     public function testAddingGeometry()

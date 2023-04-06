@@ -53,6 +53,13 @@
         @enderror
       </div>
       <div class="form-group">
+        <label for="packaging_details" class="col-form-label">Packaging Details</label>
+        <textarea class="form-control" id="packaging_details" name="packaging_details" value="{{$product->packaging_details}}">{{$product->packaging_details}}</textarea>
+        @error('packaging_details')
+        <span class="text-danger">{{$message}}</span>
+        @enderror
+      </div>
+      <div class="form-group">
         <label for="precautions" class="col-form-label">Precautions</label>
         <textarea class="form-control" id="precautions" name="precautions" value="{{$product->precautions}}">{{$product->precautions}}</textarea>
         @error('precautions')
@@ -109,7 +116,7 @@
               <!-- <th id="cat-id">Id</th> -->
               <th id="cat-name" scope="col">Category</th>
               <th scope="col">SubCategory</th>
-              <th scope="col">Action</th>
+              <!--<th scope="col">Action</th>-->
             </tr>
           </thead>
           <tbody>           
@@ -125,9 +132,9 @@
                     @endif 
                   @endforeach 
                 </td>
-                <td>
-                  <button type="button" onclick="proCatDlt(<?=$product->id?>,<?=$pro_cate->id?>)"><i class="fas fa-trash-alt"></i></button>
-                </td>           
+                <!--<td>-->
+                <!--  <button type="button" onclick="proCatDlt(<?=$product->id?>,<?=$pro_cate->id?>)"><i class="fas fa-trash-alt"></i></button>-->
+                <!--</td>           -->
               </tr>
             @endforeach
           </tbody>
@@ -138,7 +145,7 @@
         {{-- {{$brands}} --}}       
         <div class="brand">
           <select name="brand_id" id="brand_id" class="form-control">
-            <option value="">{--Select Brand--}</option>
+            <option value="">--Select Brand--</option>
             @foreach($brands as $brand)
               <option value="{{$brand->id}}" {{(($product->brand_id==$brand->id)? 'selected':'')}}>{{$brand->name}}</option>
             @endforeach
@@ -209,6 +216,7 @@
           {{-- {{$forms}} --}}
           <div class="field_wrapper">
             <div class="abc">
+              <input type="text" name="flu[]" id="flu" placeholder="flu" style="width:120px;"/>
               <select name="form_id[]" id="form_id" placeholder="form_id" style="width:120px;">
                 <option value="">--Select Form--</option>
                 @foreach($forms as $form)
@@ -346,10 +354,17 @@
         height: 100
     });
   });
-
+  
   $(document).ready(function() {
     $('#description').summernote({
       placeholder: "Write detail description.....",
+        tabsize: 2,
+        height: 100
+    });
+  });
+  $(document).ready(function() {
+    $('#packaging_details').summernote({
+      placeholder: "Write detail packaging_detailsn.....",
         tabsize: 2,
         height: 100
     });
@@ -427,7 +442,7 @@
               _token:"{{csrf_token()}}",
               id:category_id
             },
-            type:"GET",
+            type:"POST",
             success:function(response){       
               if(typeof(response) !='object'){
                 response=$.parseJSON(response)            
@@ -477,7 +492,7 @@
           _token:"{{csrf_token()}}",
           id:category_id
         },
-        type:"GET",
+        type:"POST",
         success:function(response){       
           if(typeof(response) !='object'){
             response=$.parseJSON(response)            
@@ -544,7 +559,7 @@
         if (x < max_fields) {
             x++;
             $(wrapper).append(`<div>
-            
+            <input type="text" name="flu[]" id="flu${x}" placeholder="flu" style="width:120px;margin-right:5px; margin-top:5px;"/>
             <select name="form_id[]" id="form_id" placeholder="form_id" style="width:120px;">
               <option value="">--Select Form--</option>
               @foreach($forms as $form)

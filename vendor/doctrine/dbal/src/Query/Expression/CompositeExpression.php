@@ -153,7 +153,7 @@ class CompositeExpression implements Countable
     #[ReturnTypeWillChange]
     public function count()
     {
-      return count($this->parts);
+        return count($this->parts);
     }
 
     /**

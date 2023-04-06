@@ -53,7 +53,7 @@ class Rates
             $settlement = SecurityValidations::validateSettlementDate($settlement);
             $maturity = SecurityValidations::validateMaturityDate($maturity);
             SecurityValidations::validateSecurityPeriod($settlement, $maturity);
-            $price = SecurityValidations::validateprice($price);
+            $price = SecurityValidations::validatePrice($price);
             $redemption = SecurityValidations::validateRedemption($redemption);
             $basis = SecurityValidations::validateBasis($basis);
         } catch (Exception $e) {

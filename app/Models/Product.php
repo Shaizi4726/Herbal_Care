@@ -23,7 +23,7 @@ class Product extends Model
    *
    * 
    */
-  protected $fillable = ['plu', 'name', 'slug', 'sci_name', 'other_name', 'benefits', 'description', 'precautions', 'photo', 'promotion', 'status', 'minprice', 'coupon_id'];
+  protected $fillable = ['plu', 'name', 'slug', 'sci_name', 'other_name', 'benefits', 'description', 'packaging_detaiils','precautions', 'photo', 'promotion', 'status', 'minprice', 'coupon_id'];
   
   /**
    * Get the cart items for the product.
@@ -113,3 +113,4 @@ class Product extends Model
     return $this->belongsToMany(Form::class, 'product_forms', 'product_id', 'form_id');
   }
 }
+?>

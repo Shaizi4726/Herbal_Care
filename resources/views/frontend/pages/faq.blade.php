@@ -122,7 +122,7 @@
 			</div>
 			<div class="accordion__answer">
 				<p><i>
-					(Cash on delivery,  Master Card, Visa Card, American Express, Discover & Diners)
+					(Cash on delivery,  Master Card, Visa Card)
 				</i></p>
 			</div>
 		</div>

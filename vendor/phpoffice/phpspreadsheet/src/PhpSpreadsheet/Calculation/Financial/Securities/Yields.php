@@ -50,7 +50,7 @@ class Yields
             $settlement = SecurityValidations::validateSettlementDate($settlement);
             $maturity = SecurityValidations::validateMaturityDate($maturity);
             SecurityValidations::validateSecurityPeriod($settlement, $maturity);
-            $price = SecurityValidations::validateprice($price);
+            $price = SecurityValidations::validatePrice($price);
             $redemption = SecurityValidations::validateRedemption($redemption);
             $basis = SecurityValidations::validateBasis($basis);
         } catch (Exception $e) {
@@ -116,7 +116,7 @@ class Yields
             SecurityValidations::validateSecurityPeriod($settlement, $maturity);
             $issue = SecurityValidations::validateIssueDate($issue);
             $rate = SecurityValidations::validateRate($rate);
-            $price = SecurityValidations::validateprice($price);
+            $price = SecurityValidations::validatePrice($price);
             $basis = SecurityValidations::validateBasis($basis);
         } catch (Exception $e) {
             return $e->getMessage();

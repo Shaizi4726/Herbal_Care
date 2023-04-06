@@ -277,7 +277,7 @@ class Html
         'lavenderblush2' => 'eee0e5',
         'lavenderblush3' => 'cdc1c5',
         'lavenderblush4' => '8b8386',
-        'lawngreen' => '#7c8e7b',
+        'lawngreen' => '7cfc00',
         'lemonchiffon1' => 'fffacd',
         'lemonchiffon2' => 'eee9bf',
         'lemonchiffon3' => 'cdc9a5',

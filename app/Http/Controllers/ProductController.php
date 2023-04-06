@@ -44,7 +44,7 @@ class ProductController extends Controller
       $brand=Brand::get();
       $form=Form::get();
       $coupon=Coupon::get();
-      $category=Category::get();
+      $category=Category::with('subcat')->get();
       $subcategory=SubCategory::get();
       $product_category=ProductCategory::get();
      
@@ -61,21 +61,21 @@ class ProductController extends Controller
    * @return \Illuminate\Http\Response
    */
   public function store(Request $request)
-  {    //dd($request->all());                
+  {              
       $this->validate($request,[
-        // 'plu'=>'required|numeric',
-        // 'name'=>'string|required',
-        // 'slug'=>'string|required',
-        // 'sci_name'=>'string|nullable',
-        // 'other_name'=>'string|nullable',
-        // 'benefits'=>'string|nullable',
-        // 'description'=>'string|nullable', 
-        // 'precautions'=>'string|nullable',                 
-        // 'photo'=>'required',
-        // 'promotion'=>'required|in:default,new,trending',
-        // 'minprice'=>'numeric|nullable',
-        // 'coupon_id'=>'nullable|exists:coupons,id',            
-        // 'status'=>'required|in:active,inactive'
+        'plu'=>'required|numeric',
+        'name'=>'string|required',
+        'sci_name'=>'string|nullable',
+        'other_name'=>'string|nullable',
+        'benefits'=>'string|nullable',
+        'description'=>'string|nullable',
+        'packaging_detaiils'=>'string|nullable',
+        'precautions'=>'string|nullable',                 
+        'photo'=>'required',
+        'promotion'=>'required|in:default,new,trending',
+        'minprice'=>'numeric|nullable',
+        'coupon_id'=>'nullable|exists:coupons,id',            
+        'status'=>'required|in:active,inactive'
           
     ]);
     
@@ -134,26 +134,25 @@ class ProductController extends Controller
         }
     }
       
-    //dd($request->hasFile);           
+          
     if($request->hasFile("images")){
         $files=$request->file("images");
         foreach($files as $file){
             $imageName='/'.$file->getClientOriginalName();
             $request['product_id']=$status->id;
             $request['name']=$imageName;
-            $file->move(\public_path("images"),$imageName);
+            $file->move(base_path("public_html/images/products"),$imageName);   
             ProductImage::create($request->all());
         }
     }  
-    $forms = [];   
-    $forms[] =$request->form_id;
-    //dd($forms);
-    foreach ($forms[0] as $product_form) {
-        $form = new ProductForm;
-        $form->product_id=$status->id;           
-        $form->form_id=$product_form;
-        $form->save();
-    }            
+    if($request->form_id[0]){
+        foreach ($request->form_id as $product_form) {
+            $form = new ProductForm;
+            $form['product_id']=$id;           
+            $form['form_id']=$product_form;
+            $form->save();
+        }   
+    }  
     for($i=0; $i<count($request->form_id); $i++){
         $attribute = new ProductAttribute;
         $attribute['product_id']=$status->id;           
@@ -164,7 +163,6 @@ class ProductController extends Controller
         $attribute['price']=$request->price[$i];
         $attribute['discount']=$request->discount[$i];
         $attribute['stock']=$request->stock[$i];
-        //dd($request->all());
         $attribute->save();                             
     }
     if($status){
@@ -198,7 +196,8 @@ class ProductController extends Controller
   public function edit($id)
   {   
     $product=Product::with('coupon')->findOrFail($id);
-    $category=Category::get();
+    $category=Category::with('subcat')->get();
+    
     $procat=ProductCategory::get();
     $brand=Brand::get();
     $coupon=Coupon::get();
@@ -221,13 +220,13 @@ class ProductController extends Controller
    */
   public function update(Request $request, $id)
   {
-    //  dd($request->all());
+ 
       $product=Product::findOrFail($id);
-     
+    
       $data=$request->all();
-      
+     
       $size=$request->input('size');
-      //dd($request->all());        
+     
       $status=$product->fill($data)->save();
       
     $brands = [];
@@ -254,10 +253,12 @@ class ProductController extends Controller
         $categories[] = $request->$cat; 
        
     }
+    
     for($i=2; $i<=$request->subcat_count; $i++){ 
         $subcat= 'subcat_id'.$i;
         $subcategories[]= $request->$subcat;   
     }
+    
     if($categories[0]!==""){
         foreach ($categories as $product_cat) {
             $category = new ProductCategory;
@@ -266,8 +267,10 @@ class ProductController extends Controller
             $category->save();
         }
     }
-    if($request->subcat_count){
+   
+   
         if($subcategories[0]!==""){
+           
             foreach ($subcategories as $product_subcat) {
                 $subcategory = new ProductCategory;
                 $subcategory['product_id']=$id;  
@@ -276,7 +279,7 @@ class ProductController extends Controller
                 $subcategory->save();
             }
         }
-    } 
+  
     
     if($request->hasFile("images")){
         $files=$request->file("images");
@@ -284,43 +287,36 @@ class ProductController extends Controller
             $imageName='/'.$file->getClientOriginalName();
             $request['product_id']=$id;
             $request['name']=$imageName;
-            $file->move(\public_path("/images/products"),$imageName);            
+           $file->move(base_path("public_html/images/products"),$imageName);   
             ProductImage::create($request->all());
         }
     }  
-   
-   $forms = [];
-   $forms[] = $request->form_id;
-   for($i=2; $i<=$request->form_count; $i++){
-       $pro_form= 'form_id'.$i;
-       $forms[] = $request->$pro_form;       
-   }
-    // dd($forms);
-    if($forms[0]!==""){
-        foreach ($forms[0] as $product_form) {
+  
+    if($request->form_id[0]){
+        foreach ($request->form_id as $product_form) {
             $form = new ProductForm;
             $form['product_id']=$id;           
             $form['form_id']=$product_form;
             $form->save();
         }   
     }
-    //dd($request->idAttr);
+
     if($request->sku[0]){         
         for($i=0; $i<count($request->form_id); $i++){
             $attribute = new ProductAttribute;
             $attribute['product_id']=$id;                      
             $attribute['sku']= $request->sku[$i];
-            $attribute['flu']=$request->IdAttr;
+            $attribute['flu']=$request->flu[$i];
             $attribute['form_id']=$request->form_id[$i];
             $attribute['size']=$request->size[$i];
             $attribute['price']=$request->price[$i];
             $attribute['discount']=$request->discount[$i];
             $attribute['stock']=$request->stock[$i];
-            //dd($request->all());
+   
             $attribute->save();                             
         } 
     }
-    //dd($request->all());             
+          
       if($status){
           
           request()->session()->flash('success','Product Successfully updated');
@@ -381,7 +377,7 @@ class ProductController extends Controller
       public function deleteImage($id){
           $product=ProductImage::findOrFail($id);
           $status=$product->delete();
-  //        dd($product);
+
           
           if($status){
               request()->session()->flash('success','Product successfully deleted');
@@ -393,10 +389,10 @@ class ProductController extends Controller
       }
 
       public function deleteAttribute($id){
-        //dd($id);
+
           $attribute=ProductAttribute::findOrFail($id);
           $status=$attribute->delete();
-  //        dd($product);
+
           
           if($status){
               request()->session()->flash('success','Product successfully deleted');
@@ -409,7 +405,7 @@ class ProductController extends Controller
       }
   
       public function editAttributes(Request $request){
-        //dd($request->all());
+   
         $data = $request->all();
         
         ProductAttribute::where(['id'=>$data['idAttr']])->update(['price'=>$data['price'],
@@ -418,13 +414,6 @@ class ProductController extends Controller
         return redirect()->back()->with('flash_message_success','Products Attributes has been update successfully');
          
       }
-      public static function countActiveProduct(){
-        $data=Product::where('status','active')->count();
-        if($data){
-            return $data;
-        }
-        return 0;
-    }
 
     public function exportProducts(Request $request){
         return Excel::download(new ProductsExport, 'products.xlsx');

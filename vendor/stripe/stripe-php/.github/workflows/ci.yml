@@ -1,21 +1,22 @@
 name: CI
 
 on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch: {}
   push:
     branches:
       - master
       - beta
       - sdk-release/**
       - feature/**
+    tags:
+      - v[0-9]+.[0-9]+.[0-9]+*
   pull_request:
     branches:
       - master
       - beta
       - sdk-release/**
       - feature/**
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
 
 jobs:
   php-cs-fixer:
@@ -24,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v3
 
       - name: PHP-CS-Fixer
         uses: docker://oskarstark/php-cs-fixer-ga:3.4.0
@@ -42,7 +43,7 @@ jobs:
           - "8.1"
 
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v3
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -54,7 +55,7 @@ jobs:
         run: |
           echo "::set-output name=dir::$(composer config cache-files-dir)"
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           # Conventionally you would hash "composer.lock", but we don't commit
@@ -95,9 +96,10 @@ jobs:
           - "7.4"
           - "8.0"
           - "8.1"
+          - "8.2"
 
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v3
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -109,7 +111,7 @@ jobs:
         id: composer-cache
         run: |
           echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('composer.json') }}
@@ -125,13 +127,12 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
 
-      - name: Start stripe-mock
-        run: docker pull stripe/stripe-mock && docker run -d -p 12111-12112:12111-12112 stripe/stripe-mock && sleep 5
+      - uses: stripe/openapi/actions/stripe-mock@master
 
       - name: Run test suite
         run: |
           php --version
-          ./build.php $env:AUTOLOAD
+          make ci-test
 
       - name: Coveralls
         run: vendor/bin/php-coveralls -v --coverage_clover='clover.xml' --json_path='coveralls-upload.json'
@@ -140,3 +141,18 @@ jobs:
           COVERALLS_RUN_LOCALLY: 1
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
           COVERALLS_FLAG_NAME: php-${{ matrix.php-version }}-${{ matrix.env }}
+
+  publish:
+  # Doesn't actually publish. The publish happens via a packagist webhook configured in the Github UI. But we still display a message here
+    name: Publish
+    if: >-
+      (github.event_name == 'workflow_dispatch' || github.event_name == 'push') &&
+      startsWith(github.ref, 'refs/tags/v') &&
+      endsWith(github.actor, '-stripe')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: stripe/openapi/actions/notify-release@master
+        if: always()
+        with:
+          bot_token: ${{ secrets.SLACK_BOT_TOKEN }}
