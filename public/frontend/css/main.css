@@ -1,6 +1,4 @@
-﻿@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&family=Vollkorn:wght@400;700;900&display=swap');
-
-/*==================== BASE CSS ====================*/
+﻿/*==================== BASE CSS ====================*/
 * {
   box-sizing: border-box;
   margin: 0;
@@ -8,7 +6,7 @@
 }
 
 body {
-  font-family: Poppins, Verdana, Tahoma, sans-serif;
+  font-family: Poppins, Helvetica, Arial, sans-serif;
   background-color: #ffffed;
   overflow-x: hidden;
 }
@@ -18,15 +16,33 @@ a {
   color: #0057e7;
 }
 
-h1, .title {
+h1 {
   font-family: Vollkorn, 'Times New Roman', Times, serif;
-  font-weight: bold;
 }
 
 h2 {
-  font-family: "DM Serif Display", serif;
-  font-weight: 200;
-  font-style: italic;
+  font-family: 'DM Serif Display', 'Times New Roman', Times, serif;
+}
+
+table, th, td {
+  font-size: 0.8em;
+  text-align: center;
+  border: 1px solid;
+  border-collapse: collapse;
+  overflow-x: auto;
+  padding: 0.3em;
+  margin: auto;
+}
+
+table {
+  width: 100%;
+}
+
+thead {
+  top: -0.1em;
+  position: sticky;
+  background-color: #7c8e7b;
+  color: #fff;
 }
 
 .btn {
@@ -48,8 +64,20 @@ hr {
   display: none;
 }
 
+.page-title {
+  font-family: 'DM Serif Display', 'Times New Roman', Times, serif;
+  text-align: center;
+  margin: 0.5em 0;
+}
+
+.cat-title {
+  font-family: 'DM Serif Display', 'Times New Roman', Times, serif;
+  font-style: italic;
+  margin: 1em 0 0 1em;
+}
+
 caption {
-  font-family: Vollkorn, 'Times New Roman', Times, serif;
+  font-family: 'DM Serif Display', 'Times New Roman', Times, serif;
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 1em;
@@ -57,14 +85,6 @@ caption {
 
 #main-content {
   min-height: 50vh;
-}
-
-table, th, td {
-  text-align: center;
-  border: 1px solid #000;
-  border-collapse: collapse;
-  padding: 0.5em;
-  overflow-x: auto;
 }
 
 tfoot tr {
@@ -310,15 +330,20 @@ input[type="button"] {
 .btn-submit {
   color: #000;
   background-color: #f2f4e6;
-  font-size: 12px;
-  /* font-weight: bold; */
+  font-size: 14px;
   text-align: center;
-  width: auto;
   padding: 0.5em;
   margin-top: 1em;
   border: 1px solid #7c8e7b;
   border-radius: 10px;
   transition: 300ms ease-in-out;
+}
+
+.btn-submit a {
+  display: inline-block;
+  color: #000;
+  width: 100%;
+  height: 110%;
 }
 
 .btn-submit:active {
@@ -448,7 +473,7 @@ input[type="button"] {
   padding: 1em 0;
   margin: auto;
   overflow: hidden;
-  box-shadow: 0 5px 10px 2px rgba(44, 84, 47, 0.5);
+  box-shadow: 0 5px 10px 2px rgba(124, 142, 123, 0.5);
 }
 
 .ch-popup .close-inner {
@@ -473,14 +498,12 @@ input[type="button"] {
   color: #fff !important;
 }
 
-@media screen and (max-width: 480px) {
-  table {
-    margin: auto;
-    font-size: 0.8em;
+@media screen and (min-width: 480px) {
+  table, th, td {
+    font-size: 0.9em;
+    padding: 0.4em;
   }
-}
 
-@media screen and (min-width: 480px) and (max-width: 768px) {
   .modal-content {
     display: flex;
     flex-direction: row;
@@ -491,10 +514,6 @@ input[type="button"] {
   .modal-details-container {
     display: flex;
     flex-direction: column;
-  }
-
-  table {
-    margin: auto;
   }
   
   .exzoom {
@@ -507,11 +526,16 @@ input[type="button"] {
 }
 
 @media screen and (min-width: 768px) {
+  table, th, td {
+    font-size: 0.9em;
+    padding: 0.5em;
+  }
+
   .product-card {
     margin: 1em 0 1em 1em;
     width: 16em;
     height: 23em;
-    box-shadow: 0 5px 10px 2px rgba(44, 84, 47, 0.5);
+    box-shadow: 0 5px 10px 2px rgba(124, 142, 123, 0.5);
   }
 
   .products img {
@@ -575,7 +599,7 @@ input[type="button"] {
     align-items: flex-start;
     flex-wrap: wrap;
     justify-content: space-evenly;
-    width: calc(100% - 320px);
+    width: calc(100% - 25em);
   }
 
   #price {

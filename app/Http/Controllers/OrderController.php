@@ -30,17 +30,98 @@ class OrderController extends Controller
    */
   public function index()
   {
-    $orders = Order::orderBy('id','DESC')->paginate(10);
+    $orders = Order::orderBy('id', 'DESC')->paginate(10);
     return view('admin_panel.order.index')->with('orders',$orders);
   }
 
   /**
-   * Store a newly created resource in storage.
+   * Display the specified resource.
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function show($id)
+  {
+    $order = Order::find($id);
+    return view('admin_panel.order.show')->with('order', $order);
+  }
+
+  /**
+   * Show the form for editing the specified resource.
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function edit($id)
+  {
+    $order = Order::find($id);
+    return view('admin_panel.order.edit')->with('order',$order);
+  }
+
+  /**
+   * Update the specified resource in storage.
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+  */
+  public function update(Request $request, $id)
+  {
+    $current_date=Carbon::now()->toDateString();
+    $order=Order::with('shipping', 'payment')->where('id', $id)->get()[0];
+    
+    if($request->shipping_status == 'processed')
+      $order->shipping->processed = $current_date;
+    
+    if($request->shipping_status == 'shipped')
+      $order->shipping->shipped = $current_date;
+    
+    if($request->shipping_status == 'delivered') 
+      $order->shipping->delivered = $current_date;
+
+    $order->status = $request->order_status;
+    $order->payment->status = $request->payment_status;
+    $order->shipping->status = $request->shipping_status;
+
+    $order->save();
+    $order->shipping->save();
+    $order->payment->save();
+      
+    return redirect()->route('order.index');
+  }
+
+  /**
+   * Remove the specified resource from storage.
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function destroy($id)
+  {
+    $order=Order::find($id);
+    if($order){
+      $status=$order->delete();
+      if($status){
+        request()->session()->flash('success','Order Successfully deleted');
+      }
+      else{
+        request()->session()->flash('error','Order can not deleted');
+      }
+      return redirect()->route('order.index');
+    }
+    else{
+      request()->session()->flash('error','Order can not found');
+      return redirect()->back();
+    }
+  }
+
+  /**
+   * Store a newly created order in storage.
    *
    * @param  \Illuminate\Http\Request  $request
    * @return \Illuminate\Http\Response
    */
-  public function store(Request $request) {
+  public function place_order(Request $request) {
     $current_month = Carbon::now()->month;
     $current_year = Carbon::now()->year;
     $current_date = Carbon::now()->toDateString();
@@ -259,148 +340,74 @@ class OrderController extends Controller
 
     return back()->with(['order_success' => true, 'order_no' => $order->order_no]);
   }
-  
-  /**
-   * Display the specified resource.
-   *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
-  public function show($id)
-  {
-    $order=Order::find($id);
-    return view('admin_panel.order.show')->with('order',$order);
-  }
-
-  /**
-   * Show the form for editing the specified resource.
-   *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
-  public function edit($id)
-  {
-    $order=Order::find($id);
-    return view('admin_panel.order.edit')->with('order',$order);
-  }
-
-  /**
-   * Update the specified resource in storage.
-   *
-   * @param  \Illuminate\Http\Request  $request
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-  */
-  public function update(Request $request, $id)
-  {
-    $current_date=Carbon::now()->toDateString();
-    $order=Order::with('shipping', 'payment')->where('id', $id)->get()[0];
-    
-    if($request->shipping_status == 'processed')
-      $order->shipping->processed = $current_date;
-    
-    if($request->shipping_status == 'shipped')
-      $order->shipping->shipped = $current_date;
-    
-    if($request->shipping_status == 'delivered') 
-      $order->shipping->delivered = $current_date;
-
-    $order->status = $request->order_status;
-    $order->payment->status = $request->payment_status;
-    $order->shipping->status = $request->shipping_status;
-
-    $order->save();
-    $order->shipping->save();
-    $order->payment->save();
-      
-    return redirect()->route('order.index');
-  }
-
-  /**
-   * Remove the specified resource from storage.
-   *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
-  public function destroy($id)
-  {
-    $order=Order::find($id);
-    if($order){
-      $status=$order->delete();
-      if($status){
-        request()->session()->flash('success','Order Successfully deleted');
-      }
-      else{
-        request()->session()->flash('error','Order can not deleted');
-      }
-      return redirect()->route('order.index');
-    }
-    else{
-      request()->session()->flash('error','Order can not found');
-      return redirect()->back();
-    }
-  }
-
-  public function track_order(Request $request) {
-    $order = Order::with('shipping')->where('order_no', $request->id)->get();
-
-    return $order[0];
-  }
 
   public function user_orders (Request $request) {
-    $completed = 0;
     if(Auth::check()) {
       $orders = Order::with('payment')->where('user_id', Auth()->user()->id)->orderBy('created_at', 'desc')->get();
-
+      
       if(count($orders) == 0) {
-        $orders = 0;
-      }
-      else {
-        foreach($orders as $ord) {
-          if($ord->status == 'completed') {
-            $completed = 1;
-          }
-        }
+        $orders = false;
       }
     } else {
-      $orders = 0;
+      $orders = false;
     }
-
-    return view('frontend.pages.orders-detail')->with(['orders' => $orders, 'order' => 0, 'return' => 0, 'cancel' => 0, 'completed' => $completed]);
+    
+    return view('frontend.pages.orders')->with('orders', $orders);
   }
 
-  public function order_details (Request $request) {
-    $order = Order::with('order_items.product', 'shipping')->where('order_no', $request->id)->first();
-    $completed = 0;
+  public function order_detail (Request $request) {
+    if(!$request->order_no) {
+      return back()->with('error', 'Invalid order no');
+    }
+
+    $order = Order::with('payment', 'shipping')->where('order_no', $request->order_no)->first();
 
     if($order) {
       $shipping = $order->shipping;
-
-      $cancel = 1;
-      $return = 0;
+      $cancel = false;
+      $return = false;
       $date = Carbon::now()->subDays(15)->toDateString();
-
-      if($order->status == 'completed') {
-        $completed = 1;
-      }
       
-      if($shipping->shipped != null ) {
-        $cancel = 0;
-      } 
+      if($shipping->status == 'ordered' && $shipping->shipped == null ) {
+        $cancel = true;
+      }
 
-      if ($shipping->status == 'delivered') {
+      if ($order->status == 'completed') {
         if($shipping->delivered > $date) {
-          $return = 1;
+          $return = true;
         }
       }
     }
     else {
-      $cancel = 0;
-      $return = 0;
-      $order = -1;
+      return back()->with('error', 'Invalid order no');
+      $cancel = false;
+      $return = false;
+      $order = false;
     }
 
-    return view('frontend.pages.orders-detail')->with(['orders' => 0, 'order' => $order, 'return' => $return, 'cancel' => $cancel, 'completed' => $completed]);
+    return view('frontend.pages.order-detail')->with(['order' => $order, 'return' => $return, 'cancel' => $cancel]);
+  }
+
+  public function track_order(Request $request) {
+    $order = Order::with('shipping')->where('order_no', $request->order_no)->first();
+
+    return view('frontend.pages.order-track')->with('order', $order);
+  }
+
+  public function action_view(Request $request) {
+    $order = Order::with('order_items')->where('order_no', $request->order_no)->first();
+    $cancel = false;
+    $return = false;
+
+    if($request->cancel) {
+      $cancel = true;
+    }
+
+    if($request->return) {
+      $return = true;
+    }
+
+    return view('frontend.pages.order-action')->with(['order' => $order, 'cancel' => $cancel, 'return' => $return]);
   }
 
   // Cancel order items
@@ -460,6 +467,7 @@ class OrderController extends Controller
 
     $order->payment->total += $order->payment->shipping;
     $order->payment->save();
+    return back()->with('success', 'item cancelled successfully');
   }
 
   // Return order items
@@ -579,14 +587,11 @@ class OrderController extends Controller
       //dd($items);
         foreach($item_collections as $item){
             $amount=$item->order_items->sum('total');
-            //dd($amount);
             $m=intval($month);
-            // return $m;
             isset($result[$m]) ? $result[$m] += $amount :$result[$m]=$amount;
         }
     }
     $data=[];
-    //dd($data);
     for($i=1; $i <=12; $i++){
         $monthName=date('F', mktime(0,0,0,$i,1));
         $data[$monthName] = (!empty($result[$i]))? number_format((float)($result[$i]), 2, '.', '') : 0.0;

@@ -1,15 +1,15 @@
-@extends('frontend.layouts.master')
-@section('title','HERB || Order Track Page')
 
-@push('styles')
-  <link rel="stylesheet" href="{{asset('frontend/css/order-track.css')}}">
-@endpush
+<?php $__env->startSection('title','HERB || Order Track Page'); ?>
 
-@section('main-content')
+<?php $__env->startPush('styles'); ?>
+  <link rel="stylesheet" href="<?php echo e(asset('frontend/css/order-track.css')); ?>">
+<?php $__env->stopPush(); ?>
+
+<?php $__env->startSection('main-content'); ?>
 <section>
   <div class="tracking-order-section">
     <div class="img-container">
-      <img src="{{asset('images/trackorder.png')}}" class="tracking-order-main-img" id="tracking-order-main-img">
+      <img src="<?php echo e(asset('images/trackorder.png')); ?>" class="tracking-order-main-img" id="tracking-order-main-img">
     </div>
   </div>
   <div class="tracking-details" id="track-order-details">
@@ -18,11 +18,11 @@
       <div class="order-detail">
         <div class="order">
           <h2>ORDER: </h2>
-          <h3 id="order-no">{{$order->order_no}}</h3>
+          <h3 id="order-no"><?php echo e($order->order_no); ?></h3>
         </div>
         <div class="status">
           <h4>Shipping Status: </h4>
-          <h4 id="status">{{ucfirst($order->shipping->status)}}</h4>
+          <h4 id="status"><?php echo e(ucfirst($order->shipping->status)); ?></h4>
         </div>
         <p id="status-line"></p>
       </div>
@@ -57,7 +57,7 @@
         </div>
       </div>
       <div class="status-img-container">
-        <img src="{{asset('images/ordered_track.png')}}" alt="tracking-status" id="status-img" width="50%">
+        <img src="<?php echo e(asset('images/ordered_track.png')); ?>" alt="tracking-status" id="status-img" width="50%">
       </div>
     </div>
     <div class="fail-container collapse" id="fail">
@@ -65,16 +65,17 @@
     </div>
   </div>
   <div class="img-container">
-    <img src="{{asset('images/deliveryprocess.png')}}" class="tracking-order-main-img" id="tracking-order-main-img">
+    <img src="<?php echo e(asset('images/deliveryprocess.png')); ?>" class="tracking-order-main-img" id="tracking-order-main-img">
   </div>
 </section>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
-  <script src="{{asset('frontend/js/order-track.js')}}"></script>
+<?php $__env->startPush('scripts'); ?>
+  <script src="<?php echo e(asset('frontend/js/order-track.js')); ?>"></script>
   <script>
     $(function() {
       trackOrder(<?= $order ?>);
     });
   </script>
-@endpush
+<?php $__env->stopPush(); ?>
+<?php echo $__env->make('frontend.layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\XAMPP\htdocs\herbalcare\resources\views/frontend/pages/order-track.blade.php ENDPATH**/ ?>

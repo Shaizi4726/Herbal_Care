@@ -77,7 +77,7 @@ Route::get('/apply-coupon','CouponController@coupon_apply')->name('coupon-apply'
 Route::get('/wishlist', 'WishlistController@wishlist')->name('wishlist');
 Route::get('wishlist-add/','WishlistController@wishlist_add')->name('add-to-wishlist')->middleware('user');
 Route::get('wishlist-delete/','WishlistController@wishlist_delete')->name('wishlist-delete');
-Route::post('/order','OrderController@store')->name('order');
+Route::post('/order','OrderController@place_order')->name('order');
 Route::get('/income','OrderController@incomeChart')->name('product.order.income');
 
 // Order invoices
@@ -85,12 +85,13 @@ Route::get('sale/{id}/order/{download?}', 'OrderController@sale_invoice')->name(
 Route::get('tax/{id}/order/{download?}', 'OrderController@tax_invoice')->name('tax.pdf');
 
 // Order Track
-Route::view('/order/track', 'frontend.pages.order-track')->name('order.track');
-Route::get('/track/order', 'OrderController@track_order')->name('track.order');
+Route::get('/order-track/{order_no}', 'OrderController@track_order')->name('order-track');
+Route::get('/order-cancel/{order_no}', 'OrderController@action_view')->name('cancel-view');
+Route::get('/order-return/{order_no}', 'OrderController@action_view')->name('return-view');
 
 // Order Details
-Route::get('/orders-detail', 'OrderController@user_orders')->name('orders-detail');
-Route::get('/order-data', 'OrderController@order_details')->name('order-data');
+Route::get('/orders', 'OrderController@user_orders')->name('orders');
+Route::get('/order-detail/{order_no?}', 'OrderController@order_detail')->name('order-detail');
 
 // Return item or order
 Route::get('/order-return', 'OrderController@return_order')->name('order-return');

@@ -78,8 +78,7 @@
       <hr>
     
       <ul class="list-main">
-        <li><i class="fa-solid fa-clipboard"></i></i><a class="user-nav" href="{{route('orders-detail')}}">Order Details</a></li>
-        <li><i class="fa-solid fa-location-dot"></i><a class="user-nav" href="{{route('order.track')}}" >Track Order</a></li>
+        <li><i class="fa-solid fa-clipboard"></i></i><a class="user-nav" href="{{route('orders')}}">Order Details</a></li>
         @auth 
           @if(Auth::user()->role=='admin')
             <li><i class="fa-solid fa-user-tie"></i><a class="user-nav" href="{{route('admin')}}"  target="_blank">@if(Auth::user()->fname){{Auth::user()->fname}} {{Auth::user()->lname}}@else{{Auth::user()->company_name}}@endif</a></li>
@@ -111,8 +110,7 @@
 
       <div class="list-main-container collapse">
         <ul id="desktop-user-menu" class="list-main">
-          <li><i class="fa-solid fa-clipboard"></i></i><a class="user-nav" href="{{route('orders-detail')}}">Order Details</a></li>
-          <li><i class="fa-solid fa-location-dot d-user-icon"></i><a class="user-nav" href="{{route('order.track')}}">Track Order</a></li>
+          <li><i class="fa-solid fa-clipboard"></i></i><a class="user-nav" href="{{route('orders')}}">Order Details</a></li>
           @auth
             @if(Auth::user()->role=='admin')
               <li><i class="fa-solid fa-user-tie d-user-icon"></i><a class="user-nav" href="{{route('admin')}}"  target="_blank">@if(Auth::user()->fname){{Auth::user()->fname}} {{Auth::user()->lname}}@else{{Auth::user()->company_name}}@endif</a></li>

@@ -17,18 +17,13 @@ use Session;
 use DB;
 use Hash;
 use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use SendsPasswordResetEmails;
 
 class FrontendController extends Controller
 {
-  public function index(Request $request)
-  {
-    return view('frontend.pages.login')->with('checkout', $request->checkout);
-  }
-    
-
   public function home()
   {
     $banners = Banner::where('status', 'active')->orderBy('id', 'ASC')->get();
@@ -42,38 +37,41 @@ class FrontendController extends Controller
 
   public function product_detail($slug)
   {
-    $product = Product::with('categories', 'images')->where('slug', $slug)->first();
-    $category_ids = $product->categories->pluck('id');
-    $relcats = Category::with('products')->whereIn('id', $category_ids)->get();
-    
+    $product = Product::with('categories.products', 'images')->where(['slug' => $slug, 'status' => 'active'])->first();
+    $relcats = $product->categories;
+
     $relproducts = collect();
 
-    foreach($relcats as $cat)
-      $relproducts = $relproducts->concat($cat->products)->unique();
+    foreach($relcats as $cat) {
+      $cat_products = $cat->products->where('status', 'active')->unique();
+      $relproducts = $relproducts->concat($cat_products)->unique();
+    }
+
+    $relproducts = $relproducts->random(10);
 
     return view('frontend.pages.product-detail')->with('product', $product)->with('relproducts', $relproducts);
   }
 
   public function productSort(Request $request) {
     if($request->search) {
-      $products = Product::orwhere('name','like','%'.$request->que.'%')->orwhere('sci_name','like','%'.$request->que.'%')->orwhere('other_name','like','%'.$request->que.'%')->get();
+      $products = Product::where('status', 'active')->where(function(Builder $query) {
+        $query->where('name', 'like', '%'.$request->que.'%')->orwhere('sci_name', 'like', '%'.$request->que.'%')->orwhere('other_name', 'like', '%'.$request->que.'%');
+      })->get();
 
     } else if ($request->subslug) {
       $subcat = SubCategory::with('products')->where('slug', $request->subslug)->first();
-      $products = $subcat->products()->get();
+      $products = $subcat->products()->where('status', 'active')->get();
 
     } else if ($request->slug) {
       $category = Category::with('products')->where('slug', $request->slug)->first();
-      $products = $category->products()->get();
+      $products = $category->products()->where('status', 'active')->get();
 
     } else {
-      $products = Product::get();
+      $products = Product::where('status', 'active')->get();
     }
 
     $sort_by = $request->value;
 
-    $products = $products->sortBy('name');
-      
     if ($sort_by) {
       if($sort_by == 'rand')
         $products = $products->sortBy('id');
@@ -173,14 +171,17 @@ class FrontendController extends Controller
   }
 
   public function product_search(Request $request) {
-    $products = Product::orwhere('name','like','%'.$request->search.'%')->orwhere('sci_name','like','%'.$request->search.'%')->orwhere('other_name','like','%'.$request->search.'%')->orderBy('name')->get();
+    $products = Product::where('status', 'active')->where(function(Builder $query) use ($request) {
+      $query->where('name', 'like', '%'.$request->search.'%')->orwhere('sci_name', 'like', '%'.$request->search.'%')->orwhere('other_name', 'like', '%'.$request->search.'%');
+    })->get();
+
     $categories = Category::get();
 
     return view('frontend.pages.product-grids')->with(['products' => $products, 'cats' => $categories, 'slug' => null, 'subslug' => null, 'search' => 1, 'que' => $request->search]);
   }
 
   public function products(Request $request) {
-    $products = Product::orderBy('name')->get();
+    $products = Product::where('status', 'active')->orderBy('name')->get();
     $categories = Category::where('status', 'active')->get();
 
     return view('frontend.pages.product-grids')->with(['products' => $products, 'cats' => $categories, 'slug' => null, 'subslug' => null, 'search' => null, 'que' => null]);
@@ -188,7 +189,7 @@ class FrontendController extends Controller
 
   public function productCat(Request $request) {
     $category = Category::with('products')->where('slug', $request->slug)->first();
-    $products = $category->products->sortBy('name');
+    $products = $category->products->where('status', 'active')->sortBy('name');
     $categories = Category::where('status', 'active')->get();
 
     return view('frontend.pages.product-grids')->with(['products' => $products, 'cats' => $categories, 'slug' => $request->slug, 'subslug' => $request->subslug, 'search' => null, 'que' => null]);
@@ -196,7 +197,7 @@ class FrontendController extends Controller
 
   public function productSubCat(Request $request){
     $subcat = SubCategory::with('products')->where('slug', $request->subslug)->first();
-    $products = $subcat->products()->orderBy('name')->get();
+    $products = $subcat->products()->where('status', 'active')->orderBy('name')->get();
     $categories = Category::where('status', 'active')->get();
 
     return view('frontend.pages.product-grids')->with(['products' => $products, 'cats' => $categories, 'slug' => $request->slug, 'subslug' => $request->subslug, 'search' => null, 'que' => null]);
@@ -223,7 +224,7 @@ class FrontendController extends Controller
 
   public function autocomplete_search(Request $request) {
     $data = array();
-    $products = Product::get();
+    $products = Product::where('status', 'active')->get();
     foreach($products as $product) {
       array_push($data, $product->name);
       array_push($data, $product->sci_name);

@@ -39,9 +39,7 @@
 
     @if(count($pop_products) != 0)
       <div class="products">
-        <div class="title-content">                        
-          <h2> Popular Items </h2>
-        </div>
+        <h2 class="cat-title"> Popular Items </h2>
       
         <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false, "autoPlay": 3000}'>
           @foreach($pop_products as $product)
@@ -90,9 +88,7 @@
 
     @if(count($trn_products) != null)
       <div class="products">
-        <div class="title-content">                        
-          <h2> Trending Items </h2>
-        </div>
+        <h2 class="cat-title"> Trending Items </h2>
       
         <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false, "autoPlay": 3000}'>
           @foreach($trn_products as $product)
@@ -140,9 +136,7 @@
     @endif
     @if(count($new_products) != 0)
       <div class="products">
-        <div class="title-content">                        
-          <h2> New Items </h2>
-        </div>
+        <h2 class="cat-title"> New Items </h2>
       
         <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false, "autoPlay": 3000}'>
           @foreach($new_products as $product)
@@ -203,9 +197,7 @@
 
         @if(count($product_cat) != 0)
           <div class="products">
-            <div class="title-content">                        
-              <h2> {{$cat->name}} </h2>
-            </div>
+            <h2 class="cat-title"> {{$cat->name}} </h2>
           
             <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false }'>
               @foreach($product_cat as $product)
@@ -264,7 +256,7 @@
       </picture>
     </div>
 
-    <h2 class="center-title">Visit Our Stores</h2>
+    <h2 class="center-title cat-title">Visit Our Stores</h2>
 
     <div class="store-carousel">
       <div class="store-card">

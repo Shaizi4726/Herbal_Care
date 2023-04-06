@@ -1,15 +1,17 @@
 <footer class="footer shop-footer" >
+    @php 
+        $setting = DB::table('settings')->first(); 
+    @endphp
 	<!-- Footer Top -->
 	<div class="footer-top main-footer">				
 		<div class="footer-about">
 			<div class="logo">
-        @php $settings=DB::table('settings')->get(); @endphp
-				<a href="{{route('home')}}"><img src="@foreach($settings as $data) {{$data->logo}} @endforeach" alt="#"></a>
+				<a href="{{route('home')}}"><img src="{{$setting->logo}}" alt="#"></a>
 			</div>
 			<hr>
 
 			<div class="footer-desc">
-				<p class="desc-text">@foreach($settings as $data) {{$data->short_des}} @endforeach</p>
+				<p class="desc-text">{{$setting->short_des}}</p>
 			</div>
 		</div>
 
@@ -24,28 +26,16 @@
 					<li><a href="{{route('faq')}}">FAQ</a></li>
 				</ul>
 			</div>
-
-			<!-- <div class="footer-cust-serv">
-				<h3>Customer Service</h3>
-				<hr>
-				<ul>
-					<li><a href="#">Payment Methods</a></li>
-					<li><a href="#">Money-back</a></li>
-					<li><a href="#">Returns</a></li>
-					<li><a href="#">Shipping</a></li>
-					<li><a href="{{route('contact')}}">Contact Us</a></li>
-				</ul>
-			</div> -->
-
+      
 			<div class="footer-loc">
         <div>
           <h3>Address</h3></div>
           <hr>
           <div>
           <ul>
-            <li>@foreach($settings as $data) {{$data->address}} @endforeach</li>
-            <li>@foreach($settings as $data) {{$data->email}} @endforeach</li>
-            <li>@foreach($settings as $data) {{$data->phone}} @endforeach</li>
+            <li>{{$setting->address}}</li>
+            <li><a href="mailto:{{$setting->email}}">{{$setting->email}}</a></li>
+            <li><a href="tel:{{$setting->phone}}">{{$setting->phone}}</a></li>
           </ul>
         </div>
 			</div>

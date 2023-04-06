@@ -853,7 +853,7 @@ unset($__errorArgs, $__bag); ?>
         <h3>Your order has been placed!</h3>
         <i class='bx bxs-check-circle bx-tada'></i>
         <p>Thankyou for your purchase!</p>
-        <p>Your order number is: <span id="order_no"></span></p>
+        <p>Your order number is: <span id="order-no"></span></p>
         <p>You have received an order confirmation email with details of your order.</p>
         <a href="<?php echo e(route('home')); ?>" class="btn btn-submit"> Continue Shopping </a>
       </div>
@@ -873,7 +873,7 @@ unset($__errorArgs, $__bag); ?>
       $('body').css('height', '90vh');
       $('body').css('overflow', 'hidden');
       $('.order-success').removeClass('collapse');
-      $('#order_no').html('<?= $order_no ?>');
+      $('#order-no').html('<?= $order_no ?>');
     });
   </script>
 <?php endif; ?>

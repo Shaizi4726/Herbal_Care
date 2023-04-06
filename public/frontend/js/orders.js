@@ -1,11 +1,11 @@
-$('.order-data').on('click', function() {
+$('.order-detail').on('click', function() {
   let order = $(this).attr('data-order');
-  window.location.href = "/order-data?id=" + order;
+  window.location.href = "/order-detail?order_no=" + order;
 });
 
-$('#order-data').on('click', function() {
-  let order = $('#order-id-input').val().toUpperCase();
-  window.location.href = "/order-data?id=" + order;
+$('#order-detail-btn').on('click', function() {
+  let order = $('#order-input').val().toUpperCase();
+  window.location.href = "/order-detail?order_no=" + order;
 });
 
 $('#all-checkbox').on('change', function() {

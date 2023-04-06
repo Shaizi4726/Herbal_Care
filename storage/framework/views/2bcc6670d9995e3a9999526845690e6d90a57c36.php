@@ -78,8 +78,7 @@
       <hr>
     
       <ul class="list-main">
-        <li><i class="fa-solid fa-clipboard"></i></i><a class="user-nav" href="<?php echo e(route('orders-detail')); ?>">Order Details</a></li>
-        <li><i class="fa-solid fa-location-dot"></i><a class="user-nav" href="<?php echo e(route('order.track')); ?>" >Track Order</a></li>
+        <li><i class="fa-solid fa-clipboard"></i></i><a class="user-nav" href="<?php echo e(route('orders')); ?>">Order Details</a></li>
         <?php if(auth()->guard()->check()): ?> 
           <?php if(Auth::user()->role=='admin'): ?>
             <li><i class="fa-solid fa-user-tie"></i><a class="user-nav" href="<?php echo e(route('admin')); ?>"  target="_blank"><?php if(Auth::user()->fname): ?><?php echo e(Auth::user()->fname); ?> <?php echo e(Auth::user()->lname); ?><?php else: ?><?php echo e(Auth::user()->company_name); ?><?php endif; ?></a></li>
@@ -111,8 +110,7 @@
 
       <div class="list-main-container collapse">
         <ul id="desktop-user-menu" class="list-main">
-          <li><i class="fa-solid fa-clipboard"></i></i><a class="user-nav" href="<?php echo e(route('orders-detail')); ?>">Order Details</a></li>
-          <li><i class="fa-solid fa-location-dot d-user-icon"></i><a class="user-nav" href="<?php echo e(route('order.track')); ?>">Track Order</a></li>
+          <li><i class="fa-solid fa-clipboard"></i></i><a class="user-nav" href="<?php echo e(route('orders')); ?>">Order Details</a></li>
           <?php if(auth()->guard()->check()): ?>
             <?php if(Auth::user()->role=='admin'): ?>
               <li><i class="fa-solid fa-user-tie d-user-icon"></i><a class="user-nav" href="<?php echo e(route('admin')); ?>"  target="_blank"><?php if(Auth::user()->fname): ?><?php echo e(Auth::user()->fname); ?> <?php echo e(Auth::user()->lname); ?><?php else: ?><?php echo e(Auth::user()->company_name); ?><?php endif; ?></a></li>

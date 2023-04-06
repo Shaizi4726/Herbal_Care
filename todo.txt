@@ -13,7 +13,8 @@ Send email on cancellation or return
 change email address on tax invoice and sale order
 Payment method on sale and tax invoice
 Refund Payment
-footer email and phone
+contact us message form
+
+
 Send invoice after payment on email provided by customer
 when to send tax invoice [op: immediately or not]
-contact us message form

@@ -28,7 +28,7 @@
     width: 98vw;
     height: 85vh;
     overflow-x: hidden;
-    box-shadow: 0 5px 10px 2px rgba(44, 84, 47, 0.5);
+    box-shadow: 0 5px 10px 2px rgba(124, 142, 123, 0.5);
   }
 
   .modal .close, .checkout-popup .close {

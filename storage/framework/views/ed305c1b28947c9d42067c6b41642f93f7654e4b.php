@@ -39,9 +39,7 @@
 
     <?php if(count($pop_products) != 0): ?>
       <div class="products">
-        <div class="title-content">                        
-          <h2> Popular Items </h2>
-        </div>
+        <h2 class="cat-title"> Popular Items </h2>
       
         <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false, "autoPlay": 3000}'>
           <?php $__currentLoopData = $pop_products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -90,9 +88,7 @@
 
     <?php if(count($trn_products) != null): ?>
       <div class="products">
-        <div class="title-content">                        
-          <h2> Trending Items </h2>
-        </div>
+        <h2 class="cat-title"> Trending Items </h2>
       
         <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false, "autoPlay": 3000}'>
           <?php $__currentLoopData = $trn_products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -140,9 +136,7 @@
     <?php endif; ?>
     <?php if(count($new_products) != 0): ?>
       <div class="products">
-        <div class="title-content">                        
-          <h2> New Items </h2>
-        </div>
+        <h2 class="cat-title"> New Items </h2>
       
         <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false, "autoPlay": 3000}'>
           <?php $__currentLoopData = $new_products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -203,9 +197,7 @@
 
         <?php if(count($product_cat) != 0): ?>
           <div class="products">
-            <div class="title-content">                        
-              <h2> <?php echo e($cat->name); ?> </h2>
-            </div>
+            <h2 class="cat-title"> <?php echo e($cat->name); ?> </h2>
           
             <div class="product-slider carousel hero-slider"  data-flickity='{ "contain": true, "pageDots": false }'>
               <?php $__currentLoopData = $product_cat; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -264,7 +256,7 @@
       </picture>
     </div>
 
-    <h2 class="center-title">Visit Our Stores</h2>
+    <h2 class="center-title cat-title">Visit Our Stores</h2>
 
     <div class="store-carousel">
       <div class="store-card">

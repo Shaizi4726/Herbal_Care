@@ -450,7 +450,7 @@
     background-color: #f2f4e6;
     width: 16em;
     border-radius: 7px;
-    box-shadow: 0 5px 10px 2px rgba(44, 84, 47, 0.5);
+    box-shadow: 0 5px 10px 2px rgba(124, 142, 123, 0.5);
   }
 
   .shopping-item {
@@ -499,7 +499,7 @@
     bottom: 2.5em;
     width: 14em;
     border-radius: 7px;
-    box-shadow: 0 5px 10px 2px rgba(44, 84, 47, 0.5);
+    box-shadow: 0 5px 10px 2px rgba(124, 142, 123, 0.5);
   }
 
   .shop-menu .cat-submenu li {

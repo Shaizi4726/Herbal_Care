@@ -1,15 +1,17 @@
 <footer class="footer shop-footer" >
+    <?php 
+        $setting = DB::table('settings')->first(); 
+    ?>
 	<!-- Footer Top -->
 	<div class="footer-top main-footer">				
 		<div class="footer-about">
 			<div class="logo">
-        <?php $settings=DB::table('settings')->get(); ?>
-				<a href="<?php echo e(route('home')); ?>"><img src="<?php $__currentLoopData = $settings; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?> <?php echo e($data->logo); ?> <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>" alt="#"></a>
+				<a href="<?php echo e(route('home')); ?>"><img src="<?php echo e($setting->logo); ?>" alt="#"></a>
 			</div>
 			<hr>
 
 			<div class="footer-desc">
-				<p class="desc-text"><?php $__currentLoopData = $settings; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?> <?php echo e($data->short_des); ?> <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?></p>
+				<p class="desc-text"><?php echo e($setting->short_des); ?></p>
 			</div>
 		</div>
 
@@ -24,28 +26,16 @@
 					<li><a href="<?php echo e(route('faq')); ?>">FAQ</a></li>
 				</ul>
 			</div>
-
-			<!-- <div class="footer-cust-serv">
-				<h3>Customer Service</h3>
-				<hr>
-				<ul>
-					<li><a href="#">Payment Methods</a></li>
-					<li><a href="#">Money-back</a></li>
-					<li><a href="#">Returns</a></li>
-					<li><a href="#">Shipping</a></li>
-					<li><a href="<?php echo e(route('contact')); ?>">Contact Us</a></li>
-				</ul>
-			</div> -->
-
+      
 			<div class="footer-loc">
         <div>
           <h3>Address</h3></div>
           <hr>
           <div>
           <ul>
-            <li><?php $__currentLoopData = $settings; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?> <?php echo e($data->address); ?> <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?></li>
-            <li><?php $__currentLoopData = $settings; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?> <?php echo e($data->email); ?> <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?></li>
-            <li><?php $__currentLoopData = $settings; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?> <?php echo e($data->phone); ?> <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?></li>
+            <li><?php echo e($setting->address); ?></li>
+            <li><a href="mailto:<?php echo e($setting->email); ?>"><?php echo e($setting->email); ?></a></li>
+            <li><a href="tel:<?php echo e($setting->phone); ?>"><?php echo e($setting->phone); ?></a></li>
           </ul>
         </div>
 			</div>

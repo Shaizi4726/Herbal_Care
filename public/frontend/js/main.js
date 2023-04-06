@@ -1,15 +1,12 @@
-$(document).ready(function(){
-	$.ajaxSetup({ cache: false });
-})
-
 $.typeahead({
   input: '.search-term',
   minLength: 1,
   maxItem: 10,
   order: 'asc',
-  offset: true,
   hint: true,
   highlight: false,
+  cache: true,
+  ttl: 2628003,
   href: '/product/search?search={{display}}',
   cancelButton: false,
   asyncResult: true,
@@ -37,7 +34,8 @@ $.typeahead({
     query: 'search-term-div',
     button: "search-btn",
     hint: "search-hint"
-  }
+  },
+  debug: true
 });
 
 /*==================== Exzoom function ====================*/
