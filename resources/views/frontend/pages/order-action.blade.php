@@ -8,7 +8,7 @@
 @section('main-content')
   @if ($order)
     <div class="order-details orders" id="order-details">
-      <h1>Remove Items</h1>
+      <h1>Items List</h1>
       <div class="success-container" id="success">
         <div class="order-items orders-table">
           @php 
@@ -58,7 +58,11 @@
             <input type="hidden" id="total" name="total" value="{{$order->payment->subtotal}}">
             <input type="hidden" id="tax" name="tax" value="{{$order->payment->tax}}">
             <input type="hidden" id="discount" name="discount" value="{{$order->payment->discount}}">
-            <button id="action" class="btn btn-submit item-cancel action-btn" disabled>Remove Selected Item</button>
+            @if($cancel)
+              <button id="action" class="btn btn-submit item-cancel action-btn" disabled>Remove Selected Item</button>
+            @elseif($return)
+              <button id="action" class="btn btn-submit item-return action-btn" disabled>Return Selected Item</button>
+            @endif
             <a href="{{ URL::previous() }}" class="btn btn-submit home-btn action-btn">Back</a>
           </div>
           <div class="summary">

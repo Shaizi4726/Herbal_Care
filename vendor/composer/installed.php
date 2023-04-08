@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '1be4fa37fff9750a44834c3b7756caefd8b0d3b1',
+        'reference' => '02401f477a8c7a5a346837b6a976dcb36c59a440',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -475,7 +475,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '1be4fa37fff9750a44834c3b7756caefd8b0d3b1',
+            'reference' => '02401f477a8c7a5a346837b6a976dcb36c59a440',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -1018,8 +1018,8 @@
         'psr/log-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.0|2.0|3.0',
-                1 => '1.0.0 || 2.0.0 || 3.0.0',
+                0 => '1.0.0 || 2.0.0 || 3.0.0',
+                1 => '1.0|2.0|3.0',
             ),
         ),
         'psr/simple-cache' => array(
@@ -1442,15 +1442,6 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
-        'symfony/mailgun-mailer' => array(
-            'pretty_version' => 'v6.2.7',
-            'version' => '6.2.7.0',
-            'reference' => '9e27b8ec2f6ee7575c6229a61be1578a5a4b21ee',
-            'type' => 'symfony-mailer-bridge',
-            'install_path' => __DIR__ . '/../symfony/mailgun-mailer',
-            'aliases' => array(),
-            'dev_requirement' => false,
-        ),
         'symfony/mime' => array(
             'pretty_version' => 'v6.2.7',
             'version' => '6.2.7.0',
@@ -1529,15 +1520,6 @@
             'reference' => 'f3cf1a645c2734236ed1e2e671e273eeb3586166',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/polyfill-uuid',
-            'aliases' => array(),
-            'dev_requirement' => false,
-        ),
-        'symfony/postmark-mailer' => array(
-            'pretty_version' => 'v6.2.7',
-            'version' => '6.2.7.0',
-            'reference' => 'c486fb0a4d503c7af58e2aee516aeee43d91e7fc',
-            'type' => 'symfony-mailer-bridge',
-            'install_path' => __DIR__ . '/../symfony/postmark-mailer',
             'aliases' => array(),
             'dev_requirement' => false,
         ),

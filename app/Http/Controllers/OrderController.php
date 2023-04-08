@@ -336,7 +336,7 @@ class OrderController extends Controller
     $re->id = $order->id;
 
     $sale_pdf = $this->sale_invoice($re);  
-    (new MailController)->send_mail($request->email, $sale_pdf);
+    (new MailController)->order_mail($request->email, $sale_pdf);
 
     return back()->with(['order_success' => true, 'order_no' => $order->order_no]);
   }

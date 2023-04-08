@@ -11,9 +11,9 @@ class ComposerStaticInit5c062d17d05507dfac2bd1a73d332e51
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
         'e69f7f6ee287b969198c3c9d6777bd38' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/bootstrap.php',
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
+        '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         '25072dd6e2470089de65ae7bf11d3109' => __DIR__ . '/..' . '/symfony/polyfill-php72/bootstrap.php',
         'f598d06aa772fa33d905e87be6398fb1' => __DIR__ . '/..' . '/symfony/polyfill-intl-idn/bootstrap.php',
-        '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         '8825ede83f2f289127722d4e842cf7e8' => __DIR__ . '/..' . '/symfony/polyfill-intl-grapheme/bootstrap.php',
         'b6b991a57620e2fb6b2f66f03fe9ddc2' => __DIR__ . '/..' . '/symfony/string/Resources/functions.php',
@@ -92,8 +92,6 @@ class ComposerStaticInit5c062d17d05507dfac2bd1a73d332e51
             'Symfony\\Component\\Routing\\' => 26,
             'Symfony\\Component\\Process\\' => 26,
             'Symfony\\Component\\Mime\\' => 23,
-            'Symfony\\Component\\Mailer\\Bridge\\Postmark\\' => 41,
-            'Symfony\\Component\\Mailer\\Bridge\\Mailgun\\' => 40,
             'Symfony\\Component\\Mailer\\' => 25,
             'Symfony\\Component\\HttpKernel\\' => 29,
             'Symfony\\Component\\HttpFoundation\\' => 33,
@@ -341,14 +339,6 @@ class ComposerStaticInit5c062d17d05507dfac2bd1a73d332e51
         'Symfony\\Component\\Mime\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/mime',
-        ),
-        'Symfony\\Component\\Mailer\\Bridge\\Postmark\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/postmark-mailer',
-        ),
-        'Symfony\\Component\\Mailer\\Bridge\\Mailgun\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/mailgun-mailer',
         ),
         'Symfony\\Component\\Mailer\\' => 
         array (
@@ -788,6 +778,7 @@ class ComposerStaticInit5c062d17d05507dfac2bd1a73d332e51
         'App\\Http\\Middleware\\User' => __DIR__ . '/../..' . '/app/Http/Middleware/User.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\Imports\\ProductsImport' => __DIR__ . '/../..' . '/app/Imports/ProductsImport.php',
+        'App\\Mail\\OrderCancellation' => __DIR__ . '/../..' . '/app/Mail/OrderCancellation.php',
         'App\\Models\\Banner' => __DIR__ . '/../..' . '/app/Models/Banner.php',
         'App\\Models\\Brand' => __DIR__ . '/../..' . '/app/Models/Brand.php',
         'App\\Models\\CancelItem' => __DIR__ . '/../..' . '/app/Models/CancelItem.php',
@@ -2542,6 +2533,7 @@ class ComposerStaticInit5c062d17d05507dfac2bd1a73d332e51
         'Illuminate\\Auth\\Middleware\\Authenticate' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Auth/Middleware/Authenticate.php',
         'Illuminate\\Auth\\Middleware\\AuthenticateWithBasicAuth' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Auth/Middleware/AuthenticateWithBasicAuth.php',
         'Illuminate\\Auth\\Middleware\\Authorize' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Auth/Middleware/Authorize.php',
+        'Illuminate\\Auth\\Middleware\\EnsureAccountIsVerified' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Auth/Middleware/EnsureAccountIsVerified.php',
         'Illuminate\\Auth\\Middleware\\EnsureEmailIsVerified' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Auth/Middleware/EnsureEmailIsVerified.php',
         'Illuminate\\Auth\\Middleware\\RequirePassword' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Auth/Middleware/RequirePassword.php',
         'Illuminate\\Auth\\MustVerifyEmail' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Auth/MustVerifyEmail.php',
@@ -7710,15 +7702,6 @@ class ComposerStaticInit5c062d17d05507dfac2bd1a73d332e51
         'Symfony\\Component\\HttpKernel\\RebootableInterface' => __DIR__ . '/..' . '/symfony/http-kernel/RebootableInterface.php',
         'Symfony\\Component\\HttpKernel\\TerminableInterface' => __DIR__ . '/..' . '/symfony/http-kernel/TerminableInterface.php',
         'Symfony\\Component\\HttpKernel\\UriSigner' => __DIR__ . '/..' . '/symfony/http-kernel/UriSigner.php',
-        'Symfony\\Component\\Mailer\\Bridge\\Mailgun\\Transport\\MailgunApiTransport' => __DIR__ . '/..' . '/symfony/mailgun-mailer/Transport/MailgunApiTransport.php',
-        'Symfony\\Component\\Mailer\\Bridge\\Mailgun\\Transport\\MailgunHeadersTrait' => __DIR__ . '/..' . '/symfony/mailgun-mailer/Transport/MailgunHeadersTrait.php',
-        'Symfony\\Component\\Mailer\\Bridge\\Mailgun\\Transport\\MailgunHttpTransport' => __DIR__ . '/..' . '/symfony/mailgun-mailer/Transport/MailgunHttpTransport.php',
-        'Symfony\\Component\\Mailer\\Bridge\\Mailgun\\Transport\\MailgunSmtpTransport' => __DIR__ . '/..' . '/symfony/mailgun-mailer/Transport/MailgunSmtpTransport.php',
-        'Symfony\\Component\\Mailer\\Bridge\\Mailgun\\Transport\\MailgunTransportFactory' => __DIR__ . '/..' . '/symfony/mailgun-mailer/Transport/MailgunTransportFactory.php',
-        'Symfony\\Component\\Mailer\\Bridge\\Postmark\\Transport\\MessageStreamHeader' => __DIR__ . '/..' . '/symfony/postmark-mailer/Transport/MessageStreamHeader.php',
-        'Symfony\\Component\\Mailer\\Bridge\\Postmark\\Transport\\PostmarkApiTransport' => __DIR__ . '/..' . '/symfony/postmark-mailer/Transport/PostmarkApiTransport.php',
-        'Symfony\\Component\\Mailer\\Bridge\\Postmark\\Transport\\PostmarkSmtpTransport' => __DIR__ . '/..' . '/symfony/postmark-mailer/Transport/PostmarkSmtpTransport.php',
-        'Symfony\\Component\\Mailer\\Bridge\\Postmark\\Transport\\PostmarkTransportFactory' => __DIR__ . '/..' . '/symfony/postmark-mailer/Transport/PostmarkTransportFactory.php',
         'Symfony\\Component\\Mailer\\Command\\MailerTestCommand' => __DIR__ . '/..' . '/symfony/mailer/Command/MailerTestCommand.php',
         'Symfony\\Component\\Mailer\\DataCollector\\MessageDataCollector' => __DIR__ . '/..' . '/symfony/mailer/DataCollector/MessageDataCollector.php',
         'Symfony\\Component\\Mailer\\DelayedEnvelope' => __DIR__ . '/..' . '/symfony/mailer/DelayedEnvelope.php',
@@ -8285,6 +8268,9 @@ class ComposerStaticInit5c062d17d05507dfac2bd1a73d332e51
         'UniSharp\\LaravelFilemanager\\Middlewares\\CreateDefaultFolder' => __DIR__ . '/..' . '/unisharp/laravel-filemanager/src/Middlewares/CreateDefaultFolder.php',
         'UniSharp\\LaravelFilemanager\\Middlewares\\MultiUser' => __DIR__ . '/..' . '/unisharp/laravel-filemanager/src/Middlewares/MultiUser.php',
         'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
+        'Webmozart\\Assert\\Assert' => __DIR__ . '/..' . '/webmozart/assert/src/Assert.php',
+        'Webmozart\\Assert\\InvalidArgumentException' => __DIR__ . '/..' . '/webmozart/assert/src/InvalidArgumentException.php',
+        'Webmozart\\Assert\\Mixin' => __DIR__ . '/..' . '/webmozart/assert/src/Mixin.php',
         'Whoops\\Exception\\ErrorException' => __DIR__ . '/..' . '/filp/whoops/src/Whoops/Exception/ErrorException.php',
         'Whoops\\Exception\\Formatter' => __DIR__ . '/..' . '/filp/whoops/src/Whoops/Exception/Formatter.php',
         'Whoops\\Exception\\Frame' => __DIR__ . '/..' . '/filp/whoops/src/Whoops/Exception/Frame.php',

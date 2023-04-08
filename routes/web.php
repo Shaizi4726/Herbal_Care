@@ -20,8 +20,8 @@ Route::view('/signup', 'frontend.pages.register')->name('signup.form');
 Route::post('user/register','Auth\RegisterController@registerSubmit')->name('register.submit');
 
 // Verify Email
-Route::view('/email/verify', 'auth.verify-email')->middleware('auth')->withoutMiddleware('account.verified')->name('verification.notice');
-Route::view('/verify/email', 'auth.verify-email')->middleware('auth')->withoutMiddleware('account.verified')->name('verify.email');
+Route::view('/email/verify', 'auth.verify-email')->middleware('auth')->withoutMiddleware('verified')->name('verification.notice');
+Route::view('/verify/email', 'auth.verify-email')->middleware('auth')->withoutMiddleware('verified')->name('verify.email');
 Route::get('/email/verify/{id}/{hash}', 'Auth\VerificationController@emailVerification')->middleware(['auth', 'signed'])->name('verification.verify');
 Route::post('/email/verification-notification', 'Auth\VerificationController@resendEmailVerification')->middleware(['auth', 'throttle:6,1'])->name('verification.resend');
 
@@ -42,24 +42,24 @@ Route::get('password-resets', 'FrontendController@PassResetForm')->name('passwor
 Route::get('/autocomplete-search', 'FrontendController@autocomplete_search')->name('search-suggestion');
 
 // Frontend Main Pages
-Route::get('/','FrontendController@home')->name('home')->middleware('account.verified');
-Route::get('/home', 'FrontendController@home')->middleware('account.verified');
-Route::view('/about-us','frontend.pages.about-us')->name('about-us')->middleware('account.verified');
-Route::view('/contact','frontend.pages.contact')->name('contact')->middleware('account.verified');
-Route::get('product-detail/{slug}','FrontendController@product_detail')->name('product-detail')->middleware('account.verified');
-Route::match(['get','post'], '/product/search', 'FrontendController@product_search')->name('product.search')->middleware('account.verified');
-Route::match(['get','post'], '/sort','FrontendController@productSort')->name('product-sort')->middleware('account.verified');
-Route::get('/product-cat/{slug}','FrontendController@productCat')->name('product-cat')->middleware('account.verified');
-Route::get('/product-cat/{slug}/{subslug}','FrontendController@productSubCat')->name('product-subcat')->middleware('account.verified');
-Route::get('/products','FrontendController@products')->name('products')->middleware('account.verified');
+Route::get('/','FrontendController@home')->name('home')->middleware('verified');
+Route::get('/home', 'FrontendController@home')->middleware('verified');
+Route::view('/about-us','frontend.pages.about-us')->name('about-us')->middleware('verified');
+Route::view('/contact','frontend.pages.contact')->name('contact')->middleware('verified');
+Route::get('product-detail/{slug}','FrontendController@product_detail')->name('product-detail')->middleware('verified');
+Route::match(['get','post'], '/product/search', 'FrontendController@product_search')->name('product.search')->middleware('verified');
+Route::match(['get','post'], '/sort','FrontendController@productSort')->name('product-sort')->middleware('verified');
+Route::get('/product-cat/{slug}','FrontendController@productCat')->name('product-cat')->middleware('verified');
+Route::get('/product-cat/{slug}/{subslug}','FrontendController@productSubCat')->name('product-subcat')->middleware('verified');
+Route::get('/products','FrontendController@products')->name('products')->middleware('verified');
 Route::view('/checkout', 'frontend.pages.checkout')->name('checkout');
 Route::view('/faq', 'frontend.pages.faq')->name('faq');
 Route::view('/privacy-policy', 'frontend.pages.privacy-policy')->name('privacy-policy');
 Route::view('/terms-and-conditions', 'frontend.pages.terms-and-conditions')->name('terms-and-conditions');
 
 // Create Modal
-Route::get('/create-modal','ModalController@create_modal')->name('create-modal')->middleware('account.verified');
-Route::get('/create-sizes','ModalController@create_sizes')->name('create-sizes')->middleware('account.verified');
+Route::get('/create-modal','ModalController@create_modal')->name('create-modal')->middleware('verified');
+Route::get('/create-sizes','ModalController@create_sizes')->name('create-sizes')->middleware('verified');
 
 // Cart section
 Route::get('/cart-add', 'CartController@cart_add')->name('add-to-cart');
@@ -105,7 +105,8 @@ Route::post('product/{slug}/review','ProductReviewController@store')->name('revi
 // Coupon
 Route::post('/coupon-store', 'CouponController@couponStore')->name('coupon-store');
 // Payment
-Route::match(['get','post'], '/stripe', 'StripeController@payment')->name('stripe.post');
+Route::match(['get','post'], '/stripe', 'StripeController@payment')->name('order-payment');
+Route::post('/payment-refund', 'StripeController@refund')->name('payment-refund');
 
 //ProductAttribute
 Route::match(['get','post'], '/admin/product/edit-attributes/{id}','ProductController@editAttributes')->name('editAttribute');
@@ -178,4 +179,4 @@ Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']
     \UniSharp\LaravelFilemanager\Lfm::routes();
 });
 
-Route::get('/email', 'MailController@send_mail')->name('send_mail');
+Route::get('/order-mail', 'MailController@order_mail')->name('order-mail');

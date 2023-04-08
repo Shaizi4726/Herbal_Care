@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Order @if($order)- {{$order->order_no}} @endif</title>
+    <title>Order - {{$order->order_no}}</title>
 
     <link rel="stylesheet" href="{{public_path('frontend/css/pdf.css')}}">
   </head>
 
   <body>
     <div class="invoice-header">
-      <img src="{{public_path('images/sale_invoice_header.png')}}"/>
+      <img src="{{public_path('images/sale-order-header.png')}}"/>
     </div>
 
     <div class="watermark">HerbalCare.ae</div>
 
     <div class="invoice-details">
-      <h4>Invoice No: {{$order->id}}</h4><br/>
-      <h5>Invoice Date: </h5><span class="value">{{ $order->created_at->format('D d m Y') }}</span><br/>
-      <h5>Order No: </h5><span class="value">{{$order->order_no}}</span><br/>
+      <h4>Order No: {{$order->order_no}}</h4><br/>
+      <h5>Order Status: </h5><span class="value">{{ucfirst($order->status)}}</span><br/>
+      <h5>Payment Method: </h5><span class="value">{{strtoupper($order->payment->method)}}</span><br/>
+      <h5>Payment Status: </h5><span class="value">{{ucfirst($order->payment->status)}}</span><br/>
+      <h5>Order Date: </h5><span class="value">{{ date_format($order->created_at, 'M d, Y') }}</span><br/>
     </div>
 
     <div class="address">
@@ -114,8 +116,12 @@
       <div class="summary clearfix">
         <h5>Subtotal: </h5><span class="value">AED {{number_format($order->payment->subtotal, 2)}}</span><br/>
         <h5>VAT Amount: </h5><span class="value">AED {{number_format($order->payment->tax, 2)}}</span><br/>
-        <h5>Discount: </h5><span class="value">AED {{number_format($order->payment->discount, 2)}}</span><br/>
-        <h5>Shipping: </h5><span class="value">AED {{number_format($order->payment->shipping, 2)}}</span><br/>
+        @if($order->payment->discount)
+          <h5>Discount: </h5><span class="value">AED {{number_format($order->payment->discount, 2)}}</span><br/>
+        @endif
+        @if($order->payment->shipping)
+          <h5>Shipping: </h5><span class="value">AED {{number_format($order->payment->shipping, 2)}}</span><br/>
+        @endif
         <hr/>
         <h4>Grand Total: </h4><span class="value">AED {{number_format($order->payment->total, 2)}}</span><br/>
       </div>

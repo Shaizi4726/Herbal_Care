@@ -140,7 +140,4 @@
   <?php endif; ?>
 <?php $__env->stopSection(); ?>
 
-<?php $__env->startPush('scripts'); ?>
-  <script src="<?php echo e(asset('frontend/js/order-detail.js')); ?>"></script>
-<?php $__env->stopPush(); ?>
 <?php echo $__env->make('frontend.layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\XAMPP\htdocs\herbalcare\resources\views/frontend/pages/order-detail.blade.php ENDPATH**/ ?>

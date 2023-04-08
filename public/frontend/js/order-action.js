@@ -25,7 +25,7 @@ $('.item-checkbox').on('change', function() {
 });
 
 $('#action').on('click', function() {
-  let total = Number($('#total').val()) + Number($('#tax').val()) - Number($('#tax').val());
+  let total = Number($('#total').val()) + Number($('#tax').val()) - Number($('#discount').val());
 
   if(total >= 100) {
     if($('#all-checkbox').prop('checked')) {
@@ -33,7 +33,7 @@ $('#action').on('click', function() {
     }
     else {
       $('input:checkbox[name=item_checkbox]:checked').each(function() {
-        total = total - $(this).attr('data-total');
+        total -= $(this).attr('data-total');
       });
     }
 
@@ -42,36 +42,42 @@ $('#action').on('click', function() {
         $('#reason-popup').css('width', '100%');
         $('#reason-popup').css('height', '100%');
         $('#reason-div').css('transform', 'scale(1)');
-        $(body).css('height', '90vh');
-        $(body).css('overflow', 'hidden');
+        $('body').css('height', '90vh');
+        $('body').css('overflow', 'hidden');
       } else {
         $('#warning-popup').css('width', '100%');
         $('#warning-popup').css('height', '100%');
         $('#warning-div').css('transform', 'scale(1)');
-        $(body).css('height', '90vh');
-        $(body).css('overflow', 'hidden');
+        $('body').css('height', '90vh');
+        $('body').css('overflow', 'hidden');
 
         $('#continue').on('click', function() {
           removePopup();
           $('#reason-popup').css('width', '100%');
           $('#reason-popup').css('height', '100%');
           $('#reason-div').css('transform', 'scale(1)');
-          $(body).css('height', '90vh');
-          $(body).css('overflow', 'hidden');
+          $('body').css('height', '90vh');
+          $('body').css('overflow', 'hidden');
         });
       }
+    } else {
+      $('#reason-popup').css('width', '100%');
+      $('#reason-popup').css('height', '100%');
+      $('#reason-div').css('transform', 'scale(1)');
+      $('body').css('height', '90vh');
+      $('body').css('overflow', 'hidden');
     }
   } else {
     $('#reason-popup').css('width', '100%');
     $('#reason-popup').css('height', '100%');
     $('#reason-div').css('transform', 'scale(1)');
-    $(body).css('height', '90vh');
-    $(body).css('overflow', 'hidden');
+    $('body').css('height', '90vh');
+    $('body').css('overflow', 'hidden');
   }
 });
 
 $('.reason-item').on('click', function() {
-  $('.reason-item').css('color', '#7c8e7b'),
+  $('.reason-item').css('color', '#7c8e7b');
   $('.reason-item').css('background-color', '#f2f4e6');
   $(this).css('color', '#fff');
   $(this).css('background-color', '#7c8e7b');
@@ -165,6 +171,6 @@ function removePopup() {
   $('.popup-div').css('transform', 'scale(0)');
   $('.popup').css('width', '0');
   $('.popup').css('height', '0');
-  $(body).css('height', 'auto');
-  $(body).css('overflow', 'auto');
+  $('body').css('height', 'auto');
+  $('body').css('overflow', 'auto');
 }

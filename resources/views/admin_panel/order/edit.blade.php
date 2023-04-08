@@ -6,7 +6,7 @@
 <form action="{{route('order.update',$order->id)}}" method="POST">
   <div class="card">
     <h5 class="card-header">Order Status</h5>
-    <div class="card-body">    
+    <div class="card-body">
       @csrf
       @method('PATCH')
       <div class="form-group">
@@ -51,14 +51,15 @@
 
 @if($order->payment->refund)
 
-<form id="refund" action="{{route('order.update',$order->id)}}">
+<form id="refund" method="post" action="{{route('payment-refund', ['id' => $order->id])}}">
   <div class="card">
     <h5 class="card-header">Payment Refund</h5>
     <div class="card-body">
       <div class="form-group">
+        @csrf
         <label for="refund" class="col-form-label">Refund </label>
         <input id="refund" type="number" name="refund" value="{{$order->payment->refund}}">
-        @error('refond')
+        @error('refund')
           <span class="text-danger">{{$message}}</span>
         @enderror
       </div>

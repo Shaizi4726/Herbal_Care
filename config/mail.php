@@ -36,8 +36,8 @@ return [
       'smtp' => [
         'transport' => 'smtp',
         'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
-        'port' => env('MAIL_PORT', 465),
-        'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+        'port' => env('MAIL_PORT', 587),
+        'encryption' => env('MAIL_ENCRYPTION', 'starttls'),
         'username' => env('MAIL_USERNAME'),
         'password' => env('MAIL_PASSWORD'),
         'timeout' => null,
@@ -62,12 +62,12 @@ return [
       ],
 
       'log' => [
-          'transport' => 'log',
-          'channel' => env('MAIL_LOG_CHANNEL'),
+        'transport' => 'log',
+        'channel' => env('MAIL_LOG_CHANNEL'),
       ],
 
       'array' => [
-          'transport' => 'array',
+        'transport' => 'array',
       ],
   ],
 
@@ -83,8 +83,8 @@ return [
   */
 
   'from' => [
-    'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-    'name' => env('MAIL_FROM_NAME', 'Example'),
+    'address' => env('MAIL_FROM_ADDRESS', 'info@herbalcare.ae'),
+    'name' => env('MAIL_FROM_NAME', 'HerbalCare'),
   ],
 
   /*

@@ -1,24 +1,22 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Order - <?php echo e($order->order_no); ?></title>
+    <title>Order <?php if($order): ?>- <?php echo e($order->order_no); ?><?php endif; ?></title>
 
     <link rel="stylesheet" href="<?php echo e(public_path('frontend/css/pdf.css')); ?>">
   </head>
 
   <body>
     <div class="invoice-header">
-      <img src="<?php echo e(public_path('images/sale-order-header.png')); ?>"/>
+      <img src="<?php echo e(public_path('images/tax_invoice_header.png')); ?>"/>
     </div>
 
     <div class="watermark">HerbalCare.ae</div>
 
     <div class="invoice-details">
-      <h4>Order No: <?php echo e($order->order_no); ?></h4><br/>
-      <h5>Order Status: </h5><span class="value"><?php echo e(ucfirst($order->status)); ?></span><br/>
-      <h5>Payment Method: </h5><span class="value"><?php echo e(strtoupper($order->payment->method)); ?></span><br/>
-      <h5>Payment Status: </h5><span class="value"><?php echo e(ucfirst($order->payment->status)); ?></span><br/>
-      <h5>Order Date: </h5><span class="value"><?php echo e(date_format($order->created_at, 'M d, Y')); ?></span><br/>
+      <h4>Invoice No: <?php echo e($order->id); ?></h4><br/>
+      <h5>Invoice Date: </h5><span class="value"><?php echo e($order->created_at->format('D d m Y')); ?></span><br/>
+      <h5>Order No: </h5><span class="value"><?php echo e($order->order_no); ?></span><br/>
     </div>
 
     <div class="address">
@@ -82,7 +80,7 @@
        
         <?php $__currentLoopData = $order->order_items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $order_item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <?php 
-          $product=DB::table('products')->select('name')->where('id',$order_item->product_id)->get()[0];
+          $product=DB::table('products')->select('name')->where('id',$order_item->product_id)->first();
           $i++;
         ?>
           <tr>
@@ -94,8 +92,8 @@
             <td><?php echo e($order_item->form); ?></td>
             <td><?php echo e($order_item->size); ?></td>
             <td><?php echo e($order_item->quantity); ?></td>
-            <td>AED <?php echo e(number_format($order_item->price,2)); ?></td>
-            <td>AED <?php echo e(number_format($order_item->subtotal,2)); ?></td>
+            <td>AED <?php echo e(number_format($order_item->price, 2)); ?></td>
+            <td>AED <?php echo e(number_format($order_item->subtotal, 2)); ?></td>
             <td>5%</td>
             <td>AED <?php echo e(number_format($order_item->tax, 2)); ?></td>
             <td>AED <?php echo e(number_format($order_item->discount, 2)); ?></td>
@@ -117,12 +115,8 @@
       <div class="summary clearfix">
         <h5>Subtotal: </h5><span class="value">AED <?php echo e(number_format($order->payment->subtotal, 2)); ?></span><br/>
         <h5>VAT Amount: </h5><span class="value">AED <?php echo e(number_format($order->payment->tax, 2)); ?></span><br/>
-        <?php if($order->payment->discount): ?>
-          <h5>Discount: </h5><span class="value">AED <?php echo e(number_format($order->payment->discount, 2)); ?></span><br/>
-        <?php endif; ?>
-        <?php if($order->payment->shipping): ?>
-          <h5>Shipping: </h5><span class="value">AED <?php echo e(number_format($order->payment->shipping, 2)); ?></span><br/>
-        <?php endif; ?>
+        <h5>Discount: </h5><span class="value">AED <?php echo e(number_format($order->payment->discount, 2)); ?></span><br/>
+        <h5>Shipping: </h5><span class="value">AED <?php echo e(number_format($order->payment->shipping, 2)); ?></span><br/>
         <hr/>
         <h4>Grand Total: </h4><span class="value">AED <?php echo e(number_format($order->payment->total, 2)); ?></span><br/>
       </div>
@@ -131,4 +125,4 @@
       </div>
     </section>
   </body>
-</html><?php /**PATH D:\XAMPP\htdocs\herbalcare\resources\views/frontend/order/sale-invoice.blade.php ENDPATH**/ ?>
+</html><?php /**PATH D:\XAMPP\htdocs\herbalcare\resources\views/frontend/order/tax-invoice.blade.php ENDPATH**/ ?>

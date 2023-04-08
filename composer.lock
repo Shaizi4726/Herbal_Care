@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e5b520c2d0034e9ec0abb2d4ea8b5ca3",
+    "content-hash": "5fadb2de3b14a7c6f44d6e6df0ecf00a",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -4739,25 +4739,25 @@
         },
         {
             "name": "psr/http-message",
-            "version": "1.0.1",
+            "version": "1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/http-message.git",
-                "reference": "f6561bf28d520154e4b0ec72be95418abe6d9363"
+                "reference": "cb6ce4845ce34a8ad9e68117c10ee90a29919eba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/http-message/zipball/f6561bf28d520154e4b0ec72be95418abe6d9363",
-                "reference": "f6561bf28d520154e4b0ec72be95418abe6d9363",
+                "url": "https://api.github.com/repos/php-fig/http-message/zipball/cb6ce4845ce34a8ad9e68117c10ee90a29919eba",
+                "reference": "cb6ce4845ce34a8ad9e68117c10ee90a29919eba",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "php": "^7.2 || ^8.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0.x-dev"
+                    "dev-master": "1.1.x-dev"
                 }
             },
             "autoload": {
@@ -4786,9 +4786,9 @@
                 "response"
             ],
             "support": {
-                "source": "https://github.com/php-fig/http-message/tree/master"
+                "source": "https://github.com/php-fig/http-message/tree/1.1"
             },
-            "time": "2016-08-06T14:39:51+00:00"
+            "time": "2023-04-04T09:50:52+00:00"
         },
         {
             "name": "psr/log",
@@ -4893,16 +4893,16 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.11.14",
+            "version": "v0.11.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "8c2e264def7a8263a68ef6f0b55ce90b77d41e17"
+                "reference": "5350ce0ec8ecf2c5b5cf554cd2496f97b444af85"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/8c2e264def7a8263a68ef6f0b55ce90b77d41e17",
-                "reference": "8c2e264def7a8263a68ef6f0b55ce90b77d41e17",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/5350ce0ec8ecf2c5b5cf554cd2496f97b444af85",
+                "reference": "5350ce0ec8ecf2c5b5cf554cd2496f97b444af85",
                 "shasum": ""
             },
             "require": {
@@ -4963,9 +4963,9 @@
             ],
             "support": {
                 "issues": "https://github.com/bobthecow/psysh/issues",
-                "source": "https://github.com/bobthecow/psysh/tree/v0.11.14"
+                "source": "https://github.com/bobthecow/psysh/tree/v0.11.15"
             },
-            "time": "2023-03-28T03:41:01+00:00"
+            "time": "2023-04-07T21:57:09+00:00"
         },
         {
             "name": "pusher/pusher-php-server",
@@ -5596,16 +5596,16 @@
         },
         {
             "name": "stripe/stripe-php",
-            "version": "v10.12.0",
+            "version": "v10.12.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "ef2b761e4c69de59892c95d0453e2caa25162faf"
+                "reference": "9e8055d55e8212ad844f48d7cf525b630689be35"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/ef2b761e4c69de59892c95d0453e2caa25162faf",
-                "reference": "ef2b761e4c69de59892c95d0453e2caa25162faf",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/9e8055d55e8212ad844f48d7cf525b630689be35",
+                "reference": "9e8055d55e8212ad844f48d7cf525b630689be35",
                 "shasum": ""
             },
             "require": {
@@ -5651,9 +5651,9 @@
             ],
             "support": {
                 "issues": "https://github.com/stripe/stripe-php/issues",
-                "source": "https://github.com/stripe/stripe-php/tree/v10.12.0"
+                "source": "https://github.com/stripe/stripe-php/tree/v10.12.1"
             },
-            "time": "2023-03-30T20:27:06+00:00"
+            "time": "2023-04-04T19:13:21+00:00"
         },
         {
             "name": "symfony/console",
@@ -6618,71 +6618,6 @@
             "time": "2023-03-14T15:00:05+00:00"
         },
         {
-            "name": "symfony/mailgun-mailer",
-            "version": "v6.2.7",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/mailgun-mailer.git",
-                "reference": "9e27b8ec2f6ee7575c6229a61be1578a5a4b21ee"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/mailgun-mailer/zipball/9e27b8ec2f6ee7575c6229a61be1578a5a4b21ee",
-                "reference": "9e27b8ec2f6ee7575c6229a61be1578a5a4b21ee",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.1",
-                "symfony/mailer": "^5.4.21|^6.2.7"
-            },
-            "require-dev": {
-                "symfony/http-client": "^5.4|^6.0"
-            },
-            "type": "symfony-mailer-bridge",
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\Mailer\\Bridge\\Mailgun\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony Mailgun Mailer Bridge",
-            "homepage": "https://symfony.com",
-            "support": {
-                "source": "https://github.com/symfony/mailgun-mailer/tree/v6.2.7"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2023-02-21T10:35:38+00:00"
-        },
-        {
             "name": "symfony/mime",
             "version": "v6.2.7",
             "source": {
@@ -7422,72 +7357,6 @@
                 }
             ],
             "time": "2022-11-03T14:55:06+00:00"
-        },
-        {
-            "name": "symfony/postmark-mailer",
-            "version": "v6.2.7",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/postmark-mailer.git",
-                "reference": "c486fb0a4d503c7af58e2aee516aeee43d91e7fc"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/postmark-mailer/zipball/c486fb0a4d503c7af58e2aee516aeee43d91e7fc",
-                "reference": "c486fb0a4d503c7af58e2aee516aeee43d91e7fc",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.1",
-                "psr/event-dispatcher": "^1",
-                "symfony/mailer": "^5.4.21|^6.2.7"
-            },
-            "require-dev": {
-                "symfony/http-client": "^5.4|^6.0"
-            },
-            "type": "symfony-mailer-bridge",
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\Mailer\\Bridge\\Postmark\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony Postmark Mailer Bridge",
-            "homepage": "https://symfony.com",
-            "support": {
-                "source": "https://github.com/symfony/postmark-mailer/tree/v6.2.7"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2023-02-21T10:35:38+00:00"
         },
         {
             "name": "symfony/process",
@@ -8762,16 +8631,16 @@
         },
         {
             "name": "laravel/pint",
-            "version": "v1.7.0",
+            "version": "v1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/pint.git",
-                "reference": "d55381c73b7308e1b8a124084e804193a179092e"
+                "reference": "4b8f2ef22bfcddd1d163cfd282e3f42ee1a5cce2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/pint/zipball/d55381c73b7308e1b8a124084e804193a179092e",
-                "reference": "d55381c73b7308e1b8a124084e804193a179092e",
+                "url": "https://api.github.com/repos/laravel/pint/zipball/4b8f2ef22bfcddd1d163cfd282e3f42ee1a5cce2",
+                "reference": "4b8f2ef22bfcddd1d163cfd282e3f42ee1a5cce2",
                 "shasum": ""
             },
             "require": {
@@ -8782,13 +8651,13 @@
                 "php": "^8.1.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.14.4",
-                "illuminate/view": "^10.0.0",
-                "laravel-zero/framework": "^10.0.0",
+                "friendsofphp/php-cs-fixer": "^3.16.0",
+                "illuminate/view": "^10.5.1",
+                "laravel-zero/framework": "^10.0.2",
                 "mockery/mockery": "^1.5.1",
-                "nunomaduro/larastan": "^2.4.0",
+                "nunomaduro/larastan": "^2.5.1",
                 "nunomaduro/termwind": "^1.15.1",
-                "pestphp/pest": "^1.22.4"
+                "pestphp/pest": "^2.4.0"
             },
             "bin": [
                 "builds/pint"
@@ -8824,20 +8693,20 @@
                 "issues": "https://github.com/laravel/pint/issues",
                 "source": "https://github.com/laravel/pint"
             },
-            "time": "2023-03-21T10:55:35+00:00"
+            "time": "2023-04-04T13:08:09+00:00"
         },
         {
             "name": "laravel/sail",
-            "version": "v1.21.3",
+            "version": "v1.21.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/sail.git",
-                "reference": "3042ff8cf403817c340d5a7762b2d32900239f46"
+                "reference": "5e59b4a57181020477e2b18943b27493638e3f89"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/sail/zipball/3042ff8cf403817c340d5a7762b2d32900239f46",
-                "reference": "3042ff8cf403817c340d5a7762b2d32900239f46",
+                "url": "https://api.github.com/repos/laravel/sail/zipball/5e59b4a57181020477e2b18943b27493638e3f89",
+                "reference": "5e59b4a57181020477e2b18943b27493638e3f89",
                 "shasum": ""
             },
             "require": {
@@ -8889,7 +8758,7 @@
                 "issues": "https://github.com/laravel/sail/issues",
                 "source": "https://github.com/laravel/sail"
             },
-            "time": "2023-03-13T01:22:10+00:00"
+            "time": "2023-03-30T12:28:55+00:00"
         },
         {
             "name": "mockery/mockery",

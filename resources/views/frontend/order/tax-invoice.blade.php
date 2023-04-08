@@ -1,22 +1,25 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Order @if($order)- {{$order->order_no}}@endif</title>
+    <title>Order - {{$order->order_no}}</title>
 
     <link rel="stylesheet" href="{{public_path('frontend/css/pdf.css')}}">
   </head>
 
   <body>
     <div class="invoice-header">
-      <img src="{{public_path('images/tax_invoice_header.png')}}"/>
+      <img src="{{public_path('images/tax-invoice-header.png')}}"/>
     </div>
 
     <div class="watermark">HerbalCare.ae</div>
 
     <div class="invoice-details">
       <h4>Invoice No: {{$order->id}}</h4><br/>
-      <h5>Invoice Date: </h5><span class="value">{{ $order->created_at->format('D d m Y') }}</span><br/>
+      <h5>Invoice Date: </h5><span class="value">{{ date_format($order->created_at, 'M d, Y') }}</span><br/>
       <h5>Order No: </h5><span class="value">{{$order->order_no}}</span><br/>
+      <h5>Order Status: </h5><span class="value">{{ucfirst($order->status)}}</span><br/>
+      <h5>Payment Method: </h5><span class="value">{{strtoupper($order->payment->method)}}</span><br/>
+      <h5>Payment Status: </h5><span class="value">{{ucfirst($order->payment->status)}}</span><br/>
     </div>
 
     <div class="address">

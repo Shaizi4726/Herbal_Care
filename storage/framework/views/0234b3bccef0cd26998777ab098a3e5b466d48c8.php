@@ -6,7 +6,11 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
-    <title>The Herb Room || DASHBOARD</title>
+    <!-- Title Tag  -->
+<title><?php echo $__env->yieldContent('title'); ?></title>
+
+<!-- Favicon -->
+<link rel="icon" type="image/png" href="<?php echo e(asset('images/favicon.png')); ?>">
   
     <!-- Custom fonts for this template-->
     <link href="<?php echo e(asset('admin_panel/vendor/fontawesome-free/css/all.min.css')); ?>" rel="stylesheet" type="text/css">
