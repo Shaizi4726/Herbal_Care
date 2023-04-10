@@ -2,23 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Notifications\StatusNotification;
-use App\Models\CartItem;
+use App\Mail\OrderCancellation;
 use App\Models\CancelItem;
+use App\Models\CartItem;
 use App\Models\City;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Payment;
 use App\Models\ReturnItem;
 use App\Models\Shipping;
+use App\Notifications\StatusNotification;
 use App\User;
+use Auth;
+use Carbon\Carbon;
+use Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Carbon\Carbon;
-use PDF;
+use Mail;
 use Notification;
-use Helper;
-use Auth;
+use PDF;
 use Session;
 
 class OrderController extends Controller
@@ -122,6 +124,11 @@ class OrderController extends Controller
    * @return \Illuminate\Http\Response
    */
   public function place_order(Request $request) {
+    $order = Order::findOrFail(2);
+    Mail::to($order->email)->send(new OrderCancellation($order));
+
+    dd($order);
+
     $current_month = Carbon::now()->month;
     $current_year = Carbon::now()->year;
     $current_date = Carbon::now()->toDateString();
