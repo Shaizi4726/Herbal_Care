@@ -76,7 +76,7 @@
         </div>
       </div>
     </div>
-  @elseif ($order)
+  @else
     <div class="fail-container" id="fail">
       <p id="fail-status">Sorry there is no order with this order number. Please recheck your order number.</p>
     </div>
@@ -101,11 +101,11 @@
       <div class="action-btns">
         <button class="btn btn-submit pop-btn" onclick="removePopup()">Back</button>
         @if($cancel)
-          <button id="continue-cancel" class="btn btn-submit pop-btn" disabled>Continue</button>
+          <button class="btn btn-submit pop-btn continue-action cancel" disabled>Continue</button>
         @endif
           
         @if($return)
-          <button id="continue-return" class="btn btn-submit pop-btn" disabled>Continue</button>
+          <button class="btn btn-submit pop-btn continue-action return" disabled>Continue</button>
         @endif
       </div>
     </div>
@@ -125,8 +125,40 @@
       </div>
     </div>
   </section>
-@endsection
 
+  <section id="otp-popup" class="popup">
+    <div id="otp-div" class="popup-div">
+      <button type="button" class="btn close" id="close-btn" onclick="removePopup()">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <h2>Enter OTP Code</h2>
+      <p>Please enter OTP Code sent to</p>
+      <p class="mail-para">{{$order->email}}</p>
+
+      <div class="otp-form">
+        <input class="otp" type="text" oninput='digitValidate(this)' onkeyup='tabChange(1)' maxlength=1 >
+        <input class="otp" type="text" oninput='digitValidate(this)' onkeyup='tabChange(2)' maxlength=1 >
+        <input class="otp" type="text" oninput='digitValidate(this)' onkeyup='tabChange(3)' maxlength=1 >
+        <input class="otp" type="text" oninput='digitValidate(this)' onkeyup='tabChange(4)' maxlength=1 >
+        <input class="otp" type="text" oninput='digitValidate(this)' onkeyup='tabChange(5)' maxlength=1 >
+        <input class="otp" type="text" oninput='digitValidate(this)' onkeyup='tabChange(6)' maxlength=1 >
+      </div>
+      
+      @if($cancel)
+        <button id="#cancel" class="btn btn-submit pop-btn">Cancel</button>
+      @endif
+        
+      @if($return)
+        <button id="#return" class="btn btn-submit pop-btn">Return</button>
+      @endif
+
+      <div class="action-btns">
+        <a class="pop-btn" onclick="resendOtp()">Resend OTP Code</a>
+      </div>
+    </div>
+  </section>
+@endsection
+  
 @push('scripts')
   <script src="{{asset('frontend/js/order-action.js')}}"></script>
 @endpush

@@ -47,7 +47,7 @@ class FrontendController extends Controller
       $relproducts = $relproducts->concat($cat_products)->unique();
     }
 
-    $relproducts = $relproducts->random(10);
+    $relproducts = $relproducts->random(fn (Collection $items) => min(10, count($items)));
 
     return view('frontend.pages.product-detail')->with('product', $product)->with('relproducts', $relproducts);
   }

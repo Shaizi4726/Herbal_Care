@@ -10,7 +10,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class OrderCancellation extends Mailable
+class OrderCancel extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -20,16 +20,19 @@ class OrderCancellation extends Mailable
      * @var \App\Models\Order
      */
     public $order;
+    public $code;
 
     /**
      * Create a new message instance.
      *
      * @param  \App\Models\Order  $order
+     * @param  int $code
      * @return void
      */
-    public function __construct(Order $order)
+    public function __construct(Order $order, $code)
     {
       $this->order = $order;
+      $this->code = $code;
     }
 
     /**
@@ -40,7 +43,7 @@ class OrderCancellation extends Mailable
     public function envelope()
     {
       return new Envelope(
-        subject: 'Order Cancellation',
+        subject: 'Order Cancel',
       );
     }
 
@@ -52,7 +55,7 @@ class OrderCancellation extends Mailable
     public function content()
     {
       return new Content(
-        markdown: 'emails.orders.cancellation',
+        markdown: 'emails.orders.cancel',
       );
     }
 
