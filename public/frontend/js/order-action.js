@@ -91,14 +91,7 @@ $('.reason-item').on('click', function() {
     $('#other-text').addClass('collapse');
 });
 
-$('.continue-action').on('click', function() {
-  let action;
-  if($(this).hasClass('cancel')) {
-    action = 'cancel'
-  } else if($(this).hasClass('return')) {
-    action = 'return';
-  }
-
+$('#continue-cancel').on('click', function() {
   let order_id = $('#order').val();
   let all = 0;
   let items = new Array();
@@ -116,56 +109,6 @@ $('.continue-action').on('click', function() {
       items.push($(this).val());
     });
   }
-
-  removePopup();
-  $('#otp-popup').css('width', '100%');
-  $('#otp-popup').css('height', '100%');
-  $('#otp-div').css('transform', 'scale(1)');
-  $('body').css('height', '90vh');
-  $('body').css('overflow', 'hidden');
-
-  /* AJAX request to cancel items from order */
-  $.ajax({
-    type: 'get',
-    url: '/action-email/' + action,
-    data: {
-      id: order_id,
-      all: all,
-      items: items,
-      reason: reason
-    },
-    success: function(response) {
-
-    },
-    error: function() {
-      
-    }                
-  }); 
-});
-
-$('#verify').on('click', function() {
-  let order_id = $('#order').val();
-  let all = 0;
-  let items = new Array();
-  let reason = $('#reason').val();
-  if(reason == 'other') {
-    if($('#other-text').val() != '')
-      reason = $('#other-text').val();
-  }
-
-  if($('#all-checkbox').prop('checked')) {
-    all = 1;
-  }
-  else {
-    $('input[name=item_checkbox]:checked').each(function() {
-      items.push($(this).val());
-    });
-  }
-
-  let otp = '';
-  $('.otp').each(function() {
-    otp += $(this).val();
-  });
 
   /* AJAX request to cancel items from order */
   $.ajax({
@@ -175,10 +118,10 @@ $('#verify').on('click', function() {
       id: order_id,
       all: all,
       items: items,
-      reason: reason,
-      otp: otp
+      reason: reason
     },
     success: function(response) {
+      location.reload();
     },
     error: function() {
       alert("An error occured while cancel operation");
@@ -230,17 +173,4 @@ function removePopup() {
   $('.popup').css('height', '0');
   $('body').css('height', 'auto');
   $('body').css('overflow', 'auto');
-}
-
-let digitValidate = function(ele){
-  ele.value = ele.value.replace(/[^0-9]/g,'');
-}
-
-let tabChange = function(val){
-  let ele = document.querySelectorAll('.otp');
-  if(ele[val-1].value != ''){
-    ele[val].focus()
-  }else if(ele[val-1].value == ''){
-    ele[val-2].focus()
-  }   
 }

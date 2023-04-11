@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\OrderCancel;
-use App\Mail\OrderReturn;
+use App\Mail\OrderCancellation;
 use App\Models\CancelItem;
 use App\Models\CartItem;
 use App\Models\City;
@@ -16,7 +15,6 @@ use App\Notifications\StatusNotification;
 use App\User;
 use Auth;
 use Carbon\Carbon;
-use Hash;
 use Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -126,6 +124,11 @@ class OrderController extends Controller
    * @return \Illuminate\Http\Response
    */
   public function place_order(Request $request) {
+    $order = Order::findOrFail(2);
+    Mail::to($order->email)->send(new OrderCancellation($order));
+
+    dd($order);
+
     $current_month = Carbon::now()->month;
     $current_year = Carbon::now()->year;
     $current_date = Carbon::now()->toDateString();
@@ -414,83 +417,64 @@ class OrderController extends Controller
     return view('frontend.pages.order-action')->with(['order' => $order, 'cancel' => $cancel, 'return' => $return]);
   }
 
-  // Email confirmation for cancel items
-  public function action_email(Request $request) {
-    $code = random_int(100000, 999999);
-    $hash = Hash::make($code);
-    Session::put('code', $hash);
-    $order = Order::findOrFail($request->id);
-    
-    if($request->action == 'cancel') {
-      Mail::to($order->email)->send(new OrderCancel($order, $code));
-    }
-    elseif($request->action == 'return') {
-      Mail::to($order->email)->send(new OrderReturn($order, $code));
-    }
-  }
-
   // Cancel order items
   public function cancel_order(Request $request) {
     $order = Order::with('payment', 'order_items', 'shipping.city')->where('id', $request->id)->first();
     
-    if(Hash::check($request->otp, Session::get('code'))) {
-      if($request->all == 1) {
-        $order->status = 'cancelled';
-        foreach($order->order_items as $item) {
-          $properties = collect($item->toArray())->only(['order_id', 'product_id', 'form', 'size', 'price', 'quantity', 'discount', 'total'])->all();
-          
-          $cancel = new CancelItem;
-          $cancel->fill($properties);
-          $cancel->reason = $request->reason;
-          
-          $order->payment->cancelled += $cancel->total;
-          $order->payment->subtotal -= $item->subtotal;
-          $order->payment->tax -= $item->tax;
-          $order->payment->discount -= $item->discount;
-          $order->payment->total = $order->payment->subtotal + $order->payment->tax - $order->payment->discount;
-          
-          $cancel->save();
-          $item->delete();
-        }
+    if($request->all == 1) {
+      $order->status = 'cancelled';
+      foreach($order->order_items as $item) {
+        $properties = collect($item->toArray())->only(['order_id', 'product_id', 'form', 'size', 'price', 'quantity', 'discount', 'total'])->all();
         
-        $order->save();
-      } else {
-        foreach($request->items as $id) {
-          $item = $order->order_items->where('id', $id)->first();
-          $properties = collect($item->toArray())->only(['order_id', 'product_id', 'form', 'size', 'price', 'quantity', 'discount', 'total'])->all();
-          
-          $cancel = new CancelItem;
-          $cancel->fill($properties);
-          $cancel->reason = $request->reason;
-          
-          $order->payment->cancelled += $cancel->total;
-          $order->payment->subtotal -= $item->subtotal;
-          $order->payment->tax -= $item->tax;
-          $order->payment->discount -= $item->discount;
-          $order->payment->total = $order->payment->subtotal + $order->payment->tax - $order->payment->discount;
-          
-          $cancel->save();
-          $item->delete();
-        }
+        $cancel = new CancelItem;
+        $cancel->fill($properties);
+        $cancel->reason = $request->reason;
+        
+        $order->payment->cancelled += $cancel->total;
+        $order->payment->subtotal -= $item->subtotal;
+        $order->payment->tax -= $item->tax;
+        $order->payment->discount -= $item->discount;
+        $order->payment->total = $order->payment->subtotal + $order->payment->tax - $order->payment->discount;
+        
+        $cancel->save();
+        $item->delete();
       }
       
-      if($order->payment->total > 0 && $order->payment->total < 100) {
-        $order->payment->shipping = $order->shipping->city->shipping;
-      } else {
-        $order->payment->shipping = 0;
-      }
-
-      if($order->payment->status == 'paid') {
-        $refund = $order->payment->cancelled - $order->payment->shipping;
-        $order->payment->refund = $refund;
-      }
-
-      $order->payment->total += $order->payment->shipping;
-      $order->payment->save();
-      return back()->with('success', 'item cancelled successfully');
+      $order->save();
     } else {
-      return back()->with('error', 'Incorrect OTP');
+      foreach($request->items as $id) {
+        $item = $order->order_items->where('id', $id)->first();
+        $properties = collect($item->toArray())->only(['order_id', 'product_id', 'form', 'size', 'price', 'quantity', 'discount', 'total'])->all();
+        
+        $cancel = new CancelItem;
+        $cancel->fill($properties);
+        $cancel->reason = $request->reason;
+        
+        $order->payment->cancelled += $cancel->total;
+        $order->payment->subtotal -= $item->subtotal;
+        $order->payment->tax -= $item->tax;
+        $order->payment->discount -= $item->discount;
+        $order->payment->total = $order->payment->subtotal + $order->payment->tax - $order->payment->discount;
+        
+        $cancel->save();
+        $item->delete();
+      }
     }
+    
+    if($order->payment->total > 0 && $order->payment->total < 100) {
+      $order->payment->shipping = $order->shipping->city->shipping;
+    } else {
+      $order->payment->shipping = 0;
+    }
+
+    if($order->payment->status == 'paid') {
+      $refund = $order->payment->cancelled - $order->payment->shipping;
+      $order->payment->refund = $refund;
+    }
+
+    $order->payment->total += $order->payment->shipping;
+    $order->payment->save();
+    return back()->with('success', 'item cancelled successfully');
   }
 
   // Return order items

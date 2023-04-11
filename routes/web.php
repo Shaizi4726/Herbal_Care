@@ -97,7 +97,6 @@ Route::get('/order-detail/{order_no?}', 'OrderController@order_detail')->name('o
 Route::get('/order-return', 'OrderController@return_order')->name('order-return');
 
 // cancel item or order
-Route::get('/action-email/{action}', 'OrderController@action_email')->name('order-cancel');
 Route::get('/order-cancel', 'OrderController@cancel_order')->name('order-cancel');
 
 // Product Review

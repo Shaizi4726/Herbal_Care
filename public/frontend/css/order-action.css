@@ -233,13 +233,6 @@ input {
   width: 7em;
 }
 
-.otp {
-  display:inline-block;
-  width:50px;
-  height:50px;
-  text-align:center;
-}
-
 @media screen and (min-width: 480px) {
   .orders h1 {
     font-size: 2em;
