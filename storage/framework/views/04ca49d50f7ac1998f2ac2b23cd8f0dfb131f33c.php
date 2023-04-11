@@ -131,4 +131,5 @@
       </div>
     </section>
   </body>
-</html><?php /**PATH D:\XAMPP\htdocs\herbalcare\resources\views/frontend/order/sale-invoice.blade.php ENDPATH**/ ?>
+</html>
+<?php /**PATH D:\XAMPP\htdocs\herbalcare\resources\views/frontend/order/sale-invoice.blade.php ENDPATH**/ ?>
