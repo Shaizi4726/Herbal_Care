@@ -17,15 +17,17 @@
 
   <body>
     <section class="shop-signing register">
-      <div class="signing-img-container">
-      </div>
+      <div class="signing-img-container"></div>
 
       <div class="signing-form-container">
+        <div class="flash-error flash-message">
+          <p>Something went wrong.</p>
+        </div>
+        <?php echo $__env->make('frontend.layouts.flash-message', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
         <a href="<?php echo e(route('home')); ?>"><img src="<?php echo e(asset('images/logo_green.png')); ?>" alt="Website Logo" class="signing-web-logo"></a>
         <h1 class="signing-web-title"><a href="<?php echo e(route('home')); ?>">HerbalCare</a></h1>
         <h2>Sign Up</h2>
         
-        <?php echo $__env->make('frontend.layouts.flash-message', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
         <!-- Form -->
         <form class="form" method="post" action="<?php echo e(route('register.submit')); ?>" novalidate>
@@ -64,93 +66,96 @@ unset($__errorArgs, $__bag); ?>
             <legend>Details</legend>
             <div class="fl-bl">
               <div class="form-group" id="first-name">
-                <label for="fname">First Name<span>*</span></label>
                 <input type="text" id="fname" name="fname" placeholder="First Name" value="<?php echo e(old('fname')); ?>">
+                <label for="fname">First Name</label>
+
+                <div class="error">
+                  The "first name" is required.
+                </div>
+
+                <?php if($errors->get('fname')): ?>
+                  <div class="error">
+                    <?php $__errorArgs = ['fname'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                      <?php echo $message; ?>
+
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                  </div>
+                <?php endif; ?>
               </div>
               
               <div class="form-group" id="last-name">
-                <label for="lname">Last Name<span>*</span></label>
                 <input type="text" id="lname" name="lname" placeholder="Last Name" value="<?php echo e(old('lname')); ?>">
+                <label for="lname">Last Name</label>
+
+                <?php if($errors->get('lname')): ?>
+                  <div class="error">
+                    <?php $__errorArgs = ['lname'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                      <?php echo $message; ?>
+
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                  </div>
+                <?php endif; ?>
               </div>
               
               <div class="form-group collapse" id="company-name">
-                <label for="cname">Company Name<span>*</span></label>
                 <input type="text" id="cname" name="cname" placeholder="Company Name" value="<?php echo e(old('cname')); ?>">
+                <label for="cname">Company Name</label>
+                <?php if($errors->get('cname')): ?>
+                  <div class="error">
+                    <?php $__errorArgs = ['cname'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                      <?php echo e($message); ?>
+
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                  </div>
+                <?php endif; ?>
               </div>
 
               <div class="form-group collapse" id="trn">
-                <label for="trn-number">TRN<span>*</span></label>
-                <input type="number" id="trn-number" name="trn_no" placeholder="TRN Number" value="<?php echo e(old('trn_no')); ?>">
+                <input type="number" id="trn-no" name="trn_no" placeholder="TRN Number" value="<?php echo e(old('trn_no')); ?>">
+                <label for="trn-no">TRN Number</label>
+
+                <?php if($errors->get('trn_no')): ?>
+                  <div class="error">
+                    <?php $__errorArgs = ['trn_no'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                      <?php echo e($message); ?>
+
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                  </div>
+                <?php endif; ?>
               </div>
             </div>
 
-            <?php if($errors->get('fname')): ?>
-              <div class="error">
-                <?php $__errorArgs = ['fname'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                  <?php echo $message; ?>
-
-                <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-              </div>
-            <?php endif; ?>
-
-            <?php if($errors->get('lname')): ?>
-              <div class="error">
-                <?php $__errorArgs = ['lname'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                  <?php echo $message; ?>
-
-                <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-              </div>
-            <?php endif; ?>
-
-            <?php if($errors->get('cname')): ?>
-              <div class="error">
-                <?php $__errorArgs = ['cname'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                  <?php echo e($message); ?>
-
-                <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-              </div>
-            <?php endif; ?>
-
-            <?php if($errors->get('trn_no')): ?>
-              <div class="error">
-                <?php $__errorArgs = ['trn_no'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                  <?php echo e($message); ?>
-
-                <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-              </div>
-            <?php endif; ?>
-
             <div class="form-group">
-              <label for="email">Email:<span>*</span></label>
-              <input type="email" name="email" id="email" placeholder="Enter Email" value="<?php echo e(old('email')); ?>">
+              <input type="email" name="email" id="email" placeholder="someone@domain.com" value="<?php echo e(old('email')); ?>" required>
+              <label for="email">Email</label>
 
               <?php if($errors->get('email')): ?>
                 <div class="error">
@@ -171,13 +176,13 @@ unset($__errorArgs, $__bag); ?>
 
             <div class="fl-bl">
               <div class="form-group">
-                <label for="password">Password:<span>*</span></label>
                 <input type="password" name="password" id="password" placeholder="Enter Password">
+                <label for="password">Password</label>
               </div>
 
               <div class="form-group">
-                <label for="password_confirmation">Confirm Password:<span>*</span></label>
-                <input type="password" name="password_confirmation" id="password_confirmation" placeholder="Confirm Password">
+                <input type="password" name="password_confirmation" id="confirm-password" placeholder="Confirm Password">
+                <label for="confirm-password">Confirm Password</label>
               </div>
             </div>
 
@@ -198,12 +203,10 @@ unset($__errorArgs, $__bag); ?>
             <?php endif; ?>
           </fieldset>
 
-          <div class="form-group submit-btn">
-            <button type="submit" class="btn signing-btn">Register</button>
-          </div>
-          <p>Already Registered? <a href="<?php echo e(route('login.form')); ?>" class="btn">Log In</a></p>
-          <p>Goto <a href="<?php echo e(route('home')); ?>" class="btn">Homepage</a></p>
+          <button type="submit" class="btn signing-btn">Register</button>
         </form>
+        <p>Already Registered? <a href="<?php echo e(route('login.form')); ?>" class="btn">Log In</a></p>
+        <p>Goto <a href="<?php echo e(route('home')); ?>" class="btn">Homepage</a></p>
         <!--/ End Form -->
       </div>
     </section>

@@ -25,6 +25,14 @@
 		<script src="<?php echo e(asset('frontend/js/jquery.exzoom.js')); ?>"></script>
 		<script src="<?php echo e(asset('frontend/js/header.js')); ?>"></script>
 		<script src="<?php echo e(asset('frontend/js/main.js')); ?>"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NH2TVFJYP0"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-NH2TVFJYP0');
+    </script>
 		<?php echo $__env->yieldPushContent('scripts'); ?>
 		<!-- End Scripts -->
   </body>

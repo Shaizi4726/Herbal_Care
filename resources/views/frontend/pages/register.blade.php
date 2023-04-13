@@ -10,6 +10,11 @@
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{asset('images/favicon.png')}}">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Vollkorn:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap">
 
     <!-- HerbalCare StyleSheet -->
     <link href="{{asset('frontend/css/signin-up.css')}}" rel="stylesheet">
@@ -17,15 +22,14 @@
 
   <body>
     <section class="shop-signing register">
-      <div class="signing-img-container">
-      </div>
+      <div class="signing-img-container"></div>
 
       <div class="signing-form-container">
+        @include('frontend.layouts.flash-message')
+
         <a href="{{route('home')}}"><img src="{{asset('images/logo_green.png')}}" alt="Website Logo" class="signing-web-logo"></a>
         <h1 class="signing-web-title"><a href="{{route('home')}}">HerbalCare</a></h1>
         <h2>Sign Up</h2>
-        
-        @include('frontend.layouts.flash-message')
 
         <!-- Form -->
         <form class="form" method="post" action="{{route('register.submit')}}" novalidate>
@@ -56,61 +60,64 @@
             <legend>Details</legend>
             <div class="fl-bl">
               <div class="form-group" id="first-name">
-                <label for="fname">First Name<span>*</span></label>
                 <input type="text" id="fname" name="fname" placeholder="First Name" value="{{ old('fname') }}">
+                <label for="fname">First Name</label>
+
+                <div class="error">
+                  The "first name" is required.
+                </div>
+
+                @if ($errors->get('fname'))
+                  <div class="error">
+                    @error('fname')
+                      {!! $message !!}
+                    @enderror
+                  </div>
+                @endif
               </div>
               
               <div class="form-group" id="last-name">
-                <label for="lname">Last Name<span>*</span></label>
                 <input type="text" id="lname" name="lname" placeholder="Last Name" value="{{ old('lname') }}">
+                <label for="lname">Last Name</label>
+
+                @if ($errors->get('lname'))
+                  <div class="error">
+                    @error('lname')
+                      {!! $message !!}
+                    @enderror
+                  </div>
+                @endif
               </div>
               
               <div class="form-group collapse" id="company-name">
-                <label for="cname">Company Name<span>*</span></label>
                 <input type="text" id="cname" name="cname" placeholder="Company Name" value="{{ old('cname') }}">
+                <label for="cname">Company Name</label>
+                @if ($errors->get('cname'))
+                  <div class="error">
+                    @error('cname')
+                      {{$message}}
+                    @enderror
+                  </div>
+                @endif
               </div>
 
               <div class="form-group collapse" id="trn">
-                <label for="trn-number">TRN<span>*</span></label>
-                <input type="number" id="trn-number" name="trn_no" placeholder="TRN Number" value="{{ old('trn_no') }}">
+                <input type="number" id="trn-no" name="trn_no" placeholder="TRN Number" value="{{ old('trn_no') }}">
+                <label for="trn-no">TRN Number</label>
+
+                @if ($errors->get('trn_no'))
+                  <div class="error">
+                    @error('trn_no')
+                      {{$message}}
+                    @enderror
+                  </div>
+                @endif
               </div>
             </div>
 
-            @if ($errors->get('fname'))
-              <div class="error">
-                @error('fname')
-                  {!! $message !!}
-                @enderror
-              </div>
-            @endif
-
-            @if ($errors->get('lname'))
-              <div class="error">
-                @error('lname')
-                  {!! $message !!}
-                @enderror
-              </div>
-            @endif
-
-            @if ($errors->get('cname'))
-              <div class="error">
-                @error('cname')
-                  {{$message}}
-                @enderror
-              </div>
-            @endif
-
-            @if ($errors->get('trn_no'))
-              <div class="error">
-                @error('trn_no')
-                  {{$message}}
-                @enderror
-              </div>
-            @endif
-
             <div class="form-group">
-              <label for="email">Email:<span>*</span></label>
-              <input type="email" name="email" id="email" placeholder="Enter Email" value="{{ old('email') }}">
+              <input type="email" name="email" id="email" placeholder="someone@domain.com" value="{{ old('email') }}" required>
+              <label for="email">Email</label>
 
               @if ($errors->get('email'))
                 <div class="error">
@@ -123,13 +130,13 @@
 
             <div class="fl-bl">
               <div class="form-group">
-                <label for="password">Password:<span>*</span></label>
                 <input type="password" name="password" id="password" placeholder="Enter Password">
+                <label for="password">Password</label>
               </div>
 
               <div class="form-group">
-                <label for="password_confirmation">Confirm Password:<span>*</span></label>
-                <input type="password" name="password_confirmation" id="password_confirmation" placeholder="Confirm Password">
+                <input type="password" name="password_confirmation" id="confirm-password" placeholder="Confirm Password">
+                <label for="confirm-password">Confirm Password</label>
               </div>
             </div>
 
@@ -142,17 +149,17 @@
             @endif
           </fieldset>
 
-          <div class="form-group submit-btn">
-            <button type="submit" class="btn signing-btn">Register</button>
-          </div>
-          <p>Already Registered? <a href="{{route('login.form')}}" class="btn">Log In</a></p>
-          <p>Goto <a href="{{route('home')}}" class="btn">Homepage</a></p>
+          <button type="submit" class="btn signing-btn">Register</button>
         </form>
+        <p>Already Registered? <a href="{{route('login.form')}}" class="btn">Log In</a></p>
+        <p>Goto <a href="{{route('home')}}" class="btn">Homepage</a></p>
         <!--/ End Form -->
       </div>
     </section>
 
     <script src="https://code.jquery.com/jquery-3.6.2.min.js"></script>
     <script src="{{asset('frontend/js/register.js')}}"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NH2TVFJYP0"></script>
+    <script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-NH2TVFJYP0");</script>
   </body>
 </html>

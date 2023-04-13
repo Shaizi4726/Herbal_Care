@@ -25,6 +25,8 @@
 		<script src="{{asset('frontend/js/jquery.exzoom.js')}}"></script>
 		<script src="{{asset('frontend/js/header.js')}}"></script>
 		<script src="{{asset('frontend/js/main.js')}}"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NH2TVFJYP0"></script>
+    <script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-NH2TVFJYP0");</script>
 		@stack('scripts')
 		<!-- End Scripts -->
   </body>

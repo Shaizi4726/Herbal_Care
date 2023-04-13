@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&family=Vollkorn:wght@400;700;900&display=swap');
-
 * {
   box-sizing: border-box;
   padding: 0;
@@ -8,7 +6,6 @@
 
 body {
   font-family: Poppins, Verdana, Tahoma, sans-serif;
-  background-color: #f2f4e6;
 }
 
 a {
@@ -35,11 +32,14 @@ input:-webkit-autofill, input:-webkit-autofill:focus {
 }
 
 .flash-message {
-  font-size: 0.9em;
+  font-size: 1.2em;
+  font-weight: bold;
   text-align: center;
   position: relative;
+  padding: 1em;
+  margin-bottom: 2em;
   opacity: 1;
-  transition: 5s ease-in-out;
+  transition: 4s ease-in-out;
 }
 
 .flash-error {
@@ -47,11 +47,18 @@ input:-webkit-autofill, input:-webkit-autofill:focus {
   background-color: #b00020;
 }
 
+.flash-message p {
+  margin: 0;
+  padding: 0;
+}
+
 .error {
-  font-size: 0.9em;
-  color: #fff;
+  font-size: 1em;
+  font-weight: 600;
+  color: #b00020;
+  width: 95%;
   padding: 0 0.4em;
-  background-color: #b00020;
+  margin: auto;
 }
 
 .shop-signing {
@@ -59,10 +66,11 @@ input:-webkit-autofill, input:-webkit-autofill:focus {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  width: 95vw;
-  min-height: 95vh;
-  padding: 1em;
-  margin: 1em auto;
+  background-color: #f2f4e6;
+  width: 90vw;
+  min-height: 90vh;
+  padding: 0.5em;
+  margin: 5vh auto;
   box-shadow: 0 5px 10px 2px rgba(124, 142, 123, 0.7);
 }
 
@@ -71,9 +79,10 @@ input:-webkit-autofill, input:-webkit-autofill:focus {
 }
 
 .signing-form-container {
+  font-size: 0.75em;
   text-align: center;
-  font-size: 0.7em;
   width: 98%;
+  padding: 0.5em;
 }
 
 .login-section .signing-form-container {
@@ -81,42 +90,34 @@ input:-webkit-autofill, input:-webkit-autofill:focus {
 }
 
 .signing-web-logo {
-  width: 6em;
   height: 4em;
 }
 
 .signing-web-title {
   font-family: Vollkorn, 'Times New Roman', Times, serif;
   font-size: 1.8em;
-  font-weight: 800;
+  font-weight: 900;
   letter-spacing: 0.1em;
-  margin: 0.4em;
+  margin: 0.5em;
 }
 
 .signing-form-container h2 {
-  font-size: 1.3em;
+  font-size: 1.5em;
+  margin: 0 0 1em;
 }
 
 .form {
   text-align: left;
 }
 
-.form p {
-  font-size: 0.9em;
-  text-align: center;
-  margin-top: 1em;
-}
-
-.form a {
-  font-weight: bold;
-}
-
 fieldset {
+  border: 1px solid #7c8e7b;
   padding: 0.5em 1em;
   margin: 1em auto;
 }
 
 fieldset legend {
+  font-size: 1.2em;
   font-weight: bold;
   padding: 0 0.5em;
 }
@@ -138,95 +139,137 @@ fieldset legend {
 } 
 
 .type-selection .form-group label {
-  font-size: 0.85em;
-  font-weight: bold;
+  font-size: 0.95em;
+  color: #000 !important;
+  background: #f2f4e6 !important;
+  width: auto !important;
+  position: static;
   margin-left: 0.5em;
 }
 
 .form-group {
+  position: relative;
   width: 100%;
-}
-
-.form-group label {
-  font-size: 0.9em;
+  margin-bottom: 1.5em;
 }
 
 .form-group input {
   display: block;
-  font-size: 0.9em;
+  font-size: 1em;
   font-weight: bold;
-  width: 100%;
-  height: 2em;
-  padding: 0.3em;
-  margin: 0.5em auto;
   background-color: #fff;
+  width: 95%;
+  height: 3em;
+  position: relative;
+  padding: 0.75em;
+  margin: 0.75em auto;
   border: 1px solid #7c8e7b;
+  border-radius: 5px;
 }
 
 .login-section .form-group input {
-  height: 2.5em;
+  height: 3.5em;
 }
 
-/* .fl-bl {
-  display: flex;
-  flex-direction: column;
-  flex: 100%;
-  justify-content: space-around;
-} */
-
-.checkbox {
-  display: block;
-  margin: 1.4em 0;
+.form-group label {
+  font-weight: bold;
+  color: #999;
+  background-color: #fff;
+  width: 85%;
+  position: absolute;
+  top: 0.75em;
+  left: 1.25em;
+  z-index: 1;
+  -webkit-transition: 0.2s linear; 
+  -moz-transition: 0.2s linear; 
+  transition: 0.2s linear;
 }
 
-.submit-btn {
-  text-align: center;
+.login-section .form-group label {
+  top: 0.9em;
+}
+
+.form-group input:focus + label, .form-group input:not(:placeholder-shown) + label {
+  font-weight: normal;
+  color: #413543;
+  background: linear-gradient(180deg, rgba(242,244,230,1) 0%, rgba(242,244,230,1) 49%, rgba(255,255,255,1) 51%, rgba(255,255,255,1) 100%);
+  width: auto;
+  top: -0.75em;
+  padding: 0 0.5em;
+}
+
+.login-section .form-group input:focus + label, .login-section .form-group input:not(:placeholder-shown) + label {
+  top: -0.8em;
 }
 
 .signing-btn {
-  font-size: 1.2em;
+  display: block;
+  font-size: 1.8em;
   font-weight: bold;
   color: #fff;
-  width: 8em;
+  width: 80%;
+  height: 2em;
   padding: 0.3em 0;
   background-color: #7c8e7b;
   border-radius: 0.65em;
+  margin: auto;
+}
+
+p {
+  font-size: 1em;
+  text-align: center;
+  margin-top: 1.5em;
+}
+
+p a {
+  font-weight: bold;
 }
 
 @media screen and (min-width: 480px), screen and (min-width: 1024px) {
   .error {
-    padding: 0 0.5em;
+    font-size: 0.9em;
+    padding: 0;
   }
 
   .shop-signing {
-    margin: 1.2em auto;
-    padding: 1.2em;
-  }
-  
-  .signing-form-container {
-    width: 75%;
+    padding: 1em;
   }
 
   .signing-web-title {
+    font-size: 2em;
     letter-spacing: 0.15em;
   }
-  
-  .form p {
-    margin-top: 1.2em;
+
+  fieldset legend {
+    font-size: 1.3em;
+    padding: 0 0.75em;
   }
 
-  .type-selection .form-group label {
-    font-size: 0.9em;
+  .type-selection .form-group {
+    margin: 0.2em auto;
   }
 
   .type-selection .form-group input {
-    width: 1.1em;
-    height: 1.1em;
+    width: 1.2em;
+    height: 1.2em;
+  }
+
+  .type-selection .form-group label {
+    font-size: 1em;
+  }
+
+  .form-group {
+    margin-bottom: 1.2em;
   }
 
   .form-group input {
-    height: 2.3em;
-    padding: 0.5em;
+    width: 100%;
+    padding: 1em;
+  }
+
+  .form-group label {
+    top: 0.75em;
+    left: 1em;
   }
 
   .fl-bl {
@@ -242,12 +285,28 @@ fieldset legend {
     margin-right: 0.5em;
   }
 
-  .checkbox {
-    margin: 1.2em 0;
+  .fl-bl:last-child .form-group {
+    margin-bottom: 1em;
+  }
+
+  .fl-bl .form-group label {
+    top: 1.4em;
+  }
+
+  .form-group input:focus + label, .form-group input:not(:placeholder-shown) + label {
+    top: -0.8em;
+  }
+  
+  .fl-bl .form-group input:focus + label, .fl-bl .form-group input:not(:placeholder-shown) + label {
+    top: -0.2em;
   }
 
   .signing-btn {
-    width: 9em;
+    width: 50%;
+  }
+
+  p {
+    font-size: 1.2em;
   }
 }
 
@@ -267,114 +326,79 @@ fieldset legend {
   }
 
   .signing-form-container {
+    flex: 50%;
+    padding: 2em 0;
     margin-right: 1em;
-    flex: 45%;
+  }
+
+  .login-section .signing-form-container {
+    flex: 40%;
   }
 
   .login-section .form {
-    width: 75%;
+    width: 80%;
     margin: auto;
+  }
+
+  .fl-bl {
+    flex-direction: column;
+  }
+
+  .form-group {
+    margin-bottom: 1em;
+  }
+
+  .login-section .form-group {
+    margin-bottom: 1.5em;
   }
 }
 
 @media screen and (min-width: 1024px) {
-  .shop-signing {
-    padding: 0;
-  }
-
-  .signing-web-logo {
-    width: 6em;
-    height: 3em;
-  }
-
-  .signing-web-title {
-    font-size: 1.7em;
-  }
-  
-  .signing-form-container {
-    font-size: 1em;
-    padding: 0.5em 3em;
-  }
-
-  .signing-form-container h2 {
-    font-size: 1.2em;
-  }
-  
-  .form p {
-    font-size: 1em;
-  }
-
-  .type-selection .form-group input {
-    width: 0.8em;
-    height: 0.8em;
-  }
-  
-  .form-group input {
+  .flash-message {
     font-size: 0.9em;
-    height: 1.8em;
   }
 
-  .login-section .form-group input {
-    height: 2em;
+  .signing-form-container {
+    font-size: 0.9em;
+  }
+
+  .fl-bl {
+    flex-direction: row;
+  }
+
+  .form-group input:focus + label, .form-group input:not(:placeholder-shown) + label {
+    top: -0.8em;
+  }
+  
+  .fl-bl .form-group input:focus + label, .fl-bl .form-group input:not(:placeholder-shown) + label {
+    top: 0;
   }
 }
 
 @media screen and (min-width: 1366px) {
-  .error {
-    font-size: 0.9vw;
-    padding: 0 0.6vw;
-  }
-
   .shop-signing {
-    margin: 1.5vh auto;
+    width: 95%;
+    min-height: 95vh;
+    margin: 2.5vh auto;
   }
-  
+
+  .flash-message {
+    margin-bottom: 1.5em;
+  }
+
   .signing-form-container {
-    font-size: 0.8vw;
-  }
-  
-  .signing-web-title {
-    font-size: 2vw;
-    letter-spacing: 0.3vw;
-  }
-  
-  .signing-form-container h2 {
-    font-size: 1.2vw;
-  }
-  
-  .form p {
-    font-size: 0.8vw;
-    margin-top: 2.3vh;
+    padding: 1em 0;
   }
 
-  fieldset legend {
-    font-size: 1.1vw;
+  .form-group {
+    margin-bottom: 0.75em;
   }
 
-  .type-selection .form-group label {
-    font-size: 0.8vw;
+  .fl-bl:last-child .form-group {
+    margin-bottom: 0.65em;
   }
 
-  .type-selection .form-group input {
-    width: 0.8vw;
-    height: 0.8vw;
-  }
-
-  .form-group input {
-    font-size: 0.8vw;
-    height: 1.8vw;
-    padding: 0 0.7vw;
-  }
-
-  .login-section .form-group input {
-    height: 4vh;
-  }
-
-  .fl-bl > .form-group:first-child {
-    margin-right: 1.3vw;
-  }
-
-  #company-name {
-    margin-right: 1.3vw;
+  p {
+    margin-top: 1em;
   }
 }

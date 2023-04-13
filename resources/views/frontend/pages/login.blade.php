@@ -11,26 +11,30 @@
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{asset('images/favicon.png')}}">
 
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Vollkorn:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap">
+
     <!-- HerbalCare StyleSheet -->
     <link href="{{asset('frontend/css/signin-up.css')}}" rel="stylesheet">
   </head>
   <body>
     <section class="shop-signing login-section">
-      <div class="signing-img-container">
-      </div>
+      <div class="signing-img-container"></div>
       <div class="signing-form-container">
+        @include('frontend.layouts.flash-message')
+
         <a href="{{route('home')}}"><img src="{{asset('images/logo_green.png')}}" alt="Website Logo" class="signing-web-logo"></a>
         <h1 class="signing-web-title"><a href="{{route('home')}}">HerbalCare</a></h1>
         <h2>Sign In</h2>
-        
-        @include('frontend.layouts.flash-message')
 
         <!-- Form -->
         <form class="form" method="post" action="{{route('login.submit')}}" novalidate>
           @csrf
           <div class="form-group">
-              <label for="email">Email:<span>*</span></label>
-              <input type="email" name="email" id="email" placeholder="Enter Email" value="{{old('email')}}">
+            <input type="email" name="email" id="email" placeholder="someone@domain.com" value="{{old('email')}}">
+            <label for="email">Email</label>
               @if ($errors->get('email'))
                 <div class="error">
                   @error('email')
@@ -41,38 +45,34 @@
           </div>
         
           <div class="form-group">
-            <label for="password">Password:<span>*</span></label>
             <input type="password" name="password" id="password" placeholder="Enter Password" value="{{old('password')}}">
+            <label for="password">Password</label>
+            @if ($errors->get('password'))
+              <div class="error">
+                @error('password')
+                  {{$message}}
+                @enderror
+              </div>
+            @endif
           </div>
 
-          @if ($errors->get('password'))
-            <div class="error">
-              @error('password')
-                {{$message}}
-              @enderror
-            </div>
-          @endif
-
-          <div class="checkbox type-selection">
-            <input type="checkbox" name="remember" id="checkbox-login">
-            <label class="checkbox-login" for="checkbox-login">Remember me</label>
-          </div>
-      
           <div class="form-group submit-btn">
             <button class="btn signing-btn" type="submit">Login</button>
-            <p>Don't have an account? <a href="{{route('register.form')}}" class="btn">Register</a></p>
           </div>
           @if (Route::has('password.reset'))
-          <p><a class="forgot-pass" href="{{ route('password.reset') }}">
-            Forgot password?
-          </a></p>
-          @endif        
-          <p>Goto <a href="{{route('home')}}" class="btn">Homepage</a></p>
         </form>    
+        <p>Don't have an account? <a href="{{route('register.form')}}" class="btn">Sign Up</a></p>
+        <p><a class="forgot-pass" href="{{ route('password.reset') }}">
+          Forgot password?
+        </a></p>
+        @endif        
+        <p>Goto <a href="{{route('home')}}" class="btn">Homepage</a></p>
       </div>
     </section>
 
     <script src="https://code.jquery.com/jquery-3.6.2.min.js"></script>
-    <script>$(window).on("load",function(){$(".signing-img-container").css("height",$(".shop-signing").outerHeight())});</script>
+    <script>$(window).on("load",function(){$(".signing-img-container").css("height",$(".shop-signing").outerHeight()),$(".flash-message").css("opacity",0),setTimeout(function(){$(".flash-message").remove()},4100)});</script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NH2TVFJYP0"></script>
+    <script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-NH2TVFJYP0");</script>
   </body>
 </html>
