@@ -66,9 +66,9 @@ class Mail extends Facade
      */
     public static function fake()
     {
-      static::swap($fake = new MailFake);
+        static::swap($fake = new MailFake);
 
-      return $fake;
+        return $fake;
     }
 
     /**
@@ -78,6 +78,6 @@ class Mail extends Facade
      */
     protected static function getFacadeAccessor()
     {
-      return 'mail.manager';
+        return 'mail.manager';
     }
 }
