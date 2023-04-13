@@ -249,9 +249,8 @@ class ProductController extends Controller
     $subcategories = [];
     $subcategories[] = $request->subcat_id;
     for($i=2; $i<=$request->cat_count; $i++){
-        $cat= 'cat_id'.$i;
-        $categories[] = $request->$cat; 
-       
+      $cat= 'cat_id'.$i;
+      $categories[] = $request->$cat;    
     }
     
     for($i=2; $i<=$request->subcat_count; $i++){ 
@@ -259,26 +258,30 @@ class ProductController extends Controller
         $subcategories[]= $request->$subcat;   
     }
     
-    if($categories[0]!==""){
-        foreach ($categories as $product_cat) {
-            $category = new ProductCategory;
-            $category['product_id']=$id;           
-            $category['cat_id']=$product_cat;
-            $category->save();
+    if($categories[0] !== ""){
+      foreach ($categories as $product_cat) {
+        $procat = ProductCategory::where(['product_id' => $id, 'cat_id' => $product_cat])->first();
+        if(!$procat) {
+          $category = new ProductCategory;
+          $category['product_id'] = $id;           
+          $category['cat_id'] = $product_cat;
+          $category->save();
         }
+      }
     }
    
    
-        if($subcategories[0]!==""){
-           
-            foreach ($subcategories as $product_subcat) {
-                $subcategory = new ProductCategory;
-                $subcategory['product_id']=$id;  
-                $category['cat_id']=$product_cat;         
-                $subcategory['subcat_id']=$product_subcat;            
-                $subcategory->save();
-            }
+    if($subcategories[0]!==""){
+      foreach ($subcategories as $product_subcat) {
+        $prosubcat = ProductCategory::where(['product_id' => $id, 'subcat_id' => $product_subcat])->first();
+        if(!$prosubcat) {
+          $subcategory = new ProductCategory;
+          $subcategory['product_id'] = $id;  
+          $subcategory['subcat_id'] = $product_subcat;            
+          $subcategory->save();
         }
+      }
+    }
   
     
     if($request->hasFile("images")){

@@ -10,6 +10,11 @@
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="<?php echo e(asset('images/favicon.png')); ?>">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Vollkorn:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap">
 
     <!-- HerbalCare StyleSheet -->
     <link href="<?php echo e(asset('frontend/css/signin-up.css')); ?>" rel="stylesheet">
@@ -20,14 +25,11 @@
       <div class="signing-img-container"></div>
 
       <div class="signing-form-container">
-        <div class="flash-error flash-message">
-          <p>Something went wrong.</p>
-        </div>
         <?php echo $__env->make('frontend.layouts.flash-message', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
         <a href="<?php echo e(route('home')); ?>"><img src="<?php echo e(asset('images/logo_green.png')); ?>" alt="Website Logo" class="signing-web-logo"></a>
         <h1 class="signing-web-title"><a href="<?php echo e(route('home')); ?>">HerbalCare</a></h1>
         <h2>Sign Up</h2>
-        
 
         <!-- Form -->
         <form class="form" method="post" action="<?php echo e(route('register.submit')); ?>" novalidate>
@@ -68,10 +70,6 @@ unset($__errorArgs, $__bag); ?>
               <div class="form-group" id="first-name">
                 <input type="text" id="fname" name="fname" placeholder="First Name" value="<?php echo e(old('fname')); ?>">
                 <label for="fname">First Name</label>
-
-                <div class="error">
-                  The "first name" is required.
-                </div>
 
                 <?php if($errors->get('fname')): ?>
                   <div class="error">
@@ -213,6 +211,8 @@ unset($__errorArgs, $__bag); ?>
 
     <script src="https://code.jquery.com/jquery-3.6.2.min.js"></script>
     <script src="<?php echo e(asset('frontend/js/register.js')); ?>"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NH2TVFJYP0"></script>
+    <script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-NH2TVFJYP0");</script>
   </body>
 </html>
 <?php /**PATH D:\XAMPP\htdocs\herbalcare\resources\views/frontend/pages/register.blade.php ENDPATH**/ ?>

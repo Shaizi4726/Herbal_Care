@@ -252,7 +252,7 @@
       <picture>
         <source media="(min-width: 768px)" srcset="{{$fixed2->photo_desktop}}">
         <source media="(min-width: 480px)" srcset="{{$fixed2->photo_tablet}}">
-        <img class="slide-img" src="$fixed2->photo_mobile}}" alt="Fixed Banner Image">
+        <img class="slide-img" src="{{$fixed2->photo_mobile}}" alt="Fixed Banner Image">
       </picture>
     </div>
 

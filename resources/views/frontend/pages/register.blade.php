@@ -63,10 +63,6 @@
                 <input type="text" id="fname" name="fname" placeholder="First Name" value="{{ old('fname') }}">
                 <label for="fname">First Name</label>
 
-                <div class="error">
-                  The "first name" is required.
-                </div>
-
                 @if ($errors->get('fname'))
                   <div class="error">
                     @error('fname')
