@@ -12,6 +12,7 @@ after verification verify page shouldn't be accessed
 Send email on cancellation or return
 Payment method on sale and tax invoice
 contact us message form
+modals design and close on return back
 
 Send invoice after payment on email provided by customer
 when to send tax invoice [op: immediately or not]

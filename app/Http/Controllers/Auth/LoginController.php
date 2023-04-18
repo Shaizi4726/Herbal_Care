@@ -192,4 +192,17 @@ class LoginController extends Controller
       return redirect()->back()->with('error','Incorrect password. Please try again!');
     }
   }
+
+  public function user_exists(Request $request) {
+    if($request->email) {
+      $user = User::where('email', $request->email)->first();
+      if($user) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
 }

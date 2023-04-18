@@ -68,6 +68,10 @@ input:-webkit-autofill, input:-webkit-autofill:focus {
   z-index: 2;
 }
 
+.login-section .input-validate {
+  top: 0.4em;
+}
+
 .input-error {
   color: #b00020;
   bottom: 0.23em;
@@ -103,7 +107,7 @@ input:-webkit-autofill, input:-webkit-autofill:focus {
 }
 
 .login-section .signing-form-container {
-  width: 80%;
+  width: 90%;
 }
 
 .signing-web-logo {
@@ -170,6 +174,10 @@ fieldset legend {
   margin-bottom: 1.5em;
 }
 
+.login-section .form-group {
+  margin-bottom: 2em;
+}
+
 .form-input {
   position: relative;
 }
@@ -201,13 +209,13 @@ fieldset legend {
   top: 0.75em;
   left: 1.25em;
   z-index: 1;
-  -webkit-transition: 0.2s linear; 
-  -moz-transition: 0.2s linear; 
-  transition: 0.2s linear;
+  -webkit-transition: 0.1s linear; 
+  -moz-transition: 0.1s linear; 
+  transition: 0.1s linear;
 }
 
 .login-section .form-group label {
-  top: 0.9em;
+  top: 1em;
 }
 
 .form-group input:focus + label, .form-group input:not(:placeholder-shown) + label {
@@ -215,7 +223,7 @@ fieldset legend {
   color: #413543;
   background: linear-gradient(180deg, rgba(242,244,230,1) 0%, rgba(242,244,230,1) 49%, rgba(255,255,255,1) 51%, rgba(255,255,255,1) 100%);
   width: auto;
-  top: -0.75em;
+  top: -0.7em;
   padding: 0 0.5em;
 }
 
@@ -232,8 +240,14 @@ fieldset legend {
   height: 1.8em;
   padding: 0.3em 0;
   background-color: #7c8e7b;
-  border-radius: 0.65em;
+  border: none;
+  border-radius: 0.5em;
   margin: auto;
+  transition: all .3s ease-in-out;
+}
+
+.signing-btn:focus {
+  transform: scale(0.9);
 }
 
 p {
@@ -382,7 +396,7 @@ p a {
   }
 
   .login-section .form-group {
-    margin-bottom: 1.5em;
+    margin-bottom: 2.5em;
   }
 
   p {

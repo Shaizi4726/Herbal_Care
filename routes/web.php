@@ -122,6 +122,7 @@ Route::match(['get','post'], 'admin/product/delete-brand/{id}','ProductControlle
 
 Route::get('/get-product-price', 'FrontendController@getProductPrice');
 Route::get('/already-user', 'Auth\RegisterController@already_user');
+Route::get('/user-exists', 'Auth\LoginController@user_exists');
 
 //Get SubCategory
 Route::post('/admin/category/{id}/child','CategoryController@getChildByParent');

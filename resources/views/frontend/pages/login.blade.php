@@ -16,6 +16,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,700;0,900;1,400;1,500;1,700;1,900&family=Vollkorn:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap">
 
+    <!-- Boxicons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.4/css/boxicons.min.css">
+
     <!-- HerbalCare StyleSheet -->
     <link href="{{asset('frontend/css/signin-up.css')}}" rel="stylesheet">
   </head>
@@ -25,7 +28,7 @@
       <div class="signing-form-container">
         @include('frontend.layouts.flash-message')
 
-        <a href="{{route('home')}}"><img src="{{asset('images/logo_green.png')}}" alt="Website Logo" class="signing-web-logo"></a>
+        <a href="{{route('home')}}"><img src="{{asset('images/logo_green.png')}}" alt="HerbalCare Website Logo" class="signing-web-logo"></a>
         <h1 class="signing-web-title"><a href="{{route('home')}}">HerbalCare</a></h1>
         <h2>Sign In</h2>
 
@@ -33,20 +36,26 @@
         <form class="form" method="post" action="{{route('login.submit')}}" novalidate>
           @csrf
           <div class="form-group">
-            <input type="email" name="email" id="email" placeholder="someone@domain.com" value="{{old('email')}}">
-            <label for="email">Email</label>
-              @if ($errors->get('email'))
-                <div class="error">
-                  @error('email')
-                    {{$message}}
-                  @enderror
-                </div>
-              @endif
+            <div class="form-input">
+              <input type="email" name="email" id="email" placeholder="someone@domain.com" value="{{old('email')}}">
+              <label for="email">Email</label>
+            </div>
+
+            @if ($errors->get('email'))
+              <div class="error">
+                @error('email')
+                  {{$message}}
+                @enderror
+              </div>
+            @endif
           </div>
         
           <div class="form-group">
-            <input type="password" name="password" id="password" placeholder="Enter Password" value="{{old('password')}}">
-            <label for="password">Password</label>
+            <div class="form-input">
+              <input type="password" name="password" id="password" placeholder="Enter Password" value="{{old('password')}}">
+              <label for="password">Password</label>
+            </div>
+
             @if ($errors->get('password'))
               <div class="error">
                 @error('password')
@@ -71,7 +80,7 @@
     </section>
 
     <script src="https://code.jquery.com/jquery-3.6.2.min.js"></script>
-    <script>$(window).on("load",function(){$(".signing-img-container").css("height",$(".shop-signing").outerHeight()),$(".flash-message").css("opacity",0),setTimeout(function(){$(".flash-message").remove()},4100)});</script>
+    <script src="{{asset('frontend/js/login.js')}}"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-NH2TVFJYP0"></script>
     <script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-NH2TVFJYP0");</script>
   </body>
