@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Order - <?php echo e($order->order_no); ?></title>
+    <title>Order - Sale Order</title>
 
     <link rel="stylesheet" href="<?php echo e(public_path('frontend/css/pdf.css')); ?>">
   </head>

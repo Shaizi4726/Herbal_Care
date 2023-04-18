@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>FAQ</title>
+	<title>Help Center || HerbalCare</title>
 	<style>
 		body{
 			background-color: #faf9f6;
@@ -142,7 +142,7 @@
 	</div>
 
 	<script>
-		let answers=document.querySelectorAll(".accordion");
+		let answers = document.querySelectorAll(".accordion");
 		answers.forEach((event)=>{
 			event.addEventListener('click',()=>{
 				if(event.classList.contains("active")){

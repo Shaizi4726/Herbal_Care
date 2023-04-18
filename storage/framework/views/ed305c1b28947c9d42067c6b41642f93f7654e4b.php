@@ -1,5 +1,5 @@
 
-<?php $__env->startSection('title','HerbalCare || Home'); ?>
+<?php $__env->startSection('title','HerbalCare - Botanical World of Herbs || Shop Herbs, Teas, Oils and Extracts'); ?>
 
 <?php $__env->startPush('styles'); ?>
   <link href="<?php echo e(asset('frontend/css/index.css')); ?>" rel="stylesheet">

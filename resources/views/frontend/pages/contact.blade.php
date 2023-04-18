@@ -1,5 +1,5 @@
 @extends('frontend.layouts.master')
-@section('title','HerbalCare || Contact')
+@section('title','Contact Us, Shops Locations || HerbalCare')
 
 @push('styles')
   <link href="{{asset('frontend/css/contact.css')}}" rel="stylesheet">

@@ -1,5 +1,20 @@
 @extends('frontend.layouts.master')
-@section('title','HERB || PRODUCT PAGE')
+
+@php
+  if($slug) {
+    $category = $cats->where('slug', $slug)->first();
+  }
+  if(!$subslug and $slug) {
+    $title = $category->name;
+  } else if ($subslug) {
+    $subcategory = $category->subcat()->where('slug', $subslug)->first();
+    $title = $subcategory->name;
+  } else {
+    $title = "Search";
+  }
+@endphp
+
+@section('title') {{$title}} Products || HerbalCare @endsection
 
 @push('styles')
   <link href="{{asset('frontend/css/products.css')}}" rel="stylesheet">

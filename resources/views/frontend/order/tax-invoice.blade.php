@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Order - {{$order->order_no}}</title>
+    <title>Order - Tax Invoice</title>
 
     <link rel="stylesheet" href="{{public_path('frontend/css/pdf.css')}}">
   </head>

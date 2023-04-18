@@ -1,5 +1,5 @@
 
-<?php $__env->startSection('title', 'HERB || Checkout page'); ?>
+<?php $__env->startSection('title', 'Checkout Order || HerbalCare'); ?>
 
 <?php $__env->startPush('styles'); ?>
   <link rel="stylesheet" href="<?php echo e(asset('frontend/css/checkout.css')); ?>">

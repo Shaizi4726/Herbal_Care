@@ -1,5 +1,5 @@
 @extends('frontend.layouts.master')
-@section('title','HerbalCare || Home')
+@section('title','HerbalCare - Botanical World of Herbs || Shop Herbs, Teas, Oils and Extracts')
 
 @push('styles')
   <link href="{{asset('frontend/css/index.css')}}" rel="stylesheet">

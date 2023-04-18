@@ -1,5 +1,5 @@
 
-<?php $__env->startSection('title','HerbalCare || Contact'); ?>
+<?php $__env->startSection('title','Contact Us, Shops Locations || HerbalCare'); ?>
 
 <?php $__env->startPush('styles'); ?>
   <link href="<?php echo e(asset('frontend/css/contact.css')); ?>" rel="stylesheet">

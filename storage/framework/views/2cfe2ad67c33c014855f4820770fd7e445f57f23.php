@@ -1,5 +1,5 @@
 
-<?php $__env->startSection('title', 'HerbalCare || Orders'); ?>
+<?php $__env->startSection('title', 'Order Details || HerbalCare'); ?>
 
 <?php $__env->startPush('styles'); ?>
   <link rel="stylesheet" href="<?php echo e(asset('frontend/css/orders.css')); ?>">

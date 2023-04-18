@@ -1,5 +1,5 @@
 @extends('frontend.layouts.master')
-@section('title', 'HerbalCare || Order Detail')
+@section('title', 'Order Detail || HerbalCare')
 
 @push('styles')
   <link rel="stylesheet" href="{{asset('frontend/css/order-detail.css')}}">

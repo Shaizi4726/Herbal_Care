@@ -5,7 +5,7 @@ $.typeahead({
   order: 'asc',
   hint: true,
   highlight: false,
-  cache: true,
+  cache: false,
   ttl: 2628003,
   href: '/product/search?search={{display}}',
   cancelButton: false,
@@ -121,8 +121,8 @@ function createSizes(productId, formId) {
       $('#price-size').html(resp);
       price(productId);
     },
-    error: function (resp) {
-      $('#price-size').append('<div class="error">Something went wrong. Please try again...</div>');
+    error: function () {
+      $('#price-size').append(`<div class="error">Something went wrong. Please try again...</div>`);
     }
   });
 };
@@ -165,7 +165,7 @@ function cartAdd(id) {
       $('body').css('overflow', 'hidden');
       $('#checkout-popup').css('transform', 'scale(1)');
       $('#location-popup').attr('data-toggle', '1');
-      $('#location-popup').html('<div class="error modal-error">Something went wrong. Please try again...</div>');
+      $('#location-popup').html(`<div class="error modal-error">Something went wrong. Please try again...</div>`);
     }
   });
 
@@ -189,7 +189,7 @@ function remInnerModal() {
 function fav(ico, id) {
   let el = $(ico).children()[0];
   if ($(el).hasClass('fa-regular')) {
-    el.classList.remove('fa-regular');
+    $(`.${id}-card .fa-heart`).removeClass('fa-regular');
     $(`.${id}-card .fa-heart`).addClass('fa-solid');
     /* AJAX request for adding shopping list items to wishlist */
     $.ajax({
@@ -206,7 +206,7 @@ function fav(ico, id) {
   }
   
   else if ($(el).hasClass('fa-solid')) {
-    el.classList.remove('fa-solid');
+    $(`.${id}-card .fa-heart`).removeClass('fa-solid');
     $(`.${id}-card .fa-heart`).addClass('fa-regular');
 
     /* AJAX request for deleting wishlist item */

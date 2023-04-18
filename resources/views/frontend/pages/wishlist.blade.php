@@ -1,5 +1,5 @@
 @extends('frontend.layouts.master')
-@section('title','HERB || PRODUCT PAGE')
+@section('title','Wishlist Products || HerbalCare')
 
 @push('styles')
   <link href="{{asset('frontend/css/products.css')}}" rel="stylesheet">
@@ -65,12 +65,4 @@
 @push('scripts')
   <script src="{{asset('frontend/js/products.js')}}"></script>
   <script src="{{asset('frontend/js/modal.js')}}"></script>
-  <script>
-    $(function() {
-      /* Show sorting menu*/
-      $('#selected-sort').click(() => {
-        $('#sorting-list').toggleClass('collapse');
-      })
-    })
-  </script>
 @endpush

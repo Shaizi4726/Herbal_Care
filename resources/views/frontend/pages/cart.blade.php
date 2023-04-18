@@ -1,5 +1,5 @@
 @extends('frontend.layouts.master')
-@section('title','HerbalCare || Cart')
+@section('title', 'Shopping Cart || HerbalCare')
 
 @push('styles')
   <link rel="stylesheet" href="{{asset('frontend/css/cart.css')}}">

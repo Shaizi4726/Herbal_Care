@@ -1,4 +1,4 @@
-<?php $__env->startSection('title','HERB || PRODUCT PAGE'); ?>
+<?php $__env->startSection('title','Wishlist Products || HerbalCare'); ?>
 
 <?php $__env->startPush('styles'); ?>
   <link href="<?php echo e(asset('frontend/css/products.css')); ?>" rel="stylesheet">
@@ -64,13 +64,5 @@
 <?php $__env->startPush('scripts'); ?>
   <script src="<?php echo e(asset('frontend/js/products.js')); ?>"></script>
   <script src="<?php echo e(asset('frontend/js/modal.js')); ?>"></script>
-  <script>
-    $(function() {
-      /* Show sorting menu*/
-      $('#selected-sort').click(() => {
-        $('#sorting-list').toggleClass('collapse');
-      })
-    })
-  </script>
 <?php $__env->stopPush(); ?>
 <?php echo $__env->make('frontend.layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\XAMPP\htdocs\herbalcare\resources\views/frontend/pages/wishlist.blade.php ENDPATH**/ ?>

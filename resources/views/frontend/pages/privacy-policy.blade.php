@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Privacy Policy</title>
+	<title>Privacy Policy || HerbalCare</title>
 	<style>
 		body{
 			background-color: #faf9f6;

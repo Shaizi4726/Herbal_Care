@@ -61,13 +61,13 @@ class RegisterController extends Controller
     
     if($request['cust_type'] == 'individual') {
       $this->validate($request, [
-        'fname' => 'required|regex:/^[a-zA-Z ].{2,}$/',
-        'lname' => 'required|regex:/^[a-zA-Z ].{2,}$/'
+        'fname' => 'required|regex:/^[a-zA-Z ].{3,}$/',
+        'lname' => 'required|regex:/^[a-zA-Z ].{3,}$/'
       ]);
     } else {
       $this->validate($request, [
-        'cname' => 'required|string',
-        'trn_no' => 'required|regex: /^(\d *){15}$/'
+        'cname' => 'required|string|min:3',
+        'trn_no' => 'required|min_digits:15'
       ]);
     }
     
@@ -95,6 +95,19 @@ class RegisterController extends Controller
 
     else{
       return back()->with('error', 'Something went wrong. Please try again!');
+    }
+  }
+
+  public function already_user(Request $request) {
+    if($request->email) {
+      $user = User::where('email', $request->email)->first();
+      if($user) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
     }
   }
 }

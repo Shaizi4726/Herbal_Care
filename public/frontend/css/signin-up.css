@@ -37,7 +37,7 @@ input:-webkit-autofill, input:-webkit-autofill:focus {
   text-align: center;
   position: relative;
   padding: 1em;
-  margin-bottom: 2em;
+  margin-bottom: 1.5em;
   opacity: 1;
   transition: 4s ease-in-out;
 }
@@ -54,11 +54,28 @@ input:-webkit-autofill, input:-webkit-autofill:focus {
 
 .error {
   font-size: 1em;
-  font-weight: 600;
+  font-weight: 500;
   color: #b00020;
   width: 95%;
   padding: 0 0.4em;
   margin: auto;
+}
+
+.input-validate {
+  font-size: 2em;
+  position: absolute;
+  right: 0.6em;
+  z-index: 2;
+}
+
+.input-error {
+  color: #b00020;
+  bottom: 0.23em;
+}
+
+.valid-input {
+  color: #4bb543;
+  bottom: 0.22em;
 }
 
 .shop-signing {
@@ -153,6 +170,10 @@ fieldset legend {
   margin-bottom: 1.5em;
 }
 
+.form-input {
+  position: relative;
+}
+
 .form-group input {
   display: block;
   font-size: 1em;
@@ -207,8 +228,8 @@ fieldset legend {
   font-size: 1.8em;
   font-weight: bold;
   color: #fff;
-  width: 80%;
-  height: 2em;
+  width: 60%;
+  height: 1.8em;
   padding: 0.3em 0;
   background-color: #7c8e7b;
   border-radius: 0.65em;
@@ -218,7 +239,7 @@ fieldset legend {
 p {
   font-size: 1em;
   text-align: center;
-  margin-top: 1.5em;
+  margin-top: 1em;
 }
 
 p a {
@@ -259,7 +280,7 @@ p a {
   }
 
   .form-group {
-    margin-bottom: 1.2em;
+    margin-bottom: 0.75em;
   }
 
   .form-group input {
@@ -286,23 +307,19 @@ p a {
   }
 
   .fl-bl:last-child .form-group {
-    margin-bottom: 1em;
+    margin-bottom: 0.75em;
   }
 
   .fl-bl .form-group label {
-    top: 1.4em;
+    top: 0.7em;
   }
 
   .form-group input:focus + label, .form-group input:not(:placeholder-shown) + label {
     top: -0.8em;
   }
-  
-  .fl-bl .form-group input:focus + label, .fl-bl .form-group input:not(:placeholder-shown) + label {
-    top: -0.2em;
-  }
 
   .signing-btn {
-    width: 50%;
+    width: 40%;
   }
 
   p {
@@ -321,14 +338,22 @@ p a {
     flex: 50%;
     width: 45%;
     margin-right: 1em;
-    background-image: url('../../images/login-herbal.jpg');
-    background-position: center;
+    background: #f2f4e6 url('../../images/login-herbal.jpg') no-repeat center;
+    background-size: cover;
   }
 
   .signing-form-container {
     flex: 50%;
     padding: 2em 0;
     margin-right: 1em;
+  }
+
+  .signing-web-title {
+    margin: 0.3em;
+  }
+
+  .signing-form-container h2 {
+    margin: 0 0 0.5em;
   }
 
   .login-section .signing-form-container {
@@ -340,16 +365,28 @@ p a {
     margin: auto;
   }
 
+  fieldset {
+    margin: 0.75em auto;
+  }
+
   .fl-bl {
     flex-direction: column;
   }
 
+  .fl-bl .form-group, .fl-bl:last-child .form-group {
+    margin-bottom: 0;
+  }
+
   .form-group {
-    margin-bottom: 1em;
+    margin: 0;
   }
 
   .login-section .form-group {
     margin-bottom: 1.5em;
+  }
+
+  p {
+    margin-top: 0.75em;
   }
 }
 
@@ -358,8 +395,16 @@ p a {
     font-size: 0.9em;
   }
 
+  .signing-web-title {
+    margin: 0.3em;
+  }
+
   .signing-form-container {
     font-size: 0.9em;
+  }
+
+  .form-group {
+    margin: 0;
   }
 
   .fl-bl {
@@ -368,10 +413,6 @@ p a {
 
   .form-group input:focus + label, .form-group input:not(:placeholder-shown) + label {
     top: -0.8em;
-  }
-  
-  .fl-bl .form-group input:focus + label, .fl-bl .form-group input:not(:placeholder-shown) + label {
-    top: 0;
   }
 }
 
@@ -383,19 +424,20 @@ p a {
   }
 
   .flash-message {
-    margin-bottom: 1.5em;
+    margin-bottom: 1em;
   }
 
   .signing-form-container {
     padding: 1em 0;
   }
 
-  .form-group {
-    margin-bottom: 0.75em;
+  .form {
+    width: 90%;
+    margin: auto;
   }
 
-  .fl-bl .form-group {
-    margin-bottom: 0.5em;
+  .form-group {
+    margin-bottom: 0.75em;
   }
 
   p {

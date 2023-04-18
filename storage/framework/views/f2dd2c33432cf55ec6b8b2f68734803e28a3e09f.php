@@ -1,6 +1,6 @@
 
 
-<?php $__env->startSection('title','HerbalCare || About Us'); ?>
+<?php $__env->startSection('title', 'About Us || HerbalCare'); ?>
 
 <?php $__env->startPush('styles'); ?>
   <link href="<?php echo e(asset('frontend/css/about-us.css')); ?>" rel="stylesheet">

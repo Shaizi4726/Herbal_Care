@@ -1,6 +1,6 @@
 @extends('frontend.layouts.master')
 
-@section('title','HerbalCare || About Us')
+@section('title', 'About Us || HerbalCare')
 
 @push('styles')
   <link href="{{asset('frontend/css/about-us.css')}}" rel="stylesheet">

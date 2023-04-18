@@ -1,5 +1,5 @@
 
-<?php $__env->startSection('title','HerbalCare || Cart'); ?>
+<?php $__env->startSection('title', 'Shopping Cart || HerbalCare'); ?>
 
 <?php $__env->startPush('styles'); ?>
   <link rel="stylesheet" href="<?php echo e(asset('frontend/css/cart.css')); ?>">

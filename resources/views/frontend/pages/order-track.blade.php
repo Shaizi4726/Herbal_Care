@@ -1,5 +1,5 @@
 @extends('frontend.layouts.master')
-@section('title','HERB || Order Track Page')
+@section('title', 'Track Order || HerbalCare')
 
 @push('styles')
   <link rel="stylesheet" href="{{asset('frontend/css/order-track.css')}}">

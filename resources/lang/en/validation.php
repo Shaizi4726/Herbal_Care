@@ -24,10 +24,10 @@ return [
     'before' => 'The :attribute must be a date before :date.',
     'before_or_equal' => 'The :attribute must be a date before or equal to :date.',
     'between' => [
-        'numeric' => 'The :attribute must be between :min and :max.',
-        'file' => 'The :attribute must be between :min and :max kilobytes.',
-        'string' => 'The :attribute must be between :min and :max characters.',
-        'array' => 'The :attribute must have between :min and :max items.',
+      'numeric' => 'The :attribute must be between :min and :max.',
+      'file' => 'The :attribute must be between :min and :max kilobytes.',
+      'string' => 'The :attribute must be between :min and :max characters.',
+      'array' => 'The :attribute must have between :min and :max items.',
     ],
     'boolean' => 'The :attribute field must be true or false.',
     'confirmed' => 'The :attribute confirmation does not match.',
@@ -85,11 +85,12 @@ return [
     'mimes' => 'The :attribute must be a file of type: :values.',
     'mimetypes' => 'The :attribute must be a file of type: :values.',
     'min' => [
-        'numeric' => 'The :attribute must be at least :min.',
-        'file' => 'The :attribute must be at least :min kilobytes.',
-        'string' => 'The :attribute must be at least :min characters.',
-        'array' => 'The :attribute must have at least :min items.',
+      'numeric' => 'The :attribute must be at least :min.',
+      'file' => 'The :attribute must be at least :min kilobytes.',
+      'string' => 'The :attribute must be at least :min characters.',
+      'array' => 'The :attribute must have at least :min items.',
     ],
+    'min_digits' => 'The :attribute must be at least :min digits.',
     'not_in' => 'The selected :attribute is invalid.',
     'not_regex' => 'The :attribute format is invalid.',
     'numeric' => 'The :attribute must be a number.',
@@ -105,10 +106,10 @@ return [
     'required_without_all' => 'The :attribute field is required when none of :values are present.',
     'same' => 'The :attribute and :other must match.',
     'size' => [
-        'numeric' => 'The :attribute must be :size.',
-        'file' => 'The :attribute must be :size kilobytes.',
-        'string' => 'The :attribute must be :size characters.',
-        'array' => 'The :attribute must contain :size items.',
+      'numeric' => 'The :attribute must be :size.',
+      'file' => 'The :attribute must be :size kilobytes.',
+      'string' => 'The :attribute must be :size characters.',
+      'array' => 'The :attribute must contain :size items.',
     ],
     'starts_with' => 'The :attribute must start with one of the following: :values.',
     'string' => 'The :attribute must be a string.',
@@ -130,101 +131,76 @@ return [
     */
 
     'custom' => [
-        'cust_type' => [
-          'required' => 'The "customer type selection" is required.',
-          'string' => 'The "customer type selection" must be string'
-        ],
-
         'fname' => [
-          'required' => 'The "first name" is required.',
-          'regex' => 'The "first name" must contain
-            <li>at least 2 letters</li>
+          'regex' => 'The first name must contain
+            <li>at least 3 letters</li>
             <li>only spaces and letters</li>'
         ],
         
         'shipping_fname' => [
-          'required' => 'The "first name" is required.',
-          'regex' => 'The "first name" must contain
-            <li>at least 2 letters</li>
+          'regex' => 'The first name must contain
+            <li>at least 3 letters</li>
             <li>only spaces and letters</li>'
         ],
 
         'lname' => [
-          'required' => 'The "last name" is required.',
-          'regex' => 'The "last name" must contain
-            <li>at least 2 letters</li>
+          'regex' => 'The last name must contain
+            <li>at least 3 letters</li>
             <li>only spaces and letters</li>'
         ],
         
         'shipping_lname' => [
-          'required' => 'The "last name" is required.',
-          'regex' => 'The "last name" must contain
-            <li>at least 2 letters</li>
+          'regex' => 'The last name must contain
+            <li>at least 3 letters</li>
             <li>only spaces and letters</li>'
-        ],
-
-        'cname' => [
-          'required' => 'The "company name" is required.',
-          'string' => 'The "company name" must be string.'
-        ],
-        
-        'trn_no' => [
-          'required' => 'The "trn number" is required.',
-          'regex' => 'The "trn number" must contain at least 15 digits.'
         ],
 
         'password' => [
           'regex' => 'The password must contain
+            <li>at least 8 characters</li>
             <li>at least 1 letter</li>
             <li>at least 1 digit</li>
             <li>at least 1 special character</li>'
         ],
 
         'phone' => [
-          'required' => 'The "phone number" is required.',
-          'regex' => 'The "phone number" must be in uae number format'
+          'regex' => 'The phone number must be in uae number format'
         ],
         
         'shipping_phone' => [
-          'required' => 'The "phone number" is required.',
-          'regex' => 'The "phone number" must be in uae number format'
+          'regex' => 'The phone number must be in uae number format'
         ],
 
         'altphone' =>  [
-          'regex' => 'The optional "phone number" must be in uae number format'
+          'regex' => 'The optional phone number must be in uae number format'
         ],
         
         'shipping_altphone' =>  [
-          'regex' => 'The optional "phone number" must be in uae number format'
+          'regex' => 'The optional phone number must be in uae number format'
         ],
 
         'account_no' => [
-          'required' => 'The "card number" is required',
-          'regex' => 'The "card number" is invalid.'
+          'regex' => 'The card number is invalid.'
         ],
 
         'account_name' => [
-          'required' => 'The "full name" is required.',
-          'regex' => 'The "full name" must contain
-            <li>at least 2 letters</li>
+          'regex' => 'The full name must contain
+            <li>at least 3 letters</li>
             <li>only spaces and letters</li>'
         ],
         
         'expiry_month' => [
-          'required' => 'The "expiry month" is required.',
-          'regex' => 'The "expiry month" is invalid.',
-          'gte' => 'The "expiry month" is invalid.'
+          'regex' => 'The expiry month is invalid.',
+          'gte' => 'The expiry month is invalid.'
         ],
         
         'expiry_year' => [
-          'required' => 'The "expiry year" is required.',
-          'regex' => 'The "expiry year" is invalid.',
-          'gte' => 'The "expiry year" is invalid.',
-          'lte' => 'The "expiry year" is invalid.'
+          'regex' => 'The expiry year is invalid.',
+          'gte' => 'The expiry year is invalid.',
+          'lte' => 'The expiry year is invalid.'
         ],
 
         'cvv_cvc' => [
-          'required' => 'The "cvv/cvc" is required.',
           'regex' => 'The "cvv/cvc" is invalid.'
         ]
     ],
@@ -240,6 +216,19 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+      'cust_type' => 'customer type selection',
+      'fname' => 'first name',
+      'lname' => 'last name',
+      'cname' => 'company name',
+      'trn_no' => 'trn number',
+      'phone' => 'phone number',
+      'shipping_fname' => 'first name',
+      'shipping_lname' => 'last name',
+      'shipping_phone' => 'phone number',
+      'account_no' => 'card number',
+      'account_name' => 'full name',
+      'cvv_cvc' => 'cvv/cvc'
+    ],
 
 ];

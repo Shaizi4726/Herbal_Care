@@ -1,5 +1,20 @@
 
-<?php $__env->startSection('title','HERB || PRODUCT PAGE'); ?>
+
+<?php
+  if($slug) {
+    $category = $cats->where('slug', $slug)->first();
+  }
+  if(!$subslug and $slug) {
+    $title = $category->name;
+  } else if ($subslug) {
+    $subcategory = $category->subcat()->where('slug', $subslug)->first();
+    $title = $subcategory->name;
+  } else {
+    $title = "Search";
+  }
+?>
+
+<?php $__env->startSection('title'); ?> <?php echo e($title); ?> Products || HerbalCare <?php $__env->stopSection(); ?>
 
 <?php $__env->startPush('styles'); ?>
   <link href="<?php echo e(asset('frontend/css/products.css')); ?>" rel="stylesheet">

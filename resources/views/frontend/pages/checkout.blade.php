@@ -1,5 +1,5 @@
 @extends('frontend.layouts.master')
-@section ('title', 'HERB || Checkout page')
+@section ('title', 'Checkout Order || HerbalCare')
 
 @push('styles')
   <link rel="stylesheet" href="{{asset('frontend/css/checkout.css')}}">
