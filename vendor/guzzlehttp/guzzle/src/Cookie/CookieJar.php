@@ -218,7 +218,7 @@ class CookieJar implements CookieJarInterface
 
     public function count(): int
     {
-      return \count($this->cookies);
+        return \count($this->cookies);
     }
 
     /**
