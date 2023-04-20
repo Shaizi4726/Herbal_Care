@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&family=Vollkorn:wght@400;700;900&display=swap');
-
 * {
   box-sizing: border-box;
   margin: 0;
@@ -18,11 +16,14 @@ a {
 }
 
 .flash-message {
-  font-size: 0.8em;
+  font-size: 1em;
+  font-weight: bold;
   text-align: center;
   position: relative;
+  padding: 0.8em;
+  margin-bottom: 1em;
   opacity: 1;
-  transition: 5s ease-in-out;
+  transition: 4s ease-in-out;
 }
 
 .flash-success {
@@ -30,34 +31,33 @@ a {
   background-color: #4bb543;
 }
 
-.header-content {
+.web-header {
   background-color: #7c8e7b;
   color: #fff;
   display: flex;
-  flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  height: 3em;
+  height: 5em;
 }
 
 .header-logo img {
   display: block;
-  width: 2.5em;
+  width: 4em;
 }
 
 .header-title {
   font-family: Vollkorn, 'Times New Roman', Times, serif;
-  font-size: 1.2em;
+  font-size: 1.5em;
+  letter-spacing: 0.05em;
 }
 
 #logout-icon {
-  font-size: 1.2em;
+  font-size: 1.5em;
 }
 
 .email-verify-section {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
 }
 
@@ -70,13 +70,12 @@ a {
 }
 
 .verify-card {
-  width: 95%;
   text-align: center;
+  width: 95%;
+  margin: 1em 0;
 }
 
 .card-header {
-  color: #000;
-  text-align: center;
   padding: 0.2em;
 }
 
@@ -97,25 +96,26 @@ a {
   font-weight: bold;
   color: #fff;
   background-color: #7c8e7b;
-  width: 45vw;
+  width: 8em;
+  border: none;
   border-radius: 0.5em;
-  padding: 0.2em;
+  padding: 0.5em;
+  transition: transform .3s ease-in-out;
+}
+
+.btn-submit:active {
+  transform: scale(0.9);
+  border: 1px solid #000;
 }
 
 @media screen and (min-width: 480px) {
-  .flash-message {
-    font-size: 1em;
-    padding: 0.3em;
-  }
-
-  .header-content {
-    height: 4.5em;
+  .web-header {
     justify-content: space-between;
   }
 
   .header-logo img {
-    width: 4em;
-    margin-left: 1em;
+    width: 5em;
+    margin-left: 0.75em;
   }
 
   .header-title {
@@ -147,11 +147,6 @@ a {
 }
 
 @media screen and (min-width: 768px) {
-  .flash-message {
-    font-size: 1.2em;
-    padding: 0.5em;
-  }
-
   .header-title {
     letter-spacing: 0.15em;
   }
@@ -163,8 +158,9 @@ a {
     
   .img-container {
     flex: 40%;
+    max-width: 100%;
+    max-height: 90vh;
     margin-right: 1em;
-    height: auto;
   }
 
   .verify-card {
@@ -183,22 +179,21 @@ a {
 
 @media screen and (min-width: 1024px) {
   .flash-message {
-    font-size: 1.4em;
-    padding: 0.7em;
+    font-size: 1.1em;
   }
 
-  .header-content {
-    height: 5em;
+  .web-header {
+    height: 7em;
   }
 
   .header-logo img {
-    width: 5em;
-    margin-left: 1.5em;
+    width: 7em;
+    margin-left: 1.2em;
   }
 
   .header-title {
     font-size: 2.2em;
-    letter-spacing: 0.25em;
+    letter-spacing: 0.2em;
   }
 
   #logout-icon {
@@ -213,27 +208,22 @@ a {
 
 @media screen and (min-width: 1366px) {
   .flash-message {
-    font-size: 1.8em;
-    padding: 1em;
+    font-size: 1.2em;
   }
 
-  .header-content {
+  .web-header {
     height: 10vh;
   }
 
-  .header-logo img {
-    width: 6vw;
-  }
-
   .header-title {
-    font-size: 3vw;
+    font-size: 2.4em;
   }
   
   #logout-icon {
-    font-size: 3vw;
+    font-size: 2.6em;
   }
   
   .verify-card {
-    font-size: 1.7vw;
+    font-size: 1.2em;
   }
 }

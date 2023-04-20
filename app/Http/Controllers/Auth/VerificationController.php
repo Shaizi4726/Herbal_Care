@@ -38,8 +38,9 @@ class VerificationController extends Controller
   public function __construct()
   {
     $this->middleware('auth');
+    $this->middleware('throttle:6,1');
+    $this->middleware('not.verified');
     $this->middleware('signed')->only('emailVerification');
-    $this->middleware('throttle:6,1')->only('emailVerification', 'resendEmailVerification');
   }
 
   /**

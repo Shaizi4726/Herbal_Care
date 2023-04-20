@@ -4,12 +4,9 @@ Mobile Popup Offers
 Payment Methods, Social Media Links
 zoom cart image on hover
 Forgot Password Page
-Send username and password in the verify email
 link customer address with google map 
 product detail link on images in mobile
 product form with flu
-after verification verify page shouldn't be accessed
-Send email on cancellation or return
 Payment method on sale and tax invoice
 contact us message form
 modals design and close on return back

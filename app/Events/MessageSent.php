@@ -23,9 +23,7 @@ class MessageSent implements ShouldBroadcast
     public $message;
     public function __construct($message)
     {
-        // return $message;
-        // dd($message);
-        $this->message=$message;
+      $this->message=$message;
     }
 
     /**
@@ -35,6 +33,6 @@ class MessageSent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('message');
+      return new Channel('message');
     }
 }

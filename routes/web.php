@@ -14,24 +14,24 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Register User
-Route::view('user/register', 'frontend.pages.register')->name('user.register.form');
-Route::view('/register', 'frontend.pages.register')->name('register.form');
-Route::view('/signup', 'frontend.pages.register')->name('signup.form');
-Route::post('user/register','Auth\RegisterController@registerSubmit')->name('register.submit');
+Route::view('/register', 'frontend.pages.register')->middleware('guest')->name('register.form');
+Route::redirect('/signup', '/register')->name('signup.form');
+Route::post('/register-user','Auth\RegisterController@register_submit')->name('register.submit');
 
 // Verify Email
-Route::view('/email/verify', 'auth.verify-email')->middleware('auth')->withoutMiddleware('verified')->name('verification.notice');
-Route::view('/verify/email', 'auth.verify-email')->middleware('auth')->withoutMiddleware('verified')->name('verify.email');
-Route::get('/email/verify/{id}/{hash}', 'Auth\VerificationController@emailVerification')->middleware(['auth', 'signed'])->name('verification.verify');
-Route::post('/email/verification-notification', 'Auth\VerificationController@resendEmailVerification')->middleware(['auth', 'throttle:6,1'])->name('verification.resend');
+Route::view('/verify-email', 'auth.verify-email')->middleware(['auth', 'not.verified'])->name('verification.email');
+Route::redirect('/email-verify', '/verify-email')->name('verify.email');
+Route::get('/email-verify/{id}/{hash}', 'Auth\VerificationController@emailVerification')->middleware(['auth', 'signed', 'not.verified'])->name('verification.verify');
+Route::post('/resend-verification-email', 'Auth\VerificationController@resendEmailVerification')->middleware(['auth', 'throttle:6,1', 'not.verified'])->name('verification.resend');
 
 // Login User
 Route::get('/login', 'Auth\LoginController@login')->name('login.form');
 Route::redirect('/signin', '/login')->name('signin.form');
-Route::redirect('user/login', '/login')->name('user.login.form');
-Route::post('user/login', 'Auth\LoginController@loginSubmit')->name('login.submit');
-Route::get('user/logout', 'FrontendController@logout')->name('user.logout');
-Route::get('/logout', 'FrontendController@logout')->name('logout');
+Route::post('user-login', 'Auth\LoginController@loginSubmit')->name('login.submit');
+
+// Logout User
+Route::get('/logout', 'FrontendController@logout')->middleware('auth')->name('logout');
+Route::redirect('user-logout', '/logout')->name('user.logout');
 
 // Reset password
 Route::view('password-reset', 'auth.passwords.old-reset')->name('password.reset');
