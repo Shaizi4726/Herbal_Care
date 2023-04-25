@@ -56,7 +56,6 @@
     <script src="https://code.jquery.com/jquery-3.6.2.min.js"></script>
     <script>
       $(function() {
-        $('.signing-img-container').css('height', $('.shop-signing').outerHeight());
         $('.flash-message').css('opacity', 0);
         setTimeout(function() {
           $('.flash-message').remove();

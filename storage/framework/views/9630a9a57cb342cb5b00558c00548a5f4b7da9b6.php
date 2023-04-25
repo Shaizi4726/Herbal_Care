@@ -81,6 +81,11 @@ unset($__errorArgs, $__bag); ?>
             <?php endif; ?>
           </div>
 
+          <div class="remember-checkbox">
+            <input type="checkbox" name="remember" id="remember">
+            <label for="remember">Remember Me</label>
+          </div>
+
           <div class="form-group submit-btn">
             <button class="btn signing-btn" type="submit">Login</button>
           </div>

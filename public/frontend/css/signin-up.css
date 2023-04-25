@@ -231,6 +231,17 @@ fieldset legend {
   top: -0.8em;
 }
 
+.remember-checkbox {
+  text-align: center;
+  margin-bottom: 1em;
+}
+
+.remember-checkbox label {
+  position: relative;
+  bottom: 0.2em;
+  margin-left: 1em;
+}
+
 .signing-btn {
   display: block;
   font-size: 1.8em;
@@ -332,8 +343,17 @@ p a {
     top: -0.8em;
   }
 
+  #remember {
+    width: 1.25em;
+    height: 1.25em;
+  }
+
+  .remember-checkbox label {
+    bottom: 0.35em;
+  }
+
   .signing-btn {
-    width: 40%;
+    width: 50%;
   }
 
   p {
@@ -427,6 +447,10 @@ p a {
 
   .form-group input:focus + label, .form-group input:not(:placeholder-shown) + label {
     top: -0.8em;
+  }
+
+  .remember-checkbox label {
+    bottom: 0.25em
   }
 }
 

@@ -34,7 +34,7 @@ trait MustVerifyEmail
    * @param  string  $password
    * @return void
    */
-  public function sendEmailVerificationNotification($password)
+  public function sendEmailVerificationNotification($password = null)
   {
     $this->notify(new VerifyEmail($password));
   }

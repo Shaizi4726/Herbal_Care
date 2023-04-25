@@ -97,12 +97,12 @@ Route::get('/order-detail/{order_no?}', 'OrderController@order_detail')->name('o
 Route::get('/order-return', 'OrderController@return_order')->name('order-return');
 
 // cancel item or order
-Route::get('/action-email/{action}', 'OrderController@action_email')->name('order-cancel');
+Route::get('/action-email/{action}', 'OrderController@action_email')->name('action-email');
 Route::get('/order-cancel', 'OrderController@cancel_order')->name('order-cancel');
 
 // Product Review
 Route::resource('/review','ProductReviewController');
-Route::post('product/{slug}/review','ProductReviewController@store')->name('review.store');
+Route::post('/product/{slug}/review','ProductReviewController@store')->name('review-store');
 // Coupon
 Route::post('/coupon-store', 'CouponController@couponStore')->name('coupon-store');
 // Payment
@@ -176,10 +176,6 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     // Password Change
     Route::get('change-password', 'AdminController@changePassword')->name('change.password.form');
     Route::post('change-password', 'AdminController@changPasswordStore')->name('change.password');
-});
-
-Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
-    \UniSharp\LaravelFilemanager\Lfm::routes();
 });
 
 Route::get('/order-mail', 'MailController@order_mail')->name('order-mail');

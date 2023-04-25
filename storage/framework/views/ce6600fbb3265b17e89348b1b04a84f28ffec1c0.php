@@ -54,16 +54,14 @@
     </section>
 
     <script src="https://code.jquery.com/jquery-3.6.2.min.js"></script>
-    <!-- <script>
-      $(window).on('load', function() {
-        setTimeout(function() {
-          $('.flash-message').css('opacity', 0);
-        }, 5000);
+    <script>
+      $(function() {
+        $('.flash-message').css('opacity', 0);
         setTimeout(function() {
           $('.flash-message').remove();
-        }, 5500);
+        }, 4100);
       });
-    </script> -->
+    </script>
   </body>
 </html>
 <?php /**PATH D:\XAMPP\htdocs\herbalcare\resources\views/auth/verify-email.blade.php ENDPATH**/ ?>

@@ -15,8 +15,11 @@ function showModal(id, productId) {
     },
     success: function(response) {
       $('#modal-container').html(response);
-      $('body').css('height', '90vh');
-      $('body').css('overflow', 'hidden');
+      window.oldScrollPos = $(window).scrollTop();
+      $(window).on('scroll.scrolldisabler',function ( event ) {
+        $(window).scrollTop( window.oldScrollPos );
+        event.preventDefault();
+      });
       $(el).css('transform', 'scale(1)');
 
       shazoom();
@@ -91,8 +94,7 @@ function showModal(id, productId) {
 
 /*==================== Remove modal from DOM ====================*/
 function closeModal() {
-  $('body').css('height', 'auto');
-  $('body').css('overflow', 'auto');
+  $(window).off('scroll.scrolldisabler');
   $(el).css('transform', 'scale(0)');
   setTimeout(function() {
     $('#modal').remove();

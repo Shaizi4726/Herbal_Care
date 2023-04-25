@@ -62,7 +62,7 @@ class LoginController extends Controller
     else
       $remember = false;
 
-    if(Auth::attempt(['email' => $request->email, 'password' => $request->password, 'status'=>'active'], $remember)) {
+    if(Auth::attempt(['email' => $request->email, 'password' => $request->password], $remember)) {
       $cart_items = Session::get('cart');
 
       foreach($cart_items as $item) {

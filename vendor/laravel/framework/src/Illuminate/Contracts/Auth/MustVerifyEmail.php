@@ -24,7 +24,7 @@ interface MustVerifyEmail
      * @param  string  $password
      * @return void
      */
-    public function sendEmailVerificationNotification($password);
+    public function sendEmailVerificationNotification($password = null);
 
     /**
      * Get the email address that should be used for verification.
