@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-@include('admin_panel.layouts.head')
+@include('admin.layouts.head')
 
 </head>
 

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Coupon;
-use App\User;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\CartItem;
 use Auth;
@@ -16,16 +16,16 @@ class CouponController extends Controller
    */
   public function index() {
     $coupon=Coupon::with('products')->orderBy('id','DESC')->paginate('10');
-    return view('admin_panel.coupon.index')->with('coupons',$coupon);
+    return view('admin.coupon.index')->with('coupons',$coupon);
   }
 
   /**
    * Show the form for creating a new resource.
    *
-   * @return \Illuminate\Http\Response
+   * @return \Illuminate\Contracts\View\View
    */
   public function create() {
-    return view('admin_panel.coupon.create');
+    return view('admin.coupon.create');
   }
 
   /**
@@ -52,7 +52,7 @@ class CouponController extends Controller
     else{
         request()->session()->flash('error','Please try again!!');
     }
-    return redirect()->route('coupon.index');
+    return redirect()->route('coupons.index');
   }
 
   /**
@@ -65,10 +65,10 @@ class CouponController extends Controller
   {
     $coupon=Coupon::with('products')->with('users')->find($id);
     if($coupon){
-        return view('admin_panel.coupon.edit')->with('coupon',$coupon);
+        return view('admin.coupon.edit')->with('coupon',$coupon);
     }
     else{
-        return view('admin_panel.coupon.index')->with('error','Coupon not found');
+        return view('admin.coupon.index')->with('error','Coupon not found');
     }
   }
 
@@ -95,7 +95,7 @@ class CouponController extends Controller
     else{
         request()->session()->flash('error','Please try again!!');
     }
-    return redirect()->route('coupon.index');
+    return redirect()->route('coupons.index');
   }
 
   /**
@@ -115,7 +115,7 @@ class CouponController extends Controller
       else{
           request()->session()->flash('error','Error, Please try again');
       }
-      return redirect()->route('coupon.index');
+      return redirect()->route('coupons.index');
     }
     else{
       request()->session()->flash('error','Coupon not found');
@@ -123,7 +123,7 @@ class CouponController extends Controller
     }
   }
 
-  public function couponStore(Request $request){
+  public function storeCoupon(Request $request){
     // return $request->all();
     $today = today('Europe/London');
     $coupon=Coupon::with('products')->where('code',$request->code)->first();
@@ -165,7 +165,7 @@ class CouponController extends Controller
     }
   }
 
-  public function coupon_apply(Request $request) {
+  public function applyCoupon(Request $request) {
     $coupon_code = strtoupper($request->coupon_code);
     $coupon = Coupon::where('code', $coupon_code)->first();
     $discount = 0;

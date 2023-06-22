@@ -16,7 +16,7 @@ class FormController extends Controller
     public function index()
     {
         $form=Form::orderBy('id','DESC')->paginate(10);
-        return view('admin_panel.form.index')->with('forms',$form);
+        return view('admin.form.index')->with('forms',$form);
     }
 
     /**
@@ -26,7 +26,7 @@ class FormController extends Controller
      */
     public function create()
     {
-        return view('admin_panel.form.create');
+        return view('admin.form.create');
     }
 
     /**
@@ -57,7 +57,7 @@ class FormController extends Controller
         else{
             request()->session()->flash('error','Error occurred while adding form');
         }
-        return redirect()->route('form.index');
+        return redirect()->route('forms.index');
     }
 
     /**
@@ -80,7 +80,7 @@ class FormController extends Controller
     public function edit($id)
     {
         $form=Form::findOrFail($id);
-        return view('admin_panel.form.edit')->with('forms',$form);
+        return view('admin.form.edit')->with('forms',$form);
     }
 
     /**
@@ -104,7 +104,7 @@ class FormController extends Controller
         else{
             request()->session()->flash('error','Error occurred while updating form');
         }
-        return redirect()->route('form.index');
+        return redirect()->route('forms.index');
     }
 
     /**
@@ -123,6 +123,6 @@ class FormController extends Controller
         else{
             request()->session()->flash('error','Error occurred while deleting form');
         }
-        return redirect()->route('form.index');
+        return redirect()->route('forms.index');
     }
 }

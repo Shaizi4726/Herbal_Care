@@ -16,46 +16,40 @@ class WishlistController extends Controller
         $this->product = $product;
     }
 
-    public function wishlist() {
-      $products = new Collection();
-      if(Auth::check()) {
+    public function index() {
+      $wishlists = new Collection();
+      if (Auth::check())
         $wishlists = Wishlist::with('product')->where('user_id', Auth::user()->id)->get();
-        $products = $wishlists->pluck('product');
-      }
-      return view('frontend.pages.wishlist')->with('products', $products);
+      return view('main.pages.wishlist')->with('wishlists', $wishlists);
     }
 
-    public function wishlist_add (Request $request) {
+    public function store(Request $request) {
       $request->validate([
         'id' => 'required',
       ]);
 
       $product = Product::where('id', $request->id)->first();
-      $user_id = auth()->user()->id;
-
+      $userId = auth()->user()->id;
         
-            $wishlist = new Wishlist;
-            $wishlist->user_id = $user_id;
-            $wishlist->product_id = $request->id;
+      $wishlist = new Wishlist;
+      $wishlist->user_id = $userId;
+      $wishlist->product_id = $request->id;
 
-            $wishlist->save();
+      $wishlist->save();
 
-            $fav_counts = Wishlist::where('user_id', $user_id)->count('product_id');
-      
-            request()->session()->flash('success','Product successfully added to wishlist');  
-            return $fav_counts;
-          }  
+      $favCounts = Wishlist::where('user_id', $userId)->count('product_id');
+
+      return $favCounts;
+    }  
           
-    public function wishlist_delete(Request $request) {
-      $wishlist = Wishlist::where('product_id', $request->id)->delete();
-      request()->session()->flash('success','Wishlist successfully removed');
-      $user_id = auth()->user()->id;
-      $fav_counts = Wishlist::where('user_id', $user_id)->count('product_id');
+    public function destroy(Request $request, $productId) {
+      $wishlist = Wishlist::where('product_id', $productId)->delete();
+      $favCounts = Wishlist::where('user_id', auth()->user()->id)->count('product_id');
 
       if($request->reload == 1) {
         return back();
       }
 
-      return $fav_counts;
+      return $favCounts;
     }     
 }

@@ -3,17 +3,17 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 
 class Brand extends Model
 {
   /**
-   * The table associated with the model.
+   * The model's default values for attributes.
    *
-   * @var string
+   * @var array
    */
-  protected $table = 'brands';
+  protected $attributes = [
+    'status' => 'active'
+  ];
 
   /**
    * The attributes that are mass assignable.
@@ -27,15 +27,6 @@ class Brand extends Model
   */
   public function products()
   {
-    return $this->belongsToMany(Product::class, 'product_brands', 'brand_id', 'product_id');
+    return $this->belongsToMany(Product::class);
   }
-
-  /**
-   * The model's default values for attributes.
-   *
-   * @var array
-   */
-  protected $attributes = [
-    'status' => 'active'
-  ];
 }

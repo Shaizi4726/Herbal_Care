@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
 
     <!-- HerbalCare StyleSheet -->
-    <link href="{{asset('frontend/css/verify-email.css')}}" rel="stylesheet">
+    <link href="{{asset('css/main/verify-email.min.css')}}" rel="stylesheet">
   </head>
 
   <body>
@@ -29,10 +29,10 @@
         <img src="{{asset('images/logo.png')}}" alt="Website Logo" class="signing-web-logo">
       </a>
       <h2 class="header-title">HerbalCare</h2>
-      <a class="user-nav" href="{{route('user.logout')}}"><i class="fa-solid fa-right-from-bracket icon" id="logout-icon"></i></a>
+      <a class="user-nav" href="{{ route('logout.user') }}"><i class="fa-solid fa-right-from-bracket icon" id="logout-icon"></i></a>
     </header>
 
-    @include('frontend.layouts.flash-message')
+    @include('layouts.flash-message')
 
     <section class="email-verify-section">
       <div class="img-container">

@@ -31,7 +31,7 @@ class ProductController extends Controller
   public function index()
   {
     $products = Product::paginate(10);
-    return view('admin_panel.product.index')->with('products',$products);
+    return view('admin.product.index')->with('products',$products);
   }
 
   /**
@@ -44,13 +44,11 @@ class ProductController extends Controller
       $brand=Brand::get();
       $form=Form::get();
       $coupon=Coupon::get();
-      $category=Category::with('subcat')->get();
+      $category=Category::with('subcats')->get();
       $subcategory=SubCategory::get();
-      $product_category=ProductCategory::get();
-     
+
       // return $category;
-      return view('admin_panel.product.create')->with('product_categories',$product_category)
-      ->with('categories',$category)->with('brands',$brand)->with('subcategories',$subcategory)
+      return view('admin.product.create')->with('categories',$category)->with('brands',$brand)->with('subcategories',$subcategory)
       ->with('coupons',$coupon)->with('forms',$form);
   }
 
@@ -116,6 +114,7 @@ class ProductController extends Controller
     
     if($categories[0]!==""){
         foreach ($categories as $product_cat) {
+          dd($status);
             $category = new ProductCategory;
             $category['product_id']=$status->id;           
             $category['cat_id']=$product_cat;
@@ -171,7 +170,7 @@ class ProductController extends Controller
     else{
         request()->session()->flash('error','Please try again!!');
     }
-    return redirect()->route('product.index');
+    return redirect()->route('products.index');
 
 
     }
@@ -195,17 +194,14 @@ class ProductController extends Controller
    */
   public function edit($id)
   {   
-    $product=Product::with('coupon')->findOrFail($id);
-    $category=Category::with('subcat')->get();
-    
-    $procat=ProductCategory::get();
+    $product=Product::with('coupon', 'cats', 'subcats', 'brands')->findOrFail($id);
+    $category=Category::with('subcats')->get();
     $brand=Brand::get();
     $coupon=Coupon::get();
     $form=Form::get();
-      // return $items;
-    return view('admin_panel.product.edit')->with('product',$product)
+
+    return view('admin.product.edit')->with('product',$product)
     ->with('categories',$category)
-    ->with('procats',$procat)
     ->with('forms',$form)
     ->with('coupons',$coupon)
     ->with('brands',$brand);
@@ -327,7 +323,7 @@ class ProductController extends Controller
       else{
           request()->session()->flash('error','Please try again!!');
       }
-      return redirect()->route('product.index');
+      return redirect()->route('products.index');
   }
 
   /**
@@ -347,7 +343,7 @@ class ProductController extends Controller
     else{
         request()->session()->flash('error','Error while deleting product');
     }
-    return redirect()->route('product.index');
+    return redirect()->route('products.index');
   }
  
 
@@ -407,7 +403,7 @@ class ProductController extends Controller
           return redirect()->back();
       }
   
-      public function editAttributes(Request $request){
+      public function editAttribute(Request $request){
    
         $data = $request->all();
         

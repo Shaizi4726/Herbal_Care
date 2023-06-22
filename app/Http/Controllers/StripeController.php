@@ -11,9 +11,9 @@ use Illuminate\Http\Request;
 
 class StripeController extends Controller {
   public function payment(Request $request) {
-    Stripe\Stripe::setApiKey(env('STRIPE_SECRET', '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'));
+    Stripe\Stripe::setApiKey(config('stripe.stripe_secret'));
 
-    $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET', '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'));
+    $stripe = new \Stripe\StripeClient(config('stripe.stripe_secret'));
     try {
       $token = $stripe->tokens->create([
         'card' => [
@@ -56,14 +56,14 @@ class StripeController extends Controller {
   }
 
   public function refund(Request $request) {
-    Stripe\Stripe::setApiKey(env('STRIPE_SECRET', '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'));
+    Stripe\Stripe::setApiKey(config('stripe.stripe_secret'));
 
     $order = Order::with('payment')->find($request->id);
     
     if($order->payment->refund < $request->refund)
       return back()->with('error', 'Invalid refund amount.');
 
-    $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET', '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'));
+    $stripe = new \Stripe\StripeClient(config('stripe.stripe_secret'));
     
     try {
       $refund = $stripe->refunds->create([

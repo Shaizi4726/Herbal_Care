@@ -6,16 +6,19 @@ use App\Models\Banner;
 use App\Models\Brand;
 use App\Models\CartItem;
 use App\Models\Category;
+use App\Models\FixedBanner;
 use App\Models\Order;
 use App\Models\Product;
-use App\Models\ProductAttribute;
+use App\Models\Promotion;
+use App\Models\Attribute;
 use App\Models\ProductForm;
 use App\Models\SubCategory;
-use App\User;
+use App\Models\User;
 use Auth;
 use Session;
 use DB;
 use Hash;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
@@ -26,56 +29,84 @@ class FrontendController extends Controller
 {
   public function home()
   {
-    $banners = Banner::where('status', 'active')->orderBy('id', 'ASC')->get();
-    $categories = Category::where('status', 'active')->get();
-    $pop_products = Product::where('promotion', 'popular')->where('status', 'active')->orderBy('name', 'ASC')->get();
-    $trn_products = Product::where('promotion', 'trending')->where('status', 'active')->inRandomOrder()->get();
-    $new_products = Product::where('promotion', 'new')->where('status', 'active')->orderBy('created_at', 'DESC')->get();
+    $banners = Banner::where('status', 'active')->inRandomOrder()->get();
+    $fixed_banners = FixedBanner::get();
+    $pop_products = Product::where('status', 'active')->whereRelation('promotions', 'name', 'popular')->orderBy('name')->get();
+    $trn_products = Product::where('status', 'active')->whereRelation('promotions', 'name', 'trending')->inRandomOrder()->get();
+    $new_products = Product::where('status', 'active')->whereRelation('promotions', 'name', 'new')->latest()->get();
       
-    return view('frontend.index')->with('banners', $banners)->with('categories', $categories)->with('pop_products', $pop_products)->with('new_products', $new_products)->with('trn_products', $trn_products);
+    return view('main.index')->with(['banners' => $banners, 'fixed_banners' => $fixed_banners, 'pop_products' => $pop_products, 'trn_products' => $trn_products, 'new_products' => $new_products]);
   }
 
-  public function product_detail($slug)
+  public function productDetail($slug)
   {
-    $product = Product::with('categories.products', 'images')->where(['slug' => $slug, 'status' => 'active'])->first();
-    $relcats = $product->categories;
+    $product = Product::with('cats')->where(['slug' => $slug, 'status' => 'active'])->first();
+    $relcats = $product->cats->pluck('name');
 
-    $relproducts = collect();
+    $relproducts = Product::where('status', 'active')->whereHas('cats', function (Builder $query) use ($relcats) {
+    $query->whereIn('name', $relcats);})->inRandomOrder()->take(10)->get();
 
-    foreach($relcats as $cat) {
-      $cat_products = $cat->products->where('status', 'active')->unique();
-      $relproducts = $relproducts->concat($cat_products)->unique();
-    }
-
-    $relproducts = $relproducts->random(fn (Collection $items) => min(10, count($items)));
-
-    return view('frontend.pages.product-detail')->with('product', $product)->with('relproducts', $relproducts);
+    return view('main.pages.product-detail')->with('product', $product)->with('relproducts', $relproducts);
   }
 
-  public function productSort(Request $request) {
+  public function products(Request $request) {
+    $products = Product::where('status', 'active')->orderBy('minprice')->get();
+
+    return view('main.pages.shop-products')->with(['products' => $products, 'slug' => null, 'subslug' => null, 'search' => null, 'que' => null]);
+  }
+
+  public function catProducts(Request $request) {
+    $products = Product::where('status', 'active')->whereRelation('cats', 'slug', $request->slug)->orderBy('minprice')->get();
+
+    return view('main.pages.shop-products')->with(['products' => $products, 'slug' => $request->slug, 'subslug' => null, 'search' => null, 'que' => null]);
+  }
+
+  public function subcatProducts(Request $request){
+    $products = Product::where('status', 'active')->whereRelation('subcats', 'slug', $request->subslug)->orderBy('minprice')->get();
+
+    return view('main.pages.shop-products')->with(['products' => $products, 'slug' => $request->slug, 'subslug' => $request->subslug, 'search' => null, 'que' => null]);
+  }
+
+  public function searchProducts(Request $request) {
+    $products = Product::where('status', 'active')->where(function(Builder $query) use ($request) {
+      $query->where('name', 'like', '%'.$request->search.'%')->orwhere('sci_name', 'like', '%'.$request->search.'%')->orwhere('other_name', 'like', '%'.$request->search.'%');
+    })->orderBy('minprice')->get();
+
+    return view('main.pages.shop-products')->with(['products' => $products, 'slug' => null, 'subslug' => null, 'search' => 1, 'que' => $request->search]);
+  }
+
+  public function sortProducts(Request $request) {
+    $sort_by = $request->value;
     if($request->search) {
-      $products = Product::where('status', 'active')->where(function(Builder $query) {
-        $query->where('name', 'like', '%'.$request->que.'%')->orwhere('sci_name', 'like', '%'.$request->que.'%')->orwhere('other_name', 'like', '%'.$request->que.'%');
-      })->get();
-
+      if(in_array($sort_by, ['popular', 'trending', 'new']))
+        $products = Product::where('status', 'active')->where(function(Builder $query) use ($request) {
+          $query->where('name', 'like', '%'.$request->que.'%')->orwhere('sci_name', 'like', '%'.$request->que.'%')->orwhere('other_name', 'like', '%'.$request->que.'%');
+        })->whereRelation('promotions', 'name', $sort_by)->orderBy('minprice')->get();
+      else
+        $products = Product::where('status', 'active')->where(function(Builder $query) use ($request) {
+          $query->where('name', 'like', '%'.$request->que.'%')->orwhere('sci_name', 'like', '%'.$request->que.'%')->orwhere('other_name', 'like', '%'.$request->que.'%');
+        })->get();
     } else if ($request->subslug) {
-      $subcat = SubCategory::with('products')->where('slug', $request->subslug)->first();
-      $products = $subcat->products()->where('status', 'active')->get();
-
+      if(in_array($sort_by, ['popular', 'trending', 'new']))
+        $products = Product::where('status', 'active')->whereRelation('subcats', 'slug', $request->subslug)->whereRelation('promotions', 'name', $sort_by)->orderBy('minprice')->get();
+      else
+        $products = Product::where('status', 'active')->whereRelation('subcats', 'slug', $request->subslug)->get();
     } else if ($request->slug) {
-      $category = Category::with('products')->where('slug', $request->slug)->first();
-      $products = $category->products()->where('status', 'active')->get();
-
+      if(in_array($sort_by, ['popular', 'trending', 'new']))
+        $products = Product::where('status', 'active')->whereRelation('cats', 'slug', $request->slug)->whereRelation('promotions', 'name', $sort_by)->orderBy('minprice')->get();
+      else
+        $products = Product::where('status', 'active')->whereRelation('cats', 'slug', $request->slug)->get();
     } else {
-      $products = Product::where('status', 'active')->get();
+      if(in_array($sort_by, ['popular', 'trending', 'new']))
+        $products = Product::where('status', 'active')->whereRelation('promotions', 'name', $sort_by)->orderBy('minprice')->get();
+      else
+        $products = Product::where('status', 'active')->get();
     }
 
-    $sort_by = $request->value;
-
-    if ($sort_by) {
+    if (! in_array($sort_by, ['popular', 'trending', 'new'])) {
       if($sort_by == 'rand')
         $products = $products->sortBy('id');
-      if($sort_by == 'a-z')
+      else if($sort_by == 'a-z')
         $products = $products->sortBy('name');
       else if($sort_by == 'z-a')
         $products = $products->sortByDesc('name');
@@ -83,15 +114,9 @@ class FrontendController extends Controller
         $products = $products->sortBy('minprice');
       else if($sort_by == 'hgh-prc')
         $products = $products->sortByDesc('minprice');
-      else if($sort_by == 'new')
-        $products = $products->where('promotion', 'new')->all();
-      else if($sort_by == 'popular')
-        $products = $products->where('promotion', 'popular')->all();
-      else if($sort_by == 'trending')
-        $products = $products->where('promotion', 'trending')->all();
     }
 
-    if (count($products) !== 0) {
+    if ($products->isNotEmpty()) {
       $content = '';
 
       foreach ($products as $product) {
@@ -137,7 +162,7 @@ class FrontendController extends Controller
         EOD;
 
         if(Auth::user()) {
-          if(count($wishlist) != 0) {
+          if($wishlist->isNotEmpty()) {
             $content .= <<<EOD
                 <button class="btn favbtn" onclick="fav(this, {$product->id})"><i class="fa-solid fa-heart fav"></i></button>
                 </div>
@@ -170,39 +195,6 @@ class FrontendController extends Controller
     return $content;
   }
 
-  public function product_search(Request $request) {
-    $products = Product::where('status', 'active')->where(function(Builder $query) use ($request) {
-      $query->where('name', 'like', '%'.$request->search.'%')->orwhere('sci_name', 'like', '%'.$request->search.'%')->orwhere('other_name', 'like', '%'.$request->search.'%');
-    })->get();
-
-    $categories = Category::get();
-
-    return view('frontend.pages.product-grids')->with(['products' => $products, 'cats' => $categories, 'slug' => null, 'subslug' => null, 'search' => 1, 'que' => $request->search]);
-  }
-
-  public function products(Request $request) {
-    $products = Product::where('status', 'active')->orderBy('name')->get();
-    $categories = Category::where('status', 'active')->get();
-
-    return view('frontend.pages.product-grids')->with(['products' => $products, 'cats' => $categories, 'slug' => null, 'subslug' => null, 'search' => null, 'que' => null]);
-  }
-
-  public function productCat(Request $request) {
-    $category = Category::with('products')->where('slug', $request->slug)->first();
-    $products = $category->products->where('status', 'active')->sortBy('name');
-    $categories = Category::where('status', 'active')->get();
-
-    return view('frontend.pages.product-grids')->with(['products' => $products, 'cats' => $categories, 'slug' => $request->slug, 'subslug' => $request->subslug, 'search' => null, 'que' => null]);
-  }
-
-  public function productSubCat(Request $request){
-    $subcat = SubCategory::with('products')->where('slug', $request->subslug)->first();
-    $products = $subcat->products()->where('status', 'active')->orderBy('name')->get();
-    $categories = Category::where('status', 'active')->get();
-
-    return view('frontend.pages.product-grids')->with(['products' => $products, 'cats' => $categories, 'slug' => $request->slug, 'subslug' => $request->subslug, 'search' => null, 'que' => null]);
-  }
-
   public function logout(){
     Session::forget('user');
     Auth::logout();
@@ -210,19 +202,19 @@ class FrontendController extends Controller
     return back();
   }
 
-  public function PassResetForm(Request $request){
+  public function resetPasswordView(Request $request){
     return view('auth.passwords.reset')->with('request', $request);
   }
 
-  public function getProductprice(Request $request) {
-    if($request->form == null)
-      $proAttr = DB::table('product_attributes')->where('product_id', $request->id)->where('size', $request->size)->first();   
+  public function productPrice(Request $request) {
+    if(! $request->form)
+      $attr = Attribute::where('product_id', $request->id)->where('size', $request->size)->first();   
     else
-      $proAttr = DB::table('product_attributes')->where('product_id', $request->id)->where('size', $request->size)->where('form_id', $request->form)->first();   
-    return $proAttr->price;
+      $attr = Attribute::where('product_id', $request->id)->where('size', $request->size)->where('form_id', $request->form)->first();   
+    return $attr->price;
   }
 
-  public function autocomplete_search(Request $request) {
+  public function autocompleteSearch(Request $request) {
     $data = array();
     $products = Product::where('status', 'active')->get();
     foreach($products as $product) {
@@ -239,5 +231,18 @@ class FrontendController extends Controller
     $data = array_map('trim', $data);
     sort($data);
     echo json_encode($data);
+  }
+
+  public function existsUser(Request $request) {
+    if($request->email) {
+      $user = User::where('email', $request->email)->first();
+      if($user) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
   }
 }

@@ -1,3 +1,0 @@
-<?php echo e($slot); ?>
-
-<?php /**PATH D:\XAMPP\htdocs\herbalcare\vendor\laravel\framework\src\Illuminate\Mail/resources/views/text/panel.blade.php ENDPATH**/ ?>

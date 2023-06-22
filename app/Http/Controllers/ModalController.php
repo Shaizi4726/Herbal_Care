@@ -3,28 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Attribute;
 use App\Models\Product;
-use App\Models\ProductAttribute;
-use Illuminate\Http\Request;
 use Auth;
+use Illuminate\Http\Request;
 
 class ModalController extends Controller
 {
-  public function create_modal(Request $request) {
-    $product = Product::with('attrs', 'forms', 'images')->where('id', $request->product_id)->first();
+  public function createModal(Request $request) {
+    $product = Product::with('attrs', 'forms', 'images')->find($request->product_id);
     
-    $forms = $product->forms()->get();
-    $images = $product->images()->pluck('name');
-    $sizes = array();
+    $forms = $product->forms()->where('status', 'active')->get();
+    $images = $product->images()->where('status', 'active')->pluck('name');
 
-    if(count($forms) == 0) {
+    if($forms->isEmpty()) {
       $minprice = $product->attrs()->min('price');
       $maxprice = $product->attrs()->max('price');
-      $sizes = $product->attrs()->pluck('size');
+      $sizes = $product->attrs()->select('unit', 'size', 'size_detail')->get();
     } else {
       $minprice = $product->attrs()->where('form_id', $forms[0]->id)->min('price');
       $maxprice = $product->attrs()->where('form_id', $forms[0]->id)->max('price');
-      $sizes = $product->attrs()->where('form_id', $forms[0]->id)->pluck('size');
+      $sizes = $product->attrs()->where('form_id', $forms[0]->id)->select('unit', 'size', 'size_detail')->get();
     }
 
     $minprice = number_format($minprice, 2);
@@ -33,31 +32,28 @@ class ModalController extends Controller
     $content = "";
 
     $content .= <<<EOD
-      <div id="modal" class="modal" tab-index="-1">
+      <div id="modal" class="modal">
         <button type="button" class="btn close modal-close" id="close-btn" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
     
         <div class="modal-content">
-          <div class="shazoom" id="shazoom">
-            <div class="img-box">
-              <ul class="img-ul">
+          <div class="exzoom collapse" id="exzoom">
+            <div class="exzoom-img-box">
+              <ul class="exzoom-img-ul">
     EOD;
 
     foreach($images as $img) {
       $content .= <<<EOD
-        <li><img src="/images/products$img" alt="Product Image"></li>
+        <li><img src="/images/products$img"></li>
       EOD;
     }
 
     $content .= <<<EOD
           </ul>
         </div>
-
-        <div class="zoom-nav"></div>
-
-        <!-- Nav Buttons -->
-        <p class="zoom-btn">
-          <a href="javascript:void(0);" class="zoom-prev-btn"> < </a>
-          <a href="javascript:void(0);" class="zoom-next-btn"> > </a>
+        <div class="exzoom-nav"></div>
+        <p class="exzoom-btn">
+          <a href="javascript:void(0);" class="exzoom-prev-btn"> < </a>
+          <a href="javascript:void(0);" class="exzoom-next-btn"> > </a>
         </p>
       </div>
 
@@ -68,7 +64,7 @@ class ModalController extends Controller
           <div id="modal-form">
     EOD;
 
-    if(count($forms) != 0) {
+    if($forms->isNotEmpty()) {
       $content .= <<<EOD
         <div class="forms modal-radio" id="forms">
           <div id="forms-menu" class="forms-list">
@@ -101,11 +97,11 @@ class ModalController extends Controller
         
     if($minprice == $maxprice) {
       $content .= <<<EOD
-        <h4>AED $minprice</h4>
+        <strong>AED $minprice</strong>
       EOD;
     } else {
       $content .= <<<EOD
-        <h4>AED $minprice - AED $maxprice</h4>
+        <strong>AED $minprice - AED $maxprice</strong>
       EOD;
     }
 
@@ -117,8 +113,8 @@ class ModalController extends Controller
 
     foreach($sizes as $size) {
       $content .= <<<EOD
-        <input type="radio" id="$size" name="product-size" class="product-size" value="$size">
-        <label for="$size">$size</label>
+        <input type="radio" id="$size->size" name="product-size" class="product-size" value="$size->size">
+        <label for="$size->size">$size->size $size->unit</label>
       EOD;
     }
 
@@ -154,19 +150,14 @@ class ModalController extends Controller
     return $content;
   }
 
-  public function create_sizes(Request $request) {
-    $attrs = ProductAttribute::where(['product_id' => $request->product_id, 'form_id' => $request->form_id])->get();
-    $sizes = array();
+  public function createSizes(Request $request) {
+    $attrs = Attribute::where(['product_id' => $request->product_id, 'form_id' => $request->form_id])->get();
 
-    if(count($attrs) == 0) {
+    if($attrs->isEmpty()) {
       return;
     } else {
       $minprice = $attrs->min('price');
       $maxprice = $attrs->max('price');
-
-      foreach($attrs as $attr) {
-        $sizes[] =  $attr->size;
-      }
     }
 
     $minprice = number_format($minprice, 2);
@@ -181,11 +172,11 @@ class ModalController extends Controller
         
     if($minprice == $maxprice) {
       $content .= <<<EOD
-        <h4>AED $minprice</h4>
+        <strong>AED $minprice</strong>
       EOD;
     } else {
       $content .= <<<EOD
-        <h4>AED $minprice - AED $maxprice</h4>
+        <strong>AED $minprice - AED $maxprice</strong>
       EOD;
     }
 
@@ -195,10 +186,10 @@ class ModalController extends Controller
       <div id="sizes-menu" class="sizes-list">
     EOD;
 
-    foreach($sizes as $size) {
+    foreach($attrs as $attr) {
       $content .= <<<EOD
-        <input type="radio" id="$size" name="product-size" class="product-size" value="$size">
-        <label for="$size">$size</label>
+        <input type="radio" id="$attr->size" name="product-size" class="product-size" value="$attr->size">
+        <label for="$attr->size">$attr->size $attr->unit</label>
       EOD;
     }
 

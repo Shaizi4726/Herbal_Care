@@ -18,7 +18,7 @@ class SubCategoryController extends Controller
     {
         $subcategory=SubCategory::orderBy('id','ASC')->paginate(10);
         //dd($state);
-        return view('admin_panel.subcategory.index')->with('subcategories',$subcategory);
+        return view('admin.subcategory.index')->with('subcategories',$subcategory);
     }
     /**
      * Show the form for creating a new resource.
@@ -27,7 +27,7 @@ class SubCategoryController extends Controller
      */
     public function create()
     {
-        return view('admin_panel.subcategory.create');
+        return view('admin.subcategory.create');
     }
     /**
      * Store a newly created resource in storage.
@@ -58,7 +58,7 @@ class SubCategoryController extends Controller
         else{
             request()->session()->flash('error','Error occurred while adding subcategory');
         }
-        return redirect()->route('subcategory.index');
+        return redirect()->route('subcategories.index');
     }
     /**
      * Show the form for editing the specified resource.
@@ -73,7 +73,7 @@ class SubCategoryController extends Controller
         if(!$subcategory){
             request()->session()->flash('error','category not found');
         }
-        return view('admin_panel.subcategory.edit')->with('subcategory',$subcategory);
+        return view('admin.subcategory.edit')->with('subcategory',$subcategory);
     }
     /**
      * Update the specified resource in storage.
@@ -97,7 +97,7 @@ class SubCategoryController extends Controller
         else{
             request()->session()->flash('error','Error occurred while updating subcategory');
         }
-        return redirect()->route('subcategory.index');
+        return redirect()->route('subcategories.index');
     }
      /**
      * Remove the specified resource from storage.
@@ -115,7 +115,7 @@ class SubCategoryController extends Controller
         else{
             request()->session()->flash('error','Error occurred while deleting subcategory');
         }
-        return redirect()->route('subcategory.index');
+        return redirect()->route('subcategories.index');
     }
       
 }

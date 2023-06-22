@@ -15,7 +15,7 @@ class BannerController extends Controller
     public function index()
     {
         $banner=Banner::orderBy('id','DESC')->paginate(10);
-        return view('admin_panel.banner.index')->with('banners',$banner);
+        return view('admin.banner.index')->with('banners',$banner);
     }
 
     /*
@@ -25,7 +25,7 @@ class BannerController extends Controller
     */
     public function create()
     {
-        return view('admin_panel.banner.create');
+        return view('admin.banner.create');
     }
 
     /*
@@ -60,7 +60,7 @@ class BannerController extends Controller
         else{
             request()->session()->flash('error','Error occurred while adding banner');
         }
-        return redirect()->route('banner.index');
+        return redirect()->route('banners.index');
     }
 
     /**
@@ -78,7 +78,7 @@ class BannerController extends Controller
     public function edit($id)
     {
         $banner=Banner::findOrFail($id);
-        return view('admin_panel.banner.edit')->with('banner',$banner);
+        return view('admin.banner.edit')->with('banner',$banner);
     }
 
     /**
@@ -113,7 +113,7 @@ class BannerController extends Controller
         else{
             request()->session()->flash('error','Error occurred while updating banner');
         }
-        return redirect()->route('banner.index');
+        return redirect()->route('banners.index');
     }
 
     /**
@@ -132,6 +132,6 @@ class BannerController extends Controller
         else{
             request()->session()->flash('error','Error occurred while deleting banner');
         }
-        return redirect()->route('banner.index');
+        return redirect()->route('banners.index');
     }
 }

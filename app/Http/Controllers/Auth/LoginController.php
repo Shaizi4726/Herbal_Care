@@ -2,102 +2,84 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
-use Redirect;
 use App\Http\Controllers\Controller;
+use App\Models\Attribute;
 use App\Models\CartItem;
 use App\Models\Order;
+use App\Models\Product;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\Request;
-use Session;
 use Auth;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
+  /*
+  |--------------------------------------------------------------------------
+  | Login Controller
+  |--------------------------------------------------------------------------
+  |
+  | This controller handles authenticating users for the application and
+  | redirecting them to your home screen. The controller uses a trait
+  | to conveniently provide its functionality to your applications.
+  |
+  */
 
-    use AuthenticatesUsers;
+  use AuthenticatesUsers;
 
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected $redirectTo = RouteServiceProvider::HOME;
+  /**
+   * Create a new controller instance.
+   *
+   * @return void
+   */
+  public function __construct()
+  {
+    $this->middleware('guest');
+  }
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-      $this->middleware('guest')->except('logout');
-    }
-
-  // Login
-  public function login(Request $request){
-    return view('frontend.pages.login')->with('checkout', $request->checkout);
+  public function loginView(Request $request) {
+    return view('auth.login')->with('checkout', $request->checkout);
   }
     
-  public function loginSubmit(Request $request) {
-    $this->validate($request, [
-      'email' => 'required|email:strict,dns|exists:users',
-      'password' => 'required'
-    ]);
-
-    if ($request->remember)
-      $remember = true;
-    else
-      $remember = false;
-
-    if(Auth::attempt(['email' => $request->email, 'password' => $request->password], $remember)) {
-      $cart_items = Session::get('cart');
+  public function login(Request $request): RedirectResponse
+  {
+    if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->remember)) {
+      $cart_items = session('cart');
 
       foreach($cart_items as $item) {
-        $already_cart = CartItem::with('coupon')->where(['user_id' => Auth()->user()->id, 'product_id' => $item->product_id, 'attr_id' => $item->attr_id])->first();
-        $order = Order::where('user_id', Auth()->user()->id)->first();
+        $attr = Attribute::with('product.cats', 'product.subcats')->find($item->attr_id);
+        $already_cart = CartItem::with('coupon')->where(['user_id' => $request->user()->id, 'attr_id' => $attr->id])->first();
+        $order = Order::where('user_id', $request->user()->id)->first();
         $discount = 0;
   
         if ($already_cart) {
-          $quantity = $item->quantity;
-          $total = $item->price * $quantity;
-          $subtotal = $total / 1.05;
-          $tax = $total - $subtotal;
-          $already_cart->quantity += $quantity;
-          $already_cart->total += $total + $already_cart->discount;
+          $already_cart->quantity += $item->quantity;
+          $already_cart->total = $attr->price * $already_cart->quantity;
+          $already_cart->subtotal = $already_cart->total / 1.05;
+          $total = $already_cart->subtotal;
   
           if(! $order) {
-            $discount += $already_cart->total / 10;
-            $already_cart->total -= $discount;
+            $discount += $total / 10;
+            $total -= $discount;
           }
   
           if($already_cart->coupon) {
             if($already_cart->coupon->type == 'percent') {
-              $coupon_discount = $already_cart->total * $already_cart->coupon->value / 100;
+              $coupon_discount = $total * $already_cart->coupon->value / 100;
               $discount += $coupon_discount;
-              $already_cart->total -= $coupon_discount;
+              $total -= $coupon_discount;
             }
           }
           
+          $already_cart->tax = $total * 0.05;
           $already_cart->discount = $discount;
-          $already_cart->subtotal += $subtotal;
-          $already_cart->tax += $tax;
+          $already_cart->total = $total + $already_cart->tax;
           $already_cart->save();
   
         } else {
-          $carts = CartItem::with('coupon')->where('user_id', Auth()->user()->id)->get();
+          $carts = CartItem::with('coupon')->where('user_id', $request->user()->id)->get();
           $coupon = null;
           $discount = 0;
   
@@ -108,101 +90,79 @@ class LoginController extends Controller
           }
   
           $cart = new CartItem;
-          $cart->user_id = Auth()->user()->id;
-          $cart->product_id = $item->product_id;
+          $cart->user_id = $request->user()->id;
           $cart->attr_id = $item->attr_id;
-          if($item->form) {
-            $cart->form = $item->form;
-          }
-          $cart->price = $item->price;
-          $cart->size = $item->size;
           $cart->quantity = $item->quantity;
-          $cart->total = $item->price * $item->quantity;
+          $cart->total = $attr->price * $cart->quantity;
           $cart->subtotal = $cart->total / 1.05;
-          $cart->tax = $cart->total - $cart->subtotal;
+          $total = $cart->subtotal;
           
           if(!$order) {
-            $discount += $cart->total / 10;
-            $cart->total -= $cart->total / 10;
+            $discount += $total / 10;
+            $total -= $discount;
           }
   
           if($coupon) {
             if($coupon->effect == 'product') {
-              if($product->coupon_id == $coupon->id) {
-                if($coupon->type == 'percent') {
-                  $coupon_discount = $cart->total * $coupon->value / 100;
-                  $discount += $coupon_discount;
-                  $cart->total -= $coupon_discount;
-                  $cart->coupon_id = $coupon->id;
-                }
+              if($attr->product->coupon_id == $coupon->id) {
+                if($coupon->type == 'percent')
+                  $coupon_discount = $total * $coupon->value / 100;
               }
             } elseif($coupon->effect == 'category') {
-              foreach($product->categories as $category) {
-                if($category->coupon_id == $coupon->id) {
-                  if($coupon->type == 'percent') {
-                    $coupon_discount = $cart->total * $coupon->value / 100;
-                    $discount += $coupon_discount;
-                    $cart->total -= $coupon_discount;
-                    $cart->coupon_id = $coupon->id;
-                  }
+              foreach($attr->product->cats as $cat) {
+                if($cat->coupon_id == $coupon->id) {
+                  if($coupon->type == 'percent')
+                    $coupon_discount = $total * $coupon->value / 100;
                 }
               }
             } elseif($coupon->effect == 'subcategory') {
-              foreach($product->subcat as $subcat) {
+              foreach($attr->product->subcats as $subcat) {
                 if($subcat->coupon_id == $coupon->id) {
-                  if($coupon->type == 'percent') {
-                    $coupon_discount = $cart->total * $coupon->value / 100;
-                    $discount += $coupon_discount;
-                    $cart->total -= $coupon_discount;
-                    $cart->coupon_id = $coupon->id;
-                  }
+                  if($coupon->type == 'percent')
+                    $coupon_discount = $total * $coupon->value / 100;
                 }
               }
             } elseif($coupon->effect == 'user') {
-              if(Auth()->user()->coupon_id == $coupon->id) {
-                if($coupon->type == 'percent') {
-                  $coupon_discount = $cart->total * $coupon->value / 100;
-                  $discount += $coupon_discount;
-                  $cart->total -= $coupon_discount;
-                  $cart->coupon_id = $coupon->id;
-                }
+              if($request->user()->coupon_id == $coupon->id) {
+                if($coupon->type == 'percent')
+                  $coupon_discount = $total * $coupon->value / 100;
               }
             } elseif($coupon->effect == 'all') {
-              if($coupon->type == 'percent') {
-                $coupon_discount = $cart->total * $coupon->value / 100;
-                $discount += $coupon_discount;
-                $cart->total -= $coupon_discount;
-                $cart->coupon_id = $coupon->id;
-              }
+              if($coupon->type == 'percent')
+                $coupon_discount = $total * $coupon->value / 100;
+            } else {
+              $coupon_discount = 0;
             }
+
+            $discount += $coupon_discount;
+            $total -= $coupon_discount;
+            $cart->coupon_id = $coupon->id;
           }
   
+          $cart->tax = $total * 0.05;
           $cart->discount = $discount;
+          $cart->total = $total + $cart->tax;
           $cart->save();
         }
       }
 
-      Session::pull('cart');
-      Session::pull('id');
-      Session::put('user', $request->email);
-      if($request->checkout == 1)
+      $request->session()->forget(['id', 'cart']);
+      $request->session()->regenerate();
+
+      $request->session()->put('user', $request->email);
+      if($request->user()->cname)
+        $request->session()->put('cname', $request->user()->cname);
+      else {
+        $request->session()->put('fname', $request->user()->fname);
+        $request->session()->put('lname', $request->user()->lname);
+      }
+
+      if($request->checkout)
         return redirect()->route('checkout');
-      return redirect()->route('home');
+
+      return redirect()->intended(RouteServiceProvider::HOME);
     } else {
       return redirect()->back()->with('error','Incorrect password. Please try again!');
-    }
-  }
-
-  public function user_exists(Request $request) {
-    if($request->email) {
-      $user = User::where('email', $request->email)->first();
-      if($user) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return false;
     }
   }
 }

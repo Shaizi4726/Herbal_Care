@@ -7,6 +7,6 @@ We have received your request for the cancellation of order items. Your otp code
   ## {{$code}}
 </x-mail::PANEL>
 
-Thanks,<br>
+Regards,<br>
 {{ config('app.name') }}
 </x-mail::message>

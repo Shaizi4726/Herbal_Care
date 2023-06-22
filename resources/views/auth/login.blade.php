@@ -1,83 +1,95 @@
 <!DOCTYPE html>
-<html lang="en">
+  <html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
 
-<head>
-  <title>The Herb Room || Login Page</title>
-  @include('admin_panel.layouts.head')
+    <title>Sign In || HerbalCare</title>
 
-</head>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{asset('images/favicon.png')}}">
 
-<body class="bg-gradient-primary">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,700;0,900;1,400;1,500;1,700;1,900&family=Vollkorn:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap">
 
-  <div class="container">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Outer Row -->
-    <div class="row justify-content-center">
+    <!-- HerbalCare StyleSheet -->
+    <link href="{{asset('css/main/signin-up.min.css')}}" rel="stylesheet">
+  </head>
+  <body>
+    <section class="shop-signing login-section">
+      <div class="signing-img-container"></div>
+      <div class="signing-form-container">
+        @include('layouts.flash-message')
 
-      <div class="col-xl-10 col-lg-12 col-md-9 mt-5">
+        <a href="{{ route('home') }}"><img src="{{asset('images/logo_green.png')}}" alt="HerbalCare Website Logo" class="signing-web-logo"></a>
+        <h1 class="signing-web-title"><a href="{{ route('home') }}">HerbalCare</a></h1>
+        <h2>Sign In</h2>
 
-        <div class="card o-hidden border-0 shadow-lg my-5">
-          <div class="card-body p-0">
-            <!-- Nested Row within Card Body -->
-            <div class="row">
-              <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
-              <div class="col-lg-6">
-                <div class="p-5">
-                  <div class="text-center">
-                    <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
-                  </div>
-                  <form class="user"  method="POST" action="{{ route('login') }}">
-                    @csrf
-                    <div class="form-group">
-                      <input type="email" class="form-control form-control-user @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address..."  required autocomplete="email" autofocus>
-                        @error('email')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-                    <div class="form-group">
-                      <input type="password" class="form-control form-control-user @error('password') is-invalid @enderror" id="exampleInputPassword" placeholder="Password"  name="password" required autocomplete="current-password">
-                         @error('password')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    
-                    </div>
-                    <div class="form-group">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+        <!-- Form -->
+        <form class="form" method="post" action="{{ route('login') }}" novalidate>
+          @csrf
 
-                            <label class="form-check-label" for="remember">
-                                {{ __('Remember Me') }}
-                            </label>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-user btn-block">
-                      Login
-                    </button>
-                  </form>
-                  <hr>
-                   
-                  <div class="text-center">
-                    @if (Route::has('password.reset'))
-                        <a class="btn btn-link small" href="{{ route('password.reset') }}">
-                            {{ __('Forgot Your Password?') }}
-                        </a>
-                    @endif
-                  </div>
-                </div>
-              </div>
+          @if($checkout)
+            <input type="hidden" name="checkout" value="true">
+          @endif
+          <div class="form-group">
+            <div class="form-input">
+              <input type="email" name="email" id="email" placeholder="someone@domain.com" value="{{ old('email') }}">
+              <label for="email">Email</label>
             </div>
+
+            @if ($errors->has('email'))
+              <div class="error">
+                @error('email')
+                  {{$message}}
+                @enderror
+              </div>
+            @endif
           </div>
-        </div>
+        
+          <div class="form-group">
+            <div class="form-input">
+              <input type="password" name="password" id="password" placeholder="Enter Password" value="{{ old('password') }}">
+              <label for="password">Password</label>
+            </div>
 
+            @if ($errors->has('password'))
+              <div class="error">
+                @error('password')
+                  {{ $message }}
+                @enderror
+              </div>
+            @endif
+          </div>
+
+          <div class="remember-checkbox">
+            <input type="checkbox" name="remember" id="remember">
+            <label for="remember">Remember Me</label>
+          </div>
+
+          <div class="form-group submit-btn">
+            <button class="btn signing-btn" type="submit">Login</button>
+          </div>
+        </form>    
+        <p>Don't have an account? <a href="{{ route('register.view') }}" class="btn">Sign Up</a></p>
+        @if (Route::has('reset.password'))
+          <p><a class="forgot-pass" href="{{ route('reset.password') }}">
+            Forgot password?
+          </a></p>
+        @endif        
+        <p>Goto <a href="{{ route('home') }}" class="btn">Homepage</a></p>
       </div>
+    </section>
 
-    </div>
-
-  </div>
-</body>
-
+    <script src="https://code.jquery.com/jquery-3.6.2.min.js"></script>
+    <script src="{{asset('js/main/login.min.js')}}"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NH2TVFJYP0"></script>
+    <script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-NH2TVFJYP0");</script>
+  </body>
 </html>

@@ -2,40 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Country extends Model
 {
   /**
-   * The table associated with the model.
+   * Indicates if the model's ID is auto-incrementing.
    *
-   * @var string
+   * @var bool
    */
-  protected $table = 'countries';
-
-  /**
-   * The attributes that are mass assignable.
-   *
-   * @var array
-   */
-  protected $fillable = ['name', 'capital', 'iso_code', 'lang', 'currency', 'currency_name', 'currency_symbol', 'calling_code', 'tld', 'flag_icon', 'region', 'time_zone', 'date_format', 'status'];
-
-  /**
-   * Get the states for the country.
-   */
-  public function states()
-  {
-    return $this->hasMany(State::class, 'country_id');
-  }
-  
-  /**
-   * Get the cities for the country.
-   */
-  public function cities()
-  {
-    return $this->hasMany(City::class, 'country_id');
-  }
+  public $incrementing = false;
 
   /**
    * The model's default values for attributes.
@@ -45,4 +21,27 @@ class Country extends Model
   protected $attributes = [
     'status' => 'inactive'
   ];
+
+  /**
+   * The attributes that are mass assignable.
+   *
+   * @var array
+   */
+  protected $fillable = ['id', 'name', 'capital', 'iso_code', 'lang', 'currency', 'currency_symbol', 'calling_code', 'tld', 'flag_icon', 'region', 'time_zone', 'date_format', 'status'];
+
+  /**
+   * Get the cities for the country.
+   */
+  public function cities()
+  {
+    return $this->hasMany(City::class);
+  }
+
+  /**
+   * Get the states for the country.
+   */
+  public function states()
+  {
+    return $this->hasMany(State::class);
+  }
 }

@@ -2,41 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Form extends Model
 {
-  /**
-   * The table associated with the model.
-   *
-   * @var string
-   */
-  protected $table = 'forms';
-
-  /**
-   * The attributes that are mass assignable.
-   *
-   * @var array
-   */
-  protected $fillable = ['name', 'slug', 'status'];
-
-  /**
-   * The products that belong to the brand.
-  */
-  public function products()
-  {
-    return $this->belongsToMany(Product::class, 'product_forms', 'form_id', 'product_id');
-  }
-
-  /**
-   * Get the product attributes for the form.
-   */
-  public function prod_attrs()
-  {
-    return $this->hasMany(ProductAttribute::class, 'form_id');
-  }
-
   /**
    * The model's default values for attributes.
    *
@@ -45,4 +14,35 @@ class Form extends Model
   protected $attributes = [
     'status' => 'active'
   ];
+  
+  /**
+   * The attributes that are mass assignable.
+   *
+   * @var array
+   */
+  protected $fillable = ['name', 'slug', 'status'];
+
+  /**
+   * The products that belong to the form.
+  */
+  public function products()
+  {
+    return $this->belongsToMany(Product::class);
+  }
+
+  /**
+   * Get the attributes for the form.
+   */
+  public function attrs()
+  {
+    return $this->hasMany(Attribute::class);
+  }
+
+  /**
+   * Get the plus for the form.
+   */
+  public function plus()
+  {
+    return $this->hasMany(Plu::class);
+  }
 }  

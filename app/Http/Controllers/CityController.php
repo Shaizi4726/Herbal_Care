@@ -17,7 +17,7 @@ class CityController extends Controller
   public function index()
   {
       $city=City::orderBy('id','ASC')->paginate(10);
-      return view('admin_panel.city.index')->with('citys',$city);
+      return view('admin.city.index')->with('citys',$city);
   }
 
   /**
@@ -27,7 +27,7 @@ class CityController extends Controller
    */
   public function create()
   {
-      return view('admin_panel.city.create');
+      return view('admin.city.create');
   }
 
   /**
@@ -53,7 +53,7 @@ class CityController extends Controller
       else{
           request()->session()->flash('error','Error, Please try again');
       }
-      return redirect()->route('city.index');
+      return redirect()->route('cities.index');
   }
 
   /**
@@ -79,16 +79,16 @@ class CityController extends Controller
       if(!$city){
           request()->session()->flash('error','city not found');
       }
-      return view('admin_panel.city.edit')->with('city',$city);
+      return view('admin.city.edit')->with('city',$city);
   }
 
   public function priceUpdate()
   {
-      return view('admin_panel.city.create');
+      return view('admin.city.create');
       if(!$city){
           request()->session()->flash('error','city not found');
       }
-      return view('admin_panel.city.edit')->with('city',$city);
+      return view('admin.city.edit')->with('city',$city);
   }
 
   /**
@@ -113,7 +113,7 @@ class CityController extends Controller
       else{
           request()->session()->flash('error','Error, Please try again');
       }
-      return redirect()->route('city.index');
+      return redirect()->route('cities.index');
   }
 
   /**
@@ -133,7 +133,7 @@ class CityController extends Controller
           else{
               request()->session()->flash('error','Error, Please try again');
           }
-          return redirect()->route('city.index');
+          return redirect()->route('cities.index');
       }
       else{
           request()->session()->flash('error','city not found');

@@ -11,13 +11,13 @@ class Kernel extends HttpKernel
      *
      * These middleware are run during every request to your application.
      *
-     * @var array
+     * @var array<int, class-string|string>
      */
     protected $middleware = [
         // \App\Http\Middleware\TrustHosts::class,
         \App\Http\Middleware\TrustProxies::class,
         \Illuminate\Http\Middleware\HandleCors::class,
-        \App\Http\Middleware\CheckForMaintenanceMode::class,
+        \App\Http\Middleware\PreventRequestsDuringMaintenance::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
@@ -26,7 +26,7 @@ class Kernel extends HttpKernel
     /**
      * The application's route middleware groups.
      *
-     * @var array
+     * @var array<string, array<int, class-string|string>>
      */
     protected $middlewareGroups = [
         'web' => [
@@ -39,35 +39,36 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            'throttle:60,1',
+            // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+            \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];
 
     /**
-     * The application's route middleware.
+     * The application's middleware aliases.
      *
-     * These middleware may be assigned to groups or used individually.
+     * Aliases may be used instead of class names to conveniently assign middleware to routes and groups.
      *
-     * @var array
+     * @var array<string, class-string|string>
      */
-    protected $routeMiddleware = [
+    protected $middlewareAliases = [
+      'admin'=> \App\Http\Middleware\Admin::class,
       'auth' => \App\Http\Middleware\Authenticate::class,
       'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+      'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,
       'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
       'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
       'can' => \Illuminate\Auth\Middleware\Authorize::class,
       'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
       'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
+      'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
+      'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
+      'role.permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
       'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
       'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-      'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-      'not.verified' => \Illuminate\Auth\Middleware\EnsureEmailIsNotVerified::class,
-      'admin'=> \App\Http\Middleware\Admin::class,
       'user'=> \App\Http\Middleware\User::class,
-      'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
-      'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
-      'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
-      'adminpermission' => App\Http\Middleware\adminpermission::class,
+      'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+      'verified.not' => \Illuminate\Auth\Middleware\EnsureEmailIsNotVerified::class,
     ];
 }

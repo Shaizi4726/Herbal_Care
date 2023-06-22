@@ -16,7 +16,7 @@ class FixedBannerController extends Controller
     public function index()
     {
         $banner_fixed=FixedBanner::orderBy('id','ASC')->paginate(10);
-        return view('admin_panel.fixed.index')->with('banner_fixeds',$banner_fixed);
+        return view('admin.fixed.index')->with('banner_fixeds',$banner_fixed);
     }
 
     /*
@@ -26,7 +26,7 @@ class FixedBannerController extends Controller
     */
     public function create()
     {
-        return view('admin_panel.fixed.create');
+        return view('admin.fixed.create');
     }
 
     /*
@@ -52,7 +52,7 @@ class FixedBannerController extends Controller
         else{
             request()->session()->flash('error','Error occurred while adding banner');
         }
-        return redirect()->route('fixed.index');
+        return redirect()->route('fixed-banners.index');
     }
 
     /**
@@ -70,7 +70,7 @@ class FixedBannerController extends Controller
     public function edit($id)
     {
         $banner_fixed=FixedBanner::findOrFail($id);
-        return view('admin_panel.fixed.edit')->with('banner_fixed',$banner_fixed);
+        return view('admin.fixed.edit')->with('banner_fixed',$banner_fixed);
     }
 
     /**
@@ -97,7 +97,7 @@ class FixedBannerController extends Controller
         else{
             request()->session()->flash('error','Error occurred while updating banner');
         }
-        return redirect()->route('fixed.index');
+        return redirect()->route('fixed-banners.index');
     }
 
 }

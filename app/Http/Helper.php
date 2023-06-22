@@ -1,19 +1,18 @@
 <?php
-use App\Models\Message;
-use App\Models\Category;
-use App\Models\Order;
-use App\Models\Wishlist;
-use App\Models\city;
-use App\Models\Product;
 use App\Models\CartItem;
-
-// use Auth;
+use App\Models\Category;
+use App\Models\City;
+use App\Models\Message;
+use App\Models\Order;
+use App\Models\Product;
+use App\Models\Wishlist;
 
 class Helper
 {
-  public static function getAllCategories()
+  // Get all product categories
+  public static function categories()
   {
-    $categories = Category::orderBy('id', 'ASC')->get();
+    $categories = Category::where('status', 'active')->get();
     return $categories;
   }
 
@@ -39,11 +38,10 @@ class Helper
     }
   }
 
-  public static function getAllProductFromCart()
+  public static function cartItems()
   {
     if (Auth::check()) {
-      $user_id = auth()->user()->id;
-      return CartItem::with('product')->where('user_id', $user_id)->get();
+      return CartItem::where('user_id', auth()->user()->id)->get();
     } else {
       $cart = Session::get('cart');
       return $cart;
@@ -51,7 +49,7 @@ class Helper
   }
 
   //Total cart amount without tax
-  public static function CartAmount()
+  public static function cartSubtotal()
   {
     if (Auth::check()) {
       $user_id = auth()->user()->id;
@@ -69,7 +67,7 @@ class Helper
   }
 
   // Total cart tax
-  public static function totalCartTax() {
+  public static function cartTax() {
     if (Auth::check()) {
       $user_id = auth()->user()->id;
       return CartItem::where('user_id', $user_id)->sum('tax');
@@ -85,7 +83,7 @@ class Helper
   }
 
   // Total cart tax
-  public static function total_discount()
+  public static function cartDiscount()
   {
     if (Auth::check()) {
       $user_id = auth()->user()->id;
@@ -96,7 +94,7 @@ class Helper
   }
 
   // Total cart amount with tax
-  public static function totalCartAmount()
+  public static function cartTotal()
   {
     if (Auth::check()) {
       $user_id = auth()->user()->id;

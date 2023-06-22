@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Settings;
-use App\User;
+use App\Models\Setting;
+use App\Models\User;
 use App\Rules\MatchOldPassword;
 use Hash;
 use Carbon\Carbon;
 use Spatie\Activitylog\Models\Activity;
+
 class AdminController extends Controller
 {
     public function index(){
@@ -23,16 +24,16 @@ class AdminController extends Controller
        $array[++$key] = [$value->day_name, $value->count];
      }
     //  return $data;
-     return view('admin_panel.index')->with('users', json_encode($array));
+     return view('admin.index')->with('users', json_encode($array));
     }
 
     public function profile(){
         $profile=Auth()->user();
         // return $profile;
-        return view('admin_panel.users.profile')->with('profile',$profile);
+        return view('admin.users.profile')->with('profile',$profile);
     }
 
-    public function profileUpdate(Request $request,$id){
+    public function updateProfile(Request $request,$id){
         // return $request->all();
         $user=User::findOrFail($id);
         $data=$request->all();
@@ -47,11 +48,11 @@ class AdminController extends Controller
     }
 
     public function settings(){
-        $data=Settings::first();
-        return view('admin_panel.setting')->with('data',$data);
+        $data=Setting::first();
+        return view('admin.setting')->with('data',$data);
     }
 
-    public function settingsUpdate(Request $request){
+    public function updateSettings(Request $request){
         // return $request->all();
         $this->validate($request,[
             // 'short_des'=>'required|string',
@@ -64,7 +65,7 @@ class AdminController extends Controller
         ]);
         $data=$request->all();
         // return $data;
-        $settings=Settings::first();
+        $settings=Setting::first();
         // return $settings;
         $status=$settings->fill($data)->save();
         if($status){
@@ -76,10 +77,7 @@ class AdminController extends Controller
         return redirect()->route('admin');
     }
 
-    public function changePassword(){
-        return view('admin_panel.layouts.changePassword');
-    }
-    public function changPasswordStore(Request $request)
+    public function changPassword(Request $request)
     {
         $request->validate([
             'current_password' => ['required', new MatchOldPassword],
@@ -106,12 +104,6 @@ class AdminController extends Controller
        $array[++$key] = [$value->day_name, $value->count];
      }
     //  return $data;
-     return view('admin_panel.index')->with('course', json_encode($array));
+     return view('admin.index')->with('course', json_encode($array));
     }
-
-    // public function activity(){
-    //     return Activity::all();
-    //     $activity= Activity::all();
-    //     return view('admin_panel.layouts.activity')->with('activities',$activity);
-    // }
 }

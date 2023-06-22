@@ -15,7 +15,7 @@ class CountryController extends Controller
     public function index()
     {
         $country=Country::orderBy('id','ASC')->paginate('10');
-        return view('admin_panel.country.index')->with('countries',$country);
+        return view('admin.country.index')->with('countries',$country);
     }
 
     /**
@@ -25,7 +25,7 @@ class CountryController extends Controller
      */
     public function create()
     {
-        return view('admin_panel.country.create');
+        return view('admin.country.create');
     }
 
     /**
@@ -64,7 +64,7 @@ class CountryController extends Controller
         else{
             request()->session()->flash('error','Error occurred while adding country');
         }
-        return redirect()->route('country.index');
+        return redirect()->route('countries.index');
     }
     /**
      * Show the form for editing the specified resource.
@@ -78,7 +78,7 @@ class CountryController extends Controller
         if(!$country){
             request()->session()->flash('error','country not found');
         }
-        return view('admin_panel.country.edit')->with('country',$country);
+        return view('admin.country.edit')->with('country',$country);
     }
 
     /**
@@ -104,7 +104,7 @@ class CountryController extends Controller
         else{
             request()->session()->flash('error','Error occurred while updating country');
         }
-        return redirect()->route('country.index');
+        return redirect()->route('countries.index');
     }
     public function destroy($id)
     {
@@ -117,7 +117,7 @@ class CountryController extends Controller
             else{
                 request()->session()->flash('error','Error, Please try again');
             }
-            return redirect()->route('country.index');
+            return redirect()->route('countries.index');
         }
         else{
             request()->session()->flash('error','country not found');

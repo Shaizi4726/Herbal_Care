@@ -1,15 +1,13 @@
-promotion
 Refund bank account number for cod
 Mobile Popup Offers
-Payment Methods, Social Media Links
+Social Media Links
 zoom cart image on hover
 Forgot Password Page
 link customer address with google map 
 product detail link on images in mobile
-product form with flu
-Payment method on sale and tax invoice
 contact us message form
 modals design and close on return back
+save billing address of registered user in db
+products with pcs have no size just unit
 
-Send invoice after payment on email provided by customer
-when to send tax invoice [op: immediately or not]
+Network Payment Gateway

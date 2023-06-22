@@ -3,55 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
+
 class City extends Model
 {
   /**
-   * The table associated with the model.
+   * Indicates if the model's ID is auto-incrementing.
    *
-   * @var string
+   * @var bool
    */
-  protected $table = 'cities';
-
-  /**
-   * The attributes that are mass assignable.
-   *
-   * @var array
-   */
-  protected $fillable = ['name', 'state_id', 'country_id', 'shipping', 'status'];
-
-  /**
-   * Get the orders for the city.
-   */
-  public function orders()
-  {
-    return $this->hasMany(Order::class, 'city_id');
-  }
-  
-  /**
-   * Get the shippings for the city.
-   */
-  public function shippings()
-  {
-    return $this->hasMany(Shipping::class, 'city_id');
-  }
-
-  /**
-   * Get the state that owns the city.
-   */
-  public function state()
-  {
-    return $this->belongsTo(State::class, 'state_id');
-  }
-  
-  /**
-   * Get the country that owns the city.
-   */
-  public function country()
-  {
-    return $this->belongsTo(Country::class, 'country_id');
-  }
+  public $incrementing = false;
 
   /**
    * The model's default values for attributes.
@@ -61,4 +21,51 @@ class City extends Model
   protected $attributes = [
     'status' => 'inactive'
   ];
+
+  /**
+   * The attributes that are mass assignable.
+   *
+   * @var array
+   */
+  protected $fillable = ['id', 'name', 'state_id', 'country_id', 'shipping', 'status'];
+ 
+  /**
+   * Get the country that owns the city.
+   */
+  public function country()
+  {
+    return $this->belongsTo(Country::class);
+  }
+  
+  /**
+   * Get the state that owns the city.
+   */
+  public function state()
+  {
+    return $this->belongsTo(State::class);
+  }
+
+  /**
+   * Get the addresses for the city.
+   */
+  public function addresses()
+  {
+    return $this->hasMany(Address::class);
+  }
+
+  /**
+   * Get the orders for the city.
+   */
+  public function orders()
+  {
+    return $this->hasMany(Order::class);
+  }
+  
+  /**
+   * Get the shippings for the city.
+   */
+  public function shippings()
+  {
+    return $this->hasMany(Shipping::class);
+  }
 }

@@ -31,26 +31,13 @@ class VerificationController extends Controller
   protected $redirectTo = '/home';
 
   /**
-   * Create a new controller instance.
-   *
-   * @return void
-  */
-  public function __construct()
-  {
-    $this->middleware('auth');
-    $this->middleware('throttle:6,1');
-    $this->middleware('not.verified');
-    $this->middleware('signed')->only('emailVerification');
-  }
-
-  /**
    * Email Verification Handler.
    *
    *
    *
    * @return view
   */
-  public function emailVerification(EmailVerificationRequest $request) {
+  public function verifyEmail(EmailVerificationRequest $request) {
     $request->fulfill();
     return redirect('/home');
   }
@@ -62,7 +49,7 @@ class VerificationController extends Controller
    *
    * @return view
   */
-  public function resendEmailVerification (Request $request) {
+  public function resendVerificationEmail (Request $request) {
     $request->user()->sendEmailVerificationNotification();
     return back()->with('message', 'Verification link sent!');
   }

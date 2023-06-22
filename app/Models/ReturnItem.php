@@ -2,38 +2,30 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ReturnItem extends Model
 {
   /**
-   * The table associated with the model.
-   *
-   * @var string
-   */
-  protected $table = 'return_items';
-
-  /**
    * The attributes that are mass assignable.
    *
    * @var array
    */
-  protected $fillable = ['order_id', 'product_id', 'form', 'size', 'price', 'quantity', 'discount', 'total', 'reason'];
+  protected $fillable = ['order_id', 'attr_id', 'quantity', 'discount', 'total', 'reason'];
   
   /**
-   * Get the order that owns the order item.
+   * Get the attribute that owns the return item.
    */
-  public function order()
+  public function attr()
   {
-    return $this->belongsTo(Order::class, 'order_id');
+    return $this->belongsTo(Attribute::class, 'attr_id');
   }
 
   /**
-   * Get the product that owns the order item.
-  */
-  public function product()
+   * Get the order that owns the return item.
+   */
+  public function order()
   {
-    return $this->belongsTo(Product::class, 'product_id');
+    return $this->belongsTo(Order::class);
   }
 }

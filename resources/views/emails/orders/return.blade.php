@@ -7,6 +7,6 @@ We have received your request for the return of order items. Your otp code to co
   ## {{$code}}
 </x-mail::PANEL>
 
-Thanks,<br>
+Regards,<br>
 {{ config('app.name') }}
 </x-mail::message>

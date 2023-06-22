@@ -27,48 +27,96 @@ return [
   | sending an e-mail. You will specify which one you are using for your
   | mailers below. You are free to add additional mailers as required.
   |
-  | Supported: "smtp", "sendmail", "mailgun", "ses",
-  |            "postmark", "log", "array"
+  | Supported: "smtp", "sendmail", "mailgun", "ses", "ses-v2",
+  |            "postmark", "log", "array", "failover"
   |
   */
 
   'mailers' => [
-      'smtp' => [
-        'transport' => 'smtp',
-        'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
-        'port' => env('MAIL_PORT', 587),
-        'encryption' => env('MAIL_ENCRYPTION', 'starttls'),
-        'username' => env('MAIL_USERNAME'),
-        'password' => env('MAIL_PASSWORD'),
-        'timeout' => null,
-        'auth_mode' => null,
+    'smtp' => [
+      'transport' => 'smtp',
+      'url' => env('MAIL_URL'),
+      'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+      'port' => env('MAIL_PORT', 587),
+      'encryption' => env('MAIL_ENCRYPTION', 'starttls'),
+      'username' => env('MAIL_USERNAME', 'noreply@herbalcare.ae'),
+      'password' => env('MAIL_PASSWORD', 'NoReply^herbalCare5698'),
+      'timeout' => null,
+      'from' => [
+        'address' => env('MAIL_FROM_ADDRESS', 'noreply@herbalcare.ae'),
+        'name' => env('MAIL_FROM_NAME', 'HerbalCare'),
       ],
+    ],
 
-      'ses' => [
-        'transport' => 'ses',
+    'info' => [
+      'transport' => 'smtp',
+      'url' => env('MAIL_URL'),
+      'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+      'port' => env('MAIL_PORT', 587),
+      'encryption' => env('MAIL_ENCRYPTION', 'starttls'),
+      'username' => env('MAIL_USERNAME_INFO', 'noreply@herbalcare.ae'),
+      'password' => env('MAIL_PASSWORD_INFO', 'NoReply^herbalCare5698'),
+      'timeout' => null,
+      'from' => [
+          'address' => env('MAIL_FROM_ADDRESS_INFO', 'noreply@herbalcare.ae'),
+          'name' => env('MAIL_FROM_NAME', 'HerbalCare'),
       ],
+    ],
 
-      'mailgun' => [
-        'transport' => 'mailgun',
+    'order' => [
+      'transport' => 'smtp',
+      'url' => env('MAIL_URL'),
+      'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+      'port' => env('MAIL_PORT', 587),
+      'encryption' => env('MAIL_ENCRYPTION', 'starttls'),
+      'username' => env('MAIL_USERNAME_ORDER', 'noreply@herbalcare.ae'),
+      'password' => env('MAIL_PASSWORD_ORDER', 'NoReply^herbalCare5698'),
+      'timeout' => null,
+      'from' => [
+          'address' => env('MAIL_FROM_ADDRESS_ORDER', 'noreply@herbalcare.ae'),
+          'name' => env('MAIL_FROM_NAME', 'HerbalCare'),
       ],
+    ],
 
-      'postmark' => [
-        'transport' => 'postmark',
-      ],
+    'ses' => [
+      'transport' => 'ses',
+    ],
 
-      'sendmail' => [
-        'transport' => 'sendmail',
-        'path' => '/usr/sbin/sendmail -bs',
-      ],
+    'mailgun' => [
+      'transport' => 'mailgun',
+      // 'client' => [
+      //     'timeout' => 5,
+      // ],
+    ],
 
-      'log' => [
-        'transport' => 'log',
-        'channel' => env('MAIL_LOG_CHANNEL'),
-      ],
+    'postmark' => [
+      'transport' => 'postmark',
+      // 'client' => [
+      //     'timeout' => 5,
+      // ],
+    ],
 
-      'array' => [
-        'transport' => 'array',
+    'sendmail' => [
+      'transport' => 'sendmail',
+      'path' => env('MAIL_SENDMAIL_PATH', '/usr/sbin/sendmail -bs -i'),
+    ],
+
+    'log' => [
+      'transport' => 'log',
+      'channel' => env('MAIL_LOG_CHANNEL'),
+    ],
+
+    'array' => [
+      'transport' => 'array',
+    ],
+
+    'failover' => [
+      'transport' => 'failover',
+      'mailers' => [
+        'smtp',
+        'log',
       ],
+    ],
   ],
 
   /*
@@ -82,10 +130,10 @@ return [
   |
   */
 
-  'from' => [
-    'address' => env('MAIL_FROM_ADDRESS', 'info@herbalcare.ae'),
-    'name' => env('MAIL_FROM_NAME', 'HerbalCare'),
-  ],
+  /* 'from' => [
+      'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
+      'name' => env('MAIL_FROM_NAME', 'Example'),
+  ], */
 
   /*
   |--------------------------------------------------------------------------
@@ -99,10 +147,10 @@ return [
   */
 
   'markdown' => [
-      'theme' => 'default',
+    'theme' => 'default',
 
-      'paths' => [
-          resource_path('views/vendor/mail'),
-      ],
+    'paths' => [
+      resource_path('views/vendor/mail'),
+    ],
   ],
 ];

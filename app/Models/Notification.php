@@ -2,32 +2,19 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 
 class Notification extends Model
 {
-  /**
-   * The table associated with the model.
-   *
-   * @var string
-   */
-  protected $table = 'notifications';
+  use MassPrunable;
 
   /**
-   * The attributes that are mass assignable.
-   *
-   * @var array
+   * Get the prunable model query.
    */
-  protected $fillable = ['type', 'notifiable', 'data', 'read_at'];
-  
-  /**
-   * Get the user that owns the message.
-   */
-  public function user()
+  public function prunable(): Builder
   {
-    return $this->belongsTo(User::class, 'user_id');
+    return static::where('created_at', '<=', now()->subMonth());
   }
 }
-

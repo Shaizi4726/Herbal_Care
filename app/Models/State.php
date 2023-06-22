@@ -8,34 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class State extends Model
 {
   /**
-   * The table associated with the model.
+   * Indicates if the model's ID is auto-incrementing.
    *
-   * @var string
+   * @var bool
    */
-  protected $table = 'states';
-
-  /**
-   * The attributes that are mass assignable.
-   *
-   * @var array
-   */
-  protected $fillable = ['name', 'country_id', 'status'];
-
-  /**
-   * Get the cities for the state.
-   */
-  public function cities()
-  {
-    return $this->hasMany(City::class, 'state_id');
-  }
-
-  /**
-   * Get the country that owns the state.
-   */
-  public function country()
-  {
-    return $this->belongsTo(Country::class, 'country_id');
-  }
+  public $incrementing = false;
 
   /**
    * The model's default values for attributes.
@@ -45,4 +22,27 @@ class State extends Model
   protected $attributes = [
     'status' => 'inactive'
   ];
+  
+  /**
+   * The attributes that are mass assignable.
+   *
+   * @var array
+   */
+  protected $fillable = ['id', 'name', 'country_id', 'status'];
+
+  /**
+   * Get the country that owns the state.
+   */
+  public function country()
+  {
+    return $this->belongsTo(Country::class);
+  }
+  
+  /**
+   * Get the cities for the state.
+   */
+  public function cities()
+  {
+    return $this->hasMany(City::class);
+  }
 }

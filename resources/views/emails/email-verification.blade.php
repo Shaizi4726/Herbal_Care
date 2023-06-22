@@ -24,6 +24,6 @@ Verify Email Address
 
 Thanks again for joining us on this journey. We're thrilled to have you as part of the **HerbalCare** family!
 
-Thanks,<br>
+Regards,<br>
 **{{ config('app.name') }}**
 </x-mail::message>

@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\SubCategory;
 use App\Notifications\ImportHasFailedNotification;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\ToCollection;
@@ -26,58 +27,76 @@ class ProductsImport implements ToCollection, WithHeadingRow, WithChunkReading, 
   public function collection(Collection $rows)
   {
     foreach ($rows as $row) {
-      $cats = explode(',', $row['cat_id']);
-      $subcats = explode(',', $row['subcat_id']);
-      $brands = explode(',', $row['brand_id']);
+      $plus = explode(',', $row['plu']);
+      $plu_forms = explode(',', $row['pluform']);
+      $cats = explode(',', $row['cat']);
+      $subcats = explode(',', $row['subcat']);
+      $brands = explode(',', $row['brand']);
+      $promotions = explode(',', $row['promotion']);
       $images = explode(',', $row['image']);
       $forms = explode(',', $row['form']);
+      $units = explode(',', $row['unit']);
       $sizes = explode(',', $row['size']);
       $prices = explode(',', $row['price']);
-      $discounts = explode(',', $row['discount']);
-      $stocks = explode(',', $row['stock']);
-      $forms_len = count($forms);
-      $sizes_len =   count($sizes);
+      
+      $sizes_len = count($sizes);
+
+      $slug = Str::slug($row['name'], '-');
 
       $product = Product::create([
-        'plu' => $row['plu'],
         'name' => $row['name'],
-        'slug'=>$row['name'],
-        'sci_name' => $row['sci_name'],
-        'other_name' => $row['other_name'],
-        'benefits' => $row['benefits'],
+        'slug' => $slug,
+        'sci_name' => $row['scientific'],
+        'other_name' => $row['other'],
         'description' => $row['description'],
-        'precautions' => $row['precautions'],
-        'packaging_details' => $row['packaging_details'],
+        'details' => $row['details'],
         'photo' => $row['photo'],
-        'promotion' => $row['promotion'],                               
-        'status' => $row['status'],
         'minprice' => $row['minprice']
       ]);
 
-      if($cats[0] !== "")
-        foreach ($cats as $cat)
-          $product->categories()->sync($cat, false);
+      if($row['pluform']) {
+        $i = 0;
+        foreach ($plus as $plu) {
+          $product->plus()->create([
+            'id' => $plu,
+            'form_id' => $plu_forms[$i]
+          ]);
+          $i++;
+        }
+      } else {
+        $product->plus()->create([
+          'id' => $plus[0]
+        ]);
+      }
 
-      if($subcats[0] !== "")
+      if($row['cat'])
+        foreach ($cats as $cat)
+          $product->cats()->sync($cat, false);
+
+      if($row['subcat'])
         foreach ($subcats as $subcat) {
-          $cat = SubCategory::find($subcat)->category()->pluck('id');
-          $product->categories()->sync($cat, false);
-          $product->subcat()->sync($subcat, false);
+          $sub = SubCategory::find($subcat);
+          $cat = $sub->cat_id;
+          $product->cats()->sync($cat, false);
+          $product->subcats()->sync($subcat, false);
         }
 
-      if($brands[0] !== "")
+      if($row['brand'])
         foreach ($brands as $brand)
           $product->brands()->sync($brand, false);
 
-      if($images[0] !== "")
+      if($row['promotion'])
+        foreach ($promotions as $promotion)
+          $product->promotions()->sync($promotion, false);
+
+      if($row['image'])
         foreach ($images as $img) {
           $product->images()->create([
             'name' => $img,
-            'status' => 'active'
           ]);
         }
 
-      if($forms[0] !== "") {
+      if($row['form']) {
         $i = 0;
         foreach ($forms as $form) {
           $product->forms()->sync($form, false);
@@ -85,31 +104,27 @@ class ProductsImport implements ToCollection, WithHeadingRow, WithChunkReading, 
           for ($j=0; $j<$sizes_len; $j++) {
             $product->attrs()->create([
               'form_id' => $form,
+              'unit' => $units[$j],
               'size' => $sizes[$j],
               'price' => $prices[$j + ($sizes_len * $i)],
-              'sku' => $row['plu']."_".$forms[$i]."_".$sizes[$j],
-              'discount' => $discounts[$j + ($sizes_len * $i)],
-              'stock' => $stocks[$j + ($sizes_len * $i)],
-              'status' => $row['status']         
             ]);
           }
 
           $i++;
         }
-      }
-      else {
+      } else if ($row['size']) {
         for ($j=0; $j<$sizes_len; $j++) {
           $product->attrs()->create([
-            'form_id' => NULL,
+            'unit' => $units[$j],
             'size' => $sizes[$j],
-            'price' => $prices[$j],
-            'sku' => $row['plu']."_".$sizes[$j],
-            'discount' => $discounts[$j],
-            'stock' => $stocks[$j],
-            'status' => $row['status']         
+            'price' => $prices[$j]
           ]);
         }
         $i++;
+      } else {
+        $product->attrs()->create([
+          'price' => $prices[0]
+        ]);
       }
     }
   }

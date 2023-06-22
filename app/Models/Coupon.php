@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -10,65 +9,43 @@ use Spatie\Permission\Models\Permission;
 class Coupon extends Model
 {
   /**
-   * The table associated with the model.
+   * The model's default values for attributes.
    *
-   * @var string
+   * @var array
    */
-  protected $table = 'coupons';
+  protected $attributes = [
+    'type' => 'percent'
+  ];
 
   /**
    * The attributes that are mass assignable.
    *
    * @var array
    */
-  protected $fillable = ['code', 'type', 'value', 'effect'];
-
-  /**
-   * Get the products for the coupon.
-  */
-  public function products()
-  {
-    return $this->hasMany(Product::class, 'coupon_id');
-  }
+  protected $fillable = ['code', 'type', 'value', 'threshold', 'effect'];
   
   /**
-   * Get the categories for the coupon.
+   * Get the attributes for the coupon.
   */
-  public function categories()
+  public function attrs()
   {
-    return $this->hasMany(Category::class, 'coupon_id');
+    return $this->hasMany(Attribute::class);
   }
-
-  /**
-   * Get the subcategories for the coupon.
-  */
-  public function subcat()
-  {
-    return $this->hasMany(SubCategory::class, 'coupon_id');
-  }
-  
-  /**
-   * Get the orders for the coupon.
-  */
-  public function orders()
-  {
-    return $this->hasMany(Order::class, 'coupon_id');
-  }
-  
-  /**
-   * Get the users for the coupon.
-  */
-  public function users()
-  {
-    return $this->hasMany(User::class, 'coupon_id');
-  }
-  
+   
   /**
    * Get the cart items for the coupon.
   */
   public function cart_items()
   {
-    return $this->hasMany(CartItem::class, 'coupon_id');
+    return $this->hasMany(CartItem::class);
+  }
+
+  /**
+   * Get the categories for the coupon.
+  */
+  public function cats()
+  {
+    return $this->hasMany(Category::class);
   }
 
   /**
@@ -76,6 +53,38 @@ class Coupon extends Model
   */
   public function order_items()
   {
-    return $this->hasMany(OrderItem::class, 'coupon_id');
+    return $this->hasMany(OrderItem::class);
+  }
+  
+  /**
+   * Get the orders for the coupon.
+  */
+  public function orders()
+  {
+    return $this->hasMany(Order::class);
+  }
+
+  /**
+   * Get the products for the coupon.
+  */
+  public function products()
+  {
+    return $this->hasMany(Product::class);
+  }
+
+  /**
+   * Get the subcategories for the coupon.
+  */
+  public function subcats()
+  {
+    return $this->hasMany(SubCategory::class);
+  }
+  
+  /**
+   * Get the users for the coupon.
+  */
+  public function users()
+  {
+    return $this->hasMany(User::class);
   }
 }
