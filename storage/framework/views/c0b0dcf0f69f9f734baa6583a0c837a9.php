@@ -68,6 +68,21 @@
             Shop
         </div>
 
+    <!-- Blogs -->
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#blogCollapse" aria-expanded="true" aria-controls="categoryCollapse">
+        <i class="fa-solid fa-newspaper"></i>
+        <span>Blog</span>
+      </a>
+      <div id="blogCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+          <h6 class="collapse-header">Blog Options:</h6>
+          <a class="collapse-item" href="<?php echo e(route('blogs.index')); ?>">Blog</a>
+          <a class="collapse-item" href="<?php echo e(route('blogs.create')); ?>">Add Blog</a>
+        </div>
+      </div>
+    </li>
+
     <!-- Categories -->
     <li class="nav-item">
       <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#categoryCollapse" aria-expanded="true" aria-controls="categoryCollapse">
@@ -221,7 +236,6 @@
 
     <!-- Divider -->
     <hr class="sidebar-divider">
-
     
      <!-- Heading -->
     <div class="sidebar-heading">

@@ -9,10 +9,7 @@ class ImportController extends Controller
 {
   public function store(Request $request)
   {               
-    $file = $request->file('file')->store('import');        
-    $import = new ProductsImport;
-    $import->import($file);
+    (new ProductsImport)->import($request->file('file'));
     return back()->withStatus('Import in queue, we will send notification after import finished.');
-    return $request->all();   
   }
 }

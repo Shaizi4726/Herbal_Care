@@ -1,5 +1,5 @@
 @extends('main.layouts.master')
-@section('title', 'HerbalCare - Botanical World of Herbs || Shop Herbs, Teas, Oils and Extracts')
+@section('title', 'Buy Quality Herbal Care Products in UAE Online - HerbalCare')
 
 @push('vendor_styles')
   <link rel="stylesheet" href="{{asset('css/vendor/exzoom.min.css')}}">

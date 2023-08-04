@@ -315,14 +315,14 @@
 				$('[name="product-form"]').on('change', function() {
 					let formId = $('[name="product-form"]:checked').val();
 
-          createSizes(<?= $product->id ?>, formId);
+          createSizes(<?php echo e($product->id); ?>, formId);
 
           $('.cart-btn-div').css('width', 0);
           $('input.qty').val('1');
           $('.plus').attr('disabled', true);
           $('input.qty').attr('disabled', true)
           $('.minus').attr('disabled', true);
-					price(<?= $product->id ?>);
+					price(<?php echo e($product->id); ?>);
 				})
 
 				/* Enable minus button when value of input quantity is greater than 1 and vice versa */

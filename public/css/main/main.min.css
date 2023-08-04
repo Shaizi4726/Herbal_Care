@@ -7,7 +7,6 @@
 
 body {
   font-family: Poppins, Helvetica, Arial, sans-serif;
-  background-color: #fef9f3;
   overflow-x: hidden;
 }
 
@@ -132,7 +131,7 @@ input[type="button"] {
 
 .product-card {
   display: flex;
-  background-color: #ffffed;
+  background-color: #faf9f9;
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
@@ -337,7 +336,7 @@ input[type="button"] {
 
 .btn-submit {
   color: #000;
-  background-color: #ececec;
+  background-color: #b5eaea;
   font-size: 14px;
   text-align: center;
   padding: 0.5em;

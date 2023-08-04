@@ -75,6 +75,7 @@
           </ul>
         </li>
         <li><a href="{{route('contact')}}" class="nav-link mob-nav">Contact</a></li>
+        <li><a href="{{route('blogs.grid')}}" class="nav-link mob-nav">Blogs</a></li>
       </ul>
       <hr>
     
@@ -165,6 +166,7 @@
           </div>
         </li>
         <li><a href="{{ route('contact') }}" class="nav-link desktop-nav">Contact</a></li>
+        <li><a href="{{ route('blogs.grid') }}" class="nav-link desktop-nav">Blogs</a></li>
       </ul>
 
       <div class="search-bar">                                        

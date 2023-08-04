@@ -5,14 +5,14 @@ namespace App\Imports;
 use App\Models\Product;
 use App\Models\SubCategory;
 use App\Notifications\ImportHasFailedNotification;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Validation\Rule;
-use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\Importable;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 
 class ProductsImport implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue, WithValidation
@@ -50,7 +50,7 @@ class ProductsImport implements ToCollection, WithHeadingRow, WithChunkReading, 
         'other_name' => $row['other'],
         'description' => $row['description'],
         'details' => $row['details'],
-        'photo' => $row['photo'],
+        'photo' => '/storage/photos/1/Final-Pic/' . $slug . '.webp',
         'minprice' => $row['minprice']
       ]);
 

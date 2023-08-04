@@ -12,7 +12,7 @@
           <label for="inputTitle" class="col-form-label">Plu Code <span class="text-danger">*</span></label>
           <input id="inputTitle" type="text" name="plu" placeholder="Enter Plu"  value="{{old('plu')}}" class="form-control">
           @error('plu')
-          <span class="text-danger">{{$message}}</span>
+          <span class="text-danger">{{ $message }}</span>
           @enderror
         </div>
         <div class="form-group">

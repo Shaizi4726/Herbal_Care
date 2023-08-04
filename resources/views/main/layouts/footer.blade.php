@@ -21,6 +21,7 @@
 				<hr>
 				<ul>
 					<li><a href="{{route('about.us')}}">About Us</a></li>
+					<li><a href="{{route('blogs.grid')}}">Blogs</a></li>
 					<li><a href="{{route('terms.and.conditions')}}">Terms & Conditions</a></li>
 					<li><a href="{{route('privacy.policy')}}">Privacy Policy</a></li>
 					<li><a href="{{route('faq')}}">FAQ</a></li>

@@ -212,7 +212,7 @@ class CheckoutController extends Controller
 
       $req = new Request;
       $sale_pdf = (new OrderController)->saleInvoice($req, $order);  
-      Mail::mailer('order')->to($request->email)->bcc('order@herbalcare.ae')->send(new OrderConfirmed($order, $sale_pdf));
+      Mail::mailer('order')->to($request->email)->send(new OrderConfirmed($order, $sale_pdf));
 
       if($user_id) {  
         CartItem::where('user_id', $user_id)->delete();
