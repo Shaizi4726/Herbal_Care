@@ -1,5 +1,5 @@
 
-<?php $__env->startSection('title', 'HerbalCare - Botanical World of Herbs || Shop Herbs, Teas, Oils and Extracts'); ?>
+<?php $__env->startSection('title', 'Buy Quality Herbal Care Products in UAE Online - HerbalCare'); ?>
 
 <?php $__env->startPush('vendor_styles'); ?>
   <link rel="stylesheet" href="<?php echo e(asset('css/vendor/exzoom.min.css')); ?>">

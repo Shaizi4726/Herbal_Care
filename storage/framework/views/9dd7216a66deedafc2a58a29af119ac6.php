@@ -4,6 +4,7 @@
 <?php $__env->startPush('styles'); ?>
   <link rel="stylesheet" href="<?php echo e(asset('css/main/checkout.min.css')); ?>">
   <link rel="stylesheet" href="<?php echo e(asset('css/main/loader.min.css')); ?>">
+  <link rel="stylesheet" href="<?php echo e(asset('css/vendor/select2.min.css')); ?>">
 <?php $__env->stopPush(); ?>
 
 <?php $__env->startSection('main-content'); ?>
@@ -11,7 +12,7 @@
   <h1 class="title page-title">Checkout</h1>
 
   <?php
-    $countries = DB::table('countries')->where('status', 'active')->get();
+    $countries = DB::table('countries')->get();
     $states = DB::table('states')->where('country_id', '784')->get();
     $subtotal = Helper::cartSubtotal();
     $tax = Helper::cartTax();
@@ -68,7 +69,7 @@ unset($__errorArgs, $__bag); ?>
               <div class="fl-bl">
                 <div class="form-group" id="first-name">
                   <div class="form-input">
-                    <input type="text" id="fname" name="fname" class="name" placeholder="First Name" value="<?php if(auth()->guard()->check()): ?> <?php echo e(old('fname') ?? auth()->user()->fname); ?> <?php else: ?> <?php echo e(old('fname')); ?> <?php endif; ?>">
+                    <input type="text" id="fname" name="fname" class="name" placeholder="First Name" value="<?php if(auth()->guard()->check()): ?><?php echo e(old('fname') ?? auth()->user()->fname); ?><?php else: ?><?php echo e(old('fname')); ?><?php endif; ?>">
                     <label for="fname">First Name</label>
                   </div>
                   
@@ -91,7 +92,7 @@ unset($__errorArgs, $__bag); ?>
 
                 <div class="form-group" id="last-name">
                   <div class="form-input">
-                    <input type="text" id="lname" name="lname" class="name" placeholder="Last Name" value="<?php if(auth()->guard()->check()): ?> <?php echo e(old('lname') ?? auth()->user()->lname); ?> <?php else: ?> <?php echo e(old('lname')); ?> <?php endif; ?>">
+                    <input type="text" id="lname" name="lname" class="name" placeholder="Last Name" value="<?php if(auth()->guard()->check()): ?><?php echo e(old('lname') ?? auth()->user()->lname); ?><?php else: ?><?php echo e(old('lname')); ?><?php endif; ?>">
                     <label for="lname">Last Name</label>
                   </div>
                   
@@ -114,7 +115,7 @@ unset($__errorArgs, $__bag); ?>
   
                 <div class="form-group collapse" id="company-name">
                   <div class="form-input">
-                    <input type="text" id="cname" name="cname" placeholder="Company Name" value="<?php if(auth()->guard()->check()): ?> <?php echo e(old('cname') ?? auth()->user()->cname); ?> <?php else: ?> <?php echo e(old('cname')); ?> <?php endif; ?>">
+                    <input type="text" id="cname" name="cname" placeholder="Company Name" value="<?php if(auth()->guard()->check()): ?><?php echo e(old('cname') ?? auth()->user()->cname); ?><?php else: ?><?php echo e(old('cname')); ?><?php endif; ?>">
                     <label for="cname">Company Name</label>
                   </div>
                   
@@ -137,7 +138,7 @@ unset($__errorArgs, $__bag); ?>
                 
                 <div class="form-group collapse" id="trn">
                   <div class="form-input">
-                    <input type="number" id="trn-no" name="trn_no" placeholder="TRN Number" value="<?php if(auth()->guard()->check()): ?> <?php echo e(old('trn_no') ?? auth()->user()->trn_no); ?> <?php else: ?> <?php echo e(old('trn_no')); ?> <?php endif; ?>">
+                    <input type="number" id="trn-no" name="trn_no" placeholder="TRN Number" value="<?php if(auth()->guard()->check()): ?><?php echo e(old('trn_no') ?? auth()->user()->trn_no); ?><?php else: ?><?php echo e(old('trn_no')); ?><?php endif; ?>">
                     <label for="trn-no">TRN Number</label>
                   </div>
                     
@@ -232,17 +233,14 @@ unset($__errorArgs, $__bag); ?>
                 </div>
                 
                 <div id="country-form-group" class="form-group">
-                  <div class="form-input">
-                    <input type="hidden" name="country" id="country" class="country-input h-s-input" value="784">
-                    <input type="text" id="country-name" class="country-name selection-input" value="United Arab Emirates" readonly> 
-                    <label for="country-name">Country</label>
-                    <div class="dropdown-icon"><i class="fa-solid fa-angle-down"></i></div>
-                    <ul id="countries" class="selection-list collapse">
-                      <?php $__currentLoopData = $countries; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $country): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <li id="country-<?php echo e($country->id); ?>" data-iso="<?php echo e($country->iso_code); ?>" data-call-code="<?php echo e($country->calling_code); ?>" onclick="country(this, <?php echo e($country->id); ?>)"><?php echo e($country->name); ?></li>
-                      <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                    </ul>
-                  </div>
+                  <select name="country" class="country-selection dropdown" data-placeholder="Country">
+                    <option value=""></option>
+                    <?php $__currentLoopData = $countries; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $country): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                      <option id="country-<?php echo e($country->id); ?>" data-iso="<?php echo e($country->iso_code); ?>" data-call-code="<?php echo e($country->calling_code); ?>" value=<?php echo e($country->id); ?>><?php echo e($country->name); ?></option>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                  </select>
+                  
+                  
 
                   <?php if($errors->has('country')): ?>
                     <div class="error">
@@ -264,17 +262,11 @@ unset($__errorArgs, $__bag); ?>
   
               <div class="fl-bl">
                 <div id="state-form-group" class="form-group">
-                  <div class="form-input">
-                    <input type="hidden" name="state" id="state" class="state-input h-s-input">
-                    <input type="text" id="state-name" class="state-name selection-input" placeholder="State" readonly> 
-                    <label for="state-name">State</label>
-                    <div class="dropdown-icon"><i class="fa-solid fa-angle-down"></i></div>
-                    <ul id="states" class="selection-list collapse">
-                      <?php $__currentLoopData = $states; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $state): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <li id="state-<?php echo e($state->id); ?>" data-state="<?php echo e($state->id); ?>" data-country="784" onclick="state(this)"><?php echo e($state->name); ?></li>
-                      <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                    </ul>
-                  </div>
+                  <select name="state" class="state-selection dropdown" data-placeholder="State">
+                    <option></option>
+                  </select>
+                  
+                  
 
                   <?php if($errors->has('state')): ?>
                     <div class="error">
@@ -294,13 +286,11 @@ unset($__errorArgs, $__bag); ?>
                 </div>
   
                 <div id="city-form-group" class="form-group">
-                  <div class="form-input">
-                    <input type="hidden" name="city" id="city" class="city-input h-s-input">
-                    <input type="text" id="city-name" class="city-name selection-input" placeholder="City" readonly>
-                    <label for="city-name">City</label>
-                    <div class="dropdown-icon"><i class="fa-solid fa-angle-down"></i></div>
-                    <ul id="cities" class="selection-list collapse"></ul>
-                  </div>
+                  <select name="city" class="city-selection dropdown" data-placeholder="City">
+                    <option></option>
+                  </select>
+                  
+                 
 
                   <?php if($errors->has('city')): ?>
                     <div class="error">
@@ -489,17 +479,13 @@ unset($__errorArgs, $__bag); ?>
                   </div>
   
                   <div id="shipping-country-form-group" class="form-group">
-                    <div class="form-input">
-                      <input type="hidden" name="shipping_country" id="shipping-country" class="country-input h-s-input" value="784">
-                      <input type="text" id="shipping-country-name" class="country-name selection-input" value="United Arab Emirates" readonly> 
-                      <label for="shipping-country-name">Country</label>
-                      <div class="dropdown-icon"><i class="fa-solid fa-angle-down"></i></div>
-                      <ul id="shipping-countries" class="selection-list collapse">
-                        <?php $__currentLoopData = $countries; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $country): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                          <li id="shipping-country-<?php echo e($country->id); ?>" data-iso="<?php echo e($country->iso_code); ?>" data-call-code="<?php echo e($country->calling_code); ?>" onclick="country(this, <?php echo e($country->id); ?>)"><?php echo e($country->name); ?></li>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                      </ul>
-                    </div>
+                    <select name="shipping_country" class="shipping-dropdown dropdown country-selection" data-placeholder="Shipping Country">
+                      <option></option>
+                      <?php $__currentLoopData = $countries; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $country): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <option id="shipping-country-<?php echo e($country->id); ?>" data-iso="<?php echo e($country->iso_code); ?>" data-call-code="<?php echo e($country->calling_code); ?>" value=<?php echo e($country->id); ?>><?php echo e($country->name); ?></option>
+                      <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    </select>
+                    
 
                     <?php if($errors->has('shipping_country')): ?>
                       <div class="error">
@@ -521,17 +507,10 @@ unset($__errorArgs, $__bag); ?>
 
                 <div class="fl-bl">
                   <div id="shipping-state-form-group" class="form-group">
-                    <div class="form-input">
-                      <input type="hidden" name="shipping_state" id="shipping-state" class="state-input  h-s-input" value="<?php echo e(old('shipping_state')); ?>">
-                      <input type="text" id="shipping-state-name" class="state-name selection-input" placeholder="State" readonly> 
-                      <label for="shipping-state-name">State</label>
-                      <div class="dropdown-icon"><i class="fa-solid fa-angle-down"></i></div>
-                      <ul id="shipping-states" class="selection-list collapse">
-                        <?php $__currentLoopData = $states; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $state): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                          <li id="shipping-state-<?php echo e($state->id); ?>" data-state="<?php echo e($state->id); ?>" data-country="784" onclick="state(this)"><?php echo e($state->name); ?></li>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                      </ul>
-                    </div>
+                    <select name="shipping_state" id="shipping-state-dropdown" class="shipping-dropdown dropdown state-selection" data-placeholder="Shipping State">
+                      <option></option>
+                    </select>
+                    
 
                     <?php if($errors->has('shipping_state')): ?>
                       <div class="error">
@@ -551,13 +530,10 @@ unset($__errorArgs, $__bag); ?>
                   </div>
     
                   <div id="shipping-city-form-group" class="form-group">
-                    <div class="form-input">
-                      <input type="hidden" name="shipping_city" id="shipping-city" class="city-input  h-s-input" value="<?php echo e(old('shipping_city')); ?>">
-                      <input type="text" id="shipping-city-name" class="city-name selection-input" placeholder="City" readonly>
-                      <label for="shipping-city-name">City</label>
-                      <div class="dropdown-icon"><i class="fa-solid fa-angle-down"></i></div>
-                      <ul id="shipping-cities" class="selection-list collapse"></ul>
-                    </div>
+                    <select name="shipping_city" id="shipping-city-dropdown" class="shipping-dropdown dropdown city-selection" data-placeholder="Shipping City">
+                      <option></option>
+                    </select>
+                    
 
                     <?php if($errors->has('shipping_city')): ?>
                       <div class="error">
@@ -952,6 +928,7 @@ unset($__errorArgs, $__bag); ?>
 
 <?php $__env->startPush('scripts'); ?>
 <script src="<?php echo e(asset('js/main/checkout.min.js')); ?>"></script>
+<script src="<?php echo e(asset('js/vendor/select2.min.js')); ?>"></script>
 
 <?php if($order_success): ?>
   <script>

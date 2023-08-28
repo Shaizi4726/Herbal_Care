@@ -263,7 +263,7 @@
 
               <div class="meta-detail">
                 <h3 class="product-title"><?php echo e($relproduct->name); ?></h3>
-                <?php if($minprice==$maxprice): ?>
+                <?php if($min_price==$max_price): ?>
                   <p class="price">AED <span class="value"><?php echo e(number_format($min_price, 2)); ?></span></p>
                 <?php else: ?>
                   <p class="price">AED <span class="value"><?php echo e(number_format($min_price, 2)); ?></span> - AED <span class="value"><?php echo e(number_format($max_price, 2)); ?></span></p>

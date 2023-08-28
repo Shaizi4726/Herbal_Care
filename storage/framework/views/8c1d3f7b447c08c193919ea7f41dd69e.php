@@ -21,6 +21,7 @@
 				<hr>
 				<ul>
 					<li><a href="<?php echo e(route('about.us')); ?>">About Us</a></li>
+					<li><a href="<?php echo e(route('blogs.grid')); ?>">Blogs</a></li>
 					<li><a href="<?php echo e(route('terms.and.conditions')); ?>">Terms & Conditions</a></li>
 					<li><a href="<?php echo e(route('privacy.policy')); ?>">Privacy Policy</a></li>
 					<li><a href="<?php echo e(route('faq')); ?>">FAQ</a></li>

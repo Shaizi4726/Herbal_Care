@@ -4,6 +4,7 @@
 @push('styles')
   <link rel="stylesheet" href="{{asset('css/main/checkout.min.css')}}">
   <link rel="stylesheet" href="{{asset('css/main/loader.min.css')}}">
+  <link rel="stylesheet" href="{{asset('css/vendor/select2.min.css')}}">
 @endpush
 
 @section('main-content')
@@ -11,7 +12,7 @@
   <h1 class="title page-title">Checkout</h1>
 
   @php
-    $countries = DB::table('countries')->where('status', 'active')->get();
+    $countries = DB::table('countries')->get();
     $states = DB::table('states')->where('country_id', '784')->get();
     $subtotal = Helper::cartSubtotal();
     $tax = Helper::cartTax();
@@ -60,7 +61,7 @@
               <div class="fl-bl">
                 <div class="form-group" id="first-name">
                   <div class="form-input">
-                    <input type="text" id="fname" name="fname" class="name" placeholder="First Name" value="@auth {{ old('fname') ?? auth()->user()->fname }} @else {{ old('fname') }} @endauth">
+                    <input type="text" id="fname" name="fname" class="name" placeholder="First Name" value="@auth{{ old('fname') ?? auth()->user()->fname }}@else{{ old('fname') }}@endauth">
                     <label for="fname">First Name</label>
                   </div>
                   
@@ -75,7 +76,7 @@
 
                 <div class="form-group" id="last-name">
                   <div class="form-input">
-                    <input type="text" id="lname" name="lname" class="name" placeholder="Last Name" value="@auth {{ old('lname') ?? auth()->user()->lname }} @else {{ old('lname') }} @endauth">
+                    <input type="text" id="lname" name="lname" class="name" placeholder="Last Name" value="@auth{{ old('lname') ?? auth()->user()->lname }}@else{{old('lname')}}@endauth">
                     <label for="lname">Last Name</label>
                   </div>
                   
@@ -90,7 +91,7 @@
   
                 <div class="form-group collapse" id="company-name">
                   <div class="form-input">
-                    <input type="text" id="cname" name="cname" placeholder="Company Name" value="@auth {{ old('cname') ?? auth()->user()->cname }} @else {{ old('cname') }} @endauth">
+                    <input type="text" id="cname" name="cname" placeholder="Company Name" value="@auth{{ old('cname') ?? auth()->user()->cname }}@else{{old('cname')}}@endauth">
                     <label for="cname">Company Name</label>
                   </div>
                   
@@ -105,7 +106,7 @@
                 
                 <div class="form-group collapse" id="trn">
                   <div class="form-input">
-                    <input type="number" id="trn-no" name="trn_no" placeholder="TRN Number" value="@auth {{ old('trn_no') ?? auth()->user()->trn_no }} @else {{ old('trn_no') }} @endauth">
+                    <input type="number" id="trn-no" name="trn_no" placeholder="TRN Number" value="@auth{{ old('trn_no') ?? auth()->user()->trn_no }}@else{{ old('trn_no') }}@endauth">
                     <label for="trn-no">TRN Number</label>
                   </div>
                     
@@ -122,7 +123,7 @@
               <div class="fl-bl">
                 <div class="form-group">
                   <div class="form-input">
-                    <input type="email" name="email" id="email" placeholder="someone@domain.com" value="{{ old('email') }}" required>
+                    <input type="email" name="email" id="email" placeholder="someone@domain.com" value="{{old('email')}}" required>
                     <label for="email">Email</label>
                   </div>
     
@@ -168,7 +169,14 @@
                 </div>
                 
                 <div id="country-form-group" class="form-group">
-                  <div class="form-input">
+                  <select name="country" class="country-selection dropdown" data-placeholder="Country">
+                    <option value=""></option>
+                    @foreach($countries as $country)
+                      <option id="country-{{$country->id}}" data-iso="{{$country->iso_code}}" data-call-code="{{$country->calling_code}}" value={{$country->id}}>{{$country->name}}</option>
+                    @endforeach
+                  </select>
+                  {{-- <label for="country">Country</label> --}}
+                  {{-- <div class="form-input">
                     <input type="hidden" name="country" id="country" class="country-input h-s-input" value="784">
                     <input type="text" id="country-name" class="country-name selection-input" value="United Arab Emirates" readonly> 
                     <label for="country-name">Country</label>
@@ -178,7 +186,7 @@
                         <li id="country-{{$country->id}}" data-iso="{{$country->iso_code}}" data-call-code="{{$country->calling_code}}" onclick="country(this, {{$country->id}})">{{$country->name}}</li>
                       @endforeach
                     </ul>
-                  </div>
+                  </div> --}}
 
                   @if ($errors->has('country'))
                     <div class="error">
@@ -192,7 +200,11 @@
   
               <div class="fl-bl">
                 <div id="state-form-group" class="form-group">
-                  <div class="form-input">
+                  <select name="state" class="state-selection dropdown" data-placeholder="State">
+                    <option></option>
+                  </select>
+                  {{-- <label for="state">State</label> --}}
+                  {{-- <div class="form-input">
                     <input type="hidden" name="state" id="state" class="state-input h-s-input">
                     <input type="text" id="state-name" class="state-name selection-input" placeholder="State" readonly> 
                     <label for="state-name">State</label>
@@ -202,7 +214,7 @@
                         <li id="state-{{$state->id}}" data-state="{{$state->id}}" data-country="784" onclick="state(this)">{{$state->name}}</li>
                       @endforeach
                     </ul>
-                  </div>
+                  </div> --}}
 
                   @if ($errors->has('state'))
                     <div class="error">
@@ -214,13 +226,17 @@
                 </div>
   
                 <div id="city-form-group" class="form-group">
-                  <div class="form-input">
+                  <select name="city" class="city-selection dropdown" data-placeholder="City">
+                    <option></option>
+                  </select>
+                  {{-- <label for="city">City</label> --}}
+                 {{--  <div class="form-input">
                     <input type="hidden" name="city" id="city" class="city-input h-s-input">
                     <input type="text" id="city-name" class="city-name selection-input" placeholder="City" readonly>
                     <label for="city-name">City</label>
                     <div class="dropdown-icon"><i class="fa-solid fa-angle-down"></i></div>
                     <ul id="cities" class="selection-list collapse"></ul>
-                  </div>
+                  </div> --}}
 
                   @if ($errors->has('city'))
                     <div class="error">
@@ -353,7 +369,13 @@
                   </div>
   
                   <div id="shipping-country-form-group" class="form-group">
-                    <div class="form-input">
+                    <select name="shipping_country" class="shipping-dropdown dropdown country-selection" data-placeholder="Shipping Country">
+                      <option></option>
+                      @foreach($countries as $country)
+                        <option id="shipping-country-{{$country->id}}" data-iso="{{$country->iso_code}}" data-call-code="{{$country->calling_code}}" value={{$country->id}}>{{$country->name}}</option>
+                      @endforeach
+                    </select>
+                    {{-- <div class="form-input">
                       <input type="hidden" name="shipping_country" id="shipping-country" class="country-input h-s-input" value="784">
                       <input type="text" id="shipping-country-name" class="country-name selection-input" value="United Arab Emirates" readonly> 
                       <label for="shipping-country-name">Country</label>
@@ -363,7 +385,7 @@
                           <li id="shipping-country-{{$country->id}}" data-iso="{{$country->iso_code}}" data-call-code="{{$country->calling_code}}" onclick="country(this, {{$country->id}})">{{$country->name}}</li>
                         @endforeach
                       </ul>
-                    </div>
+                    </div> --}}
 
                     @if ($errors->has('shipping_country'))
                       <div class="error">
@@ -377,7 +399,10 @@
 
                 <div class="fl-bl">
                   <div id="shipping-state-form-group" class="form-group">
-                    <div class="form-input">
+                    <select name="shipping_state" id="shipping-state-dropdown" class="shipping-dropdown dropdown state-selection" data-placeholder="Shipping State">
+                      <option></option>
+                    </select>
+                    {{-- <div class="form-input">
                       <input type="hidden" name="shipping_state" id="shipping-state" class="state-input  h-s-input" value="{{old('shipping_state')}}">
                       <input type="text" id="shipping-state-name" class="state-name selection-input" placeholder="State" readonly> 
                       <label for="shipping-state-name">State</label>
@@ -387,7 +412,7 @@
                           <li id="shipping-state-{{$state->id}}" data-state="{{$state->id}}" data-country="784" onclick="state(this)">{{$state->name}}</li>
                         @endforeach
                       </ul>
-                    </div>
+                    </div> --}}
 
                     @if ($errors->has('shipping_state'))
                       <div class="error">
@@ -399,13 +424,16 @@
                   </div>
     
                   <div id="shipping-city-form-group" class="form-group">
-                    <div class="form-input">
+                    <select name="shipping_city" id="shipping-city-dropdown" class="shipping-dropdown dropdown city-selection" data-placeholder="Shipping City">
+                      <option></option>
+                    </select>
+                    {{-- <div class="form-input">
                       <input type="hidden" name="shipping_city" id="shipping-city" class="city-input  h-s-input" value="{{old('shipping_city')}}">
                       <input type="text" id="shipping-city-name" class="city-name selection-input" placeholder="City" readonly>
                       <label for="shipping-city-name">City</label>
                       <div class="dropdown-icon"><i class="fa-solid fa-angle-down"></i></div>
                       <ul id="shipping-cities" class="selection-list collapse"></ul>
-                    </div>
+                    </div> --}}
 
                     @if ($errors->has('shipping_city'))
                       <div class="error">
@@ -736,6 +764,7 @@
 
 @push('scripts')
 <script src="{{asset('js/main/checkout.min.js')}}"></script>
+<script src="{{asset('js/vendor/select2.min.js')}}"></script>
 
 @if($order_success)
   <script>

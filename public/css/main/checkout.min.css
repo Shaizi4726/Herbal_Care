@@ -47,7 +47,7 @@ input:-webkit-autofill:focus {
   justify-content: flex-start;
   margin: 1em auto;
   position: relative;
-  width: 90%;
+  width: 98%;
 }
 
 form {
@@ -66,7 +66,7 @@ h2 {
 
 fieldset {
   margin: 0 auto 1em;
-  padding: 0 1em 1em;
+  padding: 0 0.5em 1em;
   width: 94%;
 }
 
@@ -77,7 +77,6 @@ fieldset legend {
 }
 
 .form-group {
-  flex: 50%;
   margin: 1.5em 0;
   position: relative;
 }
@@ -104,7 +103,7 @@ fieldset legend {
 
 label {
   display: block;
-  font-size: 0.95em;
+  font-size: 0.85em;
 }
 
 .type-selection .form-group label {
@@ -115,12 +114,10 @@ label {
 }
 
 .form-group input {
-  background-color: #fff;
   border: 1px solid #7c8e7b;
-  border-radius: 5px;
+  border-radius: 0.4em;
   display: block;
-  font-size: 1em;
-  font-weight: 700;
+  font-size: 0.9em;
   height: 2.5em;
   margin: auto;
   padding: 0.75em;
@@ -129,16 +126,17 @@ label {
 .form-group label {
   background-color: #fff;
   color: #999;
+  border-radius: 0.4em;
   display: inline-block;
   font-weight: 700;
+  width: 99%;
   height: 2.3em;
   left: 0.1em;
   padding: 0.5em;
   position: absolute;
   top: 0.1em;
-  transition: 0.1s linear;
-  width: 99%;
   z-index: 1;
+  transition: 0.1s linear;
   -moz-transition: 0.1s linear;
   -webkit-transition: 0.1s linear;
 }
@@ -151,7 +149,6 @@ input:focus+label,
 input:not(:placeholder-shown)+label {
   background-color: #fff;
   color: #413543;
-  font-weight: normal;
   height: 1.2em;
   left: 0.5em;
   padding: 0 0.5em;
@@ -159,40 +156,12 @@ input:not(:placeholder-shown)+label {
   width: auto;
 }
 
+select:focus {
+  z-index: 1000;
+}
+
 .optional {
   font-size: 0.6em;
-}
-
-.dropdown-icon {
-  background-color: #f2f4e6;
-  border: 1px solid #7c8e7b;
-  border-left: none;
-  border-radius: 0 5px 5px 0;
-  height: 100%;
-  position: absolute;
-  right: 0;
-  text-align: center;
-  top: 0;
-  width: 2.5em;
-  z-index: 2;
-}
-
-.dropdown-icon i {
-  position: relative;
-  top: 0.5em;
-}
-
-.selection-list {
-  background-color: #f2f4e6;
-  border: 1px solid #7c8e7b;
-  border-radius: 0.3em;
-  max-height: 25em;
-  overflow-y: auto;
-  padding: 0.3em 0;
-  position: absolute;
-  top: 2.5em;
-  width: 100%;
-  z-index: 5;
 }
 
 .selection-list li {
@@ -396,6 +365,10 @@ input:not(:placeholder-shown)+label {
 }
 
 @media screen and (min-width: 480px) {
+  .form-container {
+    width: 90%;
+  }
+
   .page-title {
     font-size: 30px;
   }
@@ -544,6 +517,10 @@ input:not(:placeholder-shown)+label {
 
   .fl-bl {
     display: flex;
+  }
+
+  .form-group {
+    flex: 1;
   }
 
   .fl-bl>.form-group:first-child {
