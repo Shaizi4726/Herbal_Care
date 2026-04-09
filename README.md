@@ -1,66 +1,118 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🌿 Herbal Care — Full-Stack E-Commerce Platform
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A complete, production-ready e-commerce web application built with **Laravel (PHP)**, **JavaScript**, **Bootstrap**, and **Blade** templating. Developed for a herbal products client over 5 months as a collaborative team project.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🚀 Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Customer-Facing
+- 🛍️ **Product Catalog** — browse by category, subcategory, and brand with image support
+- 🔍 **Product Detail Pages** — full product info, reviews, and comments
+- 🛒 **Shopping Cart** — add, update, and remove items
+- ❤️ **Wishlist** — save products for later
+- 💳 **Checkout** — form validation, order confirmation popup, and loader
+- 📦 **Order Management** — track orders, view order detail, cancel/return with OTP verification
+- 🔐 **Authentication** — register, login, email verification with middleware
+- 📝 **Blog** — content section for herbal articles
+- 📄 **Static Pages** — About Us, Contact, FAQ, Privacy Policy, Terms & Conditions
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Admin Panel
+- 📊 **Dashboard** — overview and notifications
+- 🗂️ **Category Management** — categories, subcategories
+- 📦 **Product Management** — add/edit products with image upload, packaging details
+- 🏷️ **Brand Management**
+- 🎠 **Banner Management**
+- 🛒 **Order Management** — view, process, and manage all orders
+- 👥 **User Management**
+- ⭐ **Reviews & Comments** — moderation panel
+- 🎟️ **Coupon Management**
+- 🌍 **Location Management** — countries, states, cities
+- ⚙️ **Settings**
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 🛠️ Tech Stack
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+| Layer | Technology |
+|-------|-----------|
+| Backend | PHP / Laravel |
+| Frontend | JavaScript, Bootstrap, Blade Templates |
+| Database | MySQL (via Laravel Eloquent ORM) |
+| Auth | Laravel Auth + Email Verification Middleware |
+| OTP | SMS/Email OTP for order cancel/return |
+| Version Control | Git / GitHub |
+| CI/CD | GitHub Actions |
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## 📁 Project Structure
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+```
+├── app/                  # Controllers, Models, Middleware
+├── resources/
+│   └── views/
+│       ├── admin/        # Admin panel views
+│       │   ├── product/  # Product management
+│       │   ├── order/    # Order management
+│       │   ├── category/ # Category & subcategory
+│       │   ├── users/    # User management
+│       │   ├── coupon/   # Coupon management
+│       │   └── ...
+│       ├── main/         # Customer-facing views
+│       │   ├── pages/    # Shop, cart, checkout, orders, wishlist...
+│       │   ├── layouts/  # Shared layouts
+│       │   └── blogs/    # Blog section
+│       ├── auth/         # Login, register, email verify
+│       └── emails/       # Email templates
+├── routes/               # Web & API routes
+├── database/             # Migrations & seeders
+└── public/               # Assets
+```
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+## ⚙️ Local Setup
 
-## Contributing
+```bash
+# Clone the repository
+git clone https://github.com/Shaizi4726/Herbal_Care.git
+cd Herbal_Care
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# Install PHP dependencies
+composer install
 
-## Code of Conduct
+# Install JS dependencies
+npm install && npm run dev
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# Set up environment
+cp .env.example .env
+php artisan key:generate
 
-## Security Vulnerabilities
+# Run migrations
+php artisan migrate --seed
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+# Start the server
+php artisan serve
+```
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 👥 Team
+
+| Developer | Role |
+|-----------|------|
+| [Malik Shahzad](https://github.com/Shaizi4726) | Full-Stack (Frontend + Backend) |
+| [MdZafarAqbal](https://github.com/MdZafarAqbal) | Full-Stack (Frontend + Backend) |
+
+---
+
+## 📌 Project Status
+
+The application was fully developed and ready for deployment. The project was not launched publicly due to the client/investor withdrawing before the go-live stage. The codebase represents a complete, functional e-commerce platform.
+
+---
+
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
